@@ -1,22 +1,25 @@
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface-2: #242836;
-  --border: #2e3345;
-  --text: #e8eaef;
-  --text-muted: #8b92a8;
-  --accent: #6c8cff;
-  --accent-hover: #5578ff;
-  --path: #ff6b6b;
-  --success: #4ade80;
-  --radius: 12px;
+  --bg: #f0f4ff;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-light: #dbeafe;
+  --path: #ef4444;
+  --success: #16a34a;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1);
+  --radius: 14px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: var(--bg);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 50%, #fef3c7 100%);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
@@ -68,6 +71,7 @@ header p {
   border-radius: var(--radius);
   padding: 24px;
   margin-bottom: 20px;
+  box-shadow: var(--shadow);
 }
 
 .controls {
@@ -161,6 +165,7 @@ header p {
   .complexity-btn { flex: 1; }
 }
 
+.slider-row {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -256,6 +261,7 @@ a.secondary:hover {
   border-radius: var(--radius);
   padding: 16px;
   overflow-x: auto;
+  box-shadow: var(--shadow);
 }
 
 canvas {
@@ -333,12 +339,14 @@ canvas {
   font-size: 0.9rem;
   cursor: pointer;
   white-space: nowrap;
-  transition: border-color 0.15s, color 0.15s;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .icon-btn:hover {
-  border-color: var(--text-muted);
-  color: var(--text);
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
 }
 
 .canvas-wrap--full {
@@ -364,6 +372,9 @@ canvas {
   display: block;
   max-width: 100%;
   height: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
 }
 
 .canvas--covered {
@@ -379,19 +390,20 @@ canvas {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--surface);
-  border: 2px dashed var(--border);
+  background: #ffffff;
+  border: 2px dashed #93c5fd;
   border-radius: 10px;
   color: var(--text-muted);
   cursor: pointer;
   pointer-events: auto;
   opacity: 1;
+  box-shadow: var(--shadow-lg);
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 .ladder-cover:hover {
   border-color: var(--accent);
-  background: var(--surface-2);
+  background: #fff;
 }
 
 .ladder-cover--hidden {

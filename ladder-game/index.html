@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>사다리타기</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- 설정 화면 -->
+<section id="setupView" class="view view--active">
+  <div class="app">
+    <header>
+      <h1>사다리타기</h1>
+      <p>결과 항목과 복잡도를 설정한 뒤 시작하세요.</p>
+    </header>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="field">
+          <label for="results">결과 항목</label>
+          <textarea id="results" placeholder="한 줄에 하나씩 입력&#10;사탕&#10;방패&#10;스탬프&#10;꽝&#10;당첨"></textarea>
+          <p class="hint">시작하면 아래 칸에 무작위로 배치됩니다.</p>
+        </div>
+
+        <div class="field">
+          <label>사다리 복잡도</label>
+          <div class="complexity-picker" id="complexityPicker">
+            <button type="button" class="complexity-btn" data-level="1">매우 단순</button>
+            <button type="button" class="complexity-btn" data-level="2">단순</button>
+            <button type="button" class="complexity-btn complexity-btn--active" data-level="3">보통</button>
+            <button type="button" class="complexity-btn" data-level="4">복잡</button>
+            <button type="button" class="complexity-btn" data-level="5">매우 복잡</button>
+          </div>
+          <p class="hint">세로줄당 가로줄 2→5개. 매우 복잡에는 사선도 실제 경로로 이동합니다.</p>
+          <p class="hint" style="margin-top: 14px;">참가자 수 (위쪽 자동 번호)</p>
+          <input type="number" id="count" min="2" max="20" value="4" readonly />
+          <p class="hint">결과 항목 수에 맞춰 1, 2, 3… 번호가 자동 배치됩니다.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="startBtn">시작</button>
+        <button class="secondary" id="resetBtn">초기화</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 플레이 화면 -->
+<section id="playView" class="view">
+  <div class="play-screen">
+    <div class="play-toolbar">
+      <button class="icon-btn" id="backBtn" title="설정으로">← 설정</button>
+      <p class="status" id="message">위쪽 번호를 클릭하세요.</p>
+      <button class="icon-btn" id="regenerateBtn" title="다시 만들기">↻</button>
+    </div>
+
+    <div class="canvas-wrap canvas-wrap--full">
+      <div class="canvas-stage" id="canvasStage">
+        <canvas id="canvas" width="900" height="520"></canvas>
+        <div class="ladder-cover" id="ladderCover">
+          <span class="ladder-cover__label">?</span>
+          <span class="ladder-cover__hint">클릭하면 사다리가 공개됩니다</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/ladder.js"></script>
+<script>
+const setupView = document.getElementById("setupView");
+const playView = document.getElementById("playView");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const messageEl = document.getElementById("message");
+
+const complexityPicker = document.getElementById("complexityPicker");
+const resultsEl = document.getElementById("results");
+const countEl = document.getElementById("count");
+
+let game = null;
+let rawItems = [];
+let complexity = 3;
+let isCovered = true;
+let pathAnimation = null;
+
+const canvasStage = document.getElementById("canvasStage");
+const ladderCover = document.getElementById("ladderCover");
+
+function stopPathAnimation() {
+  if (pathAnimation) {
+    pathAnimation.cancel();
+    pathAnimation = null;
+  }
+}
+
+complexityPicker.addEventListener("click", e => {
+  const btn = e.target.closest(".complexity-btn");
+  if (!btn) return;
+  complexity = parseInt(btn.dataset.level, 10);
+  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
+    b.classList.toggle("complexity-btn--active", b === btn);
+  });
+});
+
+resultsEl.addEventListener("input", () => {
+  const n = resultsEl.value.trim().split("\n").filter(Boolean).length;
+  if (n >= 2) countEl.value = n;
+});
+
+function showView(name) {
+  setupView.classList.toggle("view--active", name === "setup");
+  playView.classList.toggle("view--active", name === "play");
+}
+
+function updateCoverLayout() {
+  if (!game) return;
+  const topPct = (game.topY / game.canvasHeight) * 100;
+  const heightPct = ((game.bottomY - game.topY) / game.canvasHeight) * 100;
+  ladderCover.style.top = `${topPct}%`;
+  ladderCover.style.height = `${heightPct}%`;
+}
+
+function setCovered(covered) {
+  isCovered = covered;
+  ladderCover.classList.toggle("ladder-cover--hidden", !covered);
+  canvas.classList.toggle("canvas--covered", covered);
+  messageEl.textContent = covered
+    ? "네모를 클릭하면 사다리가 공개됩니다."
+    : "위쪽 번호를 클릭하세요.";
+}
+
+function revealLadder() {
+  setCovered(false);
+  renderLadder();
+}
+
+function startGame() {
+  rawItems = resultsEl.value.trim().split("\n").map(s => s.trim()).filter(Boolean);
+  if (rawItems.length < 2) {
+    alert("결과 항목을 2개 이상 입력해 주세요.");
+    return;
+  }
+
+  game = LadderGame.createGame(rawItems, complexity);
+  renderLadder();
+  setCovered(true);
+  updateCoverLayout();
+  showView("play");
+}
+
+function renderLadder() {
+  canvas.width = game.canvasWidth;
+  canvas.height = game.canvasHeight;
+  LadderGame.drawLadder(ctx, game);
+  updateCoverLayout();
+}
+
+function playPathAnimation(startIndex) {
+  stopPathAnimation();
+  messageEl.textContent = `${game.labels[startIndex]}번 — 경로를 따라가는 중…`;
+
+  pathAnimation = LadderGame.animateTrace(ctx, game, startIndex, {
+    onComplete(endIndex) {
+      pathAnimation = null;
+      messageEl.innerHTML =
+        `<strong>${game.labels[startIndex]}번</strong> → <strong>${game.results[endIndex]}</strong>`;
+    },
+  });
+  pathAnimation.start();
+}
+
+ladderCover.addEventListener("click", () => {
+  if (!game || !isCovered) return;
+  revealLadder();
+});
+
+document.getElementById("startBtn").addEventListener("click", startGame);
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  resultsEl.value = "";
+  countEl.value = 4;
+  complexity = 3;
+  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
+    b.classList.toggle("complexity-btn--active", b.dataset.level === "3");
+  });
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  showView("setup");
+});
+
+document.getElementById("regenerateBtn").addEventListener("click", () => {
+  if (!rawItems.length) return;
+  stopPathAnimation();
+  game = LadderGame.createGame(rawItems, complexity);
+  setCovered(true);
+  renderLadder();
+});
+
+canvas.addEventListener("click", e => {
+  if (!game || isCovered || pathAnimation) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const clickX = (e.clientX - rect.left) * scaleX;
+
+  let closest = 0;
+  let minDist = Infinity;
+  for (let i = 0; i < game.lineXs.length; i++) {
+    const dist = Math.abs(clickX - game.lineXs[i]);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = i;
+    }
+  }
+
+  if (minDist > LadderGame.perColumnWidth(game.lineXs) / 2) return;
+
+  playPathAnimation(closest);
+});
+
+window.addEventListener("resize", updateCoverLayout);
+</script>
+
+</body>
+</html>

@@ -2,8 +2,21 @@ const LadderGame = (() => {
   const TOP_Y = 90;
   const CANVAS_HEIGHT = 520;
   const MIN_WIDTH = 480;
-  const PER_COLUMN = 72;
+  const PER_COLUMN = 96;
+  const SIDE_PADDING = 100;
   const EPS = 0.5;
+
+  const COLORS = {
+    canvasBg: "#ffffff",
+    rail: "#334155",
+    bridge: "#2563eb",
+    diagonal: "#64748b",
+    badge: "#2563eb",
+    badgeText: "#ffffff",
+    resultText: "#1e293b",
+    path: "#ef4444",
+    pathDotStroke: "#ffffff",
+  };
 
   const COMPLEXITY_LEVELS = [
     { label: "매우 단순", perLine: 2, diagonals: false },
@@ -157,7 +170,7 @@ const LadderGame = (() => {
 
   function computeLayout(count, complexity) {
     const { perLine } = getComplexityConfig(complexity);
-    const canvasWidth = Math.max(MIN_WIDTH, count * PER_COLUMN + 120);
+    const canvasWidth = Math.max(MIN_WIDTH, count * PER_COLUMN + SIDE_PADDING);
     const bottomY = CANVAS_HEIGHT - 80;
     const stepY = computeStepY(count, perLine, bottomY);
     const gap = canvasWidth / (count + 1);
@@ -288,7 +301,7 @@ const LadderGame = (() => {
 
   function drawPathOverlay(ctx, partialPath, dot) {
     if (partialPath.length > 1) {
-      ctx.strokeStyle = "#ff6b6b";
+      ctx.strokeStyle = COLORS.path;
       ctx.lineWidth = 5;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
@@ -299,11 +312,11 @@ const LadderGame = (() => {
     }
 
     if (dot) {
-      ctx.fillStyle = "#ff6b6b";
+      ctx.fillStyle = COLORS.path;
       ctx.beginPath();
       ctx.arc(dot.x, dot.y, 8, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = COLORS.pathDotStroke;
       ctx.lineWidth = 2;
       ctx.stroke();
     }
@@ -313,7 +326,8 @@ const LadderGame = (() => {
     const { labels, results, bridges, diagonals = [], lineXs, topY, bottomY } = state;
     const canvas = ctx.canvas;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = COLORS.canvasBg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = "15px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -323,21 +337,21 @@ const LadderGame = (() => {
     for (let i = 0; i < labels.length; i++) {
       const x = lineXs[i];
 
-      ctx.fillStyle = "#6c8cff";
+      ctx.fillStyle = COLORS.badge;
       ctx.beginPath();
       ctx.arc(x, 42, 18, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = "#fff";
+      ctx.fillStyle = COLORS.badgeText;
       ctx.font = "bold 14px sans-serif";
       ctx.fillText(labels[i], x, 42);
 
-      ctx.fillStyle = "#e8eaef";
-      ctx.font = "14px sans-serif";
+      ctx.fillStyle = COLORS.resultText;
+      ctx.font = "600 14px sans-serif";
       ctx.fillText(truncateText(ctx, results[i], colW - 8), x, bottomY + 36);
 
-      ctx.strokeStyle = "#4a5068";
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = COLORS.rail;
+      ctx.lineWidth = 3.5;
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(x, topY);
@@ -345,7 +359,7 @@ const LadderGame = (() => {
       ctx.stroke();
     }
 
-    ctx.strokeStyle = "#8b95aa";
+    ctx.strokeStyle = COLORS.diagonal;
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     for (const d of diagonals) {
@@ -355,8 +369,8 @@ const LadderGame = (() => {
       ctx.stroke();
     }
 
-    ctx.strokeStyle = "#c8cdd9";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = COLORS.bridge;
+    ctx.lineWidth = 3.5;
     for (const b of bridges) {
       ctx.beginPath();
       ctx.moveTo(lineXs[b.index], b.y);
