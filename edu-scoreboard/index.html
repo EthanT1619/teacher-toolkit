@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>교육 점수판</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1a1a2e;
+      --panel: #16213e;
+      --accent1: #e94560;
+      --accent2: #0f3460;
+      --text: #eaeaea;
+      --muted: #a0a0b0;
+      --btn-size: 64px;
+      --radius: 16px;
+    }
+
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Settings Screen ── */
+    #settings {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 24px;
+      padding: 32px;
+    }
+
+    #settings h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .settings-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .settings-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .settings-form input {
+      padding: 14px 16px;
+      font-size: 1.2rem;
+      border: 2px solid var(--accent2);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+    }
+
+    .settings-form input:focus {
+      border-color: var(--accent1);
+    }
+
+    .settings-hint {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .btn-start {
+      margin-top: 8px;
+      padding: 18px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--accent1);
+      color: #fff;
+      cursor: pointer;
+      min-height: 60px;
+    }
+
+    .btn-start:active { opacity: 0.85; }
+
+    /* ── Main Scoreboard ── */
+    #scoreboard {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      height: 100dvh;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      background: var(--panel);
+      flex-shrink: 0;
+      gap: 8px;
+    }
+
+    .top-bar button {
+      padding: 8px 14px;
+      font-size: clamp(0.8rem, 2.5cqi, 1rem);
+      border: none;
+      border-radius: 10px;
+      background: var(--accent2);
+      color: var(--text);
+      cursor: pointer;
+      min-height: 40px;
+      white-space: nowrap;
+    }
+
+    .top-bar button:active { opacity: 0.85; }
+
+    .teams-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      background: var(--panel);
+      border-bottom: 2px solid var(--accent2);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 50;
+    }
+
+    .teams-header .team-header {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .header-center {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .btn-menu {
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--accent2);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-menu:active,
+    .btn-menu.open {
+      background: var(--accent2);
+    }
+
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .menu-backdrop.show { display: block; }
+
+    .menu-popup {
+      display: none;
+      position: fixed;
+      top: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      min-width: 220px;
+      max-width: min(90vw, 320px);
+      background: var(--panel);
+      border: 2px solid var(--accent2);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-popup.show { display: flex; flex-direction: column; gap: 6px; }
+
+    .menu-popup button {
+      padding: 14px 12px;
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.3;
+      min-height: 48px;
+    }
+
+    .menu-popup button:active { opacity: 0.85; }
+
+    .menu-popup button.danger {
+      background: #3a2040;
+      color: #ff8fa3;
+    }
+
+    .menu-popup button.swap {
+      background: #1a3050;
+      color: #8ec5ff;
+    }
+
+    .teams {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .team {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      container-type: inline-size;
+      container-name: team;
+    }
+
+    .team:first-child {
+      border-right: 2px solid var(--accent2);
+    }
+
+    .team-header {
+      text-align: center;
+      padding: clamp(4px, 1.5cqi, 10px) 8px;
+      font-size: clamp(1rem, 6cqi, 1.4rem);
+      font-weight: 700;
+      background: var(--panel);
+      flex-shrink: 0;
+    }
+
+    .team-a .team-header { color: #ff6b8a; }
+    .team-b .team-header { color: #6bb5ff; }
+
+    /* Score area — 상단, 크게 */
+    .score-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 6px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .score-controls {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      gap: clamp(4px, 2cqi, 12px);
+      width: 100%;
+      max-width: 100%;
+      padding: 0 4px;
+    }
+
+    .score-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .bomb-track {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(4px, 1.5cqi, 8px);
+      min-height: clamp(14px, 4.5cqi, 22px);
+      margin-top: clamp(2px, 1cqi, 6px);
+    }
+
+    .bomb-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(26px, 9cqi, 36px);
+      height: clamp(26px, 9cqi, 36px);
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+      font-size: clamp(0.8rem, 4.8cqi, 1.05rem);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .score-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(4px, 1.5cqi, 8px);
+      flex-shrink: 0;
+    }
+
+    .score-helpers {
+      display: flex;
+      gap: clamp(3px, 1.2cqi, 6px);
+    }
+
+    .btn-helper {
+      min-width: clamp(34px, 13cqi, 50px);
+      height: clamp(28px, 9cqi, 38px);
+      padding: 0 clamp(4px, 1cqi, 8px);
+      border: none;
+      border-radius: 8px;
+      font-size: clamp(0.65rem, 3.8cqi, 0.85rem);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn-helper:active { transform: scale(0.94); opacity: 0.9; }
+
+    .btn-helper-minus {
+      background: #2a2a48;
+      color: #c8c8d8;
+      border: 1px solid #4a4a6a;
+    }
+
+    .btn-helper-plus {
+      background: #4a2030;
+      color: #ffb3c1;
+      border: 1px solid #7a3050;
+    }
+
+    .score-display {
+      font-size: clamp(2.75rem, min(42cqi, 31dvh), 12.1rem);
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      letter-spacing: -1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-circle {
+      border: none;
+      border-radius: 50%;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .btn-circle:active { transform: scale(0.92); }
+
+    .btn-minus {
+      background: #3a3a5c;
+      color: var(--text);
+    }
+
+    .btn-plus {
+      background: var(--accent1);
+      color: #fff;
+    }
+
+    .btn-score {
+      width: clamp(36px, 18cqi, 96px);
+      height: clamp(36px, 18cqi, 96px);
+      font-size: clamp(1.2rem, 7cqi, 2.5rem);
+    }
+
+    /* Resources — 하단 3칸 네모 */
+    .resources {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(2px, 1.1cqi, 6px);
+      padding: clamp(4px, 1.1cqi, 6px);
+      padding-bottom: max(clamp(4px, 1.1cqi, 6px), env(safe-area-inset-bottom));
+      background: var(--panel);
+      border-top: 2px solid var(--accent2);
+      max-height: min(19.8dvh, 130px);
+    }
+
+    .resource-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border: 1px solid var(--accent2);
+      border-radius: clamp(6px, 1.5cqi, 10px);
+      padding: clamp(3px, 1.1cqi, 6px) clamp(2px, 0.8cqi, 3px);
+      gap: clamp(2px, 0.9cqi, 5px);
+      min-width: 0;
+      min-height: clamp(72px, 22cqi, 96px);
+    }
+
+    .resource-label {
+      font-size: clamp(0.55rem, 3.8cqi, 0.8rem);
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.1;
+      word-break: keep-all;
+    }
+
+    .resource-value {
+      font-size: clamp(0.85rem, 6.5cqi, 1.6rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .resource-btns {
+      display: flex;
+      gap: clamp(2px, 1cqi, 4px);
+      align-items: center;
+    }
+
+    .btn-resource {
+      width: clamp(28px, 11cqi, 44px);
+      height: clamp(31px, 12cqi, 48px);
+      font-size: clamp(0.85rem, 5cqi, 1.25rem);
+    }
+
+    /* 세로 모드 — 가로 배치 유지, 크기만 축소 */
+    @media (orientation: portrait) {
+      .score-controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(3px, 1.5cqi, 8px);
+      }
+
+      .score-side {
+        gap: clamp(3px, 1.2cqi, 6px);
+      }
+
+      .score-center {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .score-display {
+        flex: none;
+        min-width: 0;
+        font-size: clamp(2.2rem, min(33cqi, 15.4dvh), 7.7rem);
+      }
+
+      .btn-score {
+        width: clamp(34px, 14cqi, 68px);
+        height: clamp(34px, 14cqi, 68px);
+        font-size: clamp(1rem, 5.5cqi, 1.8rem);
+        flex-shrink: 0;
+      }
+
+      .btn-helper {
+        min-width: clamp(30px, 11cqi, 44px);
+        height: clamp(26px, 8cqi, 34px);
+        font-size: clamp(0.6rem, 3.2cqi, 0.8rem);
+      }
+
+      .resource-label {
+        font-size: clamp(0.5rem, 3.4cqi, 0.75rem);
+      }
+
+      .resource-value {
+        font-size: clamp(0.75rem, 6cqi, 1.35rem);
+      }
+
+      .btn-resource {
+        width: clamp(24px, 10cqi, 38px);
+        height: clamp(27px, 11cqi, 42px);
+        font-size: clamp(0.8rem, 4.5cqi, 1.1rem);
+      }
+
+      .resources {
+        max-height: min(17.6dvh, 110px);
+      }
+
+      .resource-box {
+        min-height: clamp(64px, 20cqi, 88px);
+      }
+    }
+
+    /* 모바일 가로 모드 — 높이가 낮을 때 */
+    @media (orientation: landscape) and (max-height: 500px) {
+      .top-bar {
+        padding: 4px 10px;
+        padding-top: max(4px, env(safe-area-inset-top));
+      }
+
+      .top-bar button {
+        min-height: 34px;
+        padding: 4px 10px;
+        font-size: 0.8rem;
+      }
+
+      .team-header {
+        padding: 3px 6px;
+        font-size: 0.95rem;
+      }
+
+      .btn-menu {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+
+      .score-display {
+        font-size: clamp(2.2rem, min(35cqi, 24dvh), 5.5rem);
+      }
+
+      .btn-score {
+        width: clamp(40px, 18cqi, 72px);
+        height: clamp(40px, 18cqi, 72px);
+      }
+
+      .resources {
+        padding: 4px;
+        padding-bottom: max(4px, env(safe-area-inset-bottom));
+        max-height: min(24dvh, 106px);
+      }
+
+      .resource-box {
+        padding: 3px 1px;
+        gap: 2px;
+        min-height: clamp(58px, 18cqi, 78px);
+      }
+
+      .btn-resource {
+        width: clamp(24px, 10cqi, 36px);
+        height: clamp(27px, 11cqi, 40px);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Settings -->
+  <div id="settings">
+    <h1>팀 설정</h1>
+    <form class="settings-form" id="settingsForm">
+      <label>
+        팀 1 이름
+        <input type="text" id="team1Name" placeholder="팀 1" value="팀 1" maxlength="20">
+      </label>
+      <label>
+        팀 2 이름
+        <input type="text" id="team2Name" placeholder="팀 2" value="팀 2" maxlength="20">
+      </label>
+      <label>
+        Bomb count
+        <input type="number" id="bombCount" min="1" max="5" value="1" inputmode="numeric">
+        <span class="settings-hint">1 = 즉시 점수 0 · 2~5 = 💣 누적 후 0</span>
+      </label>
+      <button type="submit" class="btn-start">시작</button>
+    </form>
+  </div>
+
+  <!-- Scoreboard -->
+  <div id="scoreboard">
+    <div class="top-bar">
+      <button id="btnBack">← 설정</button>
+      <button id="btnReset">점수 초기화</button>
+    </div>
+    <div class="teams-header">
+      <div class="team-header team-a" id="headerTeamA">팀 1</div>
+      <div class="header-center">
+        <button type="button" class="btn-menu" id="btnMenu" aria-label="메뉴">☰</button>
+        <div class="menu-popup" id="menuPopup">
+          <button type="button" class="danger" id="btnBomb1"></button>
+          <button type="button" class="danger" id="btnBomb2"></button>
+          <button type="button" class="swap" id="btnSwitchPoint">Switch point</button>
+          <button type="button" class="swap" id="btnSwitchAll">Switch Everything</button>
+        </div>
+      </div>
+      <div class="team-header team-b" id="headerTeamB">팀 2</div>
+    </div>
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    <div class="teams">
+      <div class="team team-a" id="teamA"></div>
+      <div class="team team-b" id="teamB"></div>
+    </div>
+  </div>
+
+  <script>
+    const RESOURCES = ["Candy", "Stamp", "Shield"];
+
+    const state = {
+      team1Name: "팀 1",
+      team2Name: "팀 2",
+      bombCount: 1,
+      teams: [
+        { score: 0, candy: 0, stamp: 0, shield: 0, bombHits: 0 },
+        { score: 0, candy: 0, stamp: 0, shield: 0, bombHits: 0 },
+      ],
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+
+    function showScreen(screen) {
+      $("#settings").style.display = screen === "settings" ? "flex" : "none";
+      $("#scoreboard").style.display = screen === "scoreboard" ? "flex" : "none";
+    }
+
+    function bombLabel(name) {
+      if (state.bombCount <= 1) return `${name} Bomb (점수 0)`;
+      return `${name} Bomb (${state.bombCount}회)`;
+    }
+
+    function updateHeaders() {
+      $("#headerTeamA").textContent = state.team1Name;
+      $("#headerTeamB").textContent = state.team2Name;
+      $("#btnBomb1").textContent = bombLabel(state.team1Name);
+      $("#btnBomb2").textContent = bombLabel(state.team2Name);
+    }
+
+    function bombTrackHtml(hits) {
+      if (hits <= 0) return "";
+      return Array.from({ length: hits }, () => '<span class="bomb-badge">💣</span>').join("");
+    }
+
+    function updateBombDisplay(teamIdx) {
+      const container = teamIdx === 0 ? $("#teamA") : $("#teamB");
+      const track = container.querySelector(".bomb-track");
+      if (!track) return;
+      track.innerHTML = bombTrackHtml(state.teams[teamIdx].bombHits);
+    }
+
+    function bombTeam(teamIdx) {
+      const team = state.teams[teamIdx];
+      const limit = state.bombCount;
+
+      if (limit <= 1) {
+        team.score = 0;
+        team.bombHits = 0;
+        updateDisplay(teamIdx, "score");
+        updateBombDisplay(teamIdx);
+        closeMenu();
+        return;
+      }
+
+      team.bombHits += 1;
+      if (team.bombHits >= limit) {
+        team.score = 0;
+        team.bombHits = 0;
+        updateDisplay(teamIdx, "score");
+      }
+      updateBombDisplay(teamIdx);
+      closeMenu();
+    }
+
+    function openMenu() {
+      const btn = $("#btnMenu");
+      const popup = $("#menuPopup");
+      const rect = btn.getBoundingClientRect();
+      popup.style.top = `${rect.bottom + 6}px`;
+      popup.classList.add("show");
+      $("#menuBackdrop").classList.add("show");
+      btn.classList.add("open");
+    }
+
+    function closeMenu() {
+      $("#menuPopup").classList.remove("show");
+      $("#menuBackdrop").classList.remove("show");
+      $("#btnMenu").classList.remove("open");
+    }
+
+    function switchPoints() {
+      const tmp = state.teams[0].score;
+      state.teams[0].score = state.teams[1].score;
+      state.teams[1].score = tmp;
+      updateDisplay(0, "score");
+      updateDisplay(1, "score");
+      closeMenu();
+    }
+
+    function switchEverything() {
+      [state.teams[0], state.teams[1]] = [state.teams[1], state.teams[0]];
+      renderScoreboard();
+      closeMenu();
+    }
+
+    function buildTeamPanel(container, teamIdx) {
+      const data = state.teams[teamIdx];
+
+      container.innerHTML = `
+        <div class="score-area">
+          <div class="score-controls" data-team="${teamIdx}" data-key="score">
+            <div class="score-side score-side-minus">
+              <button class="btn-circle btn-minus btn-score" data-delta="-1">−</button>
+              <div class="score-helpers">
+                <button type="button" class="btn-helper btn-helper-minus" data-delta="-5">−5</button>
+                <button type="button" class="btn-helper btn-helper-minus" data-delta="-10">−10</button>
+              </div>
+            </div>
+            <div class="score-center">
+              <span class="score-display">${data.score}</span>
+              <div class="bomb-track">${bombTrackHtml(data.bombHits)}</div>
+            </div>
+            <div class="score-side score-side-plus">
+              <button class="btn-circle btn-plus btn-score" data-delta="1">+</button>
+              <div class="score-helpers">
+                <button type="button" class="btn-helper btn-helper-plus" data-delta="5">+5</button>
+                <button type="button" class="btn-helper btn-helper-plus" data-delta="10">+10</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="resources">
+          ${RESOURCES.map((res) => {
+            const key = res.toLowerCase();
+            return `
+              <div class="resource-box" data-team="${teamIdx}" data-key="${key}">
+                <span class="resource-label">${res}</span>
+                <span class="resource-value">${data[key]}</span>
+                <div class="resource-btns">
+                  <button class="btn-circle btn-minus btn-resource" data-delta="-1">−</button>
+                  <button class="btn-circle btn-plus btn-resource" data-delta="1">+</button>
+                </div>
+              </div>`;
+          }).join("")}
+        </div>`;
+
+      container.querySelectorAll("[data-team][data-key]").forEach((row) => {
+        row.querySelectorAll("button[data-delta]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const team = Number(row.dataset.team);
+            const key = row.dataset.key;
+            const delta = Number(btn.dataset.delta);
+            const next = state.teams[team][key] + delta;
+            state.teams[team][key] = key === "score" ? next : Math.max(0, next);
+            updateDisplay(team, key);
+          });
+        });
+      });
+    }
+
+    function updateDisplay(teamIdx, key) {
+      const container = teamIdx === 0 ? $("#teamA") : $("#teamB");
+      const val = state.teams[teamIdx][key];
+      const row = container.querySelector(`[data-key="${key}"]`);
+      if (!row) return;
+      const display = row.querySelector(key === "score" ? ".score-display" : ".resource-value");
+      if (display) display.textContent = val;
+    }
+
+    function renderScoreboard() {
+      updateHeaders();
+      buildTeamPanel($("#teamA"), 0);
+      buildTeamPanel($("#teamB"), 1);
+    }
+
+    function resetScores() {
+      state.teams.forEach((t) => {
+        t.score = 0;
+        t.candy = 0;
+        t.stamp = 0;
+        t.shield = 0;
+        t.bombHits = 0;
+      });
+      renderScoreboard();
+    }
+
+    $("#settingsForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      state.team1Name = $("#team1Name").value.trim() || "팀 1";
+      state.team2Name = $("#team2Name").value.trim() || "팀 2";
+      state.bombCount = Math.max(1, Math.min(5, parseInt($("#bombCount").value, 10) || 1));
+      $("#bombCount").value = state.bombCount;
+      renderScoreboard();
+      showScreen("scoreboard");
+    });
+
+    $("#btnBack").addEventListener("click", () => {
+      closeMenu();
+      $("#bombCount").value = state.bombCount;
+      showScreen("settings");
+    });
+    $("#btnReset").addEventListener("click", () => {
+      if (confirm("모든 점수와 자원을 0으로 초기화할까요?")) resetScores();
+    });
+
+    $("#btnMenu").addEventListener("click", (e) => {
+      e.stopPropagation();
+      if ($("#menuPopup").classList.contains("show")) closeMenu();
+      else openMenu();
+    });
+    $("#menuBackdrop").addEventListener("click", closeMenu);
+    $("#menuPopup").addEventListener("click", (e) => e.stopPropagation());
+
+    $("#btnBomb1").addEventListener("click", (e) => {
+      e.stopPropagation();
+      bombTeam(0);
+    });
+    $("#btnBomb2").addEventListener("click", (e) => {
+      e.stopPropagation();
+      bombTeam(1);
+    });
+    $("#btnSwitchPoint").addEventListener("click", (e) => {
+      e.stopPropagation();
+      switchPoints();
+    });
+    $("#btnSwitchAll").addEventListener("click", (e) => {
+      e.stopPropagation();
+      switchEverything();
+    });
+  </script>
+</body>
+</html>

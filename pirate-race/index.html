@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Pirate Race - Ethan's Teacher Toolkit -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pirate Race</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sea-deep: #0a4d8c;
+      --sea-mid: #1a7fc4;
+      --sea-light: #4db8e8;
+      --foam: rgba(255, 255, 255, 0.35);
+      --text: #fff8e7;
+      --muted: #c8e6ff;
+      --team-a: #ffd166;
+      --team-a-dark: #e09f3e;
+      --team-b: #ff6b9d;
+      --team-b-dark: #c9184a;
+      --accent: #70e000;
+      --panel: rgba(0, 40, 80, 0.55);
+      --shadow: rgba(0, 0, 0, 0.35);
+      --track-height: clamp(72px, 12vw, 110px);
+      --ship-size: clamp(52px, 9vw, 84px);
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #5ec8ff 0%, var(--sea-mid) 35%, var(--sea-deep) 100%);
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(0, 30, 60, 0.45);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .title-block h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      letter-spacing: 0.06em;
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .title-block p {
+      color: var(--muted);
+      font-size: clamp(0.85rem, 2vw, 1rem);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 0.75rem 1.2rem;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+      box-shadow: 0 4px 0 var(--shadow);
+      color: #1a1a1a;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--shadow); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-home { background: #cbd5e1; }
+    .btn-new { background: var(--accent); }
+    .btn-full { background: #90e0ef; color: #123; }
+
+    .btn-move {
+      min-width: clamp(52px, 10vw, 72px);
+      min-height: clamp(52px, 10vw, 72px);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      border-radius: 16px;
+      color: #1a1a1a;
+    }
+
+    .btn-random {
+      min-height: clamp(52px, 10vw, 72px);
+      padding: 0.75rem 1rem;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      border-radius: 16px;
+      color: #fff;
+    }
+
+    .btn-team-a { background: linear-gradient(180deg, #ffe066 0%, var(--team-a-dark) 100%); }
+    .btn-team-b { background: linear-gradient(180deg, #ff9ec5 0%, var(--team-b-dark) 100%); }
+    .btn-random-a { background: linear-gradient(180deg, #ffc857 0%, #b5651d 100%); }
+    .btn-random-b { background: linear-gradient(180deg, #ff85a2 0%, #9d0208 100%); }
+
+    /* ── Settings ── */
+    .settings-panel {
+      margin: 0.75rem 1.25rem 0;
+      padding: 0.9rem 1.1rem;
+      background: var(--panel);
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(4px);
+    }
+
+    .settings-panel summary {
+      cursor: pointer;
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      font-weight: 700;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .settings-panel summary::-webkit-details-marker { display: none; }
+
+    .settings-body {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .setting-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .setting-row label {
+      font-weight: 600;
+      min-width: 120px;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip-group label {
+      min-width: auto;
+      cursor: pointer;
+    }
+
+    .chip-group input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .chip {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid transparent;
+      font-weight: 700;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .chip-group input:checked + .chip {
+      background: rgba(255, 209, 102, 0.35);
+      border-color: var(--team-a);
+    }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .toggle-label input {
+      width: 1.4rem;
+      height: 1.4rem;
+      accent-color: var(--team-a);
+    }
+
+    /* ── Main race area ── */
+    .race-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(1rem, 3vw, 2rem);
+      padding: 1rem 1.25rem;
+    }
+
+    .track-block {
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 1rem 1rem 1.25rem;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .track-block.team-a { border-color: rgba(255, 209, 102, 0.45); }
+    .track-block.team-b { border-color: rgba(255, 107, 157, 0.45); }
+
+    .track-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 800;
+    }
+
+    .track-header .team-name-a { color: var(--team-a); text-shadow: 1px 1px 0 rgba(0,0,0,0.3); }
+    .track-header .team-name-b { color: #ffb3c6; text-shadow: 1px 1px 0 rgba(0,0,0,0.3); }
+
+    .track-wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .track-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-weight: 800;
+      font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 0.25rem;
+    }
+
+    .track-label.end {
+      transform: none;
+      text-align: center;
+    }
+
+    .track-lane {
+      position: relative;
+      height: var(--track-height);
+      border-radius: 999px;
+      overflow: visible;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 18px,
+          var(--foam) 18px,
+          var(--foam) 22px
+        ),
+        linear-gradient(180deg, #2a9fd6 0%, #1565a8 50%, #0d4a82 100%);
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .track-lane::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: repeating-linear-gradient(
+        -3deg,
+        transparent,
+        transparent 12px,
+        rgba(255, 255, 255, 0.06) 12px,
+        rgba(255, 255, 255, 0.06) 24px
+      );
+      pointer-events: none;
+    }
+
+    .treasure-zone {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(56px, 10vw, 88px);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(2rem, 5vw, 3rem);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .treasure-zone.sparkle::after {
+      content: "✨";
+      position: absolute;
+      font-size: 1.5rem;
+      animation: sparklePop 0.8s ease-out infinite alternate;
+    }
+
+    @keyframes sparklePop {
+      0% { transform: scale(0.8) rotate(0deg); opacity: 0.6; }
+      100% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+    }
+
+    .ship {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: var(--ship-size);
+      height: var(--ship-size);
+      transform: translate(-10%, -50%);
+      z-index: 2;
+      transition: left 0.65s cubic-bezier(0.34, 1.2, 0.64, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(3px 4px 6px rgba(0, 0, 0, 0.35));
+    }
+
+    .ship img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .ship .ship-fallback {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1;
+      display: none;
+    }
+
+    .ship.use-fallback img { display: none; }
+    .ship.use-fallback .ship-fallback { display: block; }
+
+    .ship.winner {
+      animation: shipBounce 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes shipBounce {
+      0% { transform: translate(-10%, -50%) scale(1); }
+      100% { transform: translate(-10%, -58%) scale(1.08); }
+    }
+
+    /* ── Controls ── */
+    .controls-area {
+      padding: 0.75rem 1.25rem 1.25rem;
+      background: rgba(0, 30, 60, 0.4);
+      border-top: 3px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .team-controls {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .team-controls:last-child { margin-bottom: 0; }
+
+    .controls-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .controls-header h2 {
+      font-size: clamp(1.15rem, 2.8vw, 1.6rem);
+    }
+
+    .position-badge {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+    }
+
+    .move-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* ── Toast / dice display ── */
+    .toast-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toast {
+      background: rgba(0, 20, 50, 0.92);
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 1.25rem 2rem;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 800;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      max-width: 90vw;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .toast.storm { color: #7dd3fc; border-color: #38bdf8; }
+    .toast.bonus { color: var(--accent); border-color: var(--accent); }
+    .toast.dice { color: var(--team-a); border-color: var(--team-a); font-size: clamp(3rem, 10vw, 5rem); }
+
+    .dice-display {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      font-size: clamp(4rem, 14vw, 7rem);
+      font-weight: 900;
+      z-index: 60;
+      pointer-events: none;
+      opacity: 0;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+      transition: opacity 0.1s, transform 0.1s;
+    }
+
+    .dice-display.rolling {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      animation: diceShake 0.08s linear infinite;
+    }
+
+    @keyframes diceShake {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-4deg) scale(1); }
+      50% { transform: translate(-50%, -50%) rotate(4deg) scale(1.05); }
+    }
+
+    /* ── Winner overlay ── */
+    .winner-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 20, 50, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      padding: 1rem;
+    }
+
+    .winner-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .winner-card {
+      background: linear-gradient(180deg, #1a5f9e 0%, #0a3d6e 100%);
+      border: 4px solid var(--team-a);
+      border-radius: 28px;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes winnerPop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .winner-card h2 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      color: var(--team-a);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .winner-card p {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .winner-card .treasure-icon {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="title-block">
+      <h1>🏴‍☠️ Pirate Race</h1>
+      <p>Race to the treasure island!</p>
+    </div>
+    <div class="top-actions">
+      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
+      <button class="btn btn-full" id="btnFullscreen" type="button">Fullscreen</button>
+      <button class="btn btn-new" id="btnNewGame" type="button">New Game</button>
+    </div>
+  </header>
+
+  <details class="settings-panel" open>
+    <summary>⚙️ Game Options</summary>
+    <div class="settings-body">
+      <div class="setting-row">
+        <label>Goal Distance</label>
+        <div class="chip-group" id="goalOptions">
+          <label><input type="radio" name="goalDistance" value="20" /><span class="chip">20 spaces</span></label>
+          <label><input type="radio" name="goalDistance" value="30" checked /><span class="chip">30 spaces</span></label>
+          <label><input type="radio" name="goalDistance" value="50" /><span class="chip">50 spaces</span></label>
+        </div>
+      </div>
+      <div class="setting-row">
+        <label class="toggle-label">
+          <input type="checkbox" id="stormMode" />
+          Storm Mode — roll 1 = no move!
+        </label>
+      </div>
+      <div class="setting-row">
+        <label class="toggle-label">
+          <input type="checkbox" id="treasureBonus" />
+          Treasure Bonus — exact landing bonus!
+        </label>
+      </div>
+    </div>
+  </details>
+
+  <main class="race-area">
+    <section class="track-block team-a" aria-label="Team A track">
+      <div class="track-header">
+        <span class="team-name-a">⚓ Team A</span>
+        <span class="position-badge" id="posBadgeA">0 / 30</span>
+      </div>
+      <div class="track-wrap">
+        <span class="track-label">START</span>
+        <div class="track-lane" id="trackA">
+          <div class="treasure-zone" id="treasureA" aria-hidden="true">🏝️</div>
+          <div class="ship" id="shipA" aria-label="Team A ship">
+            <img src="assets/pirate-ship.png" alt="Pirate ship" />
+            <span class="ship-fallback" aria-hidden="true">🚢</span>
+          </div>
+        </div>
+        <span class="track-label end">TREASURE<br />ISLAND</span>
+      </div>
+    </section>
+
+    <section class="track-block team-b" aria-label="Team B track">
+      <div class="track-header">
+        <span class="team-name-b">⚓ Team B</span>
+        <span class="position-badge" id="posBadgeB">0 / 30</span>
+      </div>
+      <div class="track-wrap">
+        <span class="track-label">START</span>
+        <div class="track-lane" id="trackB">
+          <div class="treasure-zone" id="treasureB" aria-hidden="true">🏝️</div>
+          <div class="ship" id="shipB" aria-label="Team B ship">
+            <img src="assets/pirate-ship.png" alt="Pirate ship" />
+            <span class="ship-fallback" aria-hidden="true">🚢</span>
+          </div>
+        </div>
+        <span class="track-label end">TREASURE<br />ISLAND</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls-area">
+    <div class="team-controls" data-team="A">
+      <div class="controls-header">
+        <h2 class="team-name-a">Team A — Move</h2>
+        <span class="position-badge" id="posTextA">0 / 30</span>
+      </div>
+      <div class="move-buttons" id="moveButtonsA">
+        <button class="btn btn-move btn-team-a" data-steps="1" type="button">+1</button>
+        <button class="btn btn-move btn-team-a" data-steps="2" type="button">+2</button>
+        <button class="btn btn-move btn-team-a" data-steps="3" type="button">+3</button>
+        <button class="btn btn-move btn-team-a" data-steps="4" type="button">+4</button>
+        <button class="btn btn-move btn-team-a" data-steps="5" type="button">+5</button>
+        <button class="btn btn-move btn-team-a" data-steps="6" type="button">+6</button>
+        <button class="btn btn-random btn-random-a" id="randomA" type="button">🎲 Random Move</button>
+      </div>
+    </div>
+
+    <div class="team-controls" data-team="B">
+      <div class="controls-header">
+        <h2 class="team-name-b">Team B — Move</h2>
+        <span class="position-badge" id="posTextB">0 / 30</span>
+      </div>
+      <div class="move-buttons" id="moveButtonsB">
+        <button class="btn btn-move btn-team-b" data-steps="1" type="button">+1</button>
+        <button class="btn btn-move btn-team-b" data-steps="2" type="button">+2</button>
+        <button class="btn btn-move btn-team-b" data-steps="3" type="button">+3</button>
+        <button class="btn btn-move btn-team-b" data-steps="4" type="button">+4</button>
+        <button class="btn btn-move btn-team-b" data-steps="5" type="button">+5</button>
+        <button class="btn btn-move btn-team-b" data-steps="6" type="button">+6</button>
+        <button class="btn btn-random btn-random-b" id="randomB" type="button">🎲 Random Move</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-layer" aria-live="polite">
+    <div class="toast" id="toast"></div>
+  </div>
+  <div class="dice-display" id="diceDisplay" aria-hidden="true"></div>
+
+  <div class="winner-overlay" id="winnerOverlay" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
+    <div class="winner-card">
+      <div class="treasure-icon">💎🏝️💎</div>
+      <h2 id="winnerTitle">Team A found the treasure!</h2>
+      <p id="winnerSubtitle">Great job, pirates!</p>
+      <button class="btn btn-new" id="btnPlayAgain" type="button">New Game</button>
+    </div>
+  </div>
+
+  <script>
+    // Pirate Race - Ethan's Teacher Toolkit
+
+    function playSound(type) {
+      // type: "move" | "storm" | "win"
+      // Example: new Audio(`sounds/${type}.mp3`).play();
+    }
+
+    const gameState = {
+      teamA: { position: 0 },
+      teamB: { position: 0 },
+      goalDistance: 30,
+      stormMode: false,
+      treasureBonus: false,
+      isAnimating: false,
+      gameOver: false,
+      winner: null
+    };
+
+    const els = {
+      shipA: document.getElementById("shipA"),
+      shipB: document.getElementById("shipB"),
+      trackA: document.getElementById("trackA"),
+      trackB: document.getElementById("trackB"),
+      treasureA: document.getElementById("treasureA"),
+      treasureB: document.getElementById("treasureB"),
+      posBadgeA: document.getElementById("posBadgeA"),
+      posBadgeB: document.getElementById("posBadgeB"),
+      posTextA: document.getElementById("posTextA"),
+      posTextB: document.getElementById("posTextB"),
+      moveButtonsA: document.getElementById("moveButtonsA"),
+      moveButtonsB: document.getElementById("moveButtonsB"),
+      randomA: document.getElementById("randomA"),
+      randomB: document.getElementById("randomB"),
+      goalOptions: document.getElementById("goalOptions"),
+      stormMode: document.getElementById("stormMode"),
+      treasureBonus: document.getElementById("treasureBonus"),
+      toast: document.getElementById("toast"),
+      diceDisplay: document.getElementById("diceDisplay"),
+      winnerOverlay: document.getElementById("winnerOverlay"),
+      winnerTitle: document.getElementById("winnerTitle"),
+      winnerSubtitle: document.getElementById("winnerSubtitle"),
+      btnNewGame: document.getElementById("btnNewGame"),
+      btnPlayAgain: document.getElementById("btnPlayAgain"),
+      btnFullscreen: document.getElementById("btnFullscreen")
+    };
+
+    const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+    function initGame() {
+      readSettings();
+      gameState.teamA.position = 0;
+      gameState.teamB.position = 0;
+      gameState.isAnimating = false;
+      gameState.gameOver = false;
+      gameState.winner = null;
+
+      els.winnerOverlay.classList.remove("show");
+      els.treasureA.classList.remove("sparkle");
+      els.treasureB.classList.remove("sparkle");
+      els.shipA.classList.remove("winner");
+      els.shipB.classList.remove("winner");
+
+      setupShipImages();
+      render();
+      animateShip("A", false);
+      animateShip("B", false);
+    }
+
+    function readSettings() {
+      const selected = els.goalOptions.querySelector('input[name="goalDistance"]:checked');
+      gameState.goalDistance = selected ? Number(selected.value) : 30;
+      gameState.stormMode = els.stormMode.checked;
+      gameState.treasureBonus = els.treasureBonus.checked;
+    }
+
+    function setupShipImages() {
+      [els.shipA, els.shipB].forEach((shipEl) => {
+        const img = shipEl.querySelector("img");
+        img.onerror = () => shipEl.classList.add("use-fallback");
+        if (img.complete && img.naturalWidth === 0) {
+          shipEl.classList.add("use-fallback");
+        }
+      });
+    }
+
+    function render() {
+      const { teamA, teamB, goalDistance, isAnimating, gameOver } = gameState;
+      const disabled = isAnimating || gameOver;
+      const posText = (pos) => `${Math.min(pos, goalDistance)} / ${goalDistance}`;
+
+      els.posBadgeA.textContent = posText(teamA.position);
+      els.posBadgeB.textContent = posText(teamB.position);
+      els.posTextA.textContent = posText(teamA.position);
+      els.posTextB.textContent = posText(teamB.position);
+
+      setButtonsDisabled(els.moveButtonsA, disabled);
+      setButtonsDisabled(els.moveButtonsB, disabled);
+    }
+
+    function setButtonsDisabled(container, disabled) {
+      container.querySelectorAll("button").forEach((btn) => {
+        btn.disabled = disabled;
+      });
+    }
+
+    function getShipLeftPercent(team) {
+      const pos = team === "A" ? gameState.teamA.position : gameState.teamB.position;
+      const goal = gameState.goalDistance;
+      const progress = goal > 0 ? Math.min(pos / goal, 1) : 0;
+      // 0% = start, 88% = treasure island (room for island emoji on the right)
+      return progress * 88;
+    }
+
+    function animateShip(team, useTransition = true) {
+      const ship = els[`ship${team}`];
+      if (!useTransition) {
+        ship.style.transition = "none";
+      } else {
+        ship.style.transition = "";
+      }
+
+      const leftPct = getShipLeftPercent(team);
+      ship.style.left = `${leftPct}%`;
+
+      if (!useTransition) {
+        void ship.offsetWidth;
+        ship.style.transition = "";
+      }
+    }
+
+    function showToast(message, type = "", duration = 1800) {
+      els.toast.textContent = message;
+      els.toast.className = "toast show" + (type ? ` ${type}` : "");
+
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => {
+        els.toast.classList.remove("show");
+      }, duration);
+    }
+
+    function rollDiceAnimation(team) {
+      return new Promise((resolve) => {
+        const roll = Math.floor(Math.random() * 6) + 1;
+        const diceEl = els.diceDisplay;
+        let ticks = 0;
+        const maxTicks = 14;
+        const interval = 70;
+
+        diceEl.classList.add("rolling");
+        diceEl.setAttribute("aria-hidden", "false");
+
+        const timer = setInterval(() => {
+          const face = Math.floor(Math.random() * 6);
+          diceEl.textContent = DICE_FACES[face];
+          ticks += 1;
+
+          if (ticks >= maxTicks) {
+            clearInterval(timer);
+            diceEl.textContent = DICE_FACES[roll - 1];
+            diceEl.classList.remove("rolling");
+
+            setTimeout(() => {
+              diceEl.textContent = "";
+              diceEl.setAttribute("aria-hidden", "true");
+              resolve(roll);
+            }, 450);
+          }
+        }, interval);
+      });
+    }
+
+    async function moveTeam(team, steps) {
+      if (gameState.isAnimating || gameState.gameOver || steps <= 0) return;
+
+      gameState.isAnimating = true;
+      render();
+
+      const teamKey = team === "A" ? "teamA" : "teamB";
+      const previousPos = gameState[teamKey].position;
+      gameState[teamKey].position = Math.min(previousPos + steps, gameState.goalDistance + 5);
+
+      playSound("move");
+      animateShip(team);
+
+      await waitForTransition(els[`ship${team}`], 700);
+
+      const finalPos = gameState[teamKey].position;
+      const exactLanding = finalPos === gameState.goalDistance;
+      const reachedGoal = finalPos >= gameState.goalDistance;
+
+      if (gameState.treasureBonus && exactLanding) {
+        showToast("Perfect Landing! ⭐", "bonus", 2200);
+      }
+
+      if (reachedGoal) {
+        els[`treasure${team}`].classList.add("sparkle");
+        els[`ship${team}`].classList.add("winner");
+      }
+
+      checkWinner();
+
+      gameState.isAnimating = false;
+      render();
+    }
+
+    async function randomMove(team) {
+      if (gameState.isAnimating || gameState.gameOver) return;
+
+      gameState.isAnimating = true;
+      render();
+
+      const roll = await rollDiceAnimation(team);
+
+      if (gameState.stormMode && roll === 1) {
+        showToast("Storm! No move! ⛈️", "storm", 2200);
+        playSound("storm");
+        gameState.isAnimating = false;
+        render();
+        return;
+      }
+
+      gameState.isAnimating = false;
+      await moveTeam(team, roll);
+    }
+
+    function waitForTransition(element, fallbackMs) {
+      return new Promise((resolve) => {
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          element.removeEventListener("transitionend", onEnd);
+          resolve();
+        };
+
+        const onEnd = (e) => {
+          if (e.target === element && e.propertyName === "left") finish();
+        };
+
+        element.addEventListener("transitionend", onEnd);
+        setTimeout(finish, fallbackMs);
+      });
+    }
+
+    function checkWinner() {
+      const { teamA, teamB, goalDistance } = gameState;
+      let winner = null;
+
+      if (teamA.position >= goalDistance) winner = "A";
+      else if (teamB.position >= goalDistance) winner = "B";
+
+      if (!winner) return false;
+
+      gameState.gameOver = true;
+      gameState.winner = winner;
+
+      els.winnerTitle.textContent = `Team ${winner} found the treasure!`;
+      els.winnerSubtitle.textContent = winner === "A"
+        ? "Team A reached Treasure Island first! 🏆"
+        : "Team B reached Treasure Island first! 🏆";
+
+      playSound("win");
+      els.winnerOverlay.classList.add("show");
+      return true;
+    }
+
+    function resetGame() {
+      readSettings();
+      initGame();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    }
+
+    function bindMoveButtons(container, team) {
+      container.querySelectorAll(".btn-move").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          moveTeam(team, Number(btn.dataset.steps));
+        });
+      });
+    }
+
+    bindMoveButtons(els.moveButtonsA, "A");
+    bindMoveButtons(els.moveButtonsB, "B");
+    els.randomA.addEventListener("click", () => randomMove("A"));
+    els.randomB.addEventListener("click", () => randomMove("B"));
+    els.btnNewGame.addEventListener("click", resetGame);
+    els.btnPlayAgain.addEventListener("click", resetGame);
+    els.btnFullscreen.addEventListener("click", toggleFullscreen);
+
+    els.goalOptions.addEventListener("change", readSettings);
+    els.stormMode.addEventListener("change", readSettings);
+    els.treasureBonus.addEventListener("change", readSettings);
+
+    window.addEventListener("resize", () => {
+      animateShip("A", false);
+      animateShip("B", false);
+    });
+
+    initGame();
+  </script>
+</body>
+</html>

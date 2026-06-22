@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>참여도 추적기</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1a1a2e;
+      --panel: #16213e;
+      --accent1: #e94560;
+      --accent2: #0f3460;
+      --accent3: #53d8a8;
+      --text: #eaeaea;
+      --muted: #a0a0b0;
+      --radius: 16px;
+      --quiet: #3d2a4a;
+      --quiet-border: #c77dff;
+    }
+
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active:not(.student-card) { opacity: 0.85; }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      min-height: 100dvh;
+    }
+
+    .screen.active { display: flex; }
+
+    /* ── Settings ── */
+    #settings {
+      align-items: center;
+      padding: 24px 20px 40px;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .settings-header {
+      text-align: center;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .settings-header h1 {
+      font-size: 1.75rem;
+      margin-bottom: 6px;
+    }
+
+    .settings-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--panel);
+      border: 2px solid var(--accent2);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .card label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    textarea, input[type="text"], select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border: 2px solid var(--accent2);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--accent1);
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .preset-active {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: rgba(83, 216, 168, 0.1);
+      border-radius: 10px;
+    }
+
+    .preset-active.muted {
+      color: var(--muted);
+      background: var(--bg);
+      font-weight: 500;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .row:last-child { margin-bottom: 0; }
+
+    .row select { flex: 1; min-width: 140px; }
+    .row input[type="text"] { flex: 1; min-width: 120px; }
+
+    .btn {
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 12px;
+      min-height: 44px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent1);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--accent2);
+      color: var(--text);
+    }
+
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--accent2);
+    }
+
+    .btn-danger {
+      background: #3a2040;
+      color: #ff8fa3;
+    }
+
+    .btn-start {
+      width: 100%;
+      max-width: 520px;
+      padding: 18px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: var(--radius);
+      background: var(--accent1);
+      color: #fff;
+      min-height: 56px;
+    }
+
+    .student-count {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--accent3);
+      font-weight: 600;
+    }
+
+    /* ── Tracker ── */
+    #tracker {
+      overflow: hidden;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 12px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      background: var(--panel);
+      border-bottom: 2px solid var(--accent2);
+      flex-shrink: 0;
+    }
+
+    .top-bar-left, .top-bar-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .top-bar button {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      background: var(--accent2);
+      color: var(--text);
+      min-height: 40px;
+    }
+
+    .top-bar .btn-reset {
+      background: #3a2040;
+      color: #ff8fa3;
+    }
+
+    .top-bar .btn-undo {
+      background: #2a3a50;
+      color: #8ec5ff;
+    }
+
+    .top-bar .btn-undo:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .summary-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 10px 14px;
+      background: #12182a;
+      border-bottom: 1px solid var(--accent2);
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .summary-dot.quiet { background: var(--quiet-border); }
+    .summary-dot.ok { background: var(--accent3); }
+
+    .summary-item strong {
+      color: var(--text);
+    }
+
+    .summary-item span {
+      color: var(--muted);
+    }
+
+    .sort-toggle {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .sort-toggle input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent1);
+    }
+
+    .student-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      align-content: start;
+    }
+
+    .student-card {
+      width: 100%;
+      min-height: 112px;
+      background: var(--panel);
+      border: 2px solid var(--accent2);
+      border-radius: 14px;
+      padding: 12px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      min-width: 0;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .student-card.quiet {
+      background: var(--quiet);
+      border-color: var(--quiet-border);
+      box-shadow: 0 0 0 1px rgba(199, 125, 255, 0.25);
+    }
+
+    .student-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent1);
+      opacity: 1;
+    }
+
+    .student-card.quiet:active {
+      border-color: var(--quiet-border);
+    }
+
+    .student-card.tapped {
+      animation: tap-pulse 0.35s ease;
+    }
+
+    @keyframes tap-pulse {
+      0% { border-color: var(--accent2); box-shadow: none; }
+      40% { border-color: var(--accent1); box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.35); }
+      100% { border-color: var(--accent2); box-shadow: none; }
+    }
+
+    .student-card.quiet.tapped {
+      animation-name: tap-pulse-quiet;
+    }
+
+    @keyframes tap-pulse-quiet {
+      0% { border-color: var(--quiet-border); box-shadow: 0 0 0 1px rgba(199, 125, 255, 0.25); }
+      40% { border-color: #e0aaff; box-shadow: 0 0 0 3px rgba(199, 125, 255, 0.4); }
+      100% { border-color: var(--quiet-border); box-shadow: 0 0 0 1px rgba(199, 125, 255, 0.25); }
+    }
+
+    .quiet-badge {
+      display: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--quiet-border);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .student-card.quiet .quiet-badge { display: block; }
+
+    .student-name {
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.3;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      user-select: none;
+      pointer-events: none;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    }
+
+    .hand-count {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent3);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hand-count-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .student-card.holding {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+    }
+
+    .student-card.long-pressed {
+      animation: long-press-pulse 0.35s ease;
+    }
+
+    @keyframes long-press-pulse {
+      0% { border-color: var(--accent2); box-shadow: none; }
+      40% { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4); }
+      100% { border-color: var(--accent2); box-shadow: none; }
+    }
+
+    .student-card.quiet.long-pressed {
+      animation-name: long-press-pulse-quiet;
+    }
+
+    @keyframes long-press-pulse-quiet {
+      0% { border-color: var(--quiet-border); box-shadow: 0 0 0 1px rgba(199, 125, 255, 0.25); }
+      40% { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4); }
+      100% { border-color: var(--quiet-border); box-shadow: 0 0 0 1px rgba(199, 125, 255, 0.25); }
+    }
+
+    .tap-hint {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #2a2a48;
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: transform 0.25s, opacity 0.25s;
+      z-index: 100;
+      pointer-events: none;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (min-width: 600px) {
+      .student-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .student-card {
+        min-height: 120px;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) {
+      .settings-header h1 { font-size: 1.4rem; }
+      textarea { min-height: 120px; }
+      .student-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 8px;
+        padding: 8px;
+      }
+
+      .student-card {
+        min-height: 96px;
+        padding: 8px 6px 10px;
+      }
+
+      .student-name { font-size: 1rem; }
+      .hand-count { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Settings -->
+  <div id="settings" class="screen active">
+    <div class="settings-header">
+      <h1>참여도 추적기</h1>
+      <p>모두가 한번이라도 더 연습할 수 있도록 돕습니다.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">학생 목록</div>
+      <label>
+        이름 입력 (한 줄에 한 명)
+        <textarea id="studentInput" placeholder="Alex&#10;Brandon&#10;Charlie&#10;Dexter&#10;..."></textarea>
+      </label>
+      <p class="hint">쉼표나 공백으로 구분해도 됩니다. 빈 줄은 무시됩니다.</p>
+      <div class="student-count" id="studentCountLabel">0명</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">프리셋</div>
+      <div class="preset-active muted" id="activePresetLabel">현재 프리셋: 없음 (임시 목록)</div>
+      <div class="row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button type="button" class="btn btn-secondary" id="loadPresetBtn" disabled>불러오기</button>
+      </div>
+      <div class="row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 월수 4시반)" maxlength="30" autocomplete="off">
+        <button type="button" class="btn btn-secondary" id="savePresetBtn">새로 저장</button>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-ghost" id="updatePresetBtn" disabled>현재 프리셋 업데이트</button>
+        <button type="button" class="btn btn-danger" id="deletePresetBtn" disabled>프리셋 삭제</button>
+      </div>
+    </div>
+
+    <button type="button" class="btn-start" id="btnStart">수업 시작</button>
+  </div>
+
+  <!-- Tracker -->
+  <div id="tracker" class="screen">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button type="button" id="btnBack">← 설정</button>
+        <button type="button" class="btn-undo" id="btnUndo" disabled>↩ 되돌리기</button>
+      </div>
+      <div class="top-bar-right">
+        <button type="button" class="btn-reset" id="btnReset">이번 수업 초기화</button>
+      </div>
+    </div>
+
+    <div class="summary-bar">
+      <div class="summary-item">
+        <span class="summary-dot quiet"></span>
+        <span>손 안 듦 <strong id="quietCount">0</strong>명</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-dot ok"></span>
+        <span>손 듦 <strong id="activeCount">0</strong>명</span>
+      </div>
+      <span class="tap-hint">터치 +1 · 길게 누르기 −1</span>
+      <label class="sort-toggle">
+        <input type="checkbox" id="sortQuietFirst" checked>
+        조용한 학생 먼저
+      </label>
+    </div>
+
+    <div class="student-grid" id="studentGrid"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = "participation-tracker-v3";
+
+    const LONG_PRESS_MS = 450;
+    const MOVE_THRESHOLD = 12;
+    const UNDO_LIMIT = 30;
+
+    const undoStack = [];
+
+    const state = {
+      students: [],
+      counts: {},
+      presets: [],
+      activePresetId: null,
+      sortQuietFirst: true,
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+
+    function parseNames(text) {
+      return text
+        .split(/[\n,]+/)
+        .flatMap((line) => line.trim().split(/\s+/).filter(Boolean))
+        .filter((name, i, arr) => name && arr.indexOf(name) === i);
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach((el) => {
+        el.classList.toggle("active", el.id === name);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = $("#toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        students: state.students,
+        counts: state.counts,
+        presets: state.presets,
+        activePresetId: state.activePresetId,
+        sortQuietFirst: state.sortQuietFirst,
+        studentInputText: $("#studentInput").value,
+      }));
+    }
+
+    function load() {
+      try {
+        let raw = localStorage.getItem(STORAGE_KEY);
+        let data;
+
+        if (!raw) {
+          raw = localStorage.getItem("participation-tracker-v2");
+          if (raw) {
+            data = JSON.parse(raw);
+            if (Array.isArray(data.presets)) state.presets = data.presets;
+            if (typeof data.sortQuietFirst === "boolean") state.sortQuietFirst = data.sortQuietFirst;
+            return;
+          }
+          raw = localStorage.getItem("participation-tracker-v1");
+        }
+
+        if (!raw) return;
+        data = JSON.parse(raw);
+        if (Array.isArray(data.students)) state.students = data.students;
+        if (data.counts && typeof data.counts === "object") {
+          state.counts = migrateCounts(data.counts);
+        }
+        if (Array.isArray(data.presets)) state.presets = data.presets;
+        if (data.activePresetId) state.activePresetId = data.activePresetId;
+        if (typeof data.sortQuietFirst === "boolean") state.sortQuietFirst = data.sortQuietFirst;
+        if (typeof data.studentInputText === "string") $("#studentInput").value = data.studentInputText;
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function migrateCounts(counts) {
+      const migrated = {};
+      Object.entries(counts).forEach(([name, val]) => {
+        if (typeof val === "number") {
+          migrated[name] = val;
+        } else if (val && typeof val === "object") {
+          migrated[name] = (val.presentation || 0) + (val.question || 0);
+        } else {
+          migrated[name] = 0;
+        }
+      });
+      return migrated;
+    }
+
+    function ensureCounts() {
+      state.students.forEach((name) => {
+        if (typeof state.counts[name] !== "number") {
+          state.counts[name] = 0;
+        }
+      });
+      Object.keys(state.counts).forEach((name) => {
+        if (!state.students.includes(name)) delete state.counts[name];
+      });
+    }
+
+    function isQuiet(name) {
+      return state.counts[name] === 0;
+    }
+
+    function updateUndoButton() {
+      $("#btnUndo").disabled = undoStack.length === 0;
+    }
+
+    function pushUndo(name, prev) {
+      undoStack.push({ name, prev });
+      if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+      updateUndoButton();
+    }
+
+    function changeCount(name, delta, recordUndo = true) {
+      const prev = getHandCount(name);
+      const next = Math.max(0, prev + delta);
+      if (next === prev) return false;
+      state.counts[name] = next;
+      if (recordUndo) pushUndo(name, prev);
+      save();
+      return true;
+    }
+
+    function undoLast() {
+      const action = undoStack.pop();
+      if (!action) return;
+      state.counts[action.name] = action.prev;
+      save();
+      updateUndoButton();
+      renderTracker();
+      showToast(`${action.name} 되돌림`);
+    }
+
+    function clearUndo() {
+      undoStack.length = 0;
+      updateUndoButton();
+    }
+
+    function pulseCard(card, className = "tapped") {
+      card.classList.remove(className);
+      void card.offsetWidth;
+      card.classList.add(className);
+    }
+
+    function bindCardInteractions(card) {
+      let pressTimer = null;
+      let longPressFired = false;
+      let startX = 0;
+      let startY = 0;
+
+      function clearPress() {
+        if (pressTimer) {
+          clearTimeout(pressTimer);
+          pressTimer = null;
+        }
+        card.classList.remove("holding");
+      }
+
+      function onLongPress() {
+        pressTimer = null;
+        const name = card.dataset.name;
+        const prev = getHandCount(name);
+        if (prev <= 0) {
+          showToast("이미 0입니다");
+          return;
+        }
+        longPressFired = true;
+        if (changeCount(name, -1)) {
+          const countEl = card.querySelector(".hand-count");
+          if (countEl) countEl.textContent = getHandCount(name);
+          card.classList.toggle("quiet", isQuiet(name));
+          pulseCard(card, "long-pressed");
+          showToast(`${name} −1`);
+        }
+      }
+
+      card.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        longPressFired = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        clearPress();
+        card.classList.add("holding");
+        pressTimer = setTimeout(onLongPress, LONG_PRESS_MS);
+        card.setPointerCapture(e.pointerId);
+      });
+
+      card.addEventListener("pointermove", (e) => {
+        if (!pressTimer) return;
+        const dx = Math.abs(e.clientX - startX);
+        const dy = Math.abs(e.clientY - startY);
+        if (dx > MOVE_THRESHOLD || dy > MOVE_THRESHOLD) clearPress();
+      });
+
+      card.addEventListener("pointerup", (e) => {
+        clearPress();
+        try { card.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
+        if (longPressFired) {
+          renderTracker();
+          return;
+        }
+        const name = card.dataset.name;
+        if (changeCount(name, 1)) {
+          pulseCard(card);
+          renderTracker();
+        }
+      });
+
+      card.addEventListener("pointercancel", clearPress);
+      card.addEventListener("contextmenu", (e) => e.preventDefault());
+    }
+
+    function getHandCount(name) {
+      return state.counts[name] || 0;
+    }
+
+    function getPresetById(id) {
+      return state.presets.find((p) => p.id === id);
+    }
+
+    function getPresetByName(name) {
+      const n = name.trim().toLowerCase();
+      return state.presets.find((p) => p.name.toLowerCase() === n);
+    }
+
+    function cloneStudents(students) {
+      return students.map((name) => name);
+    }
+
+    function updateStudentCountLabel() {
+      const names = parseNames($("#studentInput").value);
+      $("#studentCountLabel").textContent = `${names.length}명`;
+    }
+
+    function renderPresets() {
+      const selectedId = $("#presetSelect").value;
+      $("#presetSelect").innerHTML =
+        '<option value="">— 프리셋 선택 —</option>' +
+        state.presets
+          .map((p) => {
+            const selected = p.id === selectedId ? " selected" : "";
+            return `<option value="${p.id}"${selected}>${escapeHtml(p.name)} (${p.students.length}명)</option>`;
+          })
+          .join("");
+
+      const active = getPresetById(state.activePresetId);
+      const label = $("#activePresetLabel");
+      if (active) {
+        label.textContent = `현재 프리셋: ${active.name} (${active.students.length}명)`;
+        label.classList.remove("muted");
+        $("#presetNameInput").value = active.name;
+      } else {
+        label.textContent = "현재 프리셋: 없음 (임시 목록)";
+        label.classList.add("muted");
+      }
+
+      const hasSelection = !!$("#presetSelect").value;
+      $("#loadPresetBtn").disabled = !hasSelection;
+      $("#deletePresetBtn").disabled = !hasSelection;
+      $("#updatePresetBtn").disabled = !state.activePresetId;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function applyStudents(names, resetCounts = false) {
+      state.students = names;
+      if (resetCounts) {
+        state.counts = {};
+      }
+      ensureCounts();
+      $("#studentInput").value = names.join("\n");
+      updateStudentCountLabel();
+      save();
+    }
+
+    function saveNewPreset(name) {
+      const normalized = name.trim();
+      if (!normalized) {
+        showToast("프리셋 이름을 입력해 주세요");
+        $("#presetNameInput").focus();
+        return;
+      }
+
+      const names = parseNames($("#studentInput").value);
+      if (names.length === 0) {
+        showToast("저장할 학생이 없습니다");
+        return;
+      }
+
+      const existing = getPresetByName(normalized);
+      if (existing) {
+        if (!confirm(`"${normalized}" 프리셋이 이미 있습니다. 덮어쓸까요?`)) return;
+        existing.students = cloneStudents(names);
+        existing.updatedAt = new Date().toISOString();
+        state.activePresetId = existing.id;
+      } else {
+        const preset = {
+          id: generateId(),
+          name: normalized,
+          students: cloneStudents(names),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        state.presets.push(preset);
+        state.activePresetId = preset.id;
+      }
+
+      save();
+      renderPresets();
+      showToast(`"${normalized}" 프리셋이 저장되었습니다`);
+    }
+
+    function loadSelectedPreset() {
+      const id = $("#presetSelect").value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+
+      const currentNames = parseNames($("#studentInput").value);
+      if (currentNames.length > 0 && !state.activePresetId) {
+        if (!confirm(`현재 임시 목록(${currentNames.length}명)을 "${preset.name}" 프리셋으로 바꿀까요?`)) return;
+      } else if (state.activePresetId && state.activePresetId !== id) {
+        const current = getPresetById(state.activePresetId);
+        if (current && !confirm(`"${current.name}"에서 "${preset.name}" 프리셋으로 바꿀까요?`)) return;
+      }
+
+      applyStudents(cloneStudents(preset.students), false);
+      state.activePresetId = preset.id;
+      save();
+      renderPresets();
+      showToast(`"${preset.name}" 프리셋을 불러왔습니다`);
+    }
+
+    function updateActivePreset() {
+      const preset = getPresetById(state.activePresetId);
+      if (!preset) return;
+
+      const names = parseNames($("#studentInput").value);
+      if (names.length === 0) {
+        showToast("저장할 학생이 없습니다");
+        return;
+      }
+      if (!confirm(`"${preset.name}" 프리셋을 현재 학생 목록(${names.length}명)으로 업데이트할까요?`)) return;
+
+      preset.students = cloneStudents(names);
+      preset.updatedAt = new Date().toISOString();
+      state.students = names;
+      ensureCounts();
+      save();
+      renderPresets();
+      showToast(`"${preset.name}" 프리셋이 업데이트되었습니다`);
+    }
+
+    function deleteSelectedPreset() {
+      const id = $("#presetSelect").value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+      if (!confirm(`"${preset.name}" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.`)) return;
+
+      state.presets = state.presets.filter((p) => p.id !== id);
+      if (state.activePresetId === id) state.activePresetId = null;
+      $("#presetSelect").value = "";
+      save();
+      renderPresets();
+      showToast("프리셋이 삭제되었습니다");
+    }
+
+    function startTracker() {
+      const names = parseNames($("#studentInput").value);
+      if (names.length === 0) {
+        showToast("학생 이름을 입력해 주세요");
+        $("#studentInput").focus();
+        return;
+      }
+
+      applyStudents(names, false);
+      renderTracker();
+      showScreen("tracker");
+    }
+
+    function sortedStudents() {
+      const list = [...state.students];
+      if (!state.sortQuietFirst) return list;
+      return list.sort((a, b) => {
+        const qa = isQuiet(a) ? 0 : 1;
+        const qb = isQuiet(b) ? 0 : 1;
+        if (qa !== qb) return qa - qb;
+        return getHandCount(a) - getHandCount(b);
+      });
+    }
+
+    function renderTracker() {
+      ensureCounts();
+
+      const quiet = state.students.filter(isQuiet).length;
+      const active = state.students.length - quiet;
+      $("#quietCount").textContent = quiet;
+      $("#activeCount").textContent = active;
+      $("#sortQuietFirst").checked = state.sortQuietFirst;
+      updateUndoButton();
+
+      const grid = $("#studentGrid");
+      const students = sortedStudents();
+
+      if (students.length === 0) {
+        grid.innerHTML = '<div class="empty-state">학생 목록이 비어 있습니다.<br>설정에서 이름을 입력해 주세요.</div>';
+        return;
+      }
+
+      grid.innerHTML = students
+        .map((name) => {
+          const count = getHandCount(name);
+          const quietClass = isQuiet(name) ? " quiet" : "";
+          return `
+            <button type="button" class="student-card${quietClass}" data-name="${escapeHtml(name)}" aria-label="${escapeHtml(name)}, 손 든 횟수 ${count}, 터치하면 1 증가, 길게 누르면 1 감소">
+              <div class="quiet-badge">아직 손 안 듦</div>
+              <div class="student-name">${escapeHtml(name)}</div>
+              <div class="hand-count">${count}</div>
+              <div class="hand-count-label">손 든 횟수</div>
+            </button>`;
+        })
+        .join("");
+
+      grid.querySelectorAll(".student-card").forEach(bindCardInteractions);
+    }
+
+    function resetSession() {
+      if (!confirm("이번 수업의 손 든 횟수를 모두 0으로 초기화할까요?")) return;
+      state.students.forEach((name) => {
+        state.counts[name] = 0;
+      });
+      clearUndo();
+      save();
+      renderTracker();
+      showToast("이번 수업 기록이 초기화되었습니다");
+    }
+
+    $("#studentInput").addEventListener("input", () => {
+      updateStudentCountLabel();
+      save();
+    });
+
+    $("#btnStart").addEventListener("click", startTracker);
+
+    $("#btnBack").addEventListener("click", () => {
+      const names = parseNames($("#studentInput").value);
+      state.students = names.length ? names : state.students;
+      $("#studentInput").value = state.students.join("\n");
+      updateStudentCountLabel();
+      save();
+      renderPresets();
+      showScreen("settings");
+    });
+
+    $("#btnReset").addEventListener("click", resetSession);
+    $("#btnUndo").addEventListener("click", undoLast);
+
+    $("#sortQuietFirst").addEventListener("change", (e) => {
+      state.sortQuietFirst = e.target.checked;
+      save();
+      renderTracker();
+    });
+
+    $("#presetSelect").addEventListener("change", () => {
+      const hasSelection = !!$("#presetSelect").value;
+      $("#loadPresetBtn").disabled = !hasSelection;
+      $("#deletePresetBtn").disabled = !hasSelection;
+    });
+
+    $("#loadPresetBtn").addEventListener("click", loadSelectedPreset);
+    $("#savePresetBtn").addEventListener("click", () => saveNewPreset($("#presetNameInput").value));
+    $("#updatePresetBtn").addEventListener("click", updateActivePreset);
+    $("#deletePresetBtn").addEventListener("click", deleteSelectedPreset);
+
+    $("#presetNameInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        saveNewPreset($("#presetNameInput").value);
+      }
+    });
+
+    load();
+    updateStudentCountLabel();
+    renderPresets();
+    updateUndoButton();
+  </script>
+</body>
+</html>

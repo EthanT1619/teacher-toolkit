@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미스터리 박스 뽑기</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+      --shadow-lg: 0 20px 40px -12px rgb(0 0 0 / 0.18);
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f5f7fb 50%, #fef3c7 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .view { display: none; min-height: 100vh; }
+    .view.active { display: flex; flex-direction: column; }
+
+    /* ── Setup ── */
+    .setup-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 16px 48px;
+      width: 100%;
+    }
+
+    header { text-align: center; margin-bottom: 28px; }
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+    header p { color: var(--text-muted); margin-top: 6px; font-size: 0.95rem; }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .row input[type="number"] {
+      width: 80px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .row input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input { width: 18px; height: 18px; accent-color: var(--primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+
+    .btn:active:not(:disabled) { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgb(79 70 229 / 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) { background: var(--border); }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+    .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .preset-row select, .preset-row input {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .preset-row select:focus, .preset-row input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* ── Play ── */
+    .play-view {
+      background: #ffffff;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .play-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgb(255 255 255 / 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .play-view:hover .play-toolbar,
+    .play-toolbar:focus-within,
+    .play-toolbar.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .play-toolbar .status {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .icon-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .icon-btn:hover { background: var(--bg); }
+
+    .boxes-stage {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(20px, 4vw, 48px);
+      justify-content: center;
+      align-items: center;
+      max-width: 1200px;
+      margin-top: 40px;
+    }
+
+    .box-slot {
+      position: relative;
+      width: clamp(140px, 22vw, 200px);
+      height: clamp(160px, 28vw, 220px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .box-slot.revealed { cursor: default; }
+
+    .prize-circle {
+      position: absolute;
+      width: clamp(110px, 18vw, 150px);
+      height: clamp(110px, 18vw, 150px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #1e293b;
+      box-shadow: inset 0 -4px 12px rgb(0 0 0 / 0.08), 0 4px 12px rgb(0 0 0 / 0.06);
+      z-index: 1;
+    }
+
+    .box-slot:not(.revealed) .prize-circle {
+      visibility: hidden;
+    }
+
+    .prize-circle.color-0 { background: linear-gradient(145deg, #fde68a, #fbbf24); }
+    .prize-circle.color-1 { background: linear-gradient(145deg, #bfdbfe, #60a5fa); }
+    .prize-circle.color-2 { background: linear-gradient(145deg, #bbf7d0, #4ade80); }
+    .prize-circle.color-3 { background: linear-gradient(145deg, #fbcfe8, #f472b6); }
+    .prize-circle.color-4 { background: linear-gradient(145deg, #ddd6fe, #a78bfa); }
+
+    .prize-circle.reveal-pop {
+      animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .mystery-cube {
+      position: absolute;
+      width: clamp(120px, 20vw, 170px);
+      height: clamp(120px, 20vw, 170px);
+      z-index: 2;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+      filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.15));
+      background: #f472b6;
+      border-radius: 4px;
+    }
+
+    .box-slot:not(.revealed):hover .mystery-cube {
+      transform: translateY(-6px) scale(1.03);
+    }
+
+    .box-slot.revealed .mystery-cube {
+      transform: scale(0.3) rotate(20deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cube-svg { width: 100%; height: 100%; }
+
+    .box-number {
+      position: absolute;
+      bottom: -8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      z-index: 0;
+    }
+
+    .play-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgb(30 41 59 / 0.85);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 5;
+    }
+
+    .play-hint.hidden { opacity: 0; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4rem; }
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 설정 화면 -->
+<section id="setupView" class="view active">
+  <div class="setup-wrap">
+    <header>
+      <h1>🎁 미스터리 박스 뽑기</h1>
+      <p>항목을 입력하고 시작하면, PPT처럼 박스를 클릭해 공개할 수 있어요</p>
+    </header>
+
+    <div class="card">
+      <div class="card-title">항목 입력</div>
+      <label class="field-label" for="itemsInput">박스 안에 넣을 내용 (한 줄에 하나)</label>
+      <textarea id="itemsInput" placeholder="Switch points&#10;+6&#10;+1&#10;꽝&#10;×2"></textarea>
+      <p class="hint">입력한 줄 수만큼 박스가 만들어지고, 시작할 때마다 무작위로 섞입니다.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">옵션</div>
+      <div class="row" style="margin-bottom: 12px;">
+        <label class="checkbox-label">
+          <input type="checkbox" id="shuffleEachRound" checked>
+          <span>새 라운드마다 다시 섞기</span>
+        </label>
+      </div>
+      <div class="row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="hideToolbar" checked>
+          <span>발표 중 상단 메뉴 자동 숨김</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">프리셋</div>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button class="btn btn-secondary" id="loadPresetBtn" disabled>불러오기</button>
+      </div>
+      <div class="preset-row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 3반 점수뽑기)" maxlength="30">
+        <button class="btn btn-secondary" id="savePresetBtn">저장</button>
+        <button class="btn btn-secondary" id="deletePresetBtn" disabled>삭제</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="startBtn">▶ 시작하기</button>
+      <button class="btn btn-secondary" id="sampleBtn">예시 불러오기</button>
+    </div>
+  </div>
+</section>
+
+<!-- 플레이 화면 -->
+<section id="playView" class="view play-view">
+  <div class="play-toolbar" id="playToolbar">
+    <button class="icon-btn" id="backBtn">← 설정</button>
+    <span class="status" id="statusText">박스를 클릭해서 공개하세요</span>
+    <div style="display:flex;gap:8px;">
+      <button class="icon-btn" id="resetRoundBtn" title="같은 항목으로 다시 섞기">↻ 다시 섞기</button>
+      <button class="icon-btn" id="fullscreenBtn" title="전체 화면 (F)">⛶</button>
+    </div>
+  </div>
+
+  <div class="boxes-stage" id="boxesStage"></div>
+  <div class="play-hint" id="playHint">박스를 클릭하면 내용이 공개됩니다 · R: 다시 섞기 · Esc: 설정</div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'mysteryBoxPicker';
+
+  const state = {
+    items: [],
+    assignments: [],
+    revealed: new Set(),
+    shuffleEachRound: true,
+    hideToolbar: true,
+    presets: [],
+  };
+
+  const els = {
+    setupView: document.getElementById('setupView'),
+    playView: document.getElementById('playView'),
+    itemsInput: document.getElementById('itemsInput'),
+    shuffleEachRound: document.getElementById('shuffleEachRound'),
+    hideToolbar: document.getElementById('hideToolbar'),
+    startBtn: document.getElementById('startBtn'),
+    sampleBtn: document.getElementById('sampleBtn'),
+    presetSelect: document.getElementById('presetSelect'),
+    loadPresetBtn: document.getElementById('loadPresetBtn'),
+    presetNameInput: document.getElementById('presetNameInput'),
+    savePresetBtn: document.getElementById('savePresetBtn'),
+    deletePresetBtn: document.getElementById('deletePresetBtn'),
+    playToolbar: document.getElementById('playToolbar'),
+    backBtn: document.getElementById('backBtn'),
+    statusText: document.getElementById('statusText'),
+    resetRoundBtn: document.getElementById('resetRoundBtn'),
+    fullscreenBtn: document.getElementById('fullscreenBtn'),
+    boxesStage: document.getElementById('boxesStage'),
+    playHint: document.getElementById('playHint'),
+    toast: document.getElementById('toast'),
+  };
+
+  let toastTimer = null;
+
+  function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      itemsText: els.itemsInput.value,
+      shuffleEachRound: state.shuffleEachRound,
+      hideToolbar: state.hideToolbar,
+      presets: state.presets,
+    }));
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.itemsText === 'string') els.itemsInput.value = data.itemsText;
+      if (typeof data.shuffleEachRound === 'boolean') state.shuffleEachRound = data.shuffleEachRound;
+      if (typeof data.hideToolbar === 'boolean') state.hideToolbar = data.hideToolbar;
+      if (Array.isArray(data.presets)) state.presets = data.presets;
+    } catch { /* ignore */ }
+  }
+
+  function showToast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
+  }
+
+  function parseItems(text) {
+    return text
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean);
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function cubeSvg(index) {
+    const uid = `cube-${index}`;
+    return `
+      <svg class="cube-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="${uid}-top" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fda4af"/>
+            <stop offset="50%" stop-color="#fde047"/>
+            <stop offset="100%" stop-color="#86efac"/>
+          </linearGradient>
+          <linearGradient id="${uid}-front" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f472b6"/>
+            <stop offset="40%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#34d399"/>
+          </linearGradient>
+          <linearGradient id="${uid}-side" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#c084fc"/>
+            <stop offset="100%" stop-color="#60a5fa"/>
+          </linearGradient>
+          <pattern id="${uid}-dots" width="12" height="12" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="3" r="1.5" fill="white" opacity="0.45"/>
+          </pattern>
+        </defs>
+        <rect x="32" y="32" width="136" height="148" fill="#f472b6"/>
+        <polygon points="40,70 100,40 160,70 100,100" fill="url(#${uid}-top)"/>
+        <polygon points="40,70 100,100 100,170 40,140" fill="url(#${uid}-front)"/>
+        <polygon points="100,100 160,70 160,140 100,170" fill="url(#${uid}-side)"/>
+        <polygon points="40,70 100,100 100,170 40,140" fill="url(#${uid}-dots)"/>
+        <text x="70" y="128" font-size="52" font-weight="900" fill="white" stroke="#2563eb" stroke-width="4" paint-order="stroke">?</text>
+      </svg>`;
+  }
+
+  function renderPresets() {
+    const selected = els.presetSelect.value;
+    els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
+      state.presets.map(p =>
+        `<option value="${p.id}"${p.id === selected ? ' selected' : ''}>${escapeHtml(p.name)} (${p.items.length}개)</option>`
+      ).join('');
+    const has = !!els.presetSelect.value;
+    els.loadPresetBtn.disabled = !has;
+    els.deletePresetBtn.disabled = !has;
+  }
+
+  function updateStatus() {
+    const total = state.items.length;
+    const revealed = state.revealed.size;
+    if (revealed === 0) {
+      els.statusText.textContent = `박스 ${total}개 · 클릭해서 공개하세요`;
+    } else if (revealed < total) {
+      els.statusText.textContent = `${revealed} / ${total} 공개됨`;
+    } else {
+      els.statusText.textContent = '모두 공개됨 · R 키로 다시 섞기';
+    }
+    els.playHint.classList.toggle('hidden', revealed > 0);
+  }
+
+  function renderBoxes() {
+    els.boxesStage.innerHTML = state.assignments.map((item, i) => {
+      const revealed = state.revealed.has(i);
+      return `
+        <div class="box-slot${revealed ? ' revealed' : ''}" data-index="${i}" role="button" tabindex="0" aria-label="박스 ${i + 1}${revealed ? ', ' + item : ''}">
+          <div class="prize-circle color-${i % 5}${revealed ? ' reveal-pop' : ''}">${escapeHtml(item)}</div>
+          <div class="mystery-cube">${cubeSvg(i)}</div>
+          <span class="box-number">${i + 1}</span>
+        </div>`;
+    }).join('');
+
+    updateStatus();
+  }
+
+  function startRound() {
+    const items = parseItems(els.itemsInput.value);
+    if (items.length === 0) {
+      showToast('항목을 한 줄 이상 입력해 주세요');
+      els.itemsInput.focus();
+      return;
+    }
+
+    state.items = items;
+    state.assignments = shuffle(items);
+    state.revealed = new Set();
+
+    state.shuffleEachRound = els.shuffleEachRound.checked;
+    state.hideToolbar = els.hideToolbar.checked;
+    save();
+
+    els.setupView.classList.remove('active');
+    els.playView.classList.add('active');
+    els.playToolbar.classList.toggle('visible', !state.hideToolbar);
+
+    renderBoxes();
+    showToast(`${items.length}개 박스 준비 완료!`);
+  }
+
+  function resetRound() {
+    if (state.shuffleEachRound) {
+      state.assignments = shuffle(state.items);
+    }
+    state.revealed = new Set();
+    renderBoxes();
+    showToast('새 라운드가 시작되었습니다');
+  }
+
+  function revealBox(index) {
+    if (state.revealed.has(index)) return;
+    state.revealed.add(index);
+    const slot = els.boxesStage.querySelector(`[data-index="${index}"]`);
+    if (slot) {
+      slot.classList.add('revealed');
+      slot.querySelector('.prize-circle')?.classList.add('reveal-pop');
+      slot.setAttribute('aria-label', `박스 ${index + 1}, ${state.assignments[index]}`);
+    }
+    updateStatus();
+    if (navigator.vibrate) navigator.vibrate(30);
+  }
+
+  function goSetup() {
+    els.playView.classList.remove('active');
+    els.setupView.classList.add('active');
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  }
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      document.documentElement.requestFullscreen().catch(() => showToast('전체 화면을 사용할 수 없습니다'));
+    }
+  }
+
+  function savePreset() {
+    const name = els.presetNameInput.value.trim();
+    if (!name) {
+      showToast('프리셋 이름을 입력해 주세요');
+      return;
+    }
+    const items = parseItems(els.itemsInput.value);
+    if (items.length === 0) {
+      showToast('저장할 항목이 없습니다');
+      return;
+    }
+
+    const existing = state.presets.find(p => p.name.toLowerCase() === name.toLowerCase());
+    if (existing) {
+      if (!confirm(`"${name}" 프리셋이 있습니다. 덮어쓸까요?`)) return;
+      existing.items = items;
+    } else {
+      state.presets.push({ id: generateId(), name, items });
+    }
+    save();
+    renderPresets();
+    showToast(`"${name}" 저장됨`);
+  }
+
+  function loadPreset() {
+    const id = els.presetSelect.value;
+    if (!id) return;
+    const preset = state.presets.find(p => p.id === id);
+    if (!preset) return;
+    els.itemsInput.value = preset.items.join('\n');
+    els.presetNameInput.value = preset.name;
+    save();
+    showToast(`"${preset.name}" 불러옴`);
+  }
+
+  function deletePreset() {
+    const id = els.presetSelect.value;
+    if (!id) return;
+    const preset = state.presets.find(p => p.id === id);
+    if (!preset || !confirm(`"${preset.name}" 프리셋을 삭제할까요?`)) return;
+    state.presets = state.presets.filter(p => p.id !== id);
+    els.presetSelect.value = '';
+    save();
+    renderPresets();
+    showToast('프리셋 삭제됨');
+  }
+
+  /* Events */
+  els.startBtn.addEventListener('click', startRound);
+  els.sampleBtn.addEventListener('click', () => {
+    els.itemsInput.value = 'Switch points\n+6\n+1\n꽝\n×2';
+    showToast('예시 항목을 불러왔습니다');
+  });
+
+  els.backBtn.addEventListener('click', goSetup);
+  els.resetRoundBtn.addEventListener('click', resetRound);
+  els.fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  els.boxesStage.addEventListener('click', (e) => {
+    const slot = e.target.closest('.box-slot');
+    if (!slot || slot.classList.contains('revealed')) return;
+    revealBox(Number(slot.dataset.index));
+  });
+
+  els.boxesStage.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const slot = e.target.closest('.box-slot');
+    if (!slot || slot.classList.contains('revealed')) return;
+    e.preventDefault();
+    revealBox(Number(slot.dataset.index));
+  });
+
+  els.presetSelect.addEventListener('change', () => {
+    const has = !!els.presetSelect.value;
+    els.loadPresetBtn.disabled = !has;
+    els.deletePresetBtn.disabled = !has;
+  });
+  els.loadPresetBtn.addEventListener('click', loadPreset);
+  els.savePresetBtn.addEventListener('click', savePreset);
+  els.deletePresetBtn.addEventListener('click', deletePreset);
+
+  els.shuffleEachRound.checked = state.shuffleEachRound;
+  els.hideToolbar.checked = state.hideToolbar;
+
+  document.addEventListener('keydown', (e) => {
+    if (!els.playView.classList.contains('active')) return;
+    if (e.key === 'Escape') { goSetup(); return; }
+    if (e.key === 'r' || e.key === 'R') { resetRound(); return; }
+    if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); return; }
+  });
+
+  load();
+  els.shuffleEachRound.checked = state.shuffleEachRound;
+  els.hideToolbar.checked = state.hideToolbar;
+  renderPresets();
+</script>
+</body>
+</html>

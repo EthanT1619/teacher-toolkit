@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found · Tool Kit for JLS Teacher</title>
+  <style>
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f0f4f8;
+      color: #1e293b;
+    }
+    .box {
+      text-align: center;
+      padding: 32px 24px;
+      max-width: 420px;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 8px; }
+    p { color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+    a {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: #4f46e5;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover { background: #4338ca; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>페이지를 찾을 수 없습니다</h1>
+    <p>주소가 잘못되었거나 페이지가 이동되었을 수 있습니다.</p>
+    <a id="home-link" href="index.html">Tool Kit for JLS Teacher로 돌아가기</a>
+  </div>
+  <script>
+    (function () {
+      var link = document.getElementById('home-link');
+      var parts = location.pathname.split('/').filter(Boolean);
+
+      if (location.hostname.endsWith('github.io') && parts.length > 0) {
+        link.href = location.origin + '/' + parts[0] + '/';
+        return;
+      }
+
+      if (parts.length > 1) {
+        link.href = '../index.html';
+      }
+    })();
+  </script>
+</body>
+</html>

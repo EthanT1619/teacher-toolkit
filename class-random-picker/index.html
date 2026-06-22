@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학급 랜덤 뽑기</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+      --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f0f4f8 50%, #fef3c7 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    /* Picker display */
+    .picker-zone {
+      text-align: center;
+      padding: 32px 16px;
+      background: linear-gradient(180deg, var(--primary-light) 0%, var(--surface) 100%);
+      border-radius: var(--radius);
+      border: 2px dashed var(--border);
+      margin-bottom: 20px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .picker-zone.spinning {
+      border-color: var(--primary);
+      background: linear-gradient(180deg, #ddd6fe 0%, var(--primary-light) 100%);
+    }
+
+    .picker-zone.winner {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, var(--accent-light) 0%, var(--surface) 100%);
+      animation: pulse 0.6s ease;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .picker-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .picker-name {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      min-height: 1.2em;
+      transition: color 0.2s;
+    }
+
+    .picker-zone.winner .picker-name {
+      color: #b45309;
+      font-size: 2.75rem;
+    }
+
+    .picker-zone.spinning .picker-name {
+      animation: flicker 0.08s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 0.7; transform: translateY(-1px); }
+      to { opacity: 1; transform: translateY(1px); }
+    }
+
+    .picker-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgb(79 70 229 / 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--border);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: #d97706;
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 8px 14px;
+      font-size: 0.85rem;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn-icon {
+      padding: 6px 10px;
+      min-width: 36px;
+    }
+
+    /* Add student form */
+    .add-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .add-form input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .add-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .add-form input.error {
+      border-color: var(--danger);
+    }
+
+    .form-hint {
+      font-size: 0.8rem;
+      color: var(--danger);
+      margin-top: -10px;
+      margin-bottom: 12px;
+      min-height: 1.2em;
+    }
+
+    /* Student list */
+    .student-list {
+      list-style: none;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .student-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      background: var(--surface);
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+
+    .student-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .student-item.picked {
+      opacity: 0.45;
+      background: var(--bg);
+    }
+
+    .student-item.highlight {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      transform: scale(1.01);
+    }
+
+    .student-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .student-name {
+      flex: 1;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .student-name input {
+      width: 100%;
+      padding: 4px 8px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .student-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .emoji {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Options row */
+    .options-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    .stats {
+      margin-left: auto;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* History */
+    .history-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .history-chip {
+      padding: 6px 12px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .history-chip.latest {
+      background: var(--accent-light);
+      color: #b45309;
+    }
+
+    .history-empty {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .list-header .card-title {
+      margin-bottom: 0;
+    }
+
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .preset-row select {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--surface);
+    }
+
+    .preset-row select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .preset-save-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-save-row input {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .preset-save-row input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .preset-active {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: var(--primary-light);
+      border-radius: var(--radius-sm);
+    }
+
+    .preset-active.muted {
+      color: var(--text-muted);
+      background: var(--bg);
+      font-weight: 500;
+    }
+
+    .preset-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4rem; }
+      .picker-name { font-size: 2rem; }
+      .picker-zone.winner .picker-name { font-size: 2.2rem; }
+      .picker-actions { flex-direction: column; width: 100%; }
+      .picker-actions .btn { width: 100%; }
+      .add-form { flex-direction: column; }
+      .stats { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🎲 학급 랜덤 뽑기</h1>
+      <p>학생 이름을 등록하고 공정하게 한 명을 뽑아보세요</p>
+    </header>
+
+    <section class="card">
+      <div class="picker-zone" id="pickerZone">
+        <div class="picker-label">선택된 학생</div>
+        <div class="picker-name" id="pickerName">—</div>
+      </div>
+      <div class="picker-actions">
+        <button class="btn btn-primary" id="pickBtn">🎯 랜덤 뽑기</button>
+        <button class="btn btn-accent" id="pickAgainBtn" disabled>🔄 다시 뽑기</button>
+        <button class="btn btn-secondary" id="resetPickedBtn">↩️ 뽑기 초기화</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">프리셋</div>
+      <div class="preset-active muted" id="activePresetLabel">현재 프리셋: 없음 (임시 목록)</div>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="loadPresetBtn" disabled>불러오기</button>
+      </div>
+      <div class="preset-save-row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 1학년 3반)" maxlength="30" autocomplete="off">
+        <button class="btn btn-secondary btn-sm" id="savePresetBtn">새로 저장</button>
+      </div>
+      <div class="preset-actions">
+        <button class="btn btn-secondary btn-sm" id="updatePresetBtn" disabled>현재 프리셋 업데이트</button>
+        <button class="btn btn-danger btn-sm" id="deletePresetBtn" disabled>프리셋 삭제</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">뽑기 설정</div>
+      <div class="options-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="excludePicked" checked>
+          <span>이미 뽑힌 학생 제외</span>
+        </label>
+        <span class="stats" id="poolStats">뽑기 가능: 0명</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="list-header">
+        <div class="card-title">학생 목록 (<span id="studentCount">0</span>명)</div>
+        <button class="btn btn-danger btn-sm" id="clearAllBtn">전체 삭제</button>
+      </div>
+      <form class="add-form" id="addForm">
+        <input type="text" id="nameInput" placeholder="학생 이름 입력" maxlength="20" autocomplete="off">
+        <button type="submit" class="btn btn-primary">추가</button>
+      </form>
+      <div class="form-hint" id="formHint"></div>
+      <ul class="student-list" id="studentList"></ul>
+    </section>
+
+    <section class="card">
+      <div class="card-title">뽑기 기록</div>
+      <div class="history-list" id="historyList">
+        <span class="history-empty">아직 뽑기 기록이 없습니다</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'classRandomPicker';
+
+    const state = {
+      students: [],
+      pickedIds: [],
+      history: [],
+      lastPickedId: null,
+      excludePicked: true,
+      presets: [],
+      activePresetId: null,
+    };
+
+    const els = {
+      pickerZone: document.getElementById('pickerZone'),
+      pickerName: document.getElementById('pickerName'),
+      pickBtn: document.getElementById('pickBtn'),
+      pickAgainBtn: document.getElementById('pickAgainBtn'),
+      resetPickedBtn: document.getElementById('resetPickedBtn'),
+      excludePicked: document.getElementById('excludePicked'),
+      poolStats: document.getElementById('poolStats'),
+      studentCount: document.getElementById('studentCount'),
+      addForm: document.getElementById('addForm'),
+      nameInput: document.getElementById('nameInput'),
+      formHint: document.getElementById('formHint'),
+      studentList: document.getElementById('studentList'),
+      clearAllBtn: document.getElementById('clearAllBtn'),
+      historyList: document.getElementById('historyList'),
+      toast: document.getElementById('toast'),
+      activePresetLabel: document.getElementById('activePresetLabel'),
+      presetSelect: document.getElementById('presetSelect'),
+      loadPresetBtn: document.getElementById('loadPresetBtn'),
+      presetNameInput: document.getElementById('presetNameInput'),
+      savePresetBtn: document.getElementById('savePresetBtn'),
+      updatePresetBtn: document.getElementById('updatePresetBtn'),
+      deletePresetBtn: document.getElementById('deletePresetBtn'),
+    };
+
+    let isSpinning = false;
+    let toastTimer = null;
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        students: state.students,
+        pickedIds: state.pickedIds,
+        history: state.history,
+        lastPickedId: state.lastPickedId,
+        excludePicked: state.excludePicked,
+        presets: state.presets,
+        activePresetId: state.activePresetId,
+      }));
+    }
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.students)) state.students = data.students;
+        if (Array.isArray(data.pickedIds)) state.pickedIds = data.pickedIds;
+        if (Array.isArray(data.history)) state.history = data.history;
+        if (data.lastPickedId) state.lastPickedId = data.lastPickedId;
+        if (typeof data.excludePicked === 'boolean') state.excludePicked = data.excludePicked;
+        if (Array.isArray(data.presets)) state.presets = data.presets;
+        if (data.activePresetId) state.activePresetId = data.activePresetId;
+      } catch {
+        /* ignore corrupt data */
+      }
+    }
+
+    function getPresetById(id) {
+      return state.presets.find(p => p.id === id);
+    }
+
+    function getPresetByName(name) {
+      const n = normalizeName(name).toLowerCase();
+      return state.presets.find(p => p.name.toLowerCase() === n);
+    }
+
+    function cloneStudents(students) {
+      return students.map(s => ({ id: s.id, name: s.name }));
+    }
+
+    function resetPickState() {
+      state.pickedIds = [];
+      state.history = [];
+      state.lastPickedId = null;
+      els.pickerZone.classList.remove('winner');
+    }
+
+    function applyPresetStudents(students) {
+      state.students = cloneStudents(students);
+      resetPickState();
+    }
+
+    function renderPresets() {
+      const selectedId = els.presetSelect.value;
+      els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
+        state.presets.map(p => {
+          const count = p.students.length;
+          const selected = p.id === selectedId ? ' selected' : '';
+          return `<option value="${p.id}"${selected}>${escapeHtml(p.name)} (${count}명)</option>`;
+        }).join('');
+
+      const active = state.activePresetId ? getPresetById(state.activePresetId) : null;
+      if (active) {
+        els.activePresetLabel.textContent = `현재 프리셋: ${active.name} (${active.students.length}명)`;
+        els.activePresetLabel.classList.remove('muted');
+        els.presetNameInput.value = active.name;
+      } else {
+        els.activePresetLabel.textContent = '현재 프리셋: 없음 (임시 목록)';
+        els.activePresetLabel.classList.add('muted');
+      }
+
+      const hasSelection = !!els.presetSelect.value;
+      els.loadPresetBtn.disabled = !hasSelection || isSpinning;
+      els.deletePresetBtn.disabled = !hasSelection || isSpinning;
+      els.updatePresetBtn.disabled = !state.activePresetId || isSpinning;
+    }
+
+    function saveNewPreset(name) {
+      const normalized = normalizeName(name);
+      if (!normalized) {
+        showToast('프리셋 이름을 입력해 주세요');
+        els.presetNameInput.focus();
+        return;
+      }
+      if (state.students.length === 0) {
+        showToast('저장할 학생이 없습니다');
+        return;
+      }
+
+      const existing = getPresetByName(normalized);
+      if (existing) {
+        if (!confirm(`"${normalized}" 프리셋이 이미 있습니다. 덮어쓸까요?`)) return;
+        existing.students = cloneStudents(state.students);
+        existing.updatedAt = new Date().toISOString();
+        state.activePresetId = existing.id;
+      } else {
+        const preset = {
+          id: generateId(),
+          name: normalized,
+          students: cloneStudents(state.students),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        state.presets.push(preset);
+        state.activePresetId = preset.id;
+      }
+
+      save();
+      render();
+      showToast(`"${normalized}" 프리셋이 저장되었습니다`);
+    }
+
+    function loadSelectedPreset() {
+      const id = els.presetSelect.value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+
+      if (state.students.length > 0 && !state.activePresetId) {
+        if (!confirm(`현재 임시 목록(${state.students.length}명)을 "${preset.name}" 프리셋으로 바꿀까요?`)) return;
+      } else if (state.activePresetId && state.activePresetId !== id) {
+        const current = getPresetById(state.activePresetId);
+        if (current && !confirm(`"${current.name}"에서 "${preset.name}" 프리셋으로 바꿀까요?\n뽑기 상태는 초기화됩니다.`)) return;
+      }
+
+      applyPresetStudents(preset.students);
+      state.activePresetId = preset.id;
+      save();
+      render();
+      showToast(`"${preset.name}" 프리셋을 불러왔습니다`);
+    }
+
+    function updateActivePreset() {
+      const preset = getPresetById(state.activePresetId);
+      if (!preset) return;
+      if (state.students.length === 0) {
+        showToast('저장할 학생이 없습니다');
+        return;
+      }
+      if (!confirm(`"${preset.name}" 프리셋을 현재 학생 목록(${state.students.length}명)으로 업데이트할까요?`)) return;
+
+      preset.students = cloneStudents(state.students);
+      preset.updatedAt = new Date().toISOString();
+      save();
+      renderPresets();
+      showToast(`"${preset.name}" 프리셋이 업데이트되었습니다`);
+    }
+
+    function deleteSelectedPreset() {
+      const id = els.presetSelect.value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+      if (!confirm(`"${preset.name}" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.`)) return;
+
+      state.presets = state.presets.filter(p => p.id !== id);
+      if (state.activePresetId === id) state.activePresetId = null;
+      els.presetSelect.value = '';
+      save();
+      render();
+      showToast('프리셋이 삭제되었습니다');
+    }
+
+    function showToast(msg) {
+      els.toast.textContent = msg;
+      els.toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
+    }
+
+    function normalizeName(name) {
+      return name.trim().replace(/\s+/g, ' ');
+    }
+
+    function isDuplicateName(name, excludeId = null) {
+      const n = normalizeName(name).toLowerCase();
+      return state.students.some(s =>
+        s.id !== excludeId && s.name.toLowerCase() === n
+      );
+    }
+
+    function getAvailablePool() {
+      if (!state.excludePicked) return [...state.students];
+      return state.students.filter(s => !state.pickedIds.includes(s.id));
+    }
+
+    function getStudentById(id) {
+      return state.students.find(s => s.id === id);
+    }
+
+    function updatePoolStats() {
+      const pool = getAvailablePool();
+      const total = state.students.length;
+      els.poolStats.textContent = state.excludePicked
+        ? `뽑기 가능: ${pool.length}명 / 전체 ${total}명`
+        : `뽑기 가능: ${total}명 (중복 허용)`;
+      els.pickBtn.disabled = isSpinning || pool.length === 0;
+    }
+
+    function renderPickerDisplay() {
+      if (state.lastPickedId) {
+        const student = getStudentById(state.lastPickedId);
+        els.pickerName.textContent = student ? student.name : '—';
+      } else {
+        els.pickerName.textContent = state.students.length === 0 ? '학생을 추가해 주세요' : '—';
+      }
+      els.pickAgainBtn.disabled = isSpinning || state.students.length === 0;
+    }
+
+    function renderHistory() {
+      if (state.history.length === 0) {
+        els.historyList.innerHTML = '<span class="history-empty">아직 뽑기 기록이 없습니다</span>';
+        return;
+      }
+      els.historyList.innerHTML = state.history
+        .slice()
+        .reverse()
+        .map((entry, i) => {
+          const cls = i === 0 ? 'history-chip latest' : 'history-chip';
+          return `<span class="${cls}">${escapeHtml(entry.name)}</span>`;
+        })
+        .join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderStudentList() {
+      els.studentCount.textContent = state.students.length;
+
+      if (state.students.length === 0) {
+        els.studentList.innerHTML = `
+          <li class="empty-state">
+            <div class="emoji">👋</div>
+            <p>아직 등록된 학생이 없습니다.<br>위 입력창에 이름을 입력하고 추가해 보세요.</p>
+          </li>`;
+        return;
+      }
+
+      els.studentList.innerHTML = state.students.map((s, i) => {
+        const picked = state.pickedIds.includes(s.id);
+        const isLast = s.id === state.lastPickedId;
+        return `
+          <li class="student-item${picked ? ' picked' : ''}${isLast ? ' highlight' : ''}" data-id="${s.id}">
+            <span class="student-number">${i + 1}</span>
+            <span class="student-name" data-name="${escapeHtml(s.name)}">${escapeHtml(s.name)}</span>
+            <div class="student-actions">
+              <button class="btn btn-secondary btn-sm btn-icon edit-btn" title="수정">✏️</button>
+              <button class="btn btn-danger btn-sm btn-icon delete-btn" title="삭제">🗑️</button>
+            </div>
+          </li>`;
+      }).join('');
+    }
+
+    function render() {
+      els.excludePicked.checked = state.excludePicked;
+      renderPresets();
+      renderStudentList();
+      renderPickerDisplay();
+      renderHistory();
+      updatePoolStats();
+    }
+
+    function addStudent(name) {
+      const normalized = normalizeName(name);
+      if (!normalized) {
+        els.formHint.textContent = '이름을 입력해 주세요.';
+        els.nameInput.classList.add('error');
+        return false;
+      }
+      if (isDuplicateName(normalized)) {
+        els.formHint.textContent = '이미 등록된 이름입니다.';
+        els.nameInput.classList.add('error');
+        return false;
+      }
+      state.students.push({ id: generateId(), name: normalized });
+      els.formHint.textContent = '';
+      els.nameInput.classList.remove('error');
+      els.nameInput.value = '';
+      save();
+      render();
+      showToast(`"${normalized}" 학생이 추가되었습니다`);
+      els.nameInput.focus();
+      return true;
+    }
+
+    function deleteStudent(id) {
+      const student = getStudentById(id);
+      if (!student) return;
+      if (!confirm(`"${student.name}" 학생을 삭제할까요?`)) return;
+
+      state.students = state.students.filter(s => s.id !== id);
+      state.pickedIds = state.pickedIds.filter(pid => pid !== id);
+      state.history = state.history.filter(h => h.id !== id);
+      if (state.lastPickedId === id) state.lastPickedId = null;
+
+      save();
+      render();
+      showToast('학생이 삭제되었습니다');
+    }
+
+    function startEdit(id) {
+      const item = els.studentList.querySelector(`[data-id="${id}"]`);
+      if (!item) return;
+      const nameEl = item.querySelector('.student-name');
+      const currentName = nameEl.dataset.name;
+      nameEl.innerHTML = `<input type="text" value="${escapeHtml(currentName)}" maxlength="20">`;
+      const input = nameEl.querySelector('input');
+      input.focus();
+      input.select();
+
+      function finishEdit(saveEdit) {
+        if (saveEdit) {
+          const newName = normalizeName(input.value);
+          if (!newName) {
+            showToast('이름은 비울 수 없습니다');
+            render();
+            return;
+          }
+          if (isDuplicateName(newName, id)) {
+            showToast('이미 등록된 이름입니다');
+            input.focus();
+            return;
+          }
+          const student = getStudentById(id);
+          if (student) {
+            const oldName = student.name;
+            student.name = newName;
+            state.history.forEach(h => {
+              if (h.id === id) h.name = newName;
+            });
+            save();
+            render();
+            if (oldName !== newName) showToast('이름이 수정되었습니다');
+          }
+        } else {
+          render();
+        }
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); finishEdit(true); }
+        if (e.key === 'Escape') finishEdit(false);
+      });
+      input.addEventListener('blur', () => finishEdit(true));
+    }
+
+    function resetPicked() {
+      if (state.pickedIds.length === 0 && !state.lastPickedId) {
+        showToast('초기화할 뽑기 기록이 없습니다');
+        return;
+      }
+      if (!confirm('뽑힌 학생 목록과 선택 상태를 초기화할까요?\n(학생 목록과 뽑기 기록은 유지됩니다)')) return;
+      state.pickedIds = [];
+      state.lastPickedId = null;
+      els.pickerZone.classList.remove('winner');
+      save();
+      render();
+      showToast('뽑기 상태가 초기화되었습니다');
+    }
+
+    function clearAll() {
+      if (state.students.length === 0) return;
+      if (!confirm(`등록된 학생 ${state.students.length}명을 모두 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`)) return;
+      state.students = [];
+      state.pickedIds = [];
+      state.history = [];
+      state.lastPickedId = null;
+      save();
+      render();
+      showToast('모든 학생이 삭제되었습니다');
+    }
+
+    function pickRandom() {
+      const pool = getAvailablePool();
+      if (pool.length === 0) {
+        if (state.excludePicked && state.students.length > 0) {
+          showToast('모든 학생이 뽑혔습니다. "뽑기 초기화"를 눌러 주세요.');
+        }
+        return;
+      }
+
+      isSpinning = true;
+      els.pickBtn.disabled = true;
+      els.pickAgainBtn.disabled = true;
+      els.pickerZone.classList.remove('winner');
+      els.pickerZone.classList.add('spinning');
+
+      const duration = 1800;
+      const interval = 60;
+      let elapsed = 0;
+      let lastShown = null;
+
+      const spinTimer = setInterval(() => {
+        const candidates = pool.filter(s => s.id !== lastShown?.id || pool.length === 1);
+        const random = candidates[Math.floor(Math.random() * candidates.length)];
+        lastShown = random;
+        els.pickerName.textContent = random.name;
+        elapsed += interval;
+
+        els.studentList.querySelectorAll('.student-item').forEach(el => {
+          el.classList.toggle('highlight', el.dataset.id === random.id);
+        });
+
+        if (elapsed >= duration) {
+          clearInterval(spinTimer);
+          finishPick(pool);
+        }
+      }, interval);
+    }
+
+    function finishPick(pool) {
+      const winner = pool[Math.floor(Math.random() * pool.length)];
+      state.lastPickedId = winner.id;
+
+      if (state.excludePicked && !state.pickedIds.includes(winner.id)) {
+        state.pickedIds.push(winner.id);
+      }
+
+      state.history.push({
+        id: winner.id,
+        name: winner.name,
+        time: new Date().toISOString(),
+      });
+
+      isSpinning = false;
+      els.pickerZone.classList.remove('spinning');
+      els.pickerZone.classList.add('winner');
+      els.pickerName.textContent = winner.name;
+
+      save();
+      render();
+
+      els.studentList.querySelectorAll('.student-item').forEach(el => {
+        el.classList.toggle('highlight', el.dataset.id === winner.id);
+      });
+
+      showToast(`🎉 ${winner.name} 학생이 선택되었습니다!`);
+
+      if (navigator.vibrate) navigator.vibrate(100);
+    }
+
+    /* Event listeners */
+    els.addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      addStudent(els.nameInput.value);
+    });
+
+    els.nameInput.addEventListener('input', () => {
+      els.formHint.textContent = '';
+      els.nameInput.classList.remove('error');
+    });
+
+    els.pickBtn.addEventListener('click', pickRandom);
+    els.pickAgainBtn.addEventListener('click', pickRandom);
+
+    els.resetPickedBtn.addEventListener('click', resetPicked);
+    els.clearAllBtn.addEventListener('click', clearAll);
+
+    els.excludePicked.addEventListener('change', () => {
+      state.excludePicked = els.excludePicked.checked;
+      save();
+      updatePoolStats();
+    });
+
+    els.presetSelect.addEventListener('change', () => {
+      els.loadPresetBtn.disabled = !els.presetSelect.value || isSpinning;
+      els.deletePresetBtn.disabled = !els.presetSelect.value || isSpinning;
+    });
+
+    els.loadPresetBtn.addEventListener('click', loadSelectedPreset);
+    els.savePresetBtn.addEventListener('click', () => saveNewPreset(els.presetNameInput.value));
+    els.updatePresetBtn.addEventListener('click', updateActivePreset);
+    els.deletePresetBtn.addEventListener('click', deleteSelectedPreset);
+
+    els.presetNameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveNewPreset(els.presetNameInput.value);
+      }
+    });
+
+    els.studentList.addEventListener('click', (e) => {
+      const item = e.target.closest('.student-item');
+      if (!item) return;
+      const id = item.dataset.id;
+      if (e.target.closest('.edit-btn')) startEdit(id);
+      if (e.target.closest('.delete-btn')) deleteStudent(id);
+    });
+
+    load();
+    render();
+  </script>
+</body>
+</html>

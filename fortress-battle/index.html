@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Fortress Battle - Ethan's Teacher Toolkit -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fortress Battle</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1a2744;
+      --panel: #243656;
+      --text: #f5f7ff;
+      --muted: #b8c4e0;
+      --team-a: #4da3ff;
+      --team-a-dark: #2b6cb0;
+      --team-b: #ff7b54;
+      --team-b-dark: #c05621;
+      --accent: #ffd166;
+      --danger: #ff4d6d;
+      --success: #70e000;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #2a3f6b 0%, var(--bg) 55%);
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .title-block h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: 0.04em;
+    }
+
+    .title-block p {
+      color: var(--muted);
+      font-size: clamp(0.85rem, 2vw, 1rem);
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 0.75rem 1.2rem;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+      box-shadow: 0 4px 0 var(--shadow);
+      color: #1a1a1a;
+    }
+
+    .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--shadow); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-home { background: #cbd5e1; }
+    .btn-new { background: var(--accent); }
+    .btn-full { background: #90e0ef; color: #123; }
+
+    .btn-attack {
+      background: linear-gradient(180deg, #ffe066 0%, #f4a261 100%);
+      min-width: 140px;
+      min-height: 64px;
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+    }
+
+    .btn-turn {
+      flex: 1;
+      min-width: 140px;
+      min-height: 58px;
+      font-size: clamp(1rem, 2.3vw, 1.3rem);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.12);
+      border: 3px solid transparent;
+    }
+
+    .btn-turn.active-a {
+      background: rgba(77, 163, 255, 0.35);
+      border-color: var(--team-a);
+      box-shadow: 0 0 18px rgba(77, 163, 255, 0.5), 0 4px 0 var(--shadow);
+    }
+
+    .btn-turn.active-b {
+      background: rgba(255, 123, 84, 0.35);
+      border-color: var(--team-b);
+      box-shadow: 0 0 18px rgba(255, 123, 84, 0.5), 0 4px 0 var(--shadow);
+    }
+
+    /* ── Settings panel ── */
+    .settings-panel {
+      margin: 0.75rem 1.25rem 0;
+      padding: 0.9rem 1.1rem;
+      background: var(--panel);
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .settings-panel summary {
+      cursor: pointer;
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      font-weight: 700;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .settings-panel summary::-webkit-details-marker { display: none; }
+
+    .settings-body {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .setting-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .setting-row label {
+      font-weight: 700;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      min-width: 110px;
+    }
+
+    .hp-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .hp-options label,
+    .damage-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.85rem;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      cursor: pointer;
+    }
+
+    .damage-input {
+      flex: 1;
+      min-width: 180px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .btn-apply {
+      background: #95d5b2;
+      color: #123;
+      padding: 0.55rem 1rem;
+      font-size: 1rem;
+    }
+
+    .setting-hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── Main layout ── */
+    .game-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem 1.25rem 1.25rem;
+      gap: 0.75rem;
+      min-height: 0;
+    }
+
+    .turn-row {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .battlefield {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr minmax(220px, 320px) 1fr;
+      gap: clamp(0.5rem, 2vw, 1.25rem);
+      align-items: stretch;
+      min-height: 320px;
+    }
+
+    /* ── Team panels ── */
+    .team-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 20px;
+      border: 4px solid transparent;
+      background: rgba(0, 0, 0, 0.22);
+      position: relative;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .team-panel.team-a { border-color: rgba(77, 163, 255, 0.35); }
+    .team-panel.team-b { border-color: rgba(255, 123, 84, 0.35); }
+
+    .team-panel.active {
+      box-shadow: 0 0 28px rgba(255, 255, 255, 0.12);
+    }
+
+    .team-panel.team-a.active {
+      border-color: var(--team-a);
+      box-shadow: 0 0 32px rgba(77, 163, 255, 0.45);
+    }
+
+    .team-panel.team-b.active {
+      border-color: var(--team-b);
+      box-shadow: 0 0 32px rgba(255, 123, 84, 0.45);
+    }
+
+    .team-name {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .team-a .team-name { color: var(--team-a); }
+    .team-b .team-name { color: var(--team-b); }
+
+    .fortress {
+      font-size: clamp(4rem, 12vw, 7rem);
+      line-height: 1;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+      user-select: none;
+    }
+
+    .hp-block {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .hp-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.35rem;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 700;
+    }
+
+    .hp-bar {
+      width: 100%;
+      height: clamp(22px, 4vw, 32px);
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hp-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    .team-a .hp-fill { background: linear-gradient(90deg, var(--team-a-dark), var(--team-a)); }
+    .team-b .hp-fill { background: linear-gradient(90deg, var(--team-b-dark), var(--team-b)); }
+
+    .damage-popup {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      opacity: 0;
+      pointer-events: none;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      z-index: 5;
+    }
+
+    .damage-popup.show {
+      animation: damagePop 1.1s ease forwards;
+    }
+
+    .damage-popup.miss { color: #cbd5e1; }
+    .damage-popup.hit { color: var(--danger); }
+
+    @keyframes damagePop {
+      0% { opacity: 0; transform: translate(-50%, -20%) scale(0.4); }
+      20% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); }
+      70% { opacity: 1; transform: translate(-50%, -90%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -120%) scale(0.9); }
+    }
+
+    /* ── Center controls ── */
+    .center-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .attack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .turn-badge {
+      text-align: center;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-weight: 700;
+      color: var(--accent);
+      min-height: 1.4em;
+    }
+
+    /* ── Arena overlay (projectiles / explosions) ── */
+    .arena-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      overflow: hidden;
+    }
+
+    .projectile {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      margin-left: -21px;
+      margin-top: -21px;
+      font-size: 34px;
+      line-height: 42px;
+      text-align: center;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+      z-index: 51;
+    }
+
+    .projectile.ball {
+      background: radial-gradient(circle at 30% 30%, #fff 0%, #888 45%, #333 100%);
+      border-radius: 50%;
+      font-size: 0;
+    }
+
+    .explosion {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      margin-left: -45px;
+      margin-top: -45px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0%, #ffd166 25%, #ff7b54 55%, transparent 72%);
+      opacity: 0;
+      z-index: 52;
+    }
+
+    .explosion.boom {
+      animation: boom 0.55s ease-out forwards;
+    }
+
+    @keyframes boom {
+      0% { opacity: 1; transform: scale(0.3); }
+      40% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(1.6); }
+    }
+
+    /* ── Winner overlay ── */
+    .winner-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.72);
+      z-index: 100;
+      padding: 1.5rem;
+    }
+
+    .winner-overlay.show { display: flex; }
+
+    .winner-card {
+      text-align: center;
+      background: linear-gradient(180deg, #2d4a7a 0%, #1a2744 100%);
+      border: 4px solid var(--accent);
+      border-radius: 24px;
+      padding: clamp(1.5rem, 4vw, 3rem);
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: winnerIn 0.5s ease;
+    }
+
+    @keyframes winnerIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .winner-card h2 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .winner-card p {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .winner-card .btn-new {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      padding: 0.9rem 1.8rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .battlefield {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+
+      .center-panel { order: 2; }
+      .team-panel.team-a { order: 1; }
+      .team-panel.team-b { order: 3; }
+
+      .attack-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .btn-attack {
+        min-width: 0;
+        min-height: 56px;
+        font-size: 0.95rem;
+        padding: 0.5rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .attack-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="title-block">
+      <h1>Fortress Battle</h1>
+      <p>Team A vs Team B — Classroom Battle Game</p>
+    </div>
+    <div class="top-actions">
+      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
+      <button class="btn btn-new" id="btnNewGame" type="button">New Game</button>
+      <button class="btn btn-full" id="btnFullscreen" type="button">Fullscreen</button>
+    </div>
+  </header>
+
+  <details class="settings-panel" id="settingsPanel">
+    <summary>⚙ Game Settings</summary>
+    <div class="settings-body">
+      <div class="setting-row">
+        <label>Start HP</label>
+        <div class="hp-options" id="hpOptions">
+          <label><input type="radio" name="startHp" value="30" /> 30</label>
+          <label><input type="radio" name="startHp" value="50" checked /> 50</label>
+          <label><input type="radio" name="startHp" value="100" /> 100</label>
+        </div>
+      </div>
+      <div class="setting-row damage-row">
+        <label for="damageInput">Damage values</label>
+        <input class="damage-input" id="damageInput" type="text" value="0,10,20,30" />
+        <button class="btn btn-apply" id="btnApplyDamage" type="button">Apply</button>
+      </div>
+      <p class="setting-hint">Comma-separated numbers. Example: 0,10,20,30</p>
+    </div>
+  </details>
+
+  <main class="game-wrap">
+    <div class="turn-row">
+      <button class="btn btn-turn" id="btnTurnA" type="button">Team A Turn</button>
+      <button class="btn btn-turn" id="btnTurnB" type="button">Team B Turn</button>
+    </div>
+
+    <section class="battlefield" id="battlefield">
+      <!-- Team A -->
+      <article class="team-panel team-a" id="teamPanelA" data-team="A">
+        <h2 class="team-name">Team A</h2>
+        <div class="fortress" aria-hidden="true">🏰</div>
+        <div class="hp-block">
+          <div class="hp-label-row">
+            <span>HP</span>
+            <span id="hpTextA">50 / 50</span>
+          </div>
+          <div class="hp-bar"><div class="hp-fill" id="hpFillA"></div></div>
+        </div>
+        <div class="damage-popup" id="damagePopupA"></div>
+      </article>
+
+      <!-- Center attacks -->
+      <div class="center-panel">
+        <p class="turn-badge" id="turnBadge">Team A's Turn</p>
+        <div class="attack-grid">
+          <button class="btn btn-attack" data-attack="0" type="button">Attack 1</button>
+          <button class="btn btn-attack" data-attack="1" type="button">Attack 2</button>
+          <button class="btn btn-attack" data-attack="2" type="button">Attack 3</button>
+          <button class="btn btn-attack" data-attack="3" type="button">Attack 4</button>
+        </div>
+      </div>
+
+      <!-- Team B -->
+      <article class="team-panel team-b" id="teamPanelB" data-team="B">
+        <h2 class="team-name">Team B</h2>
+        <div class="fortress" aria-hidden="true">🏯</div>
+        <div class="hp-block">
+          <div class="hp-label-row">
+            <span>HP</span>
+            <span id="hpTextB">50 / 50</span>
+          </div>
+          <div class="hp-bar"><div class="hp-fill" id="hpFillB"></div></div>
+        </div>
+        <div class="damage-popup" id="damagePopupB"></div>
+      </article>
+    </section>
+  </main>
+
+  <div class="arena-layer" id="arenaLayer" aria-hidden="true"></div>
+
+  <div class="winner-overlay" id="winnerOverlay" role="dialog" aria-modal="true" aria-labelledby="winnerTitle">
+    <div class="winner-card">
+      <h2 id="winnerTitle">Team A Wins!</h2>
+      <p id="winnerSubtitle">The fortress has fallen!</p>
+      <button class="btn btn-new" id="btnPlayAgain" type="button">New Game</button>
+    </div>
+  </div>
+
+  <script>
+    // Fortress Battle - Ethan's Teacher Toolkit
+
+    // ── Sound placeholders (add audio files later) ──
+    function playSound(type) {
+      // type: "hit" | "miss" | "win"
+      // Example: new Audio(`sounds/${type}.mp3`).play();
+    }
+
+    // ── Game state (single source of truth) ──
+    const gameState = {
+      teamA: { hp: 50, maxHp: 50 },
+      teamB: { hp: 50, maxHp: 50 },
+      currentTurn: "A",
+      isAnimating: false,
+      gameOver: false,
+      winner: null,
+      startHp: 50,
+      damageOptions: [0, 10, 20, 30]
+    };
+
+    // ── DOM references ──
+    const els = {
+      hpTextA: document.getElementById("hpTextA"),
+      hpTextB: document.getElementById("hpTextB"),
+      hpFillA: document.getElementById("hpFillA"),
+      hpFillB: document.getElementById("hpFillB"),
+      teamPanelA: document.getElementById("teamPanelA"),
+      teamPanelB: document.getElementById("teamPanelB"),
+      turnBadge: document.getElementById("turnBadge"),
+      btnTurnA: document.getElementById("btnTurnA"),
+      btnTurnB: document.getElementById("btnTurnB"),
+      attackButtons: document.querySelectorAll(".btn-attack"),
+      btnNewGame: document.getElementById("btnNewGame"),
+      btnPlayAgain: document.getElementById("btnPlayAgain"),
+      btnFullscreen: document.getElementById("btnFullscreen"),
+      winnerOverlay: document.getElementById("winnerOverlay"),
+      winnerTitle: document.getElementById("winnerTitle"),
+      winnerSubtitle: document.getElementById("winnerSubtitle"),
+      damagePopupA: document.getElementById("damagePopupA"),
+      damagePopupB: document.getElementById("damagePopupB"),
+      arenaLayer: document.getElementById("arenaLayer"),
+      damageInput: document.getElementById("damageInput"),
+      btnApplyDamage: document.getElementById("btnApplyDamage"),
+      hpOptions: document.getElementById("hpOptions")
+    };
+
+    // ── Initialize game ──
+    function initGame() {
+      readStartHpFromSettings();
+      gameState.teamA.hp = gameState.startHp;
+      gameState.teamA.maxHp = gameState.startHp;
+      gameState.teamB.hp = gameState.startHp;
+      gameState.teamB.maxHp = gameState.startHp;
+      gameState.currentTurn = "A";
+      gameState.isAnimating = false;
+      gameState.gameOver = false;
+      gameState.winner = null;
+      els.winnerOverlay.classList.remove("show");
+      render();
+    }
+
+    function readStartHpFromSettings() {
+      const selected = els.hpOptions.querySelector('input[name="startHp"]:checked');
+      gameState.startHp = selected ? Number(selected.value) : 50;
+    }
+
+    function parseDamageOptions(text) {
+      const values = text
+        .split(",")
+        .map((v) => v.trim())
+        .filter((v) => v !== "")
+        .map(Number)
+        .filter((n) => !Number.isNaN(n) && n >= 0);
+
+      return values.length ? values : [0, 10, 20, 30];
+    }
+
+    function applyDamageSettings() {
+      gameState.damageOptions = parseDamageOptions(els.damageInput.value);
+      els.damageInput.value = gameState.damageOptions.join(",");
+    }
+
+    // ── Render UI from gameState ──
+    function render() {
+      const { teamA, teamB, currentTurn, isAnimating, gameOver } = gameState;
+      const disabled = isAnimating || gameOver;
+
+      els.hpTextA.textContent = `${Math.max(teamA.hp, 0)} / ${teamA.maxHp}`;
+      els.hpTextB.textContent = `${Math.max(teamB.hp, 0)} / ${teamB.maxHp}`;
+
+      const pctA = Math.max(0, (teamA.hp / teamA.maxHp) * 100);
+      const pctB = Math.max(0, (teamB.hp / teamB.maxHp) * 100);
+      els.hpFillA.style.width = `${pctA}%`;
+      els.hpFillB.style.width = `${pctB}%`;
+
+      els.teamPanelA.classList.toggle("active", currentTurn === "A" && !gameOver);
+      els.teamPanelB.classList.toggle("active", currentTurn === "B" && !gameOver);
+
+      els.btnTurnA.classList.toggle("active-a", currentTurn === "A");
+      els.btnTurnB.classList.toggle("active-b", currentTurn === "B");
+
+      els.turnBadge.textContent = gameOver
+        ? "Game Over"
+        : currentTurn === "A"
+          ? "Team A's Turn — Attack!"
+          : "Team B's Turn — Attack!";
+
+      els.attackButtons.forEach((btn) => {
+        btn.disabled = disabled;
+      });
+
+      els.btnTurnA.disabled = disabled;
+      els.btnTurnB.disabled = disabled;
+    }
+
+    // ── Pick random damage from configured options ──
+    function rollDamage() {
+      const opts = gameState.damageOptions;
+      return opts[Math.floor(Math.random() * opts.length)];
+    }
+
+    // ── Attack flow ──
+    async function attack(powerIndex) {
+      if (gameState.isAnimating || gameState.gameOver) return;
+
+      gameState.isAnimating = true;
+      render();
+
+      const damage = rollDamage();
+      const attacker = gameState.currentTurn;
+
+      await animateProjectile(attacker, damage, powerIndex);
+
+      const targetTeam = attacker === "A" ? "B" : "A";
+      applyDamage(targetTeam, damage);
+
+      if (!checkWinner()) {
+        switchTurn();
+      }
+
+      gameState.isAnimating = false;
+      render();
+    }
+
+    // ── Get center point of a team's fortress for animation ──
+    function getFortressPoint(team) {
+      const panel = team === "A" ? els.teamPanelA : els.teamPanelB;
+      const fortress = panel.querySelector(".fortress");
+      const rect = fortress.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      };
+    }
+
+    // ── Parabolic projectile animation ──
+    function animateProjectile(attacker, damage, powerIndex) {
+      return new Promise((resolve) => {
+        const target = attacker === "A" ? "B" : "A";
+        const start = getFortressPoint(attacker);
+        const end = getFortressPoint(target);
+
+        const projectile = document.createElement("div");
+        projectile.className = "projectile";
+        // Alternate cannonball emoji / circle by button index
+        if (powerIndex % 2 === 0) {
+          projectile.textContent = "💣";
+        } else {
+          projectile.classList.add("ball");
+        }
+
+        els.arenaLayer.appendChild(projectile);
+
+        const duration = 850;
+        const arcHeight = Math.min(160, Math.abs(end.x - start.x) * 0.18 + 80);
+        let startTime = null;
+
+        function frame(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const t = Math.min((timestamp - startTime) / duration, 1);
+
+          const x = start.x + (end.x - start.x) * t;
+          const linearY = start.y + (end.y - start.y) * t;
+          const y = linearY - arcHeight * 4 * t * (1 - t);
+
+          projectile.style.left = `${x}px`;
+          projectile.style.top = `${y}px`;
+
+          if (t < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            projectile.remove();
+            showExplosion(end.x, end.y, resolve);
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
+    }
+
+    function showExplosion(x, y, onDone) {
+      const boom = document.createElement("div");
+      boom.className = "explosion boom";
+      boom.style.left = `${x}px`;
+      boom.style.top = `${y}px`;
+      els.arenaLayer.appendChild(boom);
+
+      boom.addEventListener("animationend", () => {
+        boom.remove();
+        if (onDone) onDone();
+      }, { once: true });
+    }
+
+    // ── Apply damage and show floating text ──
+    function applyDamage(targetTeam, damage) {
+      const teamKey = targetTeam === "A" ? "teamA" : "teamB";
+      gameState[teamKey].hp -= damage;
+
+      const popup = targetTeam === "A" ? els.damagePopupA : els.damagePopupB;
+      popup.classList.remove("show", "miss", "hit");
+
+      if (damage === 0) {
+        popup.textContent = "MISS!";
+        popup.classList.add("miss");
+        playSound("miss");
+      } else {
+        popup.textContent = `-${damage}`;
+        popup.classList.add("hit");
+        playSound("hit");
+      }
+
+      // Restart animation
+      void popup.offsetWidth;
+      popup.classList.add("show");
+    }
+
+    // ── Switch turn to the other team ──
+    function switchTurn() {
+      gameState.currentTurn = gameState.currentTurn === "A" ? "B" : "A";
+    }
+
+    // ── Check for winner; returns true if game ended ──
+    function checkWinner() {
+      const { teamA, teamB } = gameState;
+
+      if (teamA.hp <= 0 || teamB.hp <= 0) {
+        gameState.gameOver = true;
+
+        if (teamA.hp <= 0 && teamB.hp <= 0) {
+          gameState.winner = "Draw";
+          els.winnerTitle.textContent = "It's a Draw!";
+          els.winnerSubtitle.textContent = "Both fortresses fell at the same time!";
+        } else if (teamA.hp <= 0) {
+          gameState.winner = "B";
+          els.winnerTitle.textContent = "Team B Wins!";
+          els.winnerSubtitle.textContent = "Team A's fortress has fallen!";
+        } else {
+          gameState.winner = "A";
+          els.winnerTitle.textContent = "Team A Wins!";
+          els.winnerSubtitle.textContent = "Team B's fortress has fallen!";
+        }
+
+        playSound("win");
+        els.winnerOverlay.classList.add("show");
+        return true;
+      }
+
+      return false;
+    }
+
+    function resetGame() {
+      applyDamageSettings();
+      readStartHpFromSettings();
+      initGame();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    }
+
+    function setTurn(team) {
+      if (gameState.isAnimating || gameState.gameOver) return;
+      gameState.currentTurn = team;
+      render();
+    }
+
+    // ── Event listeners ──
+    els.attackButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        attack(Number(btn.dataset.attack));
+      });
+    });
+
+    els.btnTurnA.addEventListener("click", () => setTurn("A"));
+    els.btnTurnB.addEventListener("click", () => setTurn("B"));
+    els.btnNewGame.addEventListener("click", resetGame);
+    els.btnPlayAgain.addEventListener("click", resetGame);
+    els.btnFullscreen.addEventListener("click", toggleFullscreen);
+    els.btnApplyDamage.addEventListener("click", applyDamageSettings);
+
+    els.hpOptions.addEventListener("change", () => {
+      readStartHpFromSettings();
+    });
+
+    // ── Start ──
+    applyDamageSettings();
+    initGame();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Dice Chance - Ethan's Teacher Toolkit -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎲 Dice Chance</title>
+  <style>
+    :root {
+      --bg: #f0f4ff;
+      --surface: #ffffff;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #dbeafe;
+      --primary-dark: #1e40af;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --cover: #3b82f6;
+      --cover-hover: #2563eb;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+      --shadow-lg: 0 20px 40px -12px rgb(0 0 0 / 0.18);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --dice-size: clamp(3.5rem, 8vw, 5.5rem);
+      --reward-min-h: clamp(64px, 10vw, 88px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: linear-gradient(135deg, #dbeafe 0%, #f0f4ff 45%, #fef3c7 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.5;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Decorative dice background */
+    body::before {
+      content: "🎲 🎲 🎲 🎲 🎲 🎲 🎲 🎲";
+      position: fixed;
+      inset: 0;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      opacity: 0.06;
+      letter-spacing: 2rem;
+      line-height: 3.5rem;
+      word-break: break-all;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .view { display: none; min-height: 100vh; position: relative; z-index: 1; }
+    .view.active { display: flex; flex-direction: column; }
+
+    /* ── Setup ── */
+    .setup-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 16px 48px;
+      width: 100%;
+    }
+
+    .setup-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    header { text-align: center; flex: 1; min-width: 200px; }
+
+    header h1 {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+    }
+
+    .dice-hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .dice-icon-wrap {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Optional assets/dice.png — hidden when missing */
+    .dice-icon-wrap img.dice-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .dice-icon-wrap.has-img img.dice-img { display: block; }
+    .dice-icon-wrap.has-img .dice-emoji-fallback { display: none; }
+
+    .dice-emoji-fallback { font-size: 2.5rem; line-height: 1; }
+
+    .css-dice {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(145deg, #fff 0%, #e2e8f0 100%);
+      border-radius: 10px;
+      border: 3px solid var(--primary-dark);
+      box-shadow: 3px 3px 0 rgb(30 64 175 / 0.25);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+      padding: 7px;
+    }
+
+    .css-dice .pip {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--primary-dark);
+      justify-self: center;
+      align-self: center;
+    }
+
+    .css-dice .pip:empty { visibility: hidden; }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .mode-picker {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .mode-option {
+      flex: 1;
+      min-width: 140px;
+      cursor: pointer;
+    }
+
+    .mode-option input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .mode-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      font-weight: 700;
+      font-size: 1rem;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      text-align: center;
+    }
+
+    .mode-chip span:last-child {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .mode-option input:checked + .mode-chip {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .mode-option:hover .mode-chip { transform: translateY(-2px); }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input { width: 18px; height: 18px; accent-color: var(--primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn:active:not(:disabled) { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgb(37 99 235 / 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) { background: var(--border); }
+
+    .btn-home {
+      background: #e2e8f0;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+    .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .preset-row select, .preset-row input {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .preset-row select:focus, .preset-row input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* ── Play ── */
+    .play-view {
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 40%);
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 80px;
+      position: relative;
+    }
+
+    .play-bg-dice {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .play-bg-dice span {
+      position: absolute;
+      font-size: clamp(2rem, 6vw, 4rem);
+      opacity: 0.08;
+      animation: floatDice 8s ease-in-out infinite;
+    }
+
+    .play-bg-dice span:nth-child(1) { top: 8%; left: 5%; animation-delay: 0s; }
+    .play-bg-dice span:nth-child(2) { top: 20%; right: 8%; animation-delay: 1.5s; }
+    .play-bg-dice span:nth-child(3) { bottom: 25%; left: 10%; animation-delay: 3s; }
+    .play-bg-dice span:nth-child(4) { bottom: 10%; right: 12%; animation-delay: 0.8s; }
+    .play-bg-dice span:nth-child(5) { top: 45%; left: 3%; animation-delay: 2.2s; }
+    .play-bg-dice span:nth-child(6) { top: 55%; right: 4%; animation-delay: 4s; }
+
+    @keyframes floatDice {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(8deg); }
+    }
+
+    .play-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgb(255 255 255 / 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .play-view:hover .play-toolbar,
+    .play-toolbar:focus-within,
+    .play-toolbar.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toolbar-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .play-toolbar .status {
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .play-toolbar .toolbar-title {
+      font-weight: 800;
+      color: var(--primary-dark);
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .icon-btn:hover { background: var(--bg); }
+
+    .board-wrap {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .board-header {
+      text-align: center;
+      margin-bottom: clamp(20px, 4vw, 36px);
+    }
+
+    .board-header h2 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 900;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .board-header p {
+      color: var(--text-muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .dice-board {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 2vw, 16px);
+    }
+
+    .dice-row {
+      display: flex;
+      align-items: stretch;
+      gap: clamp(12px, 3vw, 24px);
+      min-height: var(--reward-min-h);
+      cursor: pointer;
+    }
+
+    .dice-row.revealed { cursor: default; }
+
+    .dice-number {
+      flex: 0 0 var(--dice-size);
+      width: var(--dice-size);
+      height: var(--dice-size);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: white;
+      background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 14px;
+      box-shadow: 0 6px 0 rgb(30 64 175 / 0.35), 0 8px 20px rgb(37 99 235 / 0.2);
+      text-shadow: 0 2px 4px rgb(0 0 0 / 0.2);
+      align-self: center;
+    }
+
+    .dice-number.range {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: var(--dice-size);
+      padding: 0 clamp(10px, 2vw, 16px);
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      letter-spacing: -0.02em;
+    }
+
+    .reward-cell {
+      flex: 1;
+      position: relative;
+      min-height: var(--reward-min-h);
+      border-radius: var(--radius-sm);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .reward-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: var(--reward-min-h);
+      padding: 14px 18px;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--primary-dark);
+      background: linear-gradient(145deg, #eff6ff, #dbeafe);
+      border: 3px solid var(--primary);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgb(37 99 235 / 0.12);
+      visibility: hidden;
+    }
+
+    .reward-cell.revealed .reward-text {
+      visibility: visible;
+    }
+
+    .reward-cell.revealed .reward-text.reveal-pop {
+      animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .reward-cover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--cover) 0%, var(--primary-dark) 100%);
+      border-radius: var(--radius-sm);
+      border: 3px solid var(--primary-dark);
+      box-shadow: 0 6px 0 rgb(30 64 175 / 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      z-index: 2;
+    }
+
+    .reward-cover::before {
+      content: "🎲";
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      margin-right: 8px;
+    }
+
+    .reward-cover::after {
+      content: "???";
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 900;
+      color: white;
+      letter-spacing: 0.08em;
+    }
+
+    .dice-row:not(.revealed):hover .reward-cover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 rgb(30 64 175 / 0.3);
+    }
+
+    .reward-cell.revealed .reward-cover {
+      display: none;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .play-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgb(30 41 59 / 0.88);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      font-weight: 500;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 5;
+      white-space: nowrap;
+    }
+
+    .play-hint.hidden { opacity: 0; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      font-weight: 600;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+      .play-hint { white-space: normal; text-align: center; max-width: 90vw; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 설정 화면 -->
+<section id="setupView" class="view active">
+  <div class="setup-wrap">
+    <div class="setup-top">
+      <header>
+        <h1>🎲 Dice Chance</h1>
+        <p>주사위 결과에 따라 팀이 포인트나 아이템을 얻는 수업용 게임</p>
+        <div class="dice-hero">
+          <div class="dice-icon-wrap" id="setupDiceIcon">
+            <img src="assets/dice.png" alt="" class="dice-img" id="setupDiceImg">
+            <span class="dice-emoji-fallback">🎲</span>
+          </div>
+          <div class="css-dice" aria-hidden="true">
+            <span class="pip"></span><span class="pip"></span>
+            <span class="pip"></span><span class="pip"></span>
+            <span class="pip"></span><span class="pip"></span>
+          </div>
+        </div>
+      </header>
+      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Rewards / Items</div>
+      <label class="field-label" for="optionsInput">보상·아이템 목록 (한 줄에 하나)</label>
+      <textarea id="optionsInput" placeholder="+10 POINTS&#10;+20 POINTS&#10;BOMB&#10;SHIELD&#10;SWITCH POINT&#10;THROW AGAIN&#10;STEAL 10&#10;DOUBLE POINTS&#10;MISS&#10;CHANGE SCORE"></textarea>
+      <p class="hint">6개 이상 입력하면 게임 시작 시 무작위로 6개만 선택됩니다.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Dice Mode</div>
+      <div class="mode-picker">
+        <label class="mode-option">
+          <input type="radio" name="diceMode" value="1" checked>
+          <span class="mode-chip">
+            🎲 1 Dice Mode
+            <span>결과 1 ~ 6 (6칸)</span>
+          </span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="diceMode" value="2">
+          <span class="mode-chip">
+            🎲🎲 2 Dice Mode
+            <span>1~2 / 3~4 … 11~12 (6칸)</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Options</div>
+      <label class="checkbox-label">
+        <input type="checkbox" id="hideToolbar" checked>
+        <span>발표 중 상단 메뉴 자동 숨김</span>
+      </label>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Preset</div>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button class="btn btn-secondary" id="loadPresetBtn" disabled>Load Preset</button>
+      </div>
+      <div class="preset-row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 3반 Dice Chance)" maxlength="30">
+        <button class="btn btn-secondary" id="savePresetBtn">Save Preset</button>
+        <button class="btn btn-secondary" id="deletePresetBtn" disabled>Delete Preset</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="startBtn">Start Game</button>
+      <button class="btn btn-secondary" id="sampleBtn">Sample Load</button>
+    </div>
+  </div>
+</section>
+
+<!-- 플레이 화면 -->
+<section id="playView" class="view play-view">
+  <div class="play-bg-dice" aria-hidden="true">
+    <span>🎲</span><span>🎲</span><span>🎲</span><span>🎲</span><span>🎲</span><span>🎲</span>
+  </div>
+
+  <div class="play-toolbar" id="playToolbar">
+    <button class="icon-btn" id="backBtn">← Back to Setup</button>
+    <div class="toolbar-center">
+      <span class="toolbar-title">🎲 Dice Chance</span>
+      <span class="status" id="statusText">주사위 숫자를 클릭해 보상을 공개하세요</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="icon-btn" id="resetRoundBtn" title="Reset Round (R)">↻ Reset Round</button>
+      <button class="icon-btn" id="fullscreenBtn" title="Fullscreen (F)">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board-header">
+      <h2>🎲 Dice Chance</h2>
+      <p id="modeLabel">1 Dice Mode · 1 ~ 6</p>
+    </div>
+    <div class="dice-board" id="diceBoard"></div>
+  </div>
+
+  <div class="play-hint" id="playHint">주사위 결과 칸을 클릭하면 보상이 공개됩니다 · R: 새 라운드 · Esc: 설정</div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* Dice Chance - Ethan's Teacher Toolkit */
+
+  const STORAGE_KEY = 'diceChanceGame';
+
+  const gameState = {
+    optionsText: '',
+    options: [],
+    diceMode: 1,
+    slotCount: 6,
+    roundRewards: [],
+    revealed: new Set(),
+    hideToolbar: true,
+    presets: [],
+  };
+
+  const els = {
+    setupView: document.getElementById('setupView'),
+    playView: document.getElementById('playView'),
+    optionsInput: document.getElementById('optionsInput'),
+    hideToolbar: document.getElementById('hideToolbar'),
+    startBtn: document.getElementById('startBtn'),
+    sampleBtn: document.getElementById('sampleBtn'),
+    presetSelect: document.getElementById('presetSelect'),
+    loadPresetBtn: document.getElementById('loadPresetBtn'),
+    presetNameInput: document.getElementById('presetNameInput'),
+    savePresetBtn: document.getElementById('savePresetBtn'),
+    deletePresetBtn: document.getElementById('deletePresetBtn'),
+    playToolbar: document.getElementById('playToolbar'),
+    backBtn: document.getElementById('backBtn'),
+    statusText: document.getElementById('statusText'),
+    resetRoundBtn: document.getElementById('resetRoundBtn'),
+    fullscreenBtn: document.getElementById('fullscreenBtn'),
+    diceBoard: document.getElementById('diceBoard'),
+    modeLabel: document.getElementById('modeLabel'),
+    playHint: document.getElementById('playHint'),
+    toast: document.getElementById('toast'),
+    setupDiceImg: document.getElementById('setupDiceImg'),
+    setupDiceIcon: document.getElementById('setupDiceIcon'),
+  };
+
+  let toastTimer = null;
+
+  function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function getDiceMode() {
+    const checked = document.querySelector('input[name="diceMode"]:checked');
+    return checked ? Number(checked.value) : 1;
+  }
+
+  function setDiceMode(mode) {
+    const input = document.querySelector(`input[name="diceMode"][value="${mode}"]`);
+    if (input) input.checked = true;
+  }
+
+  function getSlotCount() {
+    return 6;
+  }
+
+  function getDiceLabel(index) {
+    if (gameState.diceMode === 2) {
+      const low = index * 2 + 1;
+      const high = low + 1;
+      return `${low}~${high}`;
+    }
+    return String(index + 1);
+  }
+
+  function getModeLabelText() {
+    return gameState.diceMode === 2
+      ? '2 Dice Mode · 1~2 / 3~4 / … / 11~12'
+      : '1 Dice Mode · 1 ~ 6';
+  }
+
+  function persist() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      optionsText: els.optionsInput.value,
+      diceMode: gameState.diceMode,
+      hideToolbar: gameState.hideToolbar,
+      presets: gameState.presets,
+    }));
+  }
+
+  function showToast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
+  }
+
+  function parseOptions() {
+    gameState.options = els.optionsInput.value
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean);
+    gameState.optionsText = els.optionsInput.value;
+    return gameState.options;
+  }
+
+  function pickRandomRewards(options, count) {
+    if (options.length < count) return null;
+    return shuffle(options).slice(0, count);
+  }
+
+  function generateRound() {
+    const rewards = pickRandomRewards(gameState.options, gameState.slotCount);
+    if (!rewards) return false;
+    gameState.roundRewards = rewards;
+    gameState.revealed = new Set();
+    return true;
+  }
+
+  function updateStatus() {
+    const total = gameState.slotCount;
+    const revealed = gameState.revealed.size;
+    const modeText = gameState.diceMode === 2 ? '2 Dice' : '1 Dice';
+
+    if (revealed === 0) {
+      els.statusText.textContent = `${modeText} · ${total}칸 · 클릭해서 공개하세요`;
+    } else if (revealed < total) {
+      els.statusText.textContent = `${revealed} / ${total} 공개됨`;
+    } else {
+      els.statusText.textContent = '모두 공개됨 · R 키로 새 라운드';
+    }
+
+    els.playHint.classList.toggle('hidden', revealed > 0);
+  }
+
+  function renderBoard() {
+    els.diceBoard.className = 'dice-board';
+    els.modeLabel.textContent = getModeLabelText();
+
+    els.diceBoard.innerHTML = gameState.roundRewards.map((reward, i) => {
+      const label = getDiceLabel(i);
+      const isRange = gameState.diceMode === 2;
+      const revealed = gameState.revealed.has(i);
+      return `
+        <div class="dice-row${revealed ? ' revealed' : ''}" data-index="${i}" role="button" tabindex="0" aria-label="주사위 ${label}${revealed ? ', ' + reward : ', 보상 숨김'}">
+          <div class="dice-number${isRange ? ' range' : ''}" aria-hidden="true">${label}</div>
+          <div class="reward-cell${revealed ? ' revealed' : ''}">
+            <div class="reward-text${revealed ? ' reveal-pop' : ''}">${escapeHtml(reward)}</div>
+            <div class="reward-cover" aria-hidden="true"></div>
+          </div>
+        </div>`;
+    }).join('');
+
+    updateStatus();
+  }
+
+  function revealResult(index) {
+    if (gameState.revealed.has(index)) return;
+    gameState.revealed.add(index);
+
+    const row = els.diceBoard.querySelector(`[data-index="${index}"]`);
+    if (row) {
+      row.classList.add('revealed');
+      row.querySelector('.reward-cell')?.classList.add('revealed');
+      row.querySelector('.reward-text')?.classList.add('reveal-pop');
+      row.setAttribute('aria-label', `주사위 ${getDiceLabel(index)}, ${gameState.roundRewards[index]}`);
+    }
+
+    updateStatus();
+    if (navigator.vibrate) navigator.vibrate(30);
+  }
+
+  function startGame() {
+    gameState.diceMode = getDiceMode();
+    gameState.slotCount = getSlotCount();
+    gameState.hideToolbar = els.hideToolbar.checked;
+
+    const options = parseOptions();
+    if (options.length === 0) {
+      showToast('보상·아이템을 한 줄 이상 입력해 주세요');
+      els.optionsInput.focus();
+      return;
+    }
+
+    if (options.length < gameState.slotCount) {
+      showToast(`옵션이 ${gameState.slotCount}개 이상 필요합니다 (현재 ${options.length}개)`);
+      els.optionsInput.focus();
+      return;
+    }
+
+    if (!generateRound()) {
+      showToast('라운드를 생성할 수 없습니다');
+      return;
+    }
+
+    persist();
+
+    els.setupView.classList.remove('active');
+    els.playView.classList.add('active');
+    els.playToolbar.classList.toggle('visible', !gameState.hideToolbar);
+
+    renderBoard();
+    showToast(`Dice Chance 준비 완료! (${gameState.slotCount}칸)`);
+  }
+
+  function resetRound() {
+    if (!generateRound()) {
+      showToast(`옵션이 ${gameState.slotCount}개 이상 필요합니다`);
+      return;
+    }
+    renderBoard();
+    showToast('New Dice Chance Round!');
+  }
+
+  function goSetup() {
+    els.playView.classList.remove('active');
+    els.setupView.classList.add('active');
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  }
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      document.documentElement.requestFullscreen().catch(() => showToast('전체 화면을 사용할 수 없습니다'));
+    }
+  }
+
+  function renderPresets() {
+    const selected = els.presetSelect.value;
+    els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
+      gameState.presets.map(p => {
+        const mode = p.diceMode === 2 ? '2 Dice' : '1 Dice';
+        return `<option value="${p.id}"${p.id === selected ? ' selected' : ''}>${escapeHtml(p.name)} (${p.options.length}개 · ${mode})</option>`;
+      }).join('');
+    const has = !!els.presetSelect.value;
+    els.loadPresetBtn.disabled = !has;
+    els.deletePresetBtn.disabled = !has;
+  }
+
+  function savePreset() {
+    const name = els.presetNameInput.value.trim();
+    if (!name) {
+      showToast('프리셋 이름을 입력해 주세요');
+      return;
+    }
+
+    const options = parseOptions();
+    if (options.length === 0) {
+      showToast('저장할 옵션이 없습니다');
+      return;
+    }
+
+    const diceMode = getDiceMode();
+    const existing = gameState.presets.find(p => p.name.toLowerCase() === name.toLowerCase());
+
+    if (existing) {
+      if (!confirm(`"${name}" 프리셋이 있습니다. 덮어쓸까요?`)) return;
+      existing.options = options;
+      existing.diceMode = diceMode;
+    } else {
+      gameState.presets.push({ id: generateId(), name, options, diceMode });
+    }
+
+    persist();
+    renderPresets();
+    showToast(`"${name}" 저장됨`);
+  }
+
+  function loadPreset() {
+    const id = els.presetSelect.value;
+    if (!id) return;
+    const preset = gameState.presets.find(p => p.id === id);
+    if (!preset) return;
+
+    els.optionsInput.value = preset.options.join('\n');
+    els.presetNameInput.value = preset.name;
+    setDiceMode(preset.diceMode || 1);
+    gameState.diceMode = preset.diceMode || 1;
+
+    persist();
+    showToast(`"${preset.name}" 불러옴`);
+  }
+
+  function deletePreset() {
+    const id = els.presetSelect.value;
+    if (!id) return;
+    const preset = gameState.presets.find(p => p.id === id);
+    if (!preset || !confirm(`"${preset.name}" 프리셋을 삭제할까요?`)) return;
+
+    gameState.presets = gameState.presets.filter(p => p.id !== id);
+    els.presetSelect.value = '';
+    persist();
+    renderPresets();
+    showToast('프리셋 삭제됨');
+  }
+
+  function loadSample() {
+    els.optionsInput.value = [
+      '+10 POINTS',
+      '+20 POINTS',
+      'BOMB',
+      'SHIELD',
+      'SWITCH POINT',
+      'THROW AGAIN',
+      'STEAL 10',
+      'DOUBLE POINTS',
+      'MISS',
+      'CHANGE SCORE',
+    ].join('\n');
+    showToast('샘플 옵션을 불러왔습니다');
+  }
+
+  function tryLoadDiceImage() {
+    const img = els.setupDiceImg;
+    img.onload = () => els.setupDiceIcon.classList.add('has-img');
+    img.onerror = () => els.setupDiceIcon.classList.remove('has-img');
+    if (img.complete && img.naturalWidth > 0) {
+      els.setupDiceIcon.classList.add('has-img');
+    }
+  }
+
+  function init() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (typeof data.optionsText === 'string') els.optionsInput.value = data.optionsText;
+        if (typeof data.diceMode === 'number') {
+          gameState.diceMode = data.diceMode;
+          setDiceMode(data.diceMode);
+        }
+        if (typeof data.hideToolbar === 'boolean') gameState.hideToolbar = data.hideToolbar;
+        if (Array.isArray(data.presets)) gameState.presets = data.presets;
+      }
+    } catch { /* ignore */ }
+
+    els.hideToolbar.checked = gameState.hideToolbar;
+    renderPresets();
+    tryLoadDiceImage();
+
+    els.startBtn.addEventListener('click', startGame);
+    els.sampleBtn.addEventListener('click', loadSample);
+    els.backBtn.addEventListener('click', goSetup);
+    els.resetRoundBtn.addEventListener('click', resetRound);
+    els.fullscreenBtn.addEventListener('click', toggleFullscreen);
+    els.savePresetBtn.addEventListener('click', savePreset);
+    els.loadPresetBtn.addEventListener('click', loadPreset);
+    els.deletePresetBtn.addEventListener('click', deletePreset);
+
+    els.presetSelect.addEventListener('change', () => {
+      const has = !!els.presetSelect.value;
+      els.loadPresetBtn.disabled = !has;
+      els.deletePresetBtn.disabled = !has;
+    });
+
+    els.diceBoard.addEventListener('click', (e) => {
+      const row = e.target.closest('.dice-row');
+      if (!row || row.classList.contains('revealed')) return;
+      revealResult(Number(row.dataset.index));
+    });
+
+    els.diceBoard.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const row = e.target.closest('.dice-row');
+      if (!row || row.classList.contains('revealed')) return;
+      e.preventDefault();
+      revealResult(Number(row.dataset.index));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!els.playView.classList.contains('active')) return;
+      if (e.key === 'Escape') { goSetup(); return; }
+      if (e.key === 'r' || e.key === 'R') { resetRound(); return; }
+      if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); return; }
+    });
+  }
+
+  init();
+</script>
+</body>
+</html>
