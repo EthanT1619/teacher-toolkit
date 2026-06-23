@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nerf Gun Board</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #0f1118;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: #fff;
+    }
+
+    .view {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+
+    .view.active {
+      display: flex;
+    }
+
+    /* ── Spin (setting) screen ── */
+    .view-spin {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(24px, 5vh, 40px);
+      padding: 24px 20px 32px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(79, 70, 229, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(255, 152, 0, 0.12) 0%, transparent 45%),
+        #0f1118;
+    }
+
+    .spin-header {
+      text-align: center;
+    }
+
+    .spin-header h1 {
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .spin-header p {
+      margin-top: 8px;
+      font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .reel-wrap {
+      position: relative;
+      width: min(92vw, 520px);
+    }
+
+    .reel-window {
+      position: relative;
+      height: var(--item-h, 72px);
+      overflow: hidden;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 210, 60, 0.7);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3),
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        inset 0 0 24px rgba(255, 200, 50, 0.06);
+    }
+
+    .reel-window::before,
+    .reel-window::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 28%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .reel-window::before {
+      top: 0;
+      background: linear-gradient(to bottom, rgba(15, 17, 24, 0.9), transparent);
+    }
+
+    .reel-window::after {
+      bottom: 0;
+      background: linear-gradient(to top, rgba(15, 17, 24, 0.9), transparent);
+    }
+
+    .reel-pointer {
+      position: absolute;
+      left: -10px;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: var(--item-h, 72px);
+      border-top: 2px solid rgba(255, 210, 60, 0.5);
+      border-bottom: 2px solid rgba(255, 210, 60, 0.5);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .reel-pointer::before,
+    .reel-pointer::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 10px solid transparent;
+    }
+
+    .reel-pointer::before {
+      left: 0;
+      border-right-color: #ffd23c;
+    }
+
+    .reel-pointer::after {
+      right: 0;
+      border-left-color: #ffd23c;
+    }
+
+    .reel-strip {
+      will-change: transform;
+    }
+
+    .reel-strip.spinning {
+      transition: transform var(--spin-duration, 4s) cubic-bezier(0.12, 0.75, 0.18, 1);
+    }
+
+    .reel-item {
+      height: var(--item-h, 72px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      font-size: clamp(1rem, 3.2vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: rgba(255, 255, 255, 0.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .reel-wrap.is-winner .reel-window {
+      border-color: #70e000;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(112, 224, 0, 0.35);
+    }
+
+    .spin-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      padding: 16px 48px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: clamp(1.05rem, 3vw, 1.3rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #1a1200;
+      background: linear-gradient(180deg, #ffe566 0%, #ffc107 45%, #ff9800 100%);
+      box-shadow: 0 4px 0 #c67600, 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s, box-shadow 0.1s, opacity 0.2s;
+    }
+
+    .btn:hover:not(:disabled) { filter: brightness(1.05); }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #c67600, 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spin-status {
+      min-height: 1.4em;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .view-spin.is-spinning .spin-status {
+      animation: pulse 0.4s ease infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.55; }
+      to { opacity: 1; }
+    }
+
+    /* ── Result screen ── */
+    .view-result {
+      background: #0a0a0f;
+    }
+
+    .board-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .board-stage img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .fab-wrap {
+      position: fixed;
+      left: clamp(16px, 3vw, 28px);
+      bottom: clamp(16px, 3vh, 28px);
+      z-index: 40;
+    }
+
+    .fab-back {
+      appearance: none;
+      width: 52px;
+      height: 52px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      line-height: 1;
+      color: #fff;
+      background: rgba(30, 32, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+
+    .fab-back:hover {
+      background: rgba(45, 48, 62, 0.96);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .fab-back:active {
+      transform: scale(0.94);
+    }
+  </style>
+</head>
+<body>
+  <div class="view view-spin active" id="viewSpin">
+    <header class="spin-header">
+      <h1>🎯 Nerf Gun Board</h1>
+      <p>15개의 보드 중 하나를 랜덤으로 선택합니다</p>
+    </header>
+
+    <div class="reel-wrap" id="reelWrap">
+      <div class="reel-window">
+        <div class="reel-strip" id="reelStrip"></div>
+      </div>
+      <div class="reel-pointer" aria-hidden="true"></div>
+    </div>
+
+    <div class="spin-actions">
+      <p class="spin-status" id="spinStatus">뽑기 버튼을 눌러주세요</p>
+      <button type="button" class="btn" id="btnSpin">뽑기</button>
+    </div>
+  </div>
+
+  <div class="view view-result" id="viewResult" aria-live="polite">
+    <div class="board-stage">
+      <img id="boardImage" alt="" draggable="false">
+    </div>
+
+    <div class="fab-wrap">
+      <button type="button" class="fab-back" id="btnBackFab" aria-label="뽑기 화면으로 돌아가기">←</button>
+    </div>
+  </div>
+
+  <script>
+    const BOARDS = [
+      "1 Hexagon Mission.png",
+      "2 Circle Arena.png",
+      "3 Diamond Path.png",
+      "4 Star Burst.png",
+      "5 Rocket Launcher.png",
+      "6 Treasure Island.png",
+      "7 Maze Explorer.png",
+      "8 UFO Zone.png",
+      "9 Cloud Kingdom.png",
+      "10 Star Board.png",
+      "11 Under the Sea.png",
+      "12 Fantasy Board.png",
+      "13 SF fantasy.png",
+      "14 Cyberpunk world.png",
+      "15 Wild West Saloon.png",
+    ];
+
+    const ITEM_HEIGHT = 72;
+    const LOOP_COUNT = 3;
+    const SPIN_DURATION_MS = 3800;
+
+    const viewSpin = document.getElementById("viewSpin");
+    const viewResult = document.getElementById("viewResult");
+    const reelWrap = document.getElementById("reelWrap");
+    const reelStrip = document.getElementById("reelStrip");
+    const spinStatus = document.getElementById("spinStatus");
+    const btnSpin = document.getElementById("btnSpin");
+    const btnBackFab = document.getElementById("btnBackFab");
+    const boardImage = document.getElementById("boardImage");
+
+    document.documentElement.style.setProperty("--item-h", ITEM_HEIGHT + "px");
+
+    let spinning = false;
+    let currentOffset = 0;
+    let pendingWinner = null;
+
+    function boardLabel(filename) {
+      return filename.replace(/^\d+\s*/, "").replace(/\.png$/i, "");
+    }
+
+    function boardSrc(filename) {
+      return "assets/" + encodeURIComponent(filename);
+    }
+
+    function buildStrip() {
+      reelStrip.innerHTML = "";
+      reelStrip.classList.remove("spinning");
+      reelStrip.style.transform = "translateY(0)";
+
+      for (let loop = 0; loop < LOOP_COUNT; loop++) {
+        for (const file of BOARDS) {
+          const el = document.createElement("div");
+          el.className = "reel-item";
+          el.textContent = boardLabel(file);
+          reelStrip.appendChild(el);
+        }
+      }
+    }
+
+    function setOffset(index, animate) {
+      reelStrip.classList.toggle("spinning", animate);
+      reelStrip.style.setProperty("--spin-duration", SPIN_DURATION_MS + "ms");
+      reelStrip.style.transform = "translateY(-" + (index * ITEM_HEIGHT) + "px)";
+      currentOffset = index;
+    }
+
+    function showSpinView() {
+      viewResult.classList.remove("active");
+      viewSpin.classList.add("active");
+      reelWrap.classList.remove("is-winner");
+      viewSpin.classList.remove("is-spinning");
+      buildStrip();
+      setOffset(0, false);
+      spinStatus.textContent = "뽑기 버튼을 눌러주세요";
+      btnSpin.disabled = false;
+    }
+
+    function showResultView(file, label) {
+      boardImage.src = boardSrc(file);
+      boardImage.alt = label;
+      viewSpin.classList.remove("active");
+      viewResult.classList.add("active");
+    }
+
+    function preloadImage(src) {
+      return new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = function () { resolve(img); };
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      pendingWinner = null;
+      reelWrap.classList.remove("is-winner");
+      viewSpin.classList.add("is-spinning");
+      btnSpin.disabled = true;
+      spinStatus.textContent = "돌아가는 중…";
+
+      const winnerIndex = Math.floor(Math.random() * BOARDS.length);
+      const extraLoops = 1 + Math.floor(Math.random() * 2);
+      const targetIndex = BOARDS.length * extraLoops + winnerIndex;
+      const winnerFile = BOARDS[winnerIndex];
+      const label = boardLabel(winnerFile);
+
+      pendingWinner = { file: winnerFile, label: label };
+      preloadImage(boardSrc(winnerFile)).catch(function () {});
+
+      buildStrip();
+      setOffset(0, false);
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          setOffset(targetIndex, true);
+        });
+      });
+
+      reelStrip.addEventListener("transitionend", onSpinEnd, { once: true });
+    }
+
+    function onSpinEnd() {
+      spinning = false;
+      viewSpin.classList.remove("is-spinning");
+      reelWrap.classList.add("is-winner");
+      btnSpin.disabled = false;
+
+      if (!pendingWinner) return;
+
+      spinStatus.textContent = "🎉 " + pendingWinner.label + " !";
+
+      setTimeout(function () {
+        showResultView(pendingWinner.file, pendingWinner.label);
+        pendingWinner = null;
+      }, 600);
+    }
+
+    btnSpin.addEventListener("click", spin);
+
+    btnBackFab.addEventListener("click", showSpinView);
+
+    window.addEventListener("resize", function () {
+      if (!spinning && viewSpin.classList.contains("active")) {
+        setOffset(currentOffset, false);
+      }
+    });
+
+    buildStrip();
+  </script>
+</body>
+</html>
