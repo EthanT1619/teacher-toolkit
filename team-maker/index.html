@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Maker</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+      --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --team-colors: #4f46e5, #0891b2, #059669, #d97706, #db2777, #7c3aed, #dc2626, #0d9488, #ca8a04, #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #f0f4f8 50%, #fef3c7 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgb(79 70 229 / 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--border);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: #d97706;
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 8px 14px;
+      font-size: 0.85rem;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn-icon {
+      padding: 6px 10px;
+      min-width: 36px;
+    }
+
+    .add-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .add-form input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .add-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .add-form input.error {
+      border-color: var(--danger);
+    }
+
+    .form-hint {
+      font-size: 0.8rem;
+      color: var(--danger);
+      margin-top: -10px;
+      margin-bottom: 12px;
+      min-height: 1.2em;
+    }
+
+    .student-list {
+      list-style: none;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .student-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      background: var(--surface);
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .student-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .student-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .student-name {
+      flex: 1;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .student-name input {
+      width: 100%;
+      padding: 4px 8px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .student-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .emoji {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .list-header .card-title {
+      margin-bottom: 0;
+    }
+
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .preset-row select {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--surface);
+    }
+
+    .preset-row select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .preset-save-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-save-row input {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .preset-save-row input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .preset-active {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: var(--primary-light);
+      border-radius: var(--radius-sm);
+    }
+
+    .preset-active.muted {
+      color: var(--text-muted);
+      background: var(--bg);
+      font-weight: 500;
+    }
+
+    .preset-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    /* Team settings */
+    .mode-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .mode-option {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .mode-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mode-option label {
+      display: block;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+    }
+
+    .mode-option input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .setting-field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .setting-field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: inherit;
+      text-align: center;
+      transition: border-color 0.15s;
+    }
+
+    .setting-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .preview-box {
+      padding: 12px 14px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .preview-box strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .preview-box.warn {
+      background: var(--accent-light);
+      color: #92400e;
+    }
+
+    .team-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Results */
+    .results-zone {
+      min-height: 120px;
+    }
+
+    .results-zone.empty {
+      text-align: center;
+      padding: 32px 16px;
+      background: linear-gradient(180deg, var(--primary-light) 0%, var(--surface) 100%);
+      border-radius: var(--radius);
+      border: 2px dashed var(--border);
+      color: var(--text-muted);
+    }
+
+    .results-zone.empty .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .results-zone.forming {
+      text-align: center;
+      padding: 32px 16px;
+      background: linear-gradient(180deg, #ddd6fe 0%, var(--primary-light) 100%);
+      border-radius: var(--radius);
+      border: 2px solid var(--primary);
+    }
+
+    .results-zone.forming .forming-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      animation: flicker 0.08s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 0.7; transform: translateY(-1px); }
+      to { opacity: 1; transform: translateY(1px); }
+    }
+
+    .results-zone.done {
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .team-card {
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .team-card-header {
+      padding: 10px 14px;
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .team-card-count {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      font-weight: 600;
+    }
+
+    .team-members {
+      list-style: none;
+      padding: 8px;
+    }
+
+    .team-member {
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      background: var(--bg);
+    }
+
+    .team-member:last-child {
+      margin-bottom: 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4rem; }
+      .add-form { flex-direction: column; }
+      .settings-grid { grid-template-columns: 1fr; }
+      .team-actions { flex-direction: column; width: 100%; }
+      .team-actions .btn { width: 100%; }
+      .teams-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>👥 Team Maker</h1>
+    </header>
+
+    <section class="card">
+      <div class="card-title">Result</div>
+      <div class="results-zone empty" id="resultsZone">
+        <div class="emoji">🎯</div>
+        <p>Add students and configure teams,<br>then tap Assign Teams</p>
+      </div>
+      <div class="team-actions" style="margin-top: 16px;">
+        <button class="btn btn-primary" id="assignBtn">🎲 Assign Teams</button>
+        <button class="btn btn-accent" id="reassignBtn" disabled>🔄 Reassign</button>
+        <button class="btn btn-secondary" id="clearTeamsBtn" disabled>↩️ Clear</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">팀 설정</div>
+      <div class="mode-row">
+        <div class="mode-option">
+          <input type="radio" name="assignMode" id="modeByCount" value="count" checked>
+          <label for="modeByCount">팀 수 기준</label>
+        </div>
+        <div class="mode-option">
+          <input type="radio" name="assignMode" id="modeBySize" value="size">
+          <label for="modeBySize">팀당 인원 기준</label>
+        </div>
+      </div>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label for="teamCountInput">팀 수</label>
+          <input type="number" id="teamCountInput" min="2" max="20" value="4">
+        </div>
+        <div class="setting-field">
+          <label for="teamSizeInput">팀당 인원</label>
+          <input type="number" id="teamSizeInput" min="2" max="15" value="5">
+        </div>
+      </div>
+      <div class="preview-box" id="previewBox">학생을 추가하면 미리보기가 표시됩니다</div>
+    </section>
+
+    <section class="card">
+      <div class="list-header">
+        <div class="card-title">학생 목록 (<span id="studentCount">0</span>명)</div>
+        <button class="btn btn-danger btn-sm" id="clearAllBtn">전체 삭제</button>
+      </div>
+      <form class="add-form" id="addForm">
+        <input type="text" id="nameInput" placeholder="학생 이름 입력" maxlength="20" autocomplete="off">
+        <button type="submit" class="btn btn-primary">추가</button>
+      </form>
+      <div class="form-hint" id="formHint"></div>
+      <ul class="student-list" id="studentList"></ul>
+    </section>
+
+    <section class="card">
+      <div class="card-title">프리셋</div>
+      <div class="preset-active muted" id="activePresetLabel">현재 프리셋: 없음 (임시 목록)</div>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="loadPresetBtn" disabled>불러오기</button>
+      </div>
+      <div class="preset-save-row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 1학년 3반)" maxlength="30" autocomplete="off">
+        <button class="btn btn-secondary btn-sm" id="savePresetBtn">새로 저장</button>
+      </div>
+      <div class="preset-actions">
+        <button class="btn btn-secondary btn-sm" id="updatePresetBtn" disabled>현재 프리셋 업데이트</button>
+        <button class="btn btn-danger btn-sm" id="deletePresetBtn" disabled>프리셋 삭제</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'classTeamMaker';
+    const TEAM_COLORS = ['#4f46e5', '#0891b2', '#059669', '#d97706', '#db2777', '#7c3aed', '#dc2626', '#0d9488', '#ca8a04', '#6366f1'];
+
+    const state = {
+      students: [],
+      teams: null,
+      assignMode: 'count',
+      teamCount: 4,
+      teamSize: 5,
+      presets: [],
+      activePresetId: null,
+    };
+
+    const els = {
+      resultsZone: document.getElementById('resultsZone'),
+      assignBtn: document.getElementById('assignBtn'),
+      reassignBtn: document.getElementById('reassignBtn'),
+      clearTeamsBtn: document.getElementById('clearTeamsBtn'),
+      modeByCount: document.getElementById('modeByCount'),
+      modeBySize: document.getElementById('modeBySize'),
+      teamCountInput: document.getElementById('teamCountInput'),
+      teamSizeInput: document.getElementById('teamSizeInput'),
+      previewBox: document.getElementById('previewBox'),
+      studentCount: document.getElementById('studentCount'),
+      addForm: document.getElementById('addForm'),
+      nameInput: document.getElementById('nameInput'),
+      formHint: document.getElementById('formHint'),
+      studentList: document.getElementById('studentList'),
+      clearAllBtn: document.getElementById('clearAllBtn'),
+      toast: document.getElementById('toast'),
+      activePresetLabel: document.getElementById('activePresetLabel'),
+      presetSelect: document.getElementById('presetSelect'),
+      loadPresetBtn: document.getElementById('loadPresetBtn'),
+      presetNameInput: document.getElementById('presetNameInput'),
+      savePresetBtn: document.getElementById('savePresetBtn'),
+      updatePresetBtn: document.getElementById('updatePresetBtn'),
+      deletePresetBtn: document.getElementById('deletePresetBtn'),
+    };
+
+    let isAssigning = false;
+    let toastTimer = null;
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        students: state.students,
+        teams: state.teams,
+        assignMode: state.assignMode,
+        teamCount: state.teamCount,
+        teamSize: state.teamSize,
+        presets: state.presets,
+        activePresetId: state.activePresetId,
+      }));
+    }
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.students)) state.students = data.students;
+        if (data.teams) state.teams = data.teams;
+        if (data.assignMode === 'count' || data.assignMode === 'size') state.assignMode = data.assignMode;
+        if (typeof data.teamCount === 'number') state.teamCount = data.teamCount;
+        if (typeof data.teamSize === 'number') state.teamSize = data.teamSize;
+        if (Array.isArray(data.presets)) state.presets = data.presets;
+        if (data.activePresetId) state.activePresetId = data.activePresetId;
+      } catch {
+        /* ignore corrupt data */
+      }
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /** Distribute N items into G groups as evenly as possible (remainder spread across first groups). */
+    function distributeEvenly(total, groupCount) {
+      const base = Math.floor(total / groupCount);
+      const remainder = total % groupCount;
+      const sizes = [];
+      for (let i = 0; i < groupCount; i++) {
+        sizes.push(base + (i < remainder ? 1 : 0));
+      }
+      return sizes;
+    }
+
+    function resolveTeamPlan() {
+      const total = state.students.length;
+      if (total === 0) return null;
+
+      if (state.assignMode === 'count') {
+        const count = Math.max(2, Math.min(state.teamCount, total));
+        const sizes = distributeEvenly(total, count);
+        return { groupCount: count, sizes };
+      }
+
+      const targetSize = Math.max(2, state.teamSize);
+      const groupCount = Math.max(1, Math.ceil(total / targetSize));
+      const sizes = distributeEvenly(total, groupCount);
+      return { groupCount, sizes };
+    }
+
+    function buildTeams(students) {
+      const plan = resolveTeamPlan();
+      if (!plan) return null;
+
+      const shuffled = shuffle(students);
+      const teams = [];
+      let idx = 0;
+
+      for (let i = 0; i < plan.groupCount; i++) {
+        const size = plan.sizes[i];
+        teams.push({
+          id: i + 1,
+          name: `Team ${i + 1}`,
+          members: shuffled.slice(idx, idx + size),
+        });
+        idx += size;
+      }
+
+      return teams;
+    }
+
+    function formatPreview() {
+      const total = state.students.length;
+      if (total === 0) {
+        return { text: '학생을 추가하면 미리보기가 표시됩니다', warn: false };
+      }
+
+      const plan = resolveTeamPlan();
+      if (!plan) return { text: '', warn: false };
+
+      const sizeStr = plan.sizes.join(', ');
+      const min = Math.min(...plan.sizes);
+      const max = Math.max(...plan.sizes);
+      const evenNote = min === max
+        ? `각 팀 ${min}명`
+        : `팀별 ${min}~${max}명 (나머지 균등 배분)`;
+
+      if (state.assignMode === 'count') {
+        return {
+          text: `<strong>${total}명</strong> → <strong>${plan.groupCount}팀</strong> (${sizeStr}명) · ${evenNote}`,
+          warn: false,
+        };
+      }
+
+      return {
+        text: `<strong>${total}명</strong> → 팀당 약 <strong>${state.teamSize}명</strong> 기준 <strong>${plan.groupCount}팀</strong> (${sizeStr}명) · ${evenNote}`,
+        warn: false,
+      };
+    }
+
+    function getPresetById(id) {
+      return state.presets.find(p => p.id === id);
+    }
+
+    function getPresetByName(name) {
+      const n = normalizeName(name).toLowerCase();
+      return state.presets.find(p => p.name.toLowerCase() === n);
+    }
+
+    function cloneStudents(students) {
+      return students.map(s => ({ id: s.id, name: s.name }));
+    }
+
+    function applyPresetStudents(students) {
+      state.students = cloneStudents(students);
+      state.teams = null;
+    }
+
+    function showToast(msg) {
+      els.toast.textContent = msg;
+      els.toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
+    }
+
+    function normalizeName(name) {
+      return name.trim().replace(/\s+/g, ' ');
+    }
+
+    function isDuplicateName(name, excludeId = null) {
+      const n = normalizeName(name).toLowerCase();
+      return state.students.some(s =>
+        s.id !== excludeId && s.name.toLowerCase() === n
+      );
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderPresets() {
+      const selectedId = els.presetSelect.value;
+      els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
+        state.presets.map(p => {
+          const count = p.students.length;
+          const selected = p.id === selectedId ? ' selected' : '';
+          return `<option value="${p.id}"${selected}>${escapeHtml(p.name)} (${count}명)</option>`;
+        }).join('');
+
+      const active = state.activePresetId ? getPresetById(state.activePresetId) : null;
+      if (active) {
+        els.activePresetLabel.textContent = `현재 프리셋: ${active.name} (${active.students.length}명)`;
+        els.activePresetLabel.classList.remove('muted');
+        els.presetNameInput.value = active.name;
+      } else {
+        els.activePresetLabel.textContent = '현재 프리셋: 없음 (임시 목록)';
+        els.activePresetLabel.classList.add('muted');
+      }
+
+      const hasSelection = !!els.presetSelect.value;
+      els.loadPresetBtn.disabled = !hasSelection || isAssigning;
+      els.deletePresetBtn.disabled = !hasSelection || isAssigning;
+      els.updatePresetBtn.disabled = !state.activePresetId || isAssigning;
+    }
+
+    function renderPreview() {
+      const preview = formatPreview();
+      els.previewBox.innerHTML = preview.text;
+      els.previewBox.classList.toggle('warn', preview.warn);
+    }
+
+    function renderResults() {
+      if (isAssigning) return;
+
+      if (!state.teams || state.teams.length === 0) {
+        els.resultsZone.className = 'results-zone empty';
+        els.resultsZone.innerHTML = state.students.length === 0
+          ? `<div class="emoji">🎯</div><p>Add students and configure teams,<br>then tap Assign Teams</p>`
+          : `<div class="emoji">🎯</div><p>${state.students.length} students ready!<br>Tap Assign Teams</p>`;
+        els.reassignBtn.disabled = true;
+        els.clearTeamsBtn.disabled = true;
+        return;
+      }
+
+      els.resultsZone.className = 'results-zone done';
+      els.resultsZone.innerHTML = `
+        <div class="teams-grid">
+          ${state.teams.map((team, i) => {
+            const color = TEAM_COLORS[i % TEAM_COLORS.length];
+            return `
+              <div class="team-card">
+                <div class="team-card-header" style="background:${color}">
+                  <span>${escapeHtml(team.name)}</span>
+                  <span class="team-card-count">${team.members.length}</span>
+                </div>
+                <ul class="team-members">
+                  ${team.members.map(m => `<li class="team-member">${escapeHtml(m.name)}</li>`).join('')}
+                </ul>
+              </div>`;
+          }).join('')}
+        </div>`;
+
+      els.reassignBtn.disabled = isAssigning || state.students.length === 0;
+      els.clearTeamsBtn.disabled = isAssigning;
+    }
+
+    function renderStudentList() {
+      els.studentCount.textContent = state.students.length;
+
+      if (state.students.length === 0) {
+        els.studentList.innerHTML = `
+          <li class="empty-state">
+            <div class="emoji">👋</div>
+            <p>아직 등록된 학생이 없습니다.<br>위 입력창에 이름을 입력하고 추가해 보세요.</p>
+          </li>`;
+        return;
+      }
+
+      els.studentList.innerHTML = state.students.map((s, i) => `
+        <li class="student-item" data-id="${s.id}">
+          <span class="student-number">${i + 1}</span>
+          <span class="student-name" data-name="${escapeHtml(s.name)}">${escapeHtml(s.name)}</span>
+          <div class="student-actions">
+            <button class="btn btn-secondary btn-sm btn-icon edit-btn" title="수정">✏️</button>
+            <button class="btn btn-danger btn-sm btn-icon delete-btn" title="삭제">🗑️</button>
+          </div>
+        </li>`).join('');
+    }
+
+    function updateButtons() {
+      const canAssign = state.students.length >= 2 && !isAssigning;
+      els.assignBtn.disabled = !canAssign;
+      if (state.students.length < 2) {
+        els.reassignBtn.disabled = true;
+      }
+    }
+
+    function renderSettings() {
+      els.modeByCount.checked = state.assignMode === 'count';
+      els.modeBySize.checked = state.assignMode === 'size';
+      els.teamCountInput.value = state.teamCount;
+      els.teamSizeInput.value = state.teamSize;
+
+      const byCount = state.assignMode === 'count';
+      els.teamCountInput.disabled = !byCount;
+      els.teamSizeInput.disabled = byCount;
+    }
+
+    function render() {
+      renderSettings();
+      renderPresets();
+      renderPreview();
+      renderStudentList();
+      renderResults();
+      updateButtons();
+    }
+
+    function addStudent(name) {
+      const normalized = normalizeName(name);
+      if (!normalized) {
+        els.formHint.textContent = '이름을 입력해 주세요.';
+        els.nameInput.classList.add('error');
+        return false;
+      }
+      if (isDuplicateName(normalized)) {
+        els.formHint.textContent = '이미 등록된 이름입니다.';
+        els.nameInput.classList.add('error');
+        return false;
+      }
+      state.students.push({ id: generateId(), name: normalized });
+      state.teams = null;
+      els.formHint.textContent = '';
+      els.nameInput.classList.remove('error');
+      els.nameInput.value = '';
+      save();
+      render();
+      showToast(`"${normalized}" 학생이 추가되었습니다`);
+      els.nameInput.focus();
+      return true;
+    }
+
+    function deleteStudent(id) {
+      const student = state.students.find(s => s.id === id);
+      if (!student) return;
+      if (!confirm(`"${student.name}" 학생을 삭제할까요?`)) return;
+
+      state.students = state.students.filter(s => s.id !== id);
+      state.teams = null;
+      save();
+      render();
+      showToast('학생이 삭제되었습니다');
+    }
+
+    function startEdit(id) {
+      const item = els.studentList.querySelector(`[data-id="${id}"]`);
+      if (!item) return;
+      const nameEl = item.querySelector('.student-name');
+      const currentName = nameEl.dataset.name;
+      nameEl.innerHTML = `<input type="text" value="${escapeHtml(currentName)}" maxlength="20">`;
+      const input = nameEl.querySelector('input');
+      input.focus();
+      input.select();
+
+      function finishEdit(saveEdit) {
+        if (saveEdit) {
+          const newName = normalizeName(input.value);
+          if (!newName) {
+            showToast('이름은 비울 수 없습니다');
+            render();
+            return;
+          }
+          if (isDuplicateName(newName, id)) {
+            showToast('이미 등록된 이름입니다');
+            input.focus();
+            return;
+          }
+          const student = state.students.find(s => s.id === id);
+          if (student) {
+            student.name = newName;
+            if (state.teams) {
+              state.teams.forEach(team => {
+                team.members.forEach(m => {
+                  if (m.id === id) m.name = newName;
+                });
+              });
+            }
+            save();
+            render();
+            showToast('이름이 수정되었습니다');
+          }
+        } else {
+          render();
+        }
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); finishEdit(true); }
+        if (e.key === 'Escape') finishEdit(false);
+      });
+      input.addEventListener('blur', () => finishEdit(true));
+    }
+
+    function clearAll() {
+      if (state.students.length === 0) return;
+      if (!confirm(`등록된 학생 ${state.students.length}명을 모두 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`)) return;
+      state.students = [];
+      state.teams = null;
+      save();
+      render();
+      showToast('모든 학생이 삭제되었습니다');
+    }
+
+    function clearTeams() {
+      if (!state.teams) {
+        showToast('No result to clear');
+        return;
+      }
+      if (!confirm('Clear the team assignment result?')) return;
+      state.teams = null;
+      save();
+      render();
+      showToast('Result cleared');
+    }
+
+    function assignTeams() {
+      if (state.students.length < 2) {
+        showToast('팀을 만들려면 학생 2명 이상이 필요합니다');
+        return;
+      }
+
+      isAssigning = true;
+      els.assignBtn.disabled = true;
+      els.reassignBtn.disabled = true;
+      els.clearTeamsBtn.disabled = true;
+
+      els.resultsZone.className = 'results-zone forming';
+      els.resultsZone.innerHTML = '<div class="forming-text">Assigning teams...</div>';
+
+      const duration = 1200;
+      const interval = 80;
+      let elapsed = 0;
+      const names = state.students.map(s => s.name);
+
+      const spinTimer = setInterval(() => {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        els.resultsZone.innerHTML = `<div class="forming-text">${escapeHtml(randomName)}</div>`;
+        elapsed += interval;
+
+        if (elapsed >= duration) {
+          clearInterval(spinTimer);
+          finishAssign();
+        }
+      }, interval);
+    }
+
+    function finishAssign() {
+      state.teams = buildTeams(state.students);
+      isAssigning = false;
+
+      save();
+      render();
+
+      const plan = resolveTeamPlan();
+      const sizeInfo = plan.sizes.join(', ');
+      showToast(`🎉 ${plan.groupCount} teams assigned (${sizeInfo})`);
+
+      if (navigator.vibrate) navigator.vibrate(100);
+    }
+
+    function saveNewPreset(name) {
+      const normalized = normalizeName(name);
+      if (!normalized) {
+        showToast('프리셋 이름을 입력해 주세요');
+        els.presetNameInput.focus();
+        return;
+      }
+      if (state.students.length === 0) {
+        showToast('저장할 학생이 없습니다');
+        return;
+      }
+
+      const existing = getPresetByName(normalized);
+      if (existing) {
+        if (!confirm(`"${normalized}" 프리셋이 이미 있습니다. 덮어쓸까요?`)) return;
+        existing.students = cloneStudents(state.students);
+        existing.updatedAt = new Date().toISOString();
+        state.activePresetId = existing.id;
+      } else {
+        const preset = {
+          id: generateId(),
+          name: normalized,
+          students: cloneStudents(state.students),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        state.presets.push(preset);
+        state.activePresetId = preset.id;
+      }
+
+      save();
+      render();
+      showToast(`"${normalized}" 프리셋이 저장되었습니다`);
+    }
+
+    function loadSelectedPreset() {
+      const id = els.presetSelect.value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+
+      if (state.students.length > 0 && !state.activePresetId) {
+        if (!confirm(`현재 임시 목록(${state.students.length}명)을 "${preset.name}" 프리셋으로 바꿀까요?`)) return;
+      } else if (state.activePresetId && state.activePresetId !== id) {
+        const current = getPresetById(state.activePresetId);
+        if (current && !confirm(`"${current.name}"에서 "${preset.name}" 프리셋으로 바꿀까요?\n팀 배정 결과는 초기화됩니다.`)) return;
+      }
+
+      applyPresetStudents(preset.students);
+      state.activePresetId = preset.id;
+      save();
+      render();
+      showToast(`"${preset.name}" 프리셋을 불러왔습니다`);
+    }
+
+    function updateActivePreset() {
+      const preset = getPresetById(state.activePresetId);
+      if (!preset) return;
+      if (state.students.length === 0) {
+        showToast('저장할 학생이 없습니다');
+        return;
+      }
+      if (!confirm(`"${preset.name}" 프리셋을 현재 학생 목록(${state.students.length}명)으로 업데이트할까요?`)) return;
+
+      preset.students = cloneStudents(state.students);
+      preset.updatedAt = new Date().toISOString();
+      save();
+      renderPresets();
+      showToast(`"${preset.name}" 프리셋이 업데이트되었습니다`);
+    }
+
+    function deleteSelectedPreset() {
+      const id = els.presetSelect.value;
+      if (!id) return;
+      const preset = getPresetById(id);
+      if (!preset) return;
+      if (!confirm(`"${preset.name}" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.`)) return;
+
+      state.presets = state.presets.filter(p => p.id !== id);
+      if (state.activePresetId === id) state.activePresetId = null;
+      els.presetSelect.value = '';
+      save();
+      render();
+      showToast('프리셋이 삭제되었습니다');
+    }
+
+    /* Event listeners */
+    els.addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      addStudent(els.nameInput.value);
+    });
+
+    els.nameInput.addEventListener('input', () => {
+      els.formHint.textContent = '';
+      els.nameInput.classList.remove('error');
+    });
+
+    els.assignBtn.addEventListener('click', assignTeams);
+    els.reassignBtn.addEventListener('click', assignTeams);
+    els.clearTeamsBtn.addEventListener('click', clearTeams);
+    els.clearAllBtn.addEventListener('click', clearAll);
+
+    els.modeByCount.addEventListener('change', () => {
+      if (els.modeByCount.checked) {
+        state.assignMode = 'count';
+        save();
+        render();
+      }
+    });
+
+    els.modeBySize.addEventListener('change', () => {
+      if (els.modeBySize.checked) {
+        state.assignMode = 'size';
+        save();
+        render();
+      }
+    });
+
+    els.teamCountInput.addEventListener('change', () => {
+      state.teamCount = Math.max(2, Math.min(20, parseInt(els.teamCountInput.value, 10) || 2));
+      els.teamCountInput.value = state.teamCount;
+      state.teams = null;
+      save();
+      render();
+    });
+
+    els.teamSizeInput.addEventListener('change', () => {
+      state.teamSize = Math.max(2, Math.min(15, parseInt(els.teamSizeInput.value, 10) || 2));
+      els.teamSizeInput.value = state.teamSize;
+      state.teams = null;
+      save();
+      render();
+    });
+
+    els.presetSelect.addEventListener('change', () => {
+      els.loadPresetBtn.disabled = !els.presetSelect.value || isAssigning;
+      els.deletePresetBtn.disabled = !els.presetSelect.value || isAssigning;
+    });
+
+    els.loadPresetBtn.addEventListener('click', loadSelectedPreset);
+    els.savePresetBtn.addEventListener('click', () => saveNewPreset(els.presetNameInput.value));
+    els.updatePresetBtn.addEventListener('click', updateActivePreset);
+    els.deletePresetBtn.addEventListener('click', deleteSelectedPreset);
+
+    els.presetNameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveNewPreset(els.presetNameInput.value);
+      }
+    });
+
+    els.studentList.addEventListener('click', (e) => {
+      const item = e.target.closest('.student-item');
+      if (!item) return;
+      const id = item.dataset.id;
+      if (e.target.closest('.edit-btn')) startEdit(id);
+      if (e.target.closest('.delete-btn')) deleteStudent(id);
+    });
+
+    load();
+    render();
+  </script>
+</body>
+</html>
