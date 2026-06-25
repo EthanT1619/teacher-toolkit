@@ -257,43 +257,56 @@ const LadderGame = (() => {
     return t + "…";
   }
 
+  function bridgeKey(b) {
+    return `h:${b.index}:${b.y}`;
+  }
+
+  function diagonalKey(d) {
+    return `d:${d.index}:${d.yLeft}:${d.yRight}`;
+  }
+
   /** 다음으로 만나는 가로줄·사선 (아래 방향) */
-  function findNextEvent(state, col, y) {
+  function findNextEvent(state, col, y, used) {
     const { bridges, diagonals = [] } = state;
     let best = null;
 
-    function consider(eventY, action) {
-      if (eventY <= y + EPS) return;
-      if (!best || eventY < best.y - EPS) best = { y: eventY, action };
+    function consider(eventY, action, key) {
+      if (used.has(key)) return;
+      if (eventY < y - EPS) return;
+      if (!best || eventY < best.y - EPS) best = { y: eventY, action, key };
     }
 
     for (const b of bridges) {
+      const key = bridgeKey(b);
       if (b.index === col) {
-        consider(b.y, { kind: "horizontal", toCol: col + 1, endY: b.y });
+        consider(b.y, { kind: "horizontal", toCol: col + 1, endY: b.y }, key);
       }
       if (b.index === col - 1) {
-        consider(b.y, { kind: "horizontal", toCol: col - 1, endY: b.y });
+        consider(b.y, { kind: "horizontal", toCol: col - 1, endY: b.y }, key);
       }
     }
 
     for (const d of diagonals) {
-      if (d.index === col && d.yLeft < d.yRight) {
+      const key = diagonalKey(d);
+      // 왼쪽 세로줄: yLeft에서 오른쪽으로
+      if (d.index === col) {
         consider(d.yLeft, {
           kind: "diagonal",
           toCol: col + 1,
           endY: d.yRight,
           yLeft: d.yLeft,
           yRight: d.yRight,
-        });
+        }, key);
       }
-      if (d.index === col - 1 && d.yLeft > d.yRight) {
+      // 오른쪽 세로줄: yRight에서 왼쪽으로
+      if (d.index === col - 1) {
         consider(d.yRight, {
           kind: "diagonal",
           toCol: col - 1,
           endY: d.yLeft,
           yLeft: d.yLeft,
           yRight: d.yRight,
-        });
+        }, key);
       }
     }
 
@@ -305,9 +318,10 @@ const LadderGame = (() => {
     let col = startIndex;
     let y = state.topY;
     const path = [{ x: lineXs[col], y }];
+    const used = new Set();
 
     while (y < bottomY - EPS) {
-      const event = findNextEvent(state, col, y);
+      const event = findNextEvent(state, col, y, used);
 
       if (!event) {
         path.push({ x: lineXs[col], y: bottomY });
@@ -319,18 +333,13 @@ const LadderGame = (() => {
         break;
       }
 
+      used.add(event.key);
       path.push({ x: lineXs[col], y: event.y });
 
       const { action } = event;
-      if (action.kind === "horizontal") {
-        col = action.toCol;
-        path.push({ x: lineXs[col], y: action.endY });
-        y = action.endY;
-      } else {
-        col = action.toCol;
-        path.push({ x: lineXs[col], y: action.endY });
-        y = action.endY;
-      }
+      col = action.toCol;
+      path.push({ x: lineXs[col], y: action.endY });
+      y = action.endY;
     }
 
     return { path, endIndex: col };

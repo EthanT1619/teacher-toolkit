@@ -39,12 +39,27 @@
           <p class="hint">결과 항목 수에 맞춰 1, 2, 3… 번호가 자동 배치됩니다.</p>
         </div>
       </div>
+    </div>
 
-      <div class="actions">
-        <a class="secondary btn-home" href="../index.html">← Tool Kit</a>
-        <button class="primary" id="startBtn">시작</button>
-        <button class="secondary" id="resetBtn">초기화</button>
+    <div class="panel panel--presets">
+      <p class="panel-title">프리셋</p>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="">— 프리셋 선택 —</option>
+        </select>
+        <button type="button" class="secondary" id="loadPresetBtn" disabled>불러오기</button>
       </div>
+      <div class="preset-row">
+        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 3반 보상)" maxlength="30">
+        <button type="button" class="secondary" id="savePresetBtn">저장</button>
+        <button type="button" class="secondary" id="deletePresetBtn" disabled>삭제</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="secondary btn-home" href="../index.html">← Tool Kit</a>
+      <button class="primary" id="startBtn">시작</button>
+      <button class="secondary" id="resetBtn">초기화</button>
     </div>
   </div>
 </section>
@@ -73,6 +88,8 @@
   </div>
 </section>
 
+<div class="toast" id="toast"></div>
+
 <script src="js/ladder.js"></script>
 <script>
 const setupView = document.getElementById("setupView");
@@ -84,6 +101,16 @@ const messageEl = document.getElementById("message");
 const complexityPicker = document.getElementById("complexityPicker");
 const resultsEl = document.getElementById("results");
 const countEl = document.getElementById("count");
+const presetSelect = document.getElementById("presetSelect");
+const loadPresetBtn = document.getElementById("loadPresetBtn");
+const presetNameInput = document.getElementById("presetNameInput");
+const savePresetBtn = document.getElementById("savePresetBtn");
+const deletePresetBtn = document.getElementById("deletePresetBtn");
+const toastEl = document.getElementById("toast");
+
+const STORAGE_KEY = "ladderGame";
+let presets = [];
+let toastTimer = null;
 
 let game = null;
 let rawItems = [];
@@ -120,19 +147,146 @@ function stopPathAnimation() {
   }
 }
 
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function showToast(message) {
+  toastEl.textContent = message;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+}
+
+function setComplexity(level) {
+  complexity = level;
+  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
+    b.classList.toggle("complexity-btn--active", parseInt(b.dataset.level, 10) === level);
+  });
+}
+
+function updateCountFromResults() {
+  const n = resultsEl.value.trim().split("\n").filter(Boolean).length;
+  countEl.value = n >= 2 ? n : 4;
+}
+
+function saveDraft() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    resultsText: resultsEl.value,
+    complexity,
+    presets,
+  }));
+}
+
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (typeof data.resultsText === "string") resultsEl.value = data.resultsText;
+    if (typeof data.complexity === "number") setComplexity(data.complexity);
+    if (Array.isArray(data.presets)) presets = data.presets;
+    updateCountFromResults();
+  } catch (_) { /* ignore */ }
+}
+
+function renderPresetSelect() {
+  const selected = presetSelect.value;
+  presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
+    presets.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
+  if (selected && presets.some(p => p.id === selected)) {
+    presetSelect.value = selected;
+  }
+  const has = !!presetSelect.value;
+  loadPresetBtn.disabled = !has;
+  deletePresetBtn.disabled = !has;
+}
+
+function savePreset() {
+  const name = presetNameInput.value.trim();
+  const results = resultsEl.value.trim().split("\n").map(s => s.trim()).filter(Boolean);
+  if (!name) {
+    showToast("프리셋 이름을 입력하세요");
+    return;
+  }
+  if (results.length < 2) {
+    showToast("결과 항목을 2개 이상 입력하세요");
+    return;
+  }
+
+  const existing = presets.find(p => p.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    existing.results = results;
+    existing.complexity = complexity;
+    presetSelect.value = existing.id;
+    showToast(`"${name}" 업데이트됨`);
+  } else {
+    const preset = { id: generateId(), name, results, complexity };
+    presets.push(preset);
+    presetSelect.value = preset.id;
+    showToast(`"${name}" 저장됨`);
+  }
+
+  renderPresetSelect();
+  saveDraft();
+}
+
+function loadPreset() {
+  const id = presetSelect.value;
+  if (!id) return;
+  const preset = presets.find(p => p.id === id);
+  if (!preset) return;
+
+  resultsEl.value = preset.results.join("\n");
+  setComplexity(preset.complexity);
+  presetNameInput.value = preset.name;
+  updateCountFromResults();
+  saveDraft();
+  showToast(`"${preset.name}" 불러옴`);
+}
+
+function deletePreset() {
+  const id = presetSelect.value;
+  if (!id) return;
+  const preset = presets.find(p => p.id === id);
+  if (!preset || !confirm(`"${preset.name}" 프리셋을 삭제할까요?`)) return;
+
+  presets = presets.filter(p => p.id !== id);
+  presetSelect.value = "";
+  presetNameInput.value = "";
+  renderPresetSelect();
+  saveDraft();
+  showToast("프리셋 삭제됨");
+}
+
 complexityPicker.addEventListener("click", e => {
   const btn = e.target.closest(".complexity-btn");
   if (!btn) return;
-  complexity = parseInt(btn.dataset.level, 10);
-  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
-    b.classList.toggle("complexity-btn--active", b === btn);
-  });
+  setComplexity(parseInt(btn.dataset.level, 10));
+  saveDraft();
 });
 
 resultsEl.addEventListener("input", () => {
-  const n = resultsEl.value.trim().split("\n").filter(Boolean).length;
-  if (n >= 2) countEl.value = n;
+  updateCountFromResults();
+  saveDraft();
 });
+
+presetSelect.addEventListener("change", () => {
+  const has = !!presetSelect.value;
+  loadPresetBtn.disabled = !has;
+  deletePresetBtn.disabled = !has;
+  if (presetSelect.value) {
+    const preset = presets.find(p => p.id === presetSelect.value);
+    if (preset) presetNameInput.value = preset.name;
+  }
+});
+
+loadPresetBtn.addEventListener("click", loadPreset);
+savePresetBtn.addEventListener("click", savePreset);
+deletePresetBtn.addEventListener("click", deletePreset);
+
+loadDraft();
+renderPresetSelect();
 
 function showView(name) {
   setupView.classList.toggle("view--active", name === "setup");
@@ -205,11 +359,12 @@ document.getElementById("startBtn").addEventListener("click", startGame);
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   resultsEl.value = "";
-  countEl.value = 4;
-  complexity = 3;
-  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
-    b.classList.toggle("complexity-btn--active", b.dataset.level === "3");
-  });
+  setComplexity(3);
+  updateCountFromResults();
+  presetSelect.value = "";
+  presetNameInput.value = "";
+  renderPresetSelect();
+  saveDraft();
 });
 
 document.getElementById("backBtn").addEventListener("click", () => {
