@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Forge β</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Story Forge β</h1>
+      <p class="subtitle">단어 더미에서 골라 문장을 만들고, 이어서 이야기를 완성하세요</p>
+      <p class="build-estimate">MVP · 클릭 조립 · 채점 없음 · localStorage 프리셋</p>
+    </header>
+
+    <!-- 선생님 설정 -->
+    <section id="phase-setup" class="phase active">
+      <div class="panel">
+        <h2>단어 더미 (Word Pool)</h2>
+        <p class="hint">한 줄에 단어 또는 짧은 구 하나씩 입력하세요. 학생들은 이 더미에서 마음대로 골라 문장을 만듭니다.</p>
+        <textarea id="input-pool" rows="14">Tom
+He
+She
+They
+I
+eat
+ate
+met
+found
+pizza
+an alien
+a robot
+on the moon
+in the park
+yesterday
+today
+there
+quickly
+beautiful
+played soccer
+became friends
+very happy</textarea>
+        <p class="hint small">팁: 필요한 단어와 방해 단어(quickly, beautiful 등)를 섞어 넣으면 Word Hunt 느낌이 납니다.</p>
+      </div>
+
+      <div class="panel settings-grid">
+        <label>
+          <span>라운드 수</span>
+          <input id="input-rounds" type="number" min="1" max="10" value="3">
+        </label>
+        <label>
+          <span>문장 최소 단어 수</span>
+          <input id="input-min-words" type="number" min="1" max="20" value="2">
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2>프리셋 저장</h2>
+        <div class="preset-row">
+          <input id="preset-name" type="text" placeholder="프리셋 이름 (예: 3학년 달 이야기)">
+          <button id="save-preset-btn" class="btn secondary" type="button">저장</button>
+        </div>
+        <div class="preset-row">
+          <select id="preset-select">
+            <option value="">— 불러올 프리셋 선택 —</option>
+          </select>
+          <button id="load-preset-btn" class="btn secondary" type="button">불러오기</button>
+          <button id="delete-preset-btn" class="btn ghost" type="button">삭제</button>
+        </div>
+      </div>
+
+      <div class="panel actions-panel">
+        <button id="start-btn" class="btn primary" type="button">이야기 시작</button>
+      </div>
+    </section>
+
+    <!-- 학생 게임 -->
+    <section id="phase-game" class="phase">
+      <div class="panel round-panel">
+        <div class="round-meta">
+          <span id="round-label" class="round-label">라운드 1 / 3</span>
+          <span id="round-prompt" class="round-prompt">이번 문장을 만들어 보세요!</span>
+        </div>
+        <div class="story-so-far">
+          <p class="story-so-far-label">지금까지의 이야기</p>
+          <div id="story-so-far" class="story-so-far-body empty">아직 문장이 없습니다.</div>
+        </div>
+      </div>
+
+      <div class="panel assembly-panel">
+        <p class="assembly-label">지금 만드는 문장 <span class="assembly-hint">(단어를 클릭하면 여기에 붙습니다 · 아래 단어를 다시 클릭하면 취소)</span></p>
+        <div id="sentence-strip" class="sentence-strip empty">
+          <span class="strip-placeholder">단어 더미에서 골라 보세요</span>
+        </div>
+        <p id="preview-sentence" class="preview-sentence"></p>
+      </div>
+
+      <div class="panel pool-panel">
+        <div class="pool-header">
+          <p class="pool-label">단어 더미</p>
+          <span id="pool-count" class="pool-count">0개</span>
+        </div>
+        <div id="word-pool" class="word-pool"></div>
+      </div>
+
+      <p id="game-message" class="game-message"></p>
+
+      <div class="panel game-actions">
+        <button id="submit-sentence-btn" class="btn primary" type="button">이 문장 추가</button>
+        <button id="clear-sentence-btn" class="btn secondary" type="button">문장 비우기</button>
+        <button id="back-setup-btn" class="btn ghost" type="button">설정으로</button>
+      </div>
+    </section>
+
+    <!-- 결과 -->
+    <section id="phase-result" class="phase">
+      <div class="panel result-panel">
+        <h2>완성된 이야기</h2>
+        <div id="final-story" class="final-story"></div>
+        <div class="result-actions">
+          <button id="copy-story-btn" class="btn secondary" type="button">복사하기</button>
+          <button id="play-again-btn" class="btn primary" type="button">다시 만들기</button>
+          <button id="back-setup-btn-2" class="btn ghost" type="button">설정으로</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

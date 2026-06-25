@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- 5W1H Factory - JLS Teacher Toolkit -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WH Factory β</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface-light: #243044;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #fbbf24;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+      --belt: #374151;
+      --belt-stripe: #4b5563;
+      --card-bg: #fffef7;
+      --card-text: #0f172a;
+      --header-h: clamp(56px, 8vh, 72px);
+      --who: #3b82f6;
+      --what: #8b5cf6;
+      --when: #f59e0b;
+      --where: #10b981;
+      --why: #ef4444;
+      --how: #06b6d4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: var(--header-h);
+      padding: 0 clamp(12px, 2vw, 24px);
+      background: var(--surface);
+      border-bottom: 3px solid var(--accent);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.5vw, 16px);
+      min-width: 0;
+    }
+
+    .header-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: clamp(12px, 2vw, 24px);
+      font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+      font-weight: 700;
+    }
+
+    .stat-label { color: var(--text-muted); font-weight: 600; }
+    .stat-value { color: var(--accent); }
+    .stat-value.score { color: #fde047; }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: clamp(8px, 1.2vh, 12px) clamp(12px, 1.5vw, 18px);
+      font: inherit;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.12s ease;
+      touch-action: manipulation;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-home {
+      background: var(--surface-light);
+      color: var(--text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-home:hover { filter: brightness(1.15); }
+
+    .btn-secondary {
+      background: var(--surface-light);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { filter: brightness(1.15); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #1a1200;
+    }
+
+    .btn-primary:hover { filter: brightness(1.08); }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* ── Views ── */
+    .app-main {
+      height: calc(100vh - var(--header-h));
+      overflow: hidden;
+    }
+
+    .view {
+      display: none;
+      height: 100%;
+    }
+
+    .view.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Setup ── */
+    .setup-wrap {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(16px, 3vh, 32px) clamp(16px, 3vw, 32px);
+    }
+
+    .setup-wrap h2 {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      margin-bottom: 8px;
+    }
+
+    .setup-hint {
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 1.6vw, 1rem);
+      margin-bottom: 16px;
+    }
+
+    .setup-hint code {
+      background: var(--surface-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .questions-input {
+      width: 100%;
+      min-height: clamp(200px, 35vh, 360px);
+      padding: 16px;
+      border: 2px solid var(--surface-light);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .questions-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .setup-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .parse-error {
+      color: var(--wrong);
+      font-size: 0.95rem;
+      margin-top: 10px;
+      min-height: 1.4em;
+    }
+
+    /* ── Game ── */
+    .game-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: clamp(8px, 1.5vh, 16px) clamp(12px, 2vw, 24px) clamp(12px, 2vh, 20px);
+    }
+
+    .conveyor-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+      position: relative;
+    }
+
+    .factory-label {
+      text-align: center;
+      font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .conveyor-frame {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: clamp(12px, 2vh, 20px) 0;
+    }
+
+    .conveyor-roller {
+      height: clamp(14px, 2vh, 22px);
+      background: repeating-linear-gradient(
+        90deg,
+        #1f2937 0px,
+        #374151 8px,
+        #1f2937 16px
+      );
+      border-radius: 4px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .conveyor-belt {
+      position: relative;
+      height: clamp(140px, 22vh, 220px);
+      background:
+        repeating-linear-gradient(
+          90deg,
+          var(--belt) 0px,
+          var(--belt) 24px,
+          var(--belt-stripe) 24px,
+          var(--belt-stripe) 48px
+        );
+      border-top: 4px solid #111827;
+      border-bottom: 4px solid #111827;
+      overflow: visible;
+      box-shadow:
+        inset 0 8px 16px rgba(0,0,0,0.35),
+        inset 0 -8px 16px rgba(0,0,0,0.35);
+    }
+
+    .conveyor-belt::before,
+    .conveyor-belt::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(20px, 3vw, 36px);
+      background: linear-gradient(90deg, #111827, #374151);
+      z-index: 2;
+    }
+
+    .conveyor-belt::before { left: 0; }
+    .conveyor-belt::after { right: 0; }
+
+    @keyframes belt-scroll {
+      from { background-position: 0 0; }
+      to { background-position: 48px 0; }
+    }
+
+    .conveyor-belt.scrolling {
+      animation: belt-scroll 1.2s linear infinite;
+    }
+
+    .card-slot {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .sentence-card {
+      pointer-events: auto;
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+      background: var(--card-bg);
+      color: var(--card-text);
+      border: 4px solid #fcd34d;
+      border-radius: 16px;
+      padding: clamp(16px, 2.5vh, 28px) clamp(20px, 3vw, 40px);
+      max-width: min(90%, 900px);
+      text-align: center;
+      font-size: clamp(28px, 4vw, 60px);
+      font-weight: 800;
+      line-height: 1.25;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.45),
+        0 0 0 2px rgba(251, 191, 36, 0.3);
+      will-change: transform;
+    }
+
+    .sentence-card.hidden { visibility: hidden; }
+
+    .sentence-card.dragging {
+      cursor: grabbing;
+      z-index: 1000;
+      animation: none !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+    }
+
+    @keyframes conveyor-drift {
+      0%, 100% { transform: translateX(-4%); }
+      50% { transform: translateX(4%); }
+    }
+
+    .sentence-card.on-belt:not(.dragging):not(.absorbing):not(.returning) {
+      animation: conveyor-drift 6s ease-in-out infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-14px) rotate(-2deg); }
+      30% { transform: translateX(14px) rotate(2deg); }
+      45% { transform: translateX(-10px); }
+      60% { transform: translateX(10px); }
+      75% { transform: translateX(-6px); }
+    }
+
+    .sentence-card.shaking {
+      animation: shake 0.55s ease-in-out;
+    }
+
+    .sentence-card.absorbing {
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.55s ease;
+      z-index: 1000;
+    }
+
+    .sentence-card.returning {
+      transition: transform 0.4s ease-out, left 0.4s ease-out, top 0.4s ease-out;
+    }
+
+    /* ── Drop boxes ── */
+    .drop-zones {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: clamp(6px, 1vw, 12px);
+      max-width: 1400px;
+      width: 100%;
+      margin: clamp(8px, 1.5vh, 16px) auto 0;
+      flex-shrink: 0;
+    }
+
+    .drop-box {
+      background: var(--surface);
+      border: 3px solid var(--box-color, var(--surface-light));
+      border-radius: clamp(10px, 1.5vw, 14px);
+      padding: clamp(10px, 1.5vh, 16px) clamp(6px, 1vw, 10px);
+      text-align: center;
+      min-height: clamp(80px, 12vh, 120px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .drop-box[data-category="Who"] { --box-color: var(--who); }
+    .drop-box[data-category="What"] { --box-color: var(--what); }
+    .drop-box[data-category="When"] { --box-color: var(--when); }
+    .drop-box[data-category="Where"] { --box-color: var(--where); }
+    .drop-box[data-category="Why"] { --box-color: var(--why); }
+    .drop-box[data-category="How"] { --box-color: var(--how); }
+
+    .drop-box .box-label {
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 800;
+      color: var(--box-color);
+    }
+
+    .drop-box .box-hint {
+      font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .drop-box.drop-hover {
+      transform: scale(1.06);
+      background: color-mix(in srgb, var(--box-color) 18%, var(--surface));
+      box-shadow: 0 0 24px color-mix(in srgb, var(--box-color) 45%, transparent);
+    }
+
+    .drop-box.correct-flash {
+      animation: box-flash 0.5s ease;
+    }
+
+    @keyframes box-flash {
+      0%, 100% { background: var(--surface); }
+      50% { background: color-mix(in srgb, var(--correct) 35%, var(--surface)); }
+    }
+
+    /* ── Result ── */
+    .result-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .result-panel {
+      background: var(--surface);
+      border: 3px solid var(--accent);
+      border-radius: 20px;
+      padding: clamp(32px, 5vh, 56px) clamp(32px, 5vw, 64px);
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .result-panel h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .result-score {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      color: #fde047;
+      margin-bottom: 12px;
+    }
+
+    .result-detail {
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      top: calc(var(--header-h) + 16px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      padding: clamp(12px, 2vh, 18px) clamp(24px, 4vw, 40px);
+      border-radius: 999px;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 2000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.correct {
+      background: var(--correct);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.45);
+    }
+
+    .toast.wrong {
+      background: var(--wrong);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(239, 68, 68, 0.45);
+    }
+
+    @media (max-width: 900px) {
+      .drop-zones {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-stats { display: none; }
+      .drop-zones {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
+      <h1 class="header-title">WH Factory β</h1>
+    </div>
+    <div class="header-stats">
+      <div><span class="stat-label">Score </span><span class="stat-value score" id="score-display">0</span></div>
+      <div><span class="stat-label">Cards </span><span class="stat-value" id="cards-display">0</span></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" id="btn-fullscreen" type="button">Fullscreen</button>
+      <button class="btn btn-secondary" id="btn-reset" type="button">Reset</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="view active" id="setup-view">
+      <div class="setup-wrap">
+        <h2>문제 설정</h2>
+        <p class="setup-hint">
+          한 줄에 하나씩 입력하세요. 형식: <code>Who: 문장</code> &nbsp;·&nbsp;
+          카테고리 뒤에 <strong>콜론(:)</strong> 을 붙이면 됩니다.
+          (<code>Who: The boy is running.</code>)
+        </p>
+        <textarea class="questions-input" id="questions-input" placeholder="Who: The boy is running.&#10;Where: She lives in Seoul."></textarea>
+        <p class="parse-error" id="parse-error" aria-live="polite"></p>
+        <div class="setup-actions">
+          <button class="btn btn-secondary" id="btn-load-sample" type="button">Load Sample</button>
+          <button class="btn btn-primary" id="btn-start" type="button">Start Game</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="game-view">
+      <div class="game-wrap">
+        <div class="conveyor-area">
+          <p class="factory-label">Conveyor Belt</p>
+          <div class="conveyor-frame">
+            <div class="conveyor-roller"></div>
+            <div class="conveyor-belt scrolling" id="conveyor-belt">
+              <div class="card-slot" id="card-slot">
+                <div class="sentence-card on-belt hidden" id="sentence-card"></div>
+              </div>
+            </div>
+            <div class="conveyor-roller"></div>
+          </div>
+        </div>
+        <div class="drop-zones" id="drop-zones">
+          <div class="drop-box" data-category="Who">
+            <span class="box-label">Who</span>
+            <span class="box-hint">사람 / 누가</span>
+          </div>
+          <div class="drop-box" data-category="What">
+            <span class="box-label">What</span>
+            <span class="box-hint">사물·행동 / 무엇을</span>
+          </div>
+          <div class="drop-box" data-category="When">
+            <span class="box-label">When</span>
+            <span class="box-hint">시간 / 언제</span>
+          </div>
+          <div class="drop-box" data-category="Where">
+            <span class="box-label">Where</span>
+            <span class="box-hint">장소 / 어디서</span>
+          </div>
+          <div class="drop-box" data-category="Why">
+            <span class="box-label">Why</span>
+            <span class="box-hint">이유 / 왜</span>
+          </div>
+          <div class="drop-box" data-category="How">
+            <span class="box-label">How</span>
+            <span class="box-hint">방법 / 어떻게</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="result-view">
+      <div class="result-wrap">
+        <div class="result-panel">
+          <h2>Factory Complete!</h2>
+          <p class="result-score" id="final-score">0</p>
+          <p class="result-detail" id="final-detail">0 / 0 correct</p>
+          <div class="result-actions">
+            <button class="btn btn-primary" id="btn-restart" type="button">Restart</button>
+            <button class="btn btn-secondary" id="btn-back-setup" type="button">Back to Setup</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" aria-live="assertive"></div>
+
+  <script>
+    /* 5W1H Factory - JLS Teacher Toolkit */
+
+    const STORAGE_KEY = '5w1h-factory-settings';
+    const VALID_CATEGORIES = ['Who', 'What', 'When', 'Where', 'Why', 'How'];
+
+    const SAMPLE_TEXT = `Who: The girl is reading a book.
+What: I want to eat pizza.
+When: We have English class on Monday.
+Where: They play soccer at the park.
+Why: He is happy because he got a gift.
+How: She goes to school by bus.
+Who: My father cooks dinner.
+What: Tom bought a new pencil.
+When: I wake up at seven.
+Where: The cat is under the table.
+Why: She studies hard because she wants a good score.
+How: He opened the box with a key.`;
+
+    const state = {
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+      correctCount: 0,
+      currentCard: null,
+      isDragging: false,
+      selectedMode: 'setup'
+    };
+
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let activePointerId = null;
+    let toastTimer = null;
+    let processingDrop = false;
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    const els = {
+      setupView: $('#setup-view'),
+      gameView: $('#game-view'),
+      resultView: $('#result-view'),
+      questionsInput: $('#questions-input'),
+      parseError: $('#parse-error'),
+      scoreDisplay: $('#score-display'),
+      cardsDisplay: $('#cards-display'),
+      sentenceCard: $('#sentence-card'),
+      cardSlot: $('#card-slot'),
+      dropZones: $('#drop-zones'),
+      toast: $('#toast'),
+      finalScore: $('#final-score'),
+      finalDetail: $('#final-detail')
+    };
+
+    function init() {
+      loadSettings();
+      bindEvents();
+      updateHeader();
+      showView('setup');
+    }
+
+    function bindEvents() {
+      $('#btn-load-sample').addEventListener('click', loadSample);
+      $('#btn-start').addEventListener('click', startGame);
+      $('#btn-fullscreen').addEventListener('click', toggleFullscreen);
+      $('#btn-reset').addEventListener('click', resetGame);
+      $('#btn-restart').addEventListener('click', () => {
+        startGame();
+      });
+      $('#btn-back-setup').addEventListener('click', () => {
+        showView('setup');
+        state.selectedMode = 'setup';
+      });
+
+      els.questionsInput.addEventListener('input', () => {
+        saveSettings();
+        els.parseError.textContent = '';
+      });
+
+      document.addEventListener('fullscreenchange', updateFullscreenLabel);
+      setupDrag();
+    }
+
+    function parseQuestions(text) {
+      const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      const questions = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const parsed = parseQuestionLine(lines[i]);
+        if (!parsed) {
+          return {
+            error: `Line ${i + 1}: use format "Who: sentence" (colon after category)`,
+            questions: []
+          };
+        }
+        const { category, sentence } = parsed;
+        if (!VALID_CATEGORIES.includes(category)) {
+          return { error: `Line ${i + 1}: invalid category "${category}"`, questions: [] };
+        }
+        if (!sentence) {
+          return { error: `Line ${i + 1}: sentence is empty`, questions: [] };
+        }
+        questions.push({ category, sentence });
+      }
+
+      if (questions.length === 0) {
+        return { error: 'Enter at least one question.', questions: [] };
+      }
+
+      return { error: null, questions };
+    }
+
+    function parseQuestionLine(line) {
+      const match = line.match(/^(Who|What|When|Where|Why|How)\s*(?:[:：]|\||\t)\s*(.+)$/i);
+      if (!match) return null;
+      const raw = match[1].toLowerCase();
+      const category = raw.charAt(0).toUpperCase() + raw.slice(1);
+      return { category, sentence: match[2].trim() };
+    }
+
+    function getDropBoxAt(x, y) {
+      const boxes = els.dropZones.querySelectorAll('.drop-box');
+      for (const box of boxes) {
+        const r = box.getBoundingClientRect();
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
+          return box;
+        }
+      }
+      return null;
+    }
+
+    function saveSettings() {
+      localStorage.setItem(STORAGE_KEY, els.questionsInput.value);
+    }
+
+    function loadSettings() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      els.questionsInput.value = saved !== null ? saved : '';
+    }
+
+    function loadSample() {
+      els.questionsInput.value = SAMPLE_TEXT;
+      saveSettings();
+      els.parseError.textContent = '';
+    }
+
+    function showView(mode) {
+      state.selectedMode = mode;
+      els.setupView.classList.toggle('active', mode === 'setup');
+      els.gameView.classList.toggle('active', mode === 'game');
+      els.resultView.classList.toggle('active', mode === 'result');
+    }
+
+    function updateHeader() {
+      els.scoreDisplay.textContent = state.score;
+      const remaining = state.questions.length
+        ? Math.max(0, state.questions.length - state.currentIndex)
+        : 0;
+      els.cardsDisplay.textContent = state.selectedMode === 'game' ? remaining : state.questions.length || 0;
+    }
+
+    function startGame() {
+      saveSettings();
+      const { error, questions } = parseQuestions(els.questionsInput.value);
+      if (error) {
+        els.parseError.textContent = error;
+        return;
+      }
+
+      els.parseError.textContent = '';
+      state.questions = questions;
+      state.currentIndex = 0;
+      state.score = 0;
+      state.correctCount = 0;
+      state.currentCard = null;
+      state.isDragging = false;
+      processingDrop = false;
+
+      showView('game');
+      renderGame();
+    }
+
+    function renderGame() {
+      updateHeader();
+      showCurrentCard();
+    }
+
+    function showCurrentCard() {
+      const card = els.sentenceCard;
+      resetCardStyles();
+
+      if (state.currentIndex >= state.questions.length) {
+        showResult();
+        return;
+      }
+
+      const q = state.questions[state.currentIndex];
+      state.currentCard = q;
+      card.textContent = q.sentence;
+      card.classList.remove('hidden');
+      card.classList.add('on-belt');
+      updateHeader();
+    }
+
+    function resetCardStyles() {
+      const card = els.sentenceCard;
+      card.className = 'sentence-card on-belt hidden';
+      card.style.position = '';
+      card.style.left = '';
+      card.style.top = '';
+      card.style.width = '';
+      card.style.transform = '';
+      card.style.transition = '';
+      card.style.opacity = '';
+      card.style.zIndex = '';
+    }
+
+    function setupDrag() {
+      const card = els.sentenceCard;
+
+      card.addEventListener('pointerdown', onPointerDown);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerDown(e) {
+      if (state.selectedMode !== 'game' || processingDrop) return;
+      if (state.currentIndex >= state.questions.length) return;
+      if (els.sentenceCard.classList.contains('hidden')) return;
+
+      e.preventDefault();
+      const card = els.sentenceCard;
+      const rect = card.getBoundingClientRect();
+
+      activePointerId = e.pointerId;
+      state.isDragging = true;
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+
+      card.setPointerCapture(e.pointerId);
+      card.classList.add('dragging');
+      card.classList.remove('on-belt', 'shaking', 'returning', 'absorbing');
+
+      card.style.position = 'fixed';
+      card.style.width = rect.width + 'px';
+      card.style.left = rect.left + 'px';
+      card.style.top = rect.top + 'px';
+      card.style.transform = 'none';
+      card.style.zIndex = '1000';
+    }
+
+    function onPointerMove(e) {
+      if (!state.isDragging || e.pointerId !== activePointerId) return;
+
+      const card = els.sentenceCard;
+      card.style.left = (e.clientX - dragOffsetX) + 'px';
+      card.style.top = (e.clientY - dragOffsetY) + 'px';
+
+      highlightDropZone(e.clientX, e.clientY);
+    }
+
+    function onPointerUp(e) {
+      if (!state.isDragging || e.pointerId !== activePointerId) return;
+
+      state.isDragging = false;
+      activePointerId = null;
+
+      const card = els.sentenceCard;
+      try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+
+      clearDropHighlights();
+
+      const box = getDropBoxAt(e.clientX, e.clientY);
+
+      if (box) {
+        handleDrop(box.dataset.category, box);
+      } else {
+        returnCardToBelt();
+      }
+
+      card.classList.remove('dragging');
+    }
+
+    function highlightDropZone(x, y) {
+      clearDropHighlights();
+      const box = getDropBoxAt(x, y);
+      if (box) box.classList.add('drop-hover');
+    }
+
+    function clearDropHighlights() {
+      $$('.drop-box').forEach((b) => b.classList.remove('drop-hover'));
+    }
+
+    function returnCardToBelt() {
+      const card = els.sentenceCard;
+      card.classList.add('returning');
+      card.style.position = '';
+      card.style.left = '';
+      card.style.top = '';
+      card.style.width = '';
+      card.style.transform = '';
+      card.style.zIndex = '';
+
+      setTimeout(() => {
+        card.classList.remove('returning');
+        card.classList.add('on-belt');
+      }, 400);
+    }
+
+    function handleDrop(category, boxEl) {
+      if (processingDrop || !state.currentCard) return;
+
+      if (category === state.currentCard.category) {
+        handleCorrect(boxEl);
+      } else {
+        handleWrong();
+      }
+    }
+
+    function handleCorrect(boxEl) {
+      processingDrop = true;
+      state.score += 10;
+      state.correctCount += 1;
+      updateHeader();
+      showToast('Correct!', 'correct');
+
+      boxEl.classList.add('correct-flash');
+      setTimeout(() => boxEl.classList.remove('correct-flash'), 500);
+
+      const card = els.sentenceCard;
+      const cardRect = card.getBoundingClientRect();
+      const boxRect = boxEl.getBoundingClientRect();
+      const dx = (boxRect.left + boxRect.width / 2) - (cardRect.left + cardRect.width / 2);
+      const dy = (boxRect.top + boxRect.height / 2) - (cardRect.top + cardRect.height / 2);
+
+      card.classList.add('absorbing');
+      card.style.transform = `translate(${dx}px, ${dy}px) scale(0.15)`;
+      card.style.opacity = '0';
+
+      setTimeout(() => {
+        nextQuestion();
+        processingDrop = false;
+      }, 580);
+    }
+
+    function handleWrong() {
+      state.score -= 5;
+      updateHeader();
+      showToast('Try again!', 'wrong');
+
+      const card = els.sentenceCard;
+      card.style.position = '';
+      card.style.left = '';
+      card.style.top = '';
+      card.style.width = '';
+      card.style.zIndex = '';
+      card.style.transform = '';
+      card.style.transition = '';
+      card.style.opacity = '';
+      card.classList.remove('dragging', 'absorbing', 'returning');
+      card.classList.add('shaking', 'on-belt');
+
+      setTimeout(() => {
+        card.classList.remove('shaking');
+      }, 560);
+    }
+
+    function nextQuestion() {
+      state.currentIndex += 1;
+      state.currentCard = null;
+
+      if (state.currentIndex >= state.questions.length) {
+        showResult();
+      } else {
+        showCurrentCard();
+      }
+    }
+
+    function showResult() {
+      state.selectedMode = 'result';
+      els.finalScore.textContent = state.score;
+      els.finalDetail.textContent =
+        `${state.correctCount} / ${state.questions.length} correct`;
+      showView('result');
+      updateHeader();
+    }
+
+    function resetGame() {
+      if (state.selectedMode === 'setup') {
+        els.questionsInput.value = '';
+        saveSettings();
+        els.parseError.textContent = '';
+        return;
+      }
+
+      processingDrop = false;
+      state.currentIndex = 0;
+      state.score = 0;
+      state.correctCount = 0;
+      state.currentCard = null;
+      state.isDragging = false;
+      activePointerId = null;
+      clearDropHighlights();
+
+      if (state.questions.length > 0) {
+        showView('game');
+        renderGame();
+      } else {
+        showView('setup');
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateFullscreenLabel() {
+      $('#btn-fullscreen').textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+    }
+
+    function showToast(message, type) {
+      const toast = els.toast;
+      toast.textContent = message;
+      toast.className = 'toast ' + type + ' show';
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1400);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Grammar Checkpoint - Ethan's Teacher Toolkit - Learning Tool -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Checkpoint β</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-left">
+        <a class="btn-header btn-home" href="../index.html">← Tool Kit</a>
+        <button type="button" class="btn-header" id="btn-fullscreen">Fullscreen</button>
+        <button type="button" class="btn-header" id="btn-reset">Reset</button>
+      </div>
+      <div class="header-center">
+        <span class="header-stat">
+          <span class="label">Score</span>
+          <span class="value" id="header-score">0</span>
+        </span>
+        <span class="header-stat">
+          <span class="label">Rule</span>
+          <span class="value" id="header-rule">—</span>
+        </span>
+        <span class="header-stat">
+          <span class="label">Day</span>
+          <span class="value" id="header-day">1</span>
+        </span>
+      </div>
+      <div class="header-right">
+        <span class="header-title">Grammar Checkpoint β</span>
+      </div>
+    </header>
+
+    <div class="main-area" id="main-area">
+      <aside class="teacher-panel" id="teacher-panel">
+        <h2>Teacher Mode</h2>
+
+        <div>
+          <p class="rule-panel-title" style="margin-bottom:8px;">Day</p>
+          <div class="day-row" id="day-options"></div>
+        </div>
+
+        <div>
+          <p class="rule-panel-title" style="margin-bottom:8px;">Rule</p>
+          <div class="rule-options" id="rule-options"></div>
+        </div>
+
+        <div>
+          <p class="rule-panel-title" style="margin-bottom:8px;">Questions</p>
+          <div class="count-options" id="count-options"></div>
+        </div>
+
+        <button type="button" class="btn-start" id="btn-start">Start</button>
+      </aside>
+
+      <main class="checkpoint" id="checkpoint">
+        <div class="checkpoint-window">
+          <span class="window-label">Immigration Desk</span>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div id="welcome" class="welcome-msg">
+            <strong>Grammar Checkpoint</strong>
+            Select a rule and press START<br>
+            to begin inspection.
+          </div>
+
+          <div id="game-area" hidden>
+            <div class="document-slot">
+              <div class="sentence-card" id="sentence-card">
+                <p class="sentence-text" id="sentence-text"></p>
+                <div class="stamp" id="stamp"></div>
+              </div>
+            </div>
+
+            <p class="feedback-msg" id="feedback-msg"></p>
+
+            <div class="action-buttons" id="action-buttons">
+              <button type="button" class="btn-action btn-approve" id="btn-approve">Approve</button>
+              <button type="button" class="btn-action btn-reject" id="btn-reject">Reject</button>
+            </div>
+
+            <div class="fix-panel" id="fix-panel">
+              <p class="fix-label">Fix Sentence</p>
+              <div class="fix-options" id="fix-options"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="rule-panel">
+        <p class="rule-panel-title">Today's Rule</p>
+        <p class="rule-number" id="rule-number">Rule #1</p>
+        <div class="rule-display">
+          <p class="rule-top" id="rule-top">He / She / Tom</p>
+          <p class="rule-arrow">↓</p>
+          <p class="rule-bottom" id="rule-bottom">Verb + S</p>
+        </div>
+        <div class="rule-examples">
+          <p id="rule-example">He plays soccer. ✓<br>He play soccer. ✗</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="result-overlay">
+    <div class="result-card">
+      <h2>Shift Complete</h2>
+      <p class="result-score" id="result-score">0</p>
+      <p class="result-detail" id="result-detail"></p>
+      <button type="button" class="btn-result" id="btn-play-again">Play Again</button>
+      <button type="button" class="btn-result" id="btn-back-menu">Menu</button>
+    </div>
+  </div>
+</body>
+</html>
