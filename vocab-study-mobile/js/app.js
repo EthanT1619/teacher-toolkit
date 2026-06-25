@@ -54,6 +54,12 @@ let usedLetterBtns = new Set();
 
 let phaseSetup, phaseRound, phaseResult;
 
+const SFX = {
+  correct: 'assets/correct.mp3',
+  wrong: 'assets/wrong.mp3',
+};
+let audioUnlocked = false;
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
@@ -159,15 +165,34 @@ function addScore(points) {
   $('#score-text').textContent = score;
 }
 
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  Object.values(SFX).forEach((src) => {
+    const probe = new Audio(src);
+    probe.volume = 0.001;
+    probe.play().then(() => probe.pause()).catch(() => {});
+  });
+}
+
+function playSfx(type) {
+  const src = SFX[type];
+  if (!src) return;
+  const audio = new Audio(src);
+  audio.play().catch(() => {});
+}
+
 function recordCorrect() {
   correctCount++;
   addScore(10);
+  playSfx('correct');
   updateStats(null, null);
 }
 
 function recordWrong(wordId) {
   wrongCount++;
   wrongWordIds.add(wordId);
+  playSfx('wrong');
   updateStats(null, null);
 }
 
@@ -801,6 +826,9 @@ function init() {
   phaseSetup = $('#phase-setup');
   phaseRound = $('#phase-round');
   phaseResult = $('#phase-result');
+
+  document.addEventListener('click', unlockAudio, { once: true });
+  document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 
   $('#field-korean').addEventListener('change', updateFieldVisibility);
   $('#field-english').addEventListener('change', updateFieldVisibility);

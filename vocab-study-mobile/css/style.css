@@ -31,12 +31,25 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  position: relative;
+  isolation: isolate;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../assets/logo.png") center center / min(70vmin, 420px) no-repeat;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .app {
   max-width: 100%;
   margin: 0 auto;
   padding: 16px 14px calc(56px + env(safe-area-inset-bottom));
+  position: relative;
 }
 
 .header {
