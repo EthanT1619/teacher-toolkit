@@ -41,6 +41,7 @@ let completedPairs = 0;
 let totalPairs = 0;
 
 let quizQueue = [];
+let quizTotal = 0;
 let currentQuiz = null;
 
 let spellingQueue = [];
@@ -543,11 +544,11 @@ function onMatchCardClick(el) {
   selectedCard = null;
   first.el.classList.remove('selected');
 
-  const isMatch =
-    first.card.pairKey === card.pairKey &&
-    first.card.type !== card.type &&
-    ((first.card.type === 'word' && card.type !== 'word') ||
-     (card.type === 'word' && first.card.type !== 'word'));
+  const isWordMeaningPair =
+    (first.card.type === 'word' && card.type !== 'word') ||
+    (card.type === 'word' && first.card.type !== 'word');
+
+  const isMatch = isWordMeaningPair && first.card.wordId === card.wordId;
 
   if (isMatch) {
     first.el.classList.add('matched');
@@ -566,7 +567,9 @@ function onMatchCardClick(el) {
       }
     }
   } else {
-    recordWrong(first.card.wordId);
+    if (first.card.wordId !== card.wordId) {
+      recordWrong(first.card.wordId);
+    }
     showToast('틀렸어요. 다시 시도해보세요.', 'error');
   }
 }
@@ -587,13 +590,15 @@ function startRound2() {
 
   const active = getActiveFields();
   quizQueue = shuffle(
-    gameWords.map((w) => ({
-      word: w,
-      field: active[Math.floor(Math.random() * active.length)],
-    }))
+    gameWords.flatMap((w) =>
+      active
+        .filter((field) => (w[field] || '').trim())
+        .map((field) => ({ word: w, field }))
+    )
   );
+  quizTotal = quizQueue.length;
 
-  updateStats(0, quizQueue.length);
+  updateStats(0, quizTotal);
   startTimer();
   showNextQuiz();
 }
@@ -631,7 +636,7 @@ function showNextQuiz() {
     btn.addEventListener('click', () => onQuizChoice(btn));
   });
 
-  updateStats(gameWords.length - quizQueue.length - 1, gameWords.length);
+  updateStats(quizTotal - quizQueue.length - 1, quizTotal);
 }
 
 function onQuizChoice(btn) {
