@@ -405,11 +405,11 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: clamp(2px, 1.1cqi, 6px);
-      padding: clamp(4px, 1.1cqi, 6px);
-      padding-bottom: max(clamp(4px, 1.1cqi, 6px), env(safe-area-inset-bottom));
+      padding: clamp(8px, 2cqi, 12px) clamp(4px, 1.1cqi, 6px);
+      padding-bottom: max(clamp(6px, 1.4cqi, 8px), env(safe-area-inset-bottom));
       background: var(--panel);
       border-top: 2px solid var(--accent2);
-      max-height: min(19.8dvh, 130px);
+      max-height: min(22dvh, 148px);
     }
 
     .resource-box {
@@ -420,19 +420,18 @@
       background: var(--bg);
       border: 1px solid var(--accent2);
       border-radius: clamp(6px, 1.5cqi, 10px);
-      padding: clamp(3px, 1.1cqi, 6px) clamp(2px, 0.8cqi, 3px);
-      gap: clamp(2px, 0.9cqi, 5px);
+      padding: clamp(6px, 1.6cqi, 10px) clamp(2px, 0.8cqi, 3px) clamp(4px, 1.1cqi, 6px);
+      gap: clamp(3px, 1cqi, 6px);
       min-width: 0;
-      min-height: clamp(72px, 22cqi, 96px);
+      min-height: clamp(80px, 24cqi, 108px);
     }
 
     .resource-label {
-      font-size: clamp(0.55rem, 3.8cqi, 0.8rem);
+      font-size: clamp(1.35rem, 8.5cqi, 2.25rem);
       font-weight: 700;
-      color: var(--muted);
-      text-align: center;
       line-height: 1.1;
-      word-break: keep-all;
+      text-align: center;
+      padding-top: clamp(2px, 0.6cqi, 4px);
     }
 
     .resource-value {
@@ -492,7 +491,7 @@
       }
 
       .resource-label {
-        font-size: clamp(0.5rem, 3.4cqi, 0.75rem);
+        font-size: clamp(1.1rem, 7cqi, 1.75rem);
       }
 
       .resource-value {
@@ -506,11 +505,13 @@
       }
 
       .resources {
-        max-height: min(17.6dvh, 110px);
+        padding-top: clamp(7px, 1.8cqi, 10px);
+        max-height: min(20dvh, 128px);
       }
 
       .resource-box {
-        min-height: clamp(64px, 20cqi, 88px);
+        min-height: clamp(72px, 22cqi, 98px);
+        padding-top: clamp(5px, 1.4cqi, 8px);
       }
     }
 
@@ -548,15 +549,15 @@
       }
 
       .resources {
-        padding: 4px;
+        padding: 7px 4px 4px;
         padding-bottom: max(4px, env(safe-area-inset-bottom));
-        max-height: min(24dvh, 106px);
+        max-height: min(26dvh, 118px);
       }
 
       .resource-box {
-        padding: 3px 1px;
-        gap: 2px;
-        min-height: clamp(58px, 18cqi, 78px);
+        padding: 5px 1px 3px;
+        gap: 3px;
+        min-height: clamp(66px, 20cqi, 86px);
       }
 
       .btn-resource {
@@ -617,7 +618,11 @@
   </div>
 
   <script>
-    const RESOURCES = ["Candy", "Stamp", "Shield"];
+    const RESOURCES = [
+      { key: "candy", label: "🍬" },
+      { key: "shield", label: "🛡️" },
+      { key: "stamp", label: "🎖️" },
+    ];
 
     const state = {
       team1Name: "팀 1",
@@ -741,18 +746,15 @@
           </div>
         </div>
         <div class="resources">
-          ${RESOURCES.map((res) => {
-            const key = res.toLowerCase();
-            return `
-              <div class="resource-box" data-team="${teamIdx}" data-key="${key}">
-                <span class="resource-label">${res}</span>
-                <span class="resource-value">${data[key]}</span>
+          ${RESOURCES.map((res) => `
+              <div class="resource-box" data-team="${teamIdx}" data-key="${res.key}">
+                <span class="resource-label" aria-label="${res.key}">${res.label}</span>
+                <span class="resource-value">${data[res.key]}</span>
                 <div class="resource-btns">
                   <button class="btn-circle btn-minus btn-resource" data-delta="-1">−</button>
                   <button class="btn-circle btn-plus btn-resource" data-delta="1">+</button>
                 </div>
-              </div>`;
-          }).join("")}
+              </div>`).join("")}
         </div>`;
 
       container.querySelectorAll("[data-team][data-key]").forEach((row) => {
