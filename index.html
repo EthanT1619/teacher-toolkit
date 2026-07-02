@@ -26,7 +26,7 @@
 
     body {
       font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 35%, #fff 100%);
+      background: #eef2ff;
       min-height: 100vh;
       color: var(--text);
       line-height: 1.5;
@@ -187,6 +187,462 @@
       color: var(--text-muted);
     }
 
+    /* ── 상단: 수업 준비 + 오늘 보강 ── */
+    .home-top-row {
+      display: flex;
+      align-items: stretch;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .home-top-row__checklist {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .home-top-row__makeup {
+      flex: 0 0 260px;
+      width: 260px;
+    }
+
+    /* ── 오늘 수업 준비 체크리스트 ── */
+    .prep-checklist {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 16px 12px;
+      height: 100%;
+    }
+
+    .prep-checklist__top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 12px;
+      margin-bottom: 10px;
+    }
+
+    .prep-checklist__title {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .prep-checklist__toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .prep-checklist__btn {
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--text);
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .prep-checklist__btn:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .prep-checklist__btn--danger:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #b91c1c;
+    }
+
+    .prep-checklist__main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+    }
+
+    .prep-checklist__nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .prep-checklist__arrow {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 0.875rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .prep-checklist__arrow:hover:not(:disabled) {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .prep-checklist__arrow:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .prep-checklist__class-name {
+      min-width: 4.5rem;
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #4338ca;
+    }
+
+    .prep-checklist__items {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .prep-checklist__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #f8fafc;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .prep-checklist__chip input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .prep-checklist__chip-mark {
+      width: 14px;
+      height: 14px;
+      border: 2px solid #cbd5e1;
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.625rem;
+      color: transparent;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .prep-checklist__chip:has(input:checked) {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      color: #047857;
+    }
+
+    .prep-checklist__chip:has(input:checked) .prep-checklist__chip-mark {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+    }
+
+    .prep-checklist__empty {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .prep-checklist__progress {
+      margin-left: auto;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .prep-checklist-dialog {
+      border: none;
+      border-radius: var(--radius);
+      padding: 0;
+      max-width: 420px;
+      width: calc(100% - 32px);
+      box-shadow: 0 20px 40px -8px rgb(0 0 0 / 0.2);
+    }
+
+    .prep-checklist-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .prep-checklist-dialog__inner {
+      padding: 20px;
+    }
+
+    .prep-checklist-dialog__title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .prep-checklist-dialog__list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .prep-checklist-dialog__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prep-checklist-dialog__row input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font: inherit;
+      font-size: 0.875rem;
+    }
+
+    .prep-checklist-dialog__row input[type="text"]:focus {
+      outline: none;
+      border-color: #818cf8;
+    }
+
+    .prep-checklist-dialog__footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .prep-checklist-dialog__hint {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── 오늘 보강 위젯 (makeup-scheduler 연동) ── */
+    .makeup-widget {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 14px 12px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 168px;
+    }
+
+    .makeup-widget__top {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    .makeup-widget__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .makeup-widget__title {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .makeup-widget__date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .makeup-widget__meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .makeup-widget__count {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #0369a1;
+      background: var(--util-bg);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .makeup-widget__link {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #4338ca;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .makeup-widget__link:hover {
+      text-decoration: underline;
+    }
+
+    .makeup-widget__overlap {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: #b45309;
+      background: var(--activity-bg);
+      padding: 5px 8px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+      line-height: 1.35;
+    }
+
+    .makeup-widget__overlap--hidden {
+      display: none;
+    }
+
+    .makeup-widget__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .makeup-widget__empty {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 2px 0;
+      line-height: 1.45;
+    }
+
+    .makeup-widget__empty a {
+      color: #4338ca;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .makeup-widget__empty a:hover {
+      text-decoration: underline;
+    }
+
+    .makeup-widget__item-link {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      padding: 7px 9px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .makeup-widget__item-link:hover {
+      background: var(--util-bg);
+      border-color: #7dd3fc;
+    }
+
+    .makeup-widget__item--completed .makeup-widget__item-link {
+      opacity: 0.72;
+      background: #f1f5f9;
+    }
+
+    .makeup-widget__item--cancelled .makeup-widget__item-link {
+      opacity: 0.55;
+      background: #f1f5f9;
+    }
+
+    .makeup-widget__dot {
+      display: none;
+    }
+
+    .makeup-widget__row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .makeup-widget__time {
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .makeup-widget__name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .makeup-widget__class {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+    }
+
+    .makeup-widget__status {
+      font-size: 0.625rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #475569;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .makeup-widget__item--scheduled .makeup-widget__status {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .makeup-widget__item--completed .makeup-widget__status {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .makeup-widget__item--cancelled .makeup-widget__status {
+      background: #f1f5f9;
+      color: #94a3b8;
+    }
+
     @media (max-width: 640px) {
       .wrap { padding: 32px 16px 48px; }
 
@@ -204,11 +660,109 @@
         margin-top: 8px;
         box-shadow: var(--shadow);
       }
+
+      .prep-checklist__main {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .prep-checklist__nav {
+        justify-content: center;
+      }
+
+      .prep-checklist__progress {
+        margin-left: 0;
+        text-align: center;
+      }
+
+      .home-top-row {
+        flex-direction: column;
+      }
+
+      .home-top-row__makeup {
+        flex: none;
+        width: 100%;
+        min-height: 0;
+      }
+
+      .makeup-widget {
+        min-height: 0;
+      }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="home-top-row">
+      <div class="home-top-row__checklist">
+        <section class="prep-checklist" id="prepChecklist" aria-label="오늘 수업 준비 체크리스트">
+          <div class="prep-checklist__top">
+            <h2 class="prep-checklist__title">오늘 수업 준비</h2>
+            <div class="prep-checklist__toolbar">
+              <button type="button" class="prep-checklist__btn" id="btnClassSettings">반 설정</button>
+              <button type="button" class="prep-checklist__btn" id="btnItemSettings">항목 설정</button>
+              <button type="button" class="prep-checklist__btn" id="btnResetCurrent">현재 반 초기화</button>
+              <button type="button" class="prep-checklist__btn prep-checklist__btn--danger" id="btnResetAll">전체 초기화</button>
+            </div>
+          </div>
+          <div class="prep-checklist__main">
+            <div class="prep-checklist__nav">
+              <button type="button" class="prep-checklist__arrow" id="btnPrevClass" aria-label="이전 반">←</button>
+              <span class="prep-checklist__class-name" id="currentClassName">—</span>
+              <button type="button" class="prep-checklist__arrow" id="btnNextClass" aria-label="다음 반">→</button>
+            </div>
+            <div class="prep-checklist__items" id="checklistItems"></div>
+            <span class="prep-checklist__progress" id="checklistProgress"></span>
+          </div>
+        </section>
+      </div>
+
+      <div class="home-top-row__makeup">
+        <section class="makeup-widget" id="makeupWidget" aria-label="오늘 보강">
+          <div class="makeup-widget__top">
+            <div class="makeup-widget__head">
+              <div>
+                <h2 class="makeup-widget__title">오늘 보강</h2>
+                <p class="makeup-widget__date" id="makeupWidgetDate"></p>
+              </div>
+              <div class="makeup-widget__meta">
+                <span class="makeup-widget__count" id="makeupWidgetCount">0건</span>
+                <a class="makeup-widget__link" href="./makeup-scheduler/">전체 보기 →</a>
+              </div>
+            </div>
+          </div>
+          <p class="makeup-widget__overlap makeup-widget__overlap--hidden" id="makeupWidgetOverlap"></p>
+          <ul class="makeup-widget__list" id="makeupWidgetList"></ul>
+        </section>
+      </div>
+    </div>
+
+    <dialog class="prep-checklist-dialog" id="classSettingsDialog">
+      <div class="prep-checklist-dialog__inner">
+        <h3 class="prep-checklist-dialog__title">반 설정</h3>
+        <p class="prep-checklist-dialog__hint">반 이름을 바꾸거나 추가·삭제할 수 있습니다. 각 반의 체크 항목과 체크 상태는 따로 저장됩니다.</p>
+        <div class="prep-checklist-dialog__list" id="classSettingsList"></div>
+        <div class="prep-checklist-dialog__footer">
+          <button type="button" class="prep-checklist__btn" id="btnAddClass">반 추가</button>
+          <button type="button" class="prep-checklist__btn" id="btnSaveClasses">저장</button>
+          <button type="button" class="prep-checklist__btn" id="btnCloseClassDialog">닫기</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="prep-checklist-dialog" id="itemSettingsDialog">
+      <div class="prep-checklist-dialog__inner">
+        <h3 class="prep-checklist-dialog__title">항목 설정</h3>
+        <p class="prep-checklist-dialog__hint" id="itemSettingsHint">현재 선택된 반의 체크 항목을 편집합니다.</p>
+        <div class="prep-checklist-dialog__list" id="itemSettingsList"></div>
+        <div class="prep-checklist-dialog__footer">
+          <button type="button" class="prep-checklist__btn" id="btnAddItem">항목 추가</button>
+          <button type="button" class="prep-checklist__btn" id="btnSaveItems">저장</button>
+          <button type="button" class="prep-checklist__btn" id="btnCloseItemDialog">닫기</button>
+        </div>
+      </div>
+    </dialog>
+
     <header>
       <h1>Toolkit for JLS Teachers</h1>
       <p>카테고리를 선택하면 도구 목록이 펼쳐집니다.</p>
@@ -218,13 +772,14 @@
       <details class="dropdown dropdown--util">
         <summary class="dropdown__toggle">
           <span class="dropdown__badge">유틸</span>
-          <span class="dropdown__count">5개</span>
+          <span class="dropdown__count">6개</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </summary>
         <nav class="dropdown__menu" aria-label="유틸 도구">
           <a class="dropdown__item" href="./classroom-timer/">Classroom Timer</a>
+          <a class="dropdown__item" href="./makeup-scheduler/">Makeup Scheduler</a>
           <a class="dropdown__item" href="./participation-tracker/">Participation Tracker</a>
           <a class="dropdown__item" href="./class-random-picker/">Random Picker</a>
           <a class="dropdown__item" href="./team-maker/">Team Maker</a>
@@ -235,13 +790,14 @@
       <details class="dropdown dropdown--study">
         <summary class="dropdown__toggle">
           <span class="dropdown__badge">학습툴</span>
-          <span class="dropdown__count">5개</span>
+          <span class="dropdown__count">6개</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </summary>
         <nav class="dropdown__menu" aria-label="학습툴">
           <a class="dropdown__item" href="./grammar-checkpoint/">Grammar Checkpoint β</a>
+          <a class="dropdown__item" href="./sentence-battle/">Sentence Battle</a>
           <a class="dropdown__item" href="./sentence-kitchen/">Sentence Kitchen β</a>
           <a class="dropdown__item" href="./story-forge/">Story Forge β</a>
           <a class="dropdown__item" href="./vocab-study-mobile/">Vocab Study Tool</a>
@@ -252,7 +808,7 @@
       <details class="dropdown dropdown--activity">
         <summary class="dropdown__toggle">
           <span class="dropdown__badge">활동</span>
-          <span class="dropdown__count">9개</span>
+          <span class="dropdown__count">8개</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -265,7 +821,6 @@
           <a class="dropdown__item" href="./mystery-box-picker/">Mystery Box</a>
           <a class="dropdown__item" href="./nerfgun-board/">Nerf Gun Roulette</a>
           <a class="dropdown__item" href="./pirate-race/">Pirate Race</a>
-          <a class="dropdown__item" href="./sentence-battle/">Sentence Battle</a>
           <a class="dropdown__item" href="./juldarigi/">Tug of War</a>
         </nav>
       </details>
@@ -273,5 +828,518 @@
 
     <footer>Toolkit for JLS Teachers</footer>
   </div>
+
+  <script>
+    (function initTeacherChecklist() {
+      const STORAGE = {
+        classes: "teacherChecklistClasses",
+        items: "teacherChecklistItems",
+        state: "teacherChecklistState",
+        currentClassId: "teacherChecklistCurrentClassId",
+      };
+
+      const DEFAULT_CLASSES = [
+        { id: "class_1", name: "1교시" },
+        { id: "class_2", name: "2교시" },
+        { id: "class_3", name: "3교시" },
+        { id: "class_4", name: "4교시" },
+        { id: "class_5", name: "5교시" },
+      ];
+
+      const DEFAULT_ITEMS = [
+        { id: "item_1", label: "교재" },
+        { id: "item_2", label: "유인물" },
+        { id: "item_3", label: "스탬프" },
+        { id: "item_4", label: "NIE" },
+        { id: "item_5", label: "Vocab Test" },
+      ];
+
+      let checklistClasses = [];
+      let checklistItemsByClass = {};
+      let checklistState = {};
+      let currentClassId = "";
+
+      const els = {
+        currentClassName: document.getElementById("currentClassName"),
+        checklistItems: document.getElementById("checklistItems"),
+        checklistProgress: document.getElementById("checklistProgress"),
+        btnPrevClass: document.getElementById("btnPrevClass"),
+        btnNextClass: document.getElementById("btnNextClass"),
+        btnClassSettings: document.getElementById("btnClassSettings"),
+        btnItemSettings: document.getElementById("btnItemSettings"),
+        btnResetCurrent: document.getElementById("btnResetCurrent"),
+        btnResetAll: document.getElementById("btnResetAll"),
+        classSettingsDialog: document.getElementById("classSettingsDialog"),
+        itemSettingsDialog: document.getElementById("itemSettingsDialog"),
+        classSettingsList: document.getElementById("classSettingsList"),
+        itemSettingsList: document.getElementById("itemSettingsList"),
+        itemSettingsHint: document.getElementById("itemSettingsHint"),
+        btnAddClass: document.getElementById("btnAddClass"),
+        btnSaveClasses: document.getElementById("btnSaveClasses"),
+        btnCloseClassDialog: document.getElementById("btnCloseClassDialog"),
+        btnAddItem: document.getElementById("btnAddItem"),
+        btnSaveItems: document.getElementById("btnSaveItems"),
+        btnCloseItemDialog: document.getElementById("btnCloseItemDialog"),
+      };
+
+      function cloneDefaultItems() {
+        return DEFAULT_ITEMS.map(function (item) {
+          return { id: item.id, label: item.label };
+        });
+      }
+
+      function getItemsForClass(classId) {
+        return Array.isArray(checklistItemsByClass[classId]) ? checklistItemsByClass[classId] : [];
+      }
+
+      function ensureClassItems(classId) {
+        if (!Array.isArray(checklistItemsByClass[classId]) || checklistItemsByClass[classId].length === 0) {
+          checklistItemsByClass[classId] = cloneDefaultItems();
+        }
+      }
+
+      function generateChecklistId(prefix) {
+        return prefix + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      }
+
+      function loadJson(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return fallback;
+          const parsed = JSON.parse(raw);
+          return parsed ?? fallback;
+        } catch {
+          return fallback;
+        }
+      }
+
+      function saveChecklistClasses() {
+        localStorage.setItem(STORAGE.classes, JSON.stringify(checklistClasses));
+      }
+
+      function saveChecklistItems() {
+        localStorage.setItem(STORAGE.items, JSON.stringify(checklistItemsByClass));
+      }
+
+      function saveChecklistState() {
+        localStorage.setItem(STORAGE.state, JSON.stringify(checklistState));
+      }
+
+      function saveCurrentClassId() {
+        localStorage.setItem(STORAGE.currentClassId, currentClassId);
+      }
+
+      function migrateItemsFromStorage(rawItems, classes) {
+        if (Array.isArray(rawItems) && rawItems.length > 0) {
+          const migrated = {};
+          classes.forEach(function (cls) {
+            migrated[cls.id] = rawItems.map(function (item) {
+              return { id: item.id, label: item.label };
+            });
+          });
+          return migrated;
+        }
+
+        if (rawItems && typeof rawItems === "object" && !Array.isArray(rawItems)) {
+          return rawItems;
+        }
+
+        const initial = {};
+        classes.forEach(function (cls) {
+          initial[cls.id] = cloneDefaultItems();
+        });
+        return initial;
+      }
+
+      function ensureClassState(classId) {
+        if (!checklistState[classId]) checklistState[classId] = {};
+        getItemsForClass(classId).forEach(function (item) {
+          if (typeof checklistState[classId][item.id] !== "boolean") {
+            checklistState[classId][item.id] = false;
+          }
+        });
+      }
+
+      function pruneChecklistData() {
+        const validClassIds = new Set(checklistClasses.map(function (c) { return c.id; }));
+
+        Object.keys(checklistItemsByClass).forEach(function (classId) {
+          if (!validClassIds.has(classId)) delete checklistItemsByClass[classId];
+        });
+
+        checklistClasses.forEach(function (cls) {
+          ensureClassItems(cls.id);
+        });
+
+        Object.keys(checklistState).forEach(function (classId) {
+          if (!validClassIds.has(classId)) {
+            delete checklistState[classId];
+            return;
+          }
+          const validItemIds = new Set(getItemsForClass(classId).map(function (i) { return i.id; }));
+          Object.keys(checklistState[classId]).forEach(function (itemId) {
+            if (!validItemIds.has(itemId)) delete checklistState[classId][itemId];
+          });
+        });
+
+        checklistClasses.forEach(function (cls) {
+          ensureClassState(cls.id);
+        });
+      }
+
+      function loadChecklistData() {
+        checklistClasses = loadJson(STORAGE.classes, null);
+        checklistState = loadJson(STORAGE.state, {});
+        currentClassId = localStorage.getItem(STORAGE.currentClassId) || "";
+
+        if (!Array.isArray(checklistClasses) || checklistClasses.length === 0) {
+          checklistClasses = DEFAULT_CLASSES.map(function (c) { return { id: c.id, name: c.name }; });
+        }
+
+        const rawItems = loadJson(STORAGE.items, null);
+        checklistItemsByClass = migrateItemsFromStorage(rawItems, checklistClasses);
+        pruneChecklistData();
+
+        if (!checklistClasses.some(function (c) { return c.id === currentClassId; })) {
+          currentClassId = checklistClasses[0].id;
+        }
+      }
+
+      function getCurrentClassIndex() {
+        return checklistClasses.findIndex(function (c) { return c.id === currentClassId; });
+      }
+
+      function getCurrentClass() {
+        return checklistClasses.find(function (c) { return c.id === currentClassId; }) || null;
+      }
+
+      function renderChecklistItems() {
+        const current = getCurrentClass();
+        if (!current) {
+          els.currentClassName.textContent = "—";
+          els.checklistItems.innerHTML = '<span class="prep-checklist__empty">등록된 반이 없습니다. 반 설정에서 추가해 주세요.</span>';
+          els.checklistProgress.textContent = "";
+          els.btnPrevClass.disabled = true;
+          els.btnNextClass.disabled = true;
+          return;
+        }
+
+        els.currentClassName.textContent = current.name;
+        els.btnPrevClass.disabled = checklistClasses.length <= 1;
+        els.btnNextClass.disabled = checklistClasses.length <= 1;
+
+        ensureClassItems(current.id);
+        ensureClassState(current.id);
+        const classItems = getItemsForClass(current.id);
+        const classState = checklistState[current.id];
+        let checkedCount = 0;
+
+        els.checklistItems.innerHTML = classItems.map(function (item) {
+          const checked = !!classState[item.id];
+          if (checked) checkedCount += 1;
+          return (
+            '<label class="prep-checklist__chip">' +
+              '<input type="checkbox" data-item-id="' + item.id + '"' + (checked ? " checked" : "") + ">" +
+              '<span class="prep-checklist__chip-mark" aria-hidden="true">✓</span>' +
+              "<span>" + escapeHtml(item.label) + "</span>" +
+            "</label>"
+          );
+        }).join("");
+
+        if (classItems.length === 0) {
+          els.checklistItems.innerHTML = '<span class="prep-checklist__empty">체크 항목이 없습니다. 항목 설정에서 추가해 주세요.</span>';
+          els.checklistProgress.textContent = "";
+          return;
+        }
+
+        els.checklistProgress.textContent = checkedCount + " / " + classItems.length + " 완료";
+
+        els.checklistItems.querySelectorAll("input[type=checkbox]").forEach(function (input) {
+          input.addEventListener("change", function () {
+            toggleCheckItem(current.id, input.dataset.itemId, input.checked);
+          });
+        });
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderChecklist() {
+        renderChecklistItems();
+      }
+
+      function switchToPrevClass() {
+        if (checklistClasses.length <= 1) return;
+        const idx = getCurrentClassIndex();
+        const nextIdx = (idx - 1 + checklistClasses.length) % checklistClasses.length;
+        currentClassId = checklistClasses[nextIdx].id;
+        saveCurrentClassId();
+        renderChecklist();
+      }
+
+      function switchToNextClass() {
+        if (checklistClasses.length <= 1) return;
+        const idx = getCurrentClassIndex();
+        const nextIdx = (idx + 1) % checklistClasses.length;
+        currentClassId = checklistClasses[nextIdx].id;
+        saveCurrentClassId();
+        renderChecklist();
+      }
+
+      function toggleCheckItem(classId, itemId, checked) {
+        ensureClassState(classId);
+        checklistState[classId][itemId] = checked;
+        saveChecklistState();
+        renderChecklistItems();
+      }
+
+      function resetCurrentClassChecks() {
+        const current = getCurrentClass();
+        if (!current) return;
+        if (!confirm('"' + current.name + '" 반의 체크 상태를 모두 해제할까요?')) return;
+        ensureClassState(current.id);
+        getItemsForClass(current.id).forEach(function (item) {
+          checklistState[current.id][item.id] = false;
+        });
+        saveChecklistState();
+        renderChecklist();
+      }
+
+      function resetAllClassChecks() {
+        if (!confirm("모든 반의 체크 상태를 해제할까요?")) return;
+        checklistClasses.forEach(function (cls) {
+          ensureClassState(cls.id);
+          getItemsForClass(cls.id).forEach(function (item) {
+            checklistState[cls.id][item.id] = false;
+          });
+        });
+        saveChecklistState();
+        renderChecklist();
+      }
+
+      function renderClassSettingsList() {
+        els.classSettingsList.innerHTML = checklistClasses.map(function (cls) {
+          return (
+            '<div class="prep-checklist-dialog__row" data-class-id="' + cls.id + '">' +
+              '<input type="text" value="' + escapeHtml(cls.name) + '" maxlength="30" aria-label="반 이름">' +
+              '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-class">삭제</button>' +
+            "</div>"
+          );
+        }).join("");
+
+        els.classSettingsList.querySelectorAll("[data-action=delete-class]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const row = btn.closest("[data-class-id]");
+            if (!row) return;
+            if (checklistClasses.length <= 1) {
+              alert("최소 한 개의 반은 남겨 두어야 합니다.");
+              return;
+            }
+            row.remove();
+          });
+        });
+      }
+
+      function renderItemSettingsList() {
+        const current = getCurrentClass();
+        if (!current) return;
+
+        ensureClassItems(current.id);
+        const classItems = getItemsForClass(current.id);
+
+        els.itemSettingsList.innerHTML = classItems.map(function (item) {
+          return (
+            '<div class="prep-checklist-dialog__row" data-item-id="' + item.id + '">' +
+              '<input type="text" value="' + escapeHtml(item.label) + '" maxlength="40" aria-label="항목 이름">' +
+              '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-item">삭제</button>' +
+            "</div>"
+          );
+        }).join("");
+
+        els.itemSettingsList.querySelectorAll("[data-action=delete-item]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const row = btn.closest("[data-item-id]");
+            if (!row) return;
+            if (els.itemSettingsList.children.length <= 1) {
+              alert("최소 한 개의 항목은 남겨 두어야 합니다.");
+              return;
+            }
+            row.remove();
+          });
+        });
+      }
+
+      function openClassSettingsModal() {
+        renderClassSettingsList();
+        els.classSettingsDialog.showModal();
+      }
+
+      function openItemSettingsModal() {
+        const current = getCurrentClass();
+        if (!current) {
+          alert("먼저 반을 선택해 주세요.");
+          return;
+        }
+        if (els.itemSettingsHint) {
+          els.itemSettingsHint.textContent = '"' + current.name + '" 반의 체크 항목을 편집합니다. 다른 반과 항목 목록이 다를 수 있습니다.';
+        }
+        renderItemSettingsList();
+        els.itemSettingsDialog.showModal();
+      }
+
+      function addClassSettingRow() {
+        const id = generateChecklistId("class");
+        const row = document.createElement("div");
+        row.className = "prep-checklist-dialog__row";
+        row.dataset.classId = id;
+        row.innerHTML =
+          '<input type="text" value="" placeholder="새 반 이름" maxlength="30" aria-label="반 이름">' +
+          '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-class">삭제</button>';
+        row.querySelector("[data-action=delete-class]").addEventListener("click", function () {
+          if (els.classSettingsList.children.length <= 1) {
+            alert("최소 한 개의 반은 남겨 두어야 합니다.");
+            return;
+          }
+          row.remove();
+        });
+        els.classSettingsList.appendChild(row);
+        row.querySelector("input").focus();
+      }
+
+      function addItemSettingRow() {
+        const id = generateChecklistId("item");
+        const row = document.createElement("div");
+        row.className = "prep-checklist-dialog__row";
+        row.dataset.itemId = id;
+        row.innerHTML =
+          '<input type="text" value="" placeholder="새 항목 이름" maxlength="40" aria-label="항목 이름">' +
+          '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-item">삭제</button>';
+        row.querySelector("[data-action=delete-item]").addEventListener("click", function () {
+          if (els.itemSettingsList.children.length <= 1) {
+            alert("최소 한 개의 항목은 남겨 두어야 합니다.");
+            return;
+          }
+          row.remove();
+        });
+        els.itemSettingsList.appendChild(row);
+        row.querySelector("input").focus();
+      }
+
+      function saveClassSettingsFromModal() {
+        const rows = els.classSettingsList.querySelectorAll(".prep-checklist-dialog__row");
+        const nextClasses = [];
+        const usedNames = new Set();
+
+        const prevClassIds = new Set(checklistClasses.map(function (c) { return c.id; }));
+
+        for (let i = 0; i < rows.length; i += 1) {
+          const row = rows[i];
+          const name = row.querySelector("input").value.trim();
+          if (!name) {
+            alert("반 이름을 비워 둘 수 없습니다.");
+            return;
+          }
+          if (usedNames.has(name)) {
+            alert('"' + name + '" 이름이 중복됩니다.');
+            return;
+          }
+          usedNames.add(name);
+          nextClasses.push({
+            id: row.dataset.classId || generateChecklistId("class"),
+            name: name,
+          });
+        }
+
+        const nextClassIds = new Set(nextClasses.map(function (c) { return c.id; }));
+        prevClassIds.forEach(function (classId) {
+          if (!nextClassIds.has(classId)) {
+            delete checklistItemsByClass[classId];
+            delete checklistState[classId];
+          }
+        });
+
+        nextClasses.forEach(function (cls) {
+          if (!checklistItemsByClass[cls.id]) {
+            checklistItemsByClass[cls.id] = cloneDefaultItems();
+          }
+        });
+
+        checklistClasses = nextClasses;
+        pruneChecklistData();
+        if (!checklistClasses.some(function (c) { return c.id === currentClassId; })) {
+          currentClassId = checklistClasses[0].id;
+        }
+        saveChecklistClasses();
+        saveChecklistItems();
+        saveChecklistState();
+        saveCurrentClassId();
+        els.classSettingsDialog.close();
+        renderChecklist();
+      }
+
+      function saveItemSettingsFromModal() {
+        const current = getCurrentClass();
+        if (!current) return;
+
+        const rows = els.itemSettingsList.querySelectorAll(".prep-checklist-dialog__row");
+        const nextItems = [];
+        const usedLabels = new Set();
+
+        for (let i = 0; i < rows.length; i += 1) {
+          const row = rows[i];
+          const label = row.querySelector("input").value.trim();
+          if (!label) {
+            alert("항목 이름을 비워 둘 수 없습니다.");
+            return;
+          }
+          if (usedLabels.has(label)) {
+            alert('"' + label + '" 항목이 중복됩니다.');
+            return;
+          }
+          usedLabels.add(label);
+          nextItems.push({
+            id: row.dataset.itemId || generateChecklistId("item"),
+            label: label,
+          });
+        }
+
+        checklistItemsByClass[current.id] = nextItems;
+        pruneChecklistData();
+        saveChecklistItems();
+        saveChecklistState();
+        els.itemSettingsDialog.close();
+        renderChecklist();
+      }
+
+      function bindChecklistEvents() {
+        els.btnPrevClass.addEventListener("click", switchToPrevClass);
+        els.btnNextClass.addEventListener("click", switchToNextClass);
+        els.btnClassSettings.addEventListener("click", openClassSettingsModal);
+        els.btnItemSettings.addEventListener("click", openItemSettingsModal);
+        els.btnResetCurrent.addEventListener("click", resetCurrentClassChecks);
+        els.btnResetAll.addEventListener("click", resetAllClassChecks);
+        els.btnAddClass.addEventListener("click", addClassSettingRow);
+        els.btnSaveClasses.addEventListener("click", saveClassSettingsFromModal);
+        els.btnCloseClassDialog.addEventListener("click", function () {
+          els.classSettingsDialog.close();
+        });
+        els.btnAddItem.addEventListener("click", addItemSettingRow);
+        els.btnSaveItems.addEventListener("click", saveItemSettingsFromModal);
+        els.btnCloseItemDialog.addEventListener("click", function () {
+          els.itemSettingsDialog.close();
+        });
+      }
+
+      loadChecklistData();
+      bindChecklistEvents();
+      renderChecklist();
+    })();
+  </script>
+  <script src="./shared/makeup-scheduler-widget.js" defer></script>
 </body>
 </html>
