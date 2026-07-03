@@ -691,8 +691,66 @@
       border-color: #c7d2fe;
     }
 
+    /* ── 도움말 FAB ── */
+    .help-fab {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      box-shadow: 0 6px 16px -4px rgb(0 0 0 / 0.12), var(--shadow);
+      color: #4338ca;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .help-fab:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      transform: translateY(-1px);
+    }
+
+    .help-fab__icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .help-fab__badge {
+      position: absolute;
+      top: -6px;
+      right: -2px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.625rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      box-shadow: 0 2px 6px rgb(239 68 68 / 0.35);
+    }
+
+    .help-fab__badge--hidden {
+      display: none;
+    }
+
     @media (max-width: 640px) {
       .wrap { padding: 32px 16px 48px; }
+
+      .help-fab {
+        right: 14px;
+        bottom: 14px;
+        padding: 9px 12px;
+        font-size: 0.75rem;
+      }
 
       .menu-list {
         flex-direction: column;
@@ -1396,6 +1454,22 @@
       renderChecklist();
     })();
   </script>
+  <a href="./help/" class="help-fab" id="helpFab" aria-label="도움말 센터">
+    <span class="help-fab__badge help-fab__badge--hidden" id="helpNewBadge">NEW</span>
+    <span class="help-fab__icon" aria-hidden="true">📖</span>
+    <span class="help-fab__label">도움말</span>
+  </a>
+
   <script src="./shared/makeup-scheduler-widget.js" defer></script>
+  <script src="./shared/help-updates-data.js"></script>
+  <script>
+    (function initHelpFabBadge() {
+      var badge = document.getElementById("helpNewBadge");
+      if (!badge || typeof window.hasUnreadHelpUpdates !== "function") return;
+      if (window.hasUnreadHelpUpdates()) {
+        badge.classList.remove("help-fab__badge--hidden");
+      }
+    })();
+  </script>
 </body>
 </html>

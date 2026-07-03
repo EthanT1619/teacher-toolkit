@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Teacher Toolkit 도움말 센터 — 사용 가이드, 업데이트, FAQ">
+  <title>도움말 센터 · Toolkit for JLS Teachers</title>
+  <style>
+    :root {
+      --bg: #eef2ff;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+      --radius: 14px;
+      --accent: #4f46e5;
+      --accent-bg: #eef2ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .help-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 20px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: #4338ca;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .help-back:hover {
+      background: var(--accent-bg);
+      border-color: #c7d2fe;
+    }
+
+    .help-header {
+      margin-bottom: 24px;
+    }
+
+    .help-header h1 {
+      font-size: clamp(1.5rem, 4vw, 1.875rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .help-header p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+    }
+
+    .help-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .help-tabs__btn {
+      flex: 1 1 0;
+      min-width: 96px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .help-tabs__btn:hover {
+      border-color: #c7d2fe;
+      color: var(--text);
+    }
+
+    .help-tabs__btn[aria-selected="true"] {
+      color: #4338ca;
+      background: var(--accent-bg);
+      border-color: #a5b4fc;
+    }
+
+    .help-panel {
+      display: none;
+    }
+
+    .help-panel--active {
+      display: block;
+    }
+
+    .help-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .help-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-card h2 {
+      font-size: 1.0625rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .help-card h3 {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .help-card ul {
+      padding-left: 1.25rem;
+      font-size: 0.9375rem;
+      color: var(--text);
+    }
+
+    .help-card li {
+      margin-bottom: 6px;
+    }
+
+    .help-card li:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-card p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+    }
+
+    .help-update {
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .help-update:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .help-update__date {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .help-update__title {
+      font-size: 1.0625rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .help-faq-item {
+      margin-bottom: 16px;
+    }
+
+    .help-faq-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .help-faq-item__q {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #4338ca;
+    }
+
+    .help-faq-item__a {
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 24px 16px 40px; }
+
+      .help-tabs {
+        flex-direction: column;
+      }
+
+      .help-tabs__btn {
+        flex: none;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="help-back" href="../index.html">← Toolkit으로 돌아가기</a>
+
+    <header class="help-header">
+      <h1>Teacher Toolkit 도움말 센터</h1>
+      <p>사용법, 업데이트 내역, 자주 묻는 질문을 확인할 수 있습니다.</p>
+    </header>
+
+    <div class="help-tabs" role="tablist" aria-label="도움말 섹션">
+      <button type="button" class="help-tabs__btn" role="tab" id="tab-guide" aria-selected="true" aria-controls="panel-guide">사용 가이드</button>
+      <button type="button" class="help-tabs__btn" role="tab" id="tab-updates" aria-selected="false" aria-controls="panel-updates">업데이트</button>
+      <button type="button" class="help-tabs__btn" role="tab" id="tab-faq" aria-selected="false" aria-controls="panel-faq">FAQ</button>
+    </div>
+
+    <section class="help-panel help-panel--active" id="panel-guide" role="tabpanel" aria-labelledby="tab-guide">
+      <article class="help-card">
+        <h2>1. 오늘 수업 준비 체크리스트</h2>
+        <ul>
+          <li>반별로 준비물을 체크할 수 있습니다.</li>
+          <li>← / → 버튼으로 반을 이동할 수 있습니다.</li>
+          <li>반 설정과 항목 설정으로 반·준비물 목록을 편집할 수 있습니다.</li>
+          <li>체크 상태는 브라우저에 자동 저장됩니다.</li>
+        </ul>
+      </article>
+
+      <article class="help-card">
+        <h2>2. 보강 스케줄러</h2>
+        <ul>
+          <li>보강 일정을 날짜별로 등록할 수 있습니다.</li>
+          <li>학생 이름, 반, 결석일 진도, 시작/종료 시간, 메모를 입력할 수 있습니다.</li>
+          <li>메인 화면의 「오늘 보강」에서 오늘 예정된 보강을 확인할 수 있습니다.</li>
+          <li>보강 스케줄러에서 이번 주 보강과 학생별 보강 횟수를 확인할 수 있습니다.</li>
+        </ul>
+      </article>
+
+      <article class="help-card">
+        <h2>3. 수업 유틸리티</h2>
+        <p>타이머, 랜덤 선택기, 팀 메이커 등 수업 진행을 돕는 보조 도구입니다.</p>
+      </article>
+
+      <article class="help-card">
+        <h2>4. 학습 툴</h2>
+        <p>Vocab Study, Sentence Kitchen, Story Forge 등 학습 활동을 지원하는 도구입니다.</p>
+      </article>
+
+      <article class="help-card">
+        <h2>5. 수업 게임/활동</h2>
+        <p>Barrel Game, Cannon Game, Mystery Box 등 수업 몰입을 위한 활동 도구입니다.</p>
+      </article>
+    </section>
+
+    <section class="help-panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates" hidden>
+      <div class="help-card" id="updatesList"></div>
+    </section>
+
+    <section class="help-panel" id="panel-faq" role="tabpanel" aria-labelledby="tab-faq" hidden>
+      <div class="help-card">
+        <div class="help-faq-item">
+          <p class="help-faq-item__q">Q. 다른 컴퓨터에서도 같은 데이터를 볼 수 있나요?</p>
+          <p class="help-faq-item__a">A. 현재는 브라우저 localStorage 기반이라 기기마다 데이터가 따로 저장됩니다. 추후 백업/복원 기능을 추가할 예정입니다.</p>
+        </div>
+        <div class="help-faq-item">
+          <p class="help-faq-item__q">Q. 데이터가 사라질 수 있나요?</p>
+          <p class="help-faq-item__a">A. 브라우저 캐시나 사이트 데이터가 삭제되면 localStorage 데이터가 사라질 수 있습니다. 중요한 데이터는 추후 제공될 내보내기 기능으로 백업하는 것을 권장합니다.</p>
+        </div>
+        <div class="help-faq-item">
+          <p class="help-faq-item__q">Q. 모바일에서도 사용할 수 있나요?</p>
+          <p class="help-faq-item__a">A. 기본 사용은 가능하지만, 노트북 또는 데스크톱 환경을 권장합니다.</p>
+        </div>
+        <div class="help-faq-item">
+          <p class="help-faq-item__q">Q. 오류나 건의사항은 어떻게 전달하나요?</p>
+          <p class="help-faq-item__a">A. 교무톡 또는 개발자에게 직접 전달해 주세요.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="../shared/help-updates-data.js"></script>
+  <script>
+    (function initHelpCenter() {
+      var tabs = [
+        { btn: document.getElementById("tab-guide"), panel: document.getElementById("panel-guide") },
+        { btn: document.getElementById("tab-updates"), panel: document.getElementById("panel-updates") },
+        { btn: document.getElementById("tab-faq"), panel: document.getElementById("panel-faq") },
+      ];
+
+      function activateTab(index) {
+        tabs.forEach(function (tab, i) {
+          var active = i === index;
+          tab.btn.setAttribute("aria-selected", active ? "true" : "false");
+          tab.panel.classList.toggle("help-panel--active", active);
+          tab.panel.hidden = !active;
+        });
+      }
+
+      tabs.forEach(function (tab, index) {
+        tab.btn.addEventListener("click", function () {
+          activateTab(index);
+        });
+      });
+
+      function renderUpdates() {
+        var container = document.getElementById("updatesList");
+        if (!container || !window.TOOLKIT_HELP_UPDATES) return;
+
+        var sorted = window.TOOLKIT_HELP_UPDATES.slice().sort(function (a, b) {
+          return b.date.localeCompare(a.date);
+        });
+
+        container.innerHTML = sorted.map(function (entry) {
+          var items = entry.items.map(function (item) {
+            return "<li>" + item + "</li>";
+          }).join("");
+
+          return (
+            '<article class="help-update">' +
+              '<p class="help-update__date">' + window.formatHelpUpdateDate(entry.date) + "</p>" +
+              '<h3 class="help-update__title">' + entry.title + "</h3>" +
+              "<ul>" + items + "</ul>" +
+            "</article>"
+          );
+        }).join("");
+      }
+
+      renderUpdates();
+      window.markHelpUpdatesSeen();
+    })();
+  </script>
+</body>
+</html>
