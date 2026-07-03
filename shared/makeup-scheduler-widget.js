@@ -1,6 +1,7 @@
 (function initMakeupSchedulerWidget() {
   const STORAGE_KEY = "makeup-scheduler-schedules";
   const APP_HREF = "./makeup-scheduler/";
+  const AUTO_INTERVAL_MS = 2000;
 
   const STATUS_LABELS = {
     scheduled: "예정",
@@ -12,10 +13,17 @@
     date: document.getElementById("makeupWidgetDate"),
     count: document.getElementById("makeupWidgetCount"),
     overlap: document.getElementById("makeupWidgetOverlap"),
-    list: document.getElementById("makeupWidgetList"),
+    slide: document.getElementById("makeupWidgetSlide"),
+    index: document.getElementById("makeupWidgetIndex"),
+    prev: document.getElementById("makeupWidgetPrev"),
+    next: document.getElementById("makeupWidgetNext"),
   };
 
-  if (!els.list) return;
+  if (!els.slide) return;
+
+  let todaySchedules = [];
+  let currentIndex = 0;
+  let autoTimer = null;
 
   function loadSchedulesFromStorage() {
     try {
@@ -39,9 +47,7 @@
 
   function addMinutes(timeStr, minutes) {
     const parts = timeStr.split(":").map(Number);
-    const h = parts[0];
-    const m = parts[1];
-    const total = h * 60 + m + minutes;
+    const total = parts[0] * 60 + parts[1] + minutes;
     const nh = Math.floor(total / 60) % 24;
     const nm = total % 60;
     return String(nh).padStart(2, "0") + ":" + String(nm).padStart(2, "0");
@@ -57,12 +63,9 @@
 
   function formatDateKorean(dateStr) {
     const parts = dateStr.split("-").map(Number);
-    const y = parts[0];
-    const m = parts[1];
-    const d = parts[2];
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-    const date = new Date(y, m - 1, d);
-    return y + "년 " + m + "월 " + d + "일 (" + dayNames[date.getDay()] + ")";
+    const date = new Date(parts[0], parts[1] - 1, parts[2]);
+    return parts[0] + "년 " + parts[1] + "월 " + parts[2] + "일 (" + dayNames[date.getDay()] + ")";
   }
 
   function getStartTime(schedule) {
@@ -101,26 +104,20 @@
       .sort(compareByTime);
   }
 
-  function countScheduled(schedules) {
-    return schedules.filter(function (schedule) { return schedule.status === "scheduled"; }).length;
-  }
-
   function detectOverlap(schedules) {
     const active = schedules.filter(function (schedule) { return schedule.status !== "cancelled"; });
     if (active.length < 2) return 0;
 
-    const sorted = active.slice().sort(compareByTime);
     let maxLanes = 1;
-
-    for (let i = 0; i < sorted.length; i += 1) {
+    for (let i = 0; i < active.length; i += 1) {
       let lanes = 1;
-      const aStart = getStartTime(sorted[i]);
-      const aEnd = getEndTime(sorted[i]) || addMinutes(aStart, 50);
+      const aStart = getStartTime(active[i]);
+      const aEnd = getEndTime(active[i]) || addMinutes(aStart, 50);
 
-      for (let j = 0; j < sorted.length; j += 1) {
+      for (let j = 0; j < active.length; j += 1) {
         if (i === j) continue;
-        const bStart = getStartTime(sorted[j]);
-        const bEnd = getEndTime(sorted[j]) || addMinutes(bStart, 50);
+        const bStart = getStartTime(active[j]);
+        const bEnd = getEndTime(active[j]) || addMinutes(bStart, 50);
         if (aStart < bEnd && bStart < aEnd) lanes += 1;
       }
       if (lanes > maxLanes) maxLanes = lanes;
@@ -129,24 +126,93 @@
     return maxLanes > 1 ? maxLanes : 0;
   }
 
-  function renderMakeupWidget() {
-    const todayStr = formatTodayDateString();
-    const schedules = getTodaySchedules();
-    const scheduledCount = countScheduled(schedules);
-    const overlapLanes = detectOverlap(schedules);
+  function stopAutoRotate() {
+    if (autoTimer !== null) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
 
-    if (els.date) els.date.textContent = formatDateKorean(todayStr);
+  function startAutoRotate() {
+    stopAutoRotate();
+    if (todaySchedules.length <= 1) return;
+    autoTimer = setInterval(function () {
+      goToNextSchedule(true);
+    }, AUTO_INTERVAL_MS);
+  }
 
-    if (els.count) {
-      if (schedules.length === 0) {
-        els.count.textContent = "0건";
-      } else if (scheduledCount === schedules.length) {
-        els.count.textContent = "예정 " + scheduledCount + "건";
-      } else {
-        els.count.textContent = "예정 " + scheduledCount + "건 · 전체 " + schedules.length + "건";
-      }
+  function clampCurrentIndex() {
+    if (todaySchedules.length === 0) {
+      currentIndex = 0;
+      return;
+    }
+    if (currentIndex >= todaySchedules.length) {
+      currentIndex = 0;
+    }
+    if (currentIndex < 0) {
+      currentIndex = todaySchedules.length - 1;
+    }
+  }
+
+  function renderScheduleCard(schedule) {
+    const status = schedule.status || "scheduled";
+    const statusLabel = STATUS_LABELS[status] || status;
+    return (
+      '<a class="makeup-widget__card makeup-widget__card--' + escapeHtml(status) + '" href="' + APP_HREF + '">' +
+        '<div class="makeup-widget__card-row">' +
+          '<span class="makeup-widget__time">' + escapeHtml(formatTimeRange(schedule)) + "</span>" +
+          '<span class="makeup-widget__status">' + escapeHtml(statusLabel) + "</span>" +
+        "</div>" +
+        '<span class="makeup-widget__name">' + escapeHtml(schedule.studentName || "-") + "</span>" +
+        '<span class="makeup-widget__class">' + escapeHtml(schedule.className || "-") + "</span>" +
+      "</a>"
+    );
+  }
+
+  function renderCarouselView() {
+    const total = todaySchedules.length;
+    const hasItems = total > 0;
+
+    if (els.prev) els.prev.disabled = !hasItems || total <= 1;
+    if (els.next) els.next.disabled = !hasItems || total <= 1;
+
+    if (els.index) {
+      els.index.textContent = hasItems ? (currentIndex + 1) + " / " + total : "";
     }
 
+    if (!hasItems) {
+      els.slide.innerHTML = '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+      return;
+    }
+
+    els.slide.innerHTML = renderScheduleCard(todaySchedules[currentIndex]);
+  }
+
+  function goToPrevSchedule(manual) {
+    if (todaySchedules.length === 0) return;
+    if (manual) stopAutoRotate();
+    currentIndex = (currentIndex - 1 + todaySchedules.length) % todaySchedules.length;
+    renderCarouselView();
+    if (manual) startAutoRotate();
+  }
+
+  function goToNextSchedule(fromAuto) {
+    if (todaySchedules.length === 0) return;
+    if (!fromAuto) stopAutoRotate();
+    currentIndex = (currentIndex + 1) % todaySchedules.length;
+    renderCarouselView();
+    if (!fromAuto) startAutoRotate();
+  }
+
+  function renderMakeupWidget() {
+    const todayStr = formatTodayDateString();
+    todaySchedules = getTodaySchedules();
+    clampCurrentIndex();
+
+    if (els.date) els.date.textContent = formatDateKorean(todayStr);
+    if (els.count) els.count.textContent = "총 " + todaySchedules.length + "건";
+
+    const overlapLanes = detectOverlap(todaySchedules);
     if (els.overlap) {
       if (overlapLanes > 1) {
         els.overlap.textContent = "같은 시간대 보강 " + overlapLanes + "건 — 일정 겹침 확인";
@@ -157,41 +223,35 @@
       }
     }
 
-    if (schedules.length === 0) {
-      els.list.innerHTML =
-        '<li class="makeup-widget__empty">' +
-          "오늘 보강 일정이 없습니다." +
-          ' <a href="' + APP_HREF + '">보강 추가하기</a>' +
-        "</li>";
-      return;
-    }
-
-    els.list.innerHTML = schedules.map(function (schedule) {
-      const status = schedule.status || "scheduled";
-      const statusLabel = STATUS_LABELS[status] || status;
-      return (
-        '<li class="makeup-widget__item makeup-widget__item--' + escapeHtml(status) + '">' +
-          '<a class="makeup-widget__item-link" href="' + APP_HREF + '">' +
-            '<div class="makeup-widget__row">' +
-              '<span class="makeup-widget__time">' + escapeHtml(formatTimeRange(schedule)) + "</span>" +
-              '<span class="makeup-widget__status">' + escapeHtml(statusLabel) + "</span>" +
-            "</div>" +
-            '<span class="makeup-widget__name">' + escapeHtml(schedule.studentName || "-") + "</span>" +
-            '<span class="makeup-widget__class">' + escapeHtml(schedule.className || "-") + "</span>" +
-          "</a>" +
-        "</li>"
-      );
-    }).join("");
+    renderCarouselView();
+    startAutoRotate();
   }
 
   function bindMakeupWidgetEvents() {
+    if (els.prev) {
+      els.prev.addEventListener("click", function () {
+        goToPrevSchedule(true);
+      });
+    }
+
+    if (els.next) {
+      els.next.addEventListener("click", function () {
+        goToNextSchedule(false);
+      });
+    }
+
     window.addEventListener("storage", function (event) {
       if (event.key === STORAGE_KEY) renderMakeupWidget();
     });
 
     window.addEventListener("focus", renderMakeupWidget);
+
     document.addEventListener("visibilitychange", function () {
-      if (!document.hidden) renderMakeupWidget();
+      if (document.hidden) {
+        stopAutoRotate();
+      } else {
+        renderMakeupWidget();
+      }
     });
   }
 
