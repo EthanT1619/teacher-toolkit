@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fortress Battle</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -80,7 +82,6 @@
     .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--shadow); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-    .btn-home { background: #cbd5e1; }
     .btn-new { background: var(--accent); }
     .btn-full { background: #90e0ef; color: #123; }
 
@@ -483,7 +484,6 @@
       <p>Team A vs Team B — Classroom Battle Game</p>
     </div>
     <div class="top-actions">
-      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
       <button class="btn btn-new" id="btnNewGame" type="button">New Game</button>
       <button class="btn btn-full" id="btnFullscreen" type="button">Fullscreen</button>
     </div>

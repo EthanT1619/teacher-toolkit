@@ -111,6 +111,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 8px 12px;
+      padding-left: max(118px, calc(108px + env(safe-area-inset-left)));
       padding-top: max(8px, env(safe-area-inset-top));
       background: var(--panel);
       flex-shrink: 0;
@@ -536,6 +537,7 @@
     @media (orientation: landscape) and (max-height: 500px) {
       .top-bar {
         padding: 4px 10px;
+        padding-left: max(104px, calc(96px + env(safe-area-inset-left)));
         padding-top: max(4px, env(safe-area-inset-top));
       }
 
@@ -828,6 +830,8 @@
 
     $("#btnBack").addEventListener("click", () => {
       closeMenu();
+      $("#team1Name").value = state.team1Name;
+      $("#team2Name").value = state.team2Name;
       $("#bombCount").value = state.bombCount;
       showScreen("settings");
     });

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Teacher Toolkit 도움말 센터 — 사용 가이드, 업데이트, FAQ">
   <title>도움말 센터 · Toolkit for JLS Teachers</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
   <style>
     :root {
       --bg: #eef2ff;
@@ -16,6 +18,14 @@
       --radius: 14px;
       --accent: #4f46e5;
       --accent-bg: #eef2ff;
+      --util: #0ea5e9;
+      --util-bg: #e0f2fe;
+      --study: #8b5cf6;
+      --study-bg: #ede9fe;
+      --activity: #f59e0b;
+      --activity-bg: #fef3c7;
+      --home: #4f46e5;
+      --home-bg: #eef2ff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,7 +39,7 @@
     }
 
     .wrap {
-      max-width: 720px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 32px 20px 48px;
     }
@@ -137,17 +147,326 @@
     .help-card h3 {
       font-size: 0.9375rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin: 16px 0 6px;
+      color: var(--text);
+      line-height: 1.4;
     }
 
-    .help-card ul {
-      padding-left: 1.25rem;
+    .help-card h2 + h3 {
+      margin-top: 10px;
+    }
+
+    .guide-menu-hint {
+      text-align: center;
       font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .menu-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .dropdown {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 180px;
+      max-width: 280px;
+    }
+
+    .dropdown__toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      text-align: center;
+      list-style: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .dropdown[open] .dropdown__toggle {
+      border-color: #c7d2fe;
+      box-shadow: 0 6px 12px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .dropdown--home[open] .dropdown__toggle { border-color: #a5b4fc; }
+    .dropdown--util[open] .dropdown__toggle { border-color: #7dd3fc; }
+    .dropdown--study[open] .dropdown__toggle { border-color: #c4b5fd; }
+    .dropdown--activity[open] .dropdown__toggle { border-color: #fcd34d; }
+
+    .dropdown__toggle::-webkit-details-marker { display: none; }
+    .dropdown__toggle::marker { content: ""; }
+
+    .dropdown__label { font-size: 1.05rem; font-weight: 700; }
+    .dropdown__count { font-size: 0.875rem; color: var(--text-muted); }
+
+    .dropdown__chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown[open] .dropdown__chevron { transform: rotate(180deg); }
+
+    .dropdown__badge {
+      display: inline-flex;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+
+    .dropdown--home .dropdown__badge { background: var(--home-bg); color: #4338ca; }
+    .dropdown--util .dropdown__badge { background: var(--util-bg); color: #0369a1; }
+    .dropdown--study .dropdown__badge { background: var(--study-bg); color: #6d28d9; }
+    .dropdown--activity .dropdown__badge { background: var(--activity-bg); color: #b45309; }
+
+    .dropdown__menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      min-width: 100%;
+      z-index: 20;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 24px -4px rgb(0 0 0 / 0.12);
+      padding: 8px;
+    }
+
+    .dropdown__item {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      text-align: left;
+      font: inherit;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      line-height: 1.4;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .dropdown__item:hover {
+      background: #f8fafc;
+    }
+
+    .dropdown--home .dropdown__item:hover { background: var(--home-bg); }
+    .dropdown--util .dropdown__item:hover { background: var(--util-bg); }
+    .dropdown--study .dropdown__item:hover { background: var(--study-bg); }
+    .dropdown--activity .dropdown__item:hover { background: var(--activity-bg); }
+
+    .help-common-card {
+      margin-bottom: 20px;
+    }
+
+    .help-common-card__btn {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f8fafc;
+      font: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #4338ca;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .help-common-card__btn:hover {
+      background: var(--accent-bg);
+      border-color: #c7d2fe;
+    }
+
+    #guideContents {
+      display: none;
+    }
+
+    .guide-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .guide-modal--open {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    body.guide-modal-open {
+      overflow: hidden;
+    }
+
+    .guide-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      cursor: pointer;
+    }
+
+    .guide-modal__panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      max-height: min(85vh, 720px);
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 40px -8px rgb(0 0 0 / 0.2);
+      padding: 20px 22px 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .guide-modal__body h2 {
+      font-size: 1.125rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .guide-modal__body h3 {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      margin: 16px 0 6px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .guide-modal__body h2 + h3 {
+      margin-top: 10px;
+    }
+
+    .guide-modal__body p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 0 10px;
+    }
+
+    .guide-modal__body p strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .guide-modal__body ol,
+    .guide-modal__body ul {
+      margin: 6px 0 12px;
+      padding-left: 1.35rem;
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .guide-modal__body li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .guide-modal__body li:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-modal__body .help-example {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .guide-modal__body .help-example strong {
       color: var(--text);
     }
 
+    .guide-modal__body h3 + p {
+      margin-bottom: 8px;
+    }
+
+    .guide-modal__body p + ol,
+    .guide-modal__body p + ul {
+      margin-top: 0;
+    }
+
+    .guide-modal__body ol + p {
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+
+    .guide-modal__body .help-pre {
+      margin: 8px 0 10px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--text);
+      white-space: pre-line;
+    }
+
+    .help-pre {
+      margin: 8px 0 10px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--text);
+      white-space: pre-line;
+    }
+
+    .help-card p + ul,
+    .help-card p + ol,
+    .help-card p + .help-pre {
+      margin-top: 4px;
+    }
+
+    .help-card ol,
+    .help-card ul {
+      margin: 6px 0 12px;
+      padding-left: 1.35rem;
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
     .help-card li {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      line-height: 1.6;
     }
 
     .help-card li:last-child {
@@ -157,6 +476,13 @@
     .help-card p {
       font-size: 0.9375rem;
       color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0 0 10px;
+    }
+
+    .help-card p strong {
+      color: var(--text);
+      font-weight: 800;
     }
 
     .help-update {
@@ -217,6 +543,30 @@
         flex: none;
         width: 100%;
       }
+
+      .menu-list {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .dropdown {
+        max-width: none;
+      }
+
+      .dropdown__menu {
+        position: static;
+        margin-top: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .guide-modal {
+        padding: 12px;
+      }
+
+      .guide-modal__panel {
+        max-height: 88vh;
+        padding: 16px 18px 20px;
+      }
     }
   </style>
 </head>
@@ -236,40 +586,533 @@
     </div>
 
     <section class="help-panel help-panel--active" id="panel-guide" role="tabpanel" aria-labelledby="tab-guide">
-      <article class="help-card">
-        <h2>1. 오늘 수업 준비 체크리스트</h2>
+      <article class="help-card help-common-card">
+        <h2>공통 안내</h2>
+        <p>이름·문장·단어는 <strong>Enter로 한 줄씩</strong> 입력합니다. 자주 쓰는 목록은 <strong>프리셋</strong>으로 저장해 두세요.</p>
+        <button type="button" class="help-common-card__btn" data-guide="guide-common">공통 안내 전체 보기</button>
+      </article>
+
+      <p class="guide-menu-hint">카테고리를 선택하면 도구 설명을 볼 수 있습니다.</p>
+
+      <div class="menu-list">
+        <details class="dropdown dropdown--home">
+          <summary class="dropdown__toggle">
+            <span class="dropdown__badge">메인</span>
+            <span class="dropdown__count">2개</span>
+            <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <nav class="dropdown__menu" aria-label="메인 화면">
+            <button type="button" class="dropdown__item" data-guide="guide-checklist">수업준비 체크리스트</button>
+            <button type="button" class="dropdown__item" data-guide="guide-makeup-widget">오늘 보강 위젯</button>
+          </nav>
+        </details>
+
+        <details class="dropdown dropdown--util">
+          <summary class="dropdown__toggle">
+            <span class="dropdown__badge">유틸</span>
+            <span class="dropdown__count">6개</span>
+            <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <nav class="dropdown__menu" aria-label="유틸 도구">
+            <button type="button" class="dropdown__item" data-guide="guide-classroom-timer">Classroom Timer</button>
+            <button type="button" class="dropdown__item" data-guide="guide-makeup-scheduler">Makeup Scheduler</button>
+            <button type="button" class="dropdown__item" data-guide="guide-participation-tracker">Participation Tracker</button>
+            <button type="button" class="dropdown__item" data-guide="guide-random-picker">Random Picker</button>
+            <button type="button" class="dropdown__item" data-guide="guide-team-maker">Team Maker</button>
+            <button type="button" class="dropdown__item" data-guide="guide-score-board">Score Board</button>
+          </nav>
+        </details>
+
+        <details class="dropdown dropdown--study">
+          <summary class="dropdown__toggle">
+            <span class="dropdown__badge">학습툴</span>
+            <span class="dropdown__count">6개</span>
+            <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <nav class="dropdown__menu" aria-label="학습툴">
+            <button type="button" class="dropdown__item" data-guide="guide-grammar-checkpoint">Grammar Checkpoint β</button>
+            <button type="button" class="dropdown__item" data-guide="guide-sentence-battle">Sentence Battle</button>
+            <button type="button" class="dropdown__item" data-guide="guide-sentence-kitchen">Sentence Kitchen β</button>
+            <button type="button" class="dropdown__item" data-guide="guide-story-forge">Story Forge β</button>
+            <button type="button" class="dropdown__item" data-guide="guide-vocab-study">Vocab Study Tool</button>
+            <button type="button" class="dropdown__item" data-guide="guide-wh-factory">WH Factory β</button>
+          </nav>
+        </details>
+
+        <details class="dropdown dropdown--activity">
+          <summary class="dropdown__toggle">
+            <span class="dropdown__badge">활동</span>
+            <span class="dropdown__count">8개</span>
+            <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <nav class="dropdown__menu" aria-label="활동">
+            <button type="button" class="dropdown__item" data-guide="guide-barrel-game">Barrel Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-cannon-game">Cannon Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-dice-tool">Dice Tool</button>
+            <button type="button" class="dropdown__item" data-guide="guide-ladder-game">Ladder Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-mystery-box">Mystery Box</button>
+            <button type="button" class="dropdown__item" data-guide="guide-nerf-gun">Nerf Gun Roulette</button>
+            <button type="button" class="dropdown__item" data-guide="guide-pirate-race">Pirate Race</button>
+            <button type="button" class="dropdown__item" data-guide="guide-tug-of-war">Tug of War</button>
+          </nav>
+        </details>
+      </div>
+
+      <div id="guideContents" hidden aria-hidden="true">
+      <article class="help-card" id="guide-common">
+        <h2>공통 안내</h2>
+        <h3>한 줄씩 입력하기</h3>
+        <p>학생 이름·문장·단어는 <strong>Enter</strong>를 눌러 한 줄에 하나씩 입력합니다.</p>
+        <p class="help-pre">Kevin
+Emma
+Sophia</p>
+
+        <h3>프리셋 저장하기</h3>
+        <p><strong>프리셋</strong>은 지금 화면 입력칸에 있는 내용을 이름을 붙여 저장해 두는 기능입니다. (학생 목록, 단어, 항목 등 — 도구마다 다름)</p>
+        <ol>
+          <li>저장할 내용을 입력칸에 넣습니다.</li>
+          <li>프리셋 이름을 적습니다. <strong>반·수업 이름</strong>처럼 알아보기 쉬운 이름이 좋습니다.<span class="help-example">예: <strong>DSA1</strong>, <strong>3학년 2반</strong></span></li>
+          <li><strong>저장</strong> 또는 <strong>새로 저장</strong>을 누릅니다.</li>
+        </ol>
+        <p>같은 이름으로 다시 저장하면 덮어쓸지 물어볼 수 있습니다.</p>
+
+        <h3>프리셋 불러오기</h3>
+        <ol>
+          <li>저장된 목록에서 이름을 고릅니다.</li>
+          <li><strong>불러오기</strong>를 누르면 입력칸 내용이 그때 저장했던 상태로 바뀝니다.</li>
+        </ol>
+
+        <h3>참고</h3>
         <ul>
-          <li>반별로 준비물을 체크할 수 있습니다.</li>
-          <li>← / → 버튼으로 반을 이동할 수 있습니다.</li>
-          <li>반 설정과 항목 설정으로 반·준비물 목록을 편집할 수 있습니다.</li>
-          <li>체크 상태는 브라우저에 자동 저장됩니다.</li>
+          <li>목록을 고친 뒤에는 <strong>현재 프리셋 업데이트</strong>로 다시 저장할 수 있습니다. (학생 목록 도구)</li>
+          <li>더 이상 쓰지 않는 프리셋은 선택 후 <strong>삭제</strong>할 수 있습니다.</li>
+          <li>저장된 프리셋은 <strong>이 컴퓨터·이 브라우저</strong>에만 남습니다.</li>
+          <li>Random Picker, Team Maker, Participation Tracker, Vocab Study Tool, Dice Tool 등 <strong>일부 도구</strong>에서 사용할 수 있습니다.</li>
         </ul>
       </article>
 
-      <article class="help-card">
-        <h2>2. 보강 스케줄러</h2>
+      <article class="help-card" id="guide-checklist">
+        <h2>수업준비 체크리스트</h2>
+        <h3>소개</h3>
+        <p>교시별 수업 준비물을 체크하는 도구입니다.</p>
+        <h3>사용 방법</h3>
         <ul>
-          <li>보강 일정을 날짜별로 등록할 수 있습니다.</li>
-          <li>학생 이름, 반, 결석일 진도, 시작/종료 시간, 메모를 입력할 수 있습니다.</li>
-          <li>메인 화면의 「오늘 보강」에서 오늘 예정된 보강을 확인할 수 있습니다.</li>
-          <li>보강 스케줄러에서 이번 주 보강과 학생별 보강 횟수를 확인할 수 있습니다.</li>
+          <li>← / → 버튼으로 반 또는 교시를 이동합니다.</li>
+          <li>필요한 준비물을 체크합니다.</li>
+          <li>반 설정에서 반 이름을 수정할 수 있습니다.</li>
+          <li>항목 설정에서 체크리스트 항목을 수정할 수 있습니다.</li>
         </ul>
+        <h3>주의사항</h3>
+        <p>반 설정과 항목 설정은 저장 버튼을 눌러야 반영됩니다. 반마다 체크 항목은 따로 저장됩니다.</p>
       </article>
 
-      <article class="help-card">
-        <h2>3. 수업 유틸리티</h2>
-        <p>타이머, 랜덤 선택기, 팀 메이커 등 수업 진행을 돕는 보조 도구입니다.</p>
+      <article class="help-card" id="guide-makeup-widget">
+        <h2>오늘 보강 위젯</h2>
+        <h3>소개</h3>
+        <p>오늘 예정된 보강 일정을 메인 화면에서 확인하는 위젯입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>메인 화면에서 오늘 보강 일정을 확인합니다.</li>
+          <li>← / → 버튼으로 보강 일정을 넘겨볼 수 있습니다.</li>
+          <li>일정은 자동으로 전환됩니다.</li>
+          <li>보강 관리는 Makeup Scheduler에서 진행합니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>위젯에서는 보강을 직접 등록하거나 수정하지 않습니다. 등록과 수정은 반드시 Makeup Scheduler에서 진행합니다.</p>
       </article>
 
-      <article class="help-card">
-        <h2>4. 학습 툴</h2>
-        <p>Vocab Study, Sentence Kitchen, Story Forge 등 학습 활동을 지원하는 도구입니다.</p>
+      <article class="help-card" id="guide-classroom-timer">
+        <h2>Classroom Timer</h2>
+        <h3>소개</h3>
+        <p>수업 활동 시간을 관리하는 타이머입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>숫자를 입력합니다.</li>
+          <li>Start를 눌러 타이머를 시작합니다.</li>
+          <li>Pause로 일시정지할 수 있습니다.</li>
+          <li>Reset으로 초기화할 수 있습니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>숫자 버튼 또는 키보드 숫자를 사용할 수 있습니다. 예를 들어 630을 입력하면 6분 30초로 설정됩니다.</p>
+        <h3>단축키</h3>
+        <ul>
+          <li>Enter: 시작 또는 재개</li>
+          <li>Space: 시작, 일시정지, 재개</li>
+          <li>Backspace: 한 자리 삭제</li>
+          <li>C: Clear</li>
+          <li>R: Reset</li>
+          <li>F: 전체화면</li>
+          <li>Esc: 닫기 또는 취소</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>실행 중에는 숫자 입력과 Clear가 비활성화됩니다.</p>
       </article>
 
-      <article class="help-card">
-        <h2>5. 수업 게임/활동</h2>
-        <p>Barrel Game, Cannon Game, Mystery Box 등 수업 몰입을 위한 활동 도구입니다.</p>
+      <article class="help-card" id="guide-makeup-scheduler">
+        <h2>Makeup Scheduler</h2>
+        <h3>소개</h3>
+        <p>결석한 학생의 보강 일정을 등록하고 관리하는 캘린더입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>날짜를 선택합니다.</li>
+          <li>보강 추가 버튼을 누릅니다.</li>
+          <li>학생명, 반, 결석 당시 진도, 보강 시간, 메모를 입력합니다.</li>
+          <li>저장하면 달력과 목록에 반영됩니다.</li>
+          <li>완료, 취소 등 상태를 변경할 수 있습니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>학생명, 반, 진도, 메모를 입력한 뒤 저장합니다.</p>
+        <h3>주의사항</h3>
+        <p>달력 날짜를 클릭하면 오른쪽 패널이 갱신됩니다. 날짜 상세 화면은 별도의 상세 버튼으로 확인합니다. 시작 시간을 바꾸면 종료 시간이 자동으로 조정될 수 있습니다.</p>
+        <h3>활용 팁</h3>
+        <p>검색 기능은 학생명뿐 아니라 결석 당시 진도도 함께 찾을 수 있습니다.</p>
       </article>
+
+      <article class="help-card" id="guide-participation-tracker">
+        <h2>Participation Tracker</h2>
+        <h3>소개</h3>
+        <p>학생별 발표와 참여 횟수를 기록하는 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>학생 이름을 입력합니다.</li>
+          <li>수업 시작을 누릅니다.</li>
+          <li>학생 카드를 터치하면 참여 횟수가 1 증가합니다.</li>
+          <li>학생 카드를 길게 누르면 참여 횟수가 1 감소합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>학생 이름은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <p class="help-pre">Kevin
+Emma
+Sophia
+Liam</p>
+        <h3>주의사항</h3>
+        <p>길게 누르기는 약 0.5초 정도 유지해야 작동합니다. 프리셋을 불러올 때 기존 횟수를 유지할지 확인이 나올 수 있습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-random-picker">
+        <h2>Class Random Picker</h2>
+        <h3>소개</h3>
+        <p>학생을 무작위로 뽑는 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>학생 이름을 추가합니다.</li>
+          <li>랜덤 뽑기 버튼을 누릅니다.</li>
+          <li>이미 뽑힌 학생을 제외할지 선택할 수 있습니다.</li>
+          <li>뽑기 초기화로 다시 전체 학생을 대상으로 뽑을 수 있습니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>학생 이름을 입력한 뒤 추가합니다. 이름 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.</p>
+        <h3>주의사항</h3>
+        <p>뽑기 초기화는 뽑힌 상태만 초기화합니다. 학생 목록과 뽑기 기록 전체를 지우려면 전체 삭제를 사용합니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-team-maker">
+        <h2>Team Maker</h2>
+        <h3>소개</h3>
+        <p>학생들을 자동으로 팀에 배정하는 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>학생 이름을 추가합니다.</li>
+          <li>팀 수 기준 또는 팀당 인원 기준을 선택합니다.</li>
+          <li>Assign Teams를 누릅니다.</li>
+          <li>다시 섞고 싶으면 Reassign을 누릅니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>학생 이름을 입력한 뒤 추가합니다. 이름 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.</p>
+        <h3>주의사항</h3>
+        <p>최소 2명 이상이 필요합니다. 팀 수가 학생 수보다 많으면 자동으로 조정됩니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-score-board">
+        <h2>Score Board</h2>
+        <h3>소개</h3>
+        <p>두 팀의 점수와 자원을 관리하는 점수판입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>팀 이름과 Bomb Count를 설정합니다.</li>
+          <li>점수와 Candy, Shield, Stamp를 조정합니다.</li>
+          <li>메뉴에서 Bomb, Switch Point, Switch Everything을 사용할 수 있습니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>이 도구는 새로고침하면 기록이 사라집니다. 필요한 경우 수업 중 화면을 유지하세요.</p>
+        <p>Switch Point는 점수만 교환합니다. Switch Everything은 팀의 전체 상태를 교환합니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-grammar-checkpoint">
+        <h2>Grammar Checkpoint</h2>
+        <h3>소개</h3>
+        <p>문법 문장을 보고 맞는 문장인지 틀린 문장인지 판단하는 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>Day, Rule, 문항 수를 선택합니다.</li>
+          <li>Start를 누릅니다.</li>
+          <li>문장을 보고 Approve 또는 Reject를 선택합니다.</li>
+          <li>필요한 경우 Fix Sentence를 진행합니다.</li>
+          <li>결과 화면에서 점수를 확인합니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>게임 중에는 Teacher 패널이 숨겨집니다. 오답인 경우 Fix 단계 없이 다음 문항으로 넘어갈 수 있습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-sentence-battle">
+        <h2>Sentence Battle</h2>
+        <h3>소개</h3>
+        <p>문장 순서를 맞히며 몬스터와 전투하는 RPG형 문장 배열 게임입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>문장을 추가합니다.</li>
+          <li>몬스터와 보스 HP를 설정합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>단어 카드를 올바른 순서로 클릭합니다.</li>
+          <li>보스전에서 아이템을 사용할 수 있습니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>문장 입력 후 Enter를 누르면 문장이 추가됩니다.</p>
+        <h3>주의사항</h3>
+        <p>[in common]처럼 묶인 표현은 하나의 카드로 처리됩니다. 아이템은 보스전에서만 사용할 수 있습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-sentence-kitchen">
+        <h2>Sentence Kitchen</h2>
+        <h3>소개</h3>
+        <p>재료 카드를 골라 주문서에 맞는 영어 문장을 만드는 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>각 재료 입력칸에 단어를 입력합니다.</li>
+          <li>사용할 주문서 패턴을 선택합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>재료를 선택해 문장을 만듭니다.</li>
+          <li>출고 후 다음 주문으로 넘어갑니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>각 입력칸에는 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3>주의사항</h3>
+        <p>선택한 재료를 다시 누르면 선택이 해제됩니다. 출고 후에는 다음 주문 버튼을 눌러야 계속 진행됩니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-story-forge">
+        <h2>Story Forge</h2>
+        <h3>소개</h3>
+        <p>단어 더미에서 단어를 선택해 이야기를 만드는 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>사용할 단어를 입력합니다.</li>
+          <li>라운드 수를 설정합니다.</li>
+          <li>이야기를 시작합니다.</li>
+          <li>단어를 클릭해 문장을 만듭니다.</li>
+          <li>라운드를 반복해 이야기를 완성합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>단어는 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3>주의사항</h3>
+        <p>단어 더미는 매번 섞입니다. 이미 선택한 단어는 다시 선택할 수 없습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-vocab-study">
+        <h2>Vocab Study Tool</h2>
+        <h3>소개</h3>
+        <p>단어를 3단계로 학습하는 카드형 어휘 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>필요한 필드를 선택합니다.</li>
+          <li>단어와 뜻을 추가합니다.</li>
+          <li>프리셋을 저장하거나 불러올 수 있습니다.</li>
+          <li>학습을 시작합니다.</li>
+          <li>페어 맞추기, 뜻 확인, 스펠링 활동을 진행합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>입력란에서 Enter를 누르면 단어가 추가됩니다.</p>
+        <h3>주의사항</h3>
+        <p>타이머를 켜면 시간이 끝났을 때 라운드가 강제로 종료될 수 있습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-wh-factory">
+        <h2>WH Factory</h2>
+        <h3>소개</h3>
+        <p>Who, What, When, Where, Why, How 문장을 분류하는 드래그 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>문장을 입력합니다.</li>
+          <li>Start Game을 누릅니다.</li>
+          <li>카드를 알맞은 5W1H 박스로 드래그합니다.</li>
+          <li>결과를 확인합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>문장은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <p class="help-pre">Who: The boy is running.
+Where: She lives in Seoul.
+Why: He was late.</p>
+        <h3>주의사항</h3>
+        <p>오답 카드는 다시 원래 위치로 돌아갑니다. 박스 밖에 놓으면 점수 변화가 없습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-barrel-game">
+        <h2>Barrel Game</h2>
+        <h3>소개</h3>
+        <p>구멍을 선택해 칼을 꽂고, 통아저씨가 튀어나오는 칸을 찾는 게임입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>구멍 수와 효과음을 설정합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>칼 또는 구멍을 선택합니다.</li>
+          <li>통아저씨가 나오면 라운드가 종료됩니다.</li>
+          <li>Next 또는 다시 시작으로 다음 라운드를 진행합니다.</li>
+        </ul>
+        <h3>단축키</h3>
+        <ul>
+          <li>숫자 1–N: 구멍 선택</li>
+          <li>R: 다시 시작</li>
+          <li>Esc: 취소</li>
+          <li>Enter: 게임 종료 후 다음 진행</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>메뉴에는 Barrel Game으로 표시되지만, 실제 화면 제목은 통아저씨 게임입니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-cannon-game">
+        <h2>Cannon Game</h2>
+        <h3>소개</h3>
+        <p>두 팀이 요새 HP를 깎으며 대결하는 전투형 게임입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>HP와 데미지 설정을 적용합니다.</li>
+          <li>공격할 팀 또는 턴을 선택합니다.</li>
+          <li>Attack 버튼을 눌러 공격합니다.</li>
+          <li>상대 요새 HP가 먼저 0이 되면 승리합니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>Attack 버튼의 숫자는 고정 데미지를 의미하지 않을 수 있습니다. 실제 데미지는 설정된 옵션 안에서 무작위로 적용됩니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-dice-tool">
+        <h2>Dice Tool</h2>
+        <h3>소개</h3>
+        <p>주사위 결과에 따라 숨겨진 보상이나 미션을 공개하는 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>최소 6개의 보상 또는 미션을 입력합니다.</li>
+          <li>Start를 누릅니다.</li>
+          <li>결과 행을 클릭해 내용을 공개합니다.</li>
+          <li>Reset Round로 새 라운드를 시작합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>보상 또는 미션은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3>단축키</h3>
+        <ul>
+          <li>Esc: 닫기</li>
+          <li>R: 리셋</li>
+          <li>F: 전체화면</li>
+          <li>Enter/Space: 선택 항목 공개</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>최소 6개 항목이 필요합니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-ladder-game">
+        <h2>Ladder Game</h2>
+        <h3>소개</h3>
+        <p>사다리타기로 순서나 결과를 정하는 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>결과 항목을 입력합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>가림막을 클릭합니다.</li>
+          <li>번호를 선택해 결과를 확인합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>결과 항목은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3>단축키</h3>
+        <ul>
+          <li>R: 사다리 보드 다시 만들기</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>참가자 수는 결과 항목 수에 따라 자동으로 정해집니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-mystery-box">
+        <h2>Mystery Box</h2>
+        <h3>소개</h3>
+        <p>여러 항목을 박스에 숨기고 하나씩 공개하는 추첨 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>항목을 입력합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>박스를 클릭해 숨겨진 내용을 확인합니다.</li>
+          <li>다시 섞기로 새 라운드를 진행할 수 있습니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>항목은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3>단축키</h3>
+        <ul>
+          <li>Esc: 닫기</li>
+          <li>R: 리셋</li>
+          <li>F: 전체화면</li>
+          <li>Enter/Space: 선택 항목 공개</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>새 라운드마다 다시 섞기 옵션을 끄면 Reset 후에도 배치 순서가 유지됩니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-nerf-gun">
+        <h2>Nerf Gun Roulette</h2>
+        <h3>소개</h3>
+        <p>여러 보드 이미지 중 하나를 무작위로 뽑는 슬롯형 활동 도구입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>뽑기 버튼을 누릅니다.</li>
+          <li>슬롯 애니메이션이 진행됩니다.</li>
+          <li>결과 보드가 자동으로 표시됩니다.</li>
+          <li>뒤로 가기로 다시 뽑기 화면으로 돌아갑니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>보드 목록은 고정되어 있으며, 화면에서 직접 항목을 수정하는 기능은 없습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-pirate-race">
+        <h2>Pirate Race</h2>
+        <h3>소개</h3>
+        <p>두 팀이 해적선을 움직여 목표 지점에 먼저 도착하는 레이스 게임입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>목표 거리, Storm, Treasure 설정을 조정합니다.</li>
+          <li>+1부터 +6까지 이동 값을 선택하거나 Random Move를 사용합니다.</li>
+          <li>먼저 목표 지점에 도착한 팀이 승리합니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>턴제 게임이 아니므로 교사가 진행 순서를 직접 관리해야 합니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-tug-of-war">
+        <h2>Tug of War</h2>
+        <h3>소개</h3>
+        <p>두 팀의 점수 차이에 따라 줄이 움직이는 줄다리기 게임입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>팀 이름과 승리 포인트를 설정합니다.</li>
+          <li>게임을 시작합니다.</li>
+          <li>A팀과 B팀의 점수를 입력합니다.</li>
+          <li>당기기 버튼을 눌러 줄을 이동시킵니다.</li>
+          <li>승리 포인트에 먼저 도달한 팀이 승리합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>점수는 숫자로 직접 입력합니다. Enter를 누르면 당기기가 실행됩니다.</p>
+        <h3>단축키</h3>
+        <ul>
+          <li>Enter: 당기기</li>
+          <li>Esc: 설정 열기 또는 닫기</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>화면 문구에 카드 표현이 있을 수 있지만, 현재 코드 기준으로는 카드를 뽑는 기능이 아니라 숫자를 직접 입력하는 방식입니다.</p>
+      </article>
+      </div>
     </section>
 
     <section class="help-panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates" hidden>
@@ -296,6 +1139,13 @@
         </div>
       </div>
     </section>
+  </div>
+
+  <div class="guide-modal" id="guideModal" aria-hidden="true">
+    <div class="guide-modal__backdrop" id="guideModalBackdrop"></div>
+    <div class="guide-modal__panel" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+      <div class="guide-modal__body" id="guideModalBody"></div>
+    </div>
   </div>
 
   <script src="../shared/help-updates-data.js"></script>
@@ -347,6 +1197,57 @@
 
       renderUpdates();
       window.markHelpUpdatesSeen();
+
+      var guideModal = document.getElementById("guideModal");
+      var guideModalBackdrop = document.getElementById("guideModalBackdrop");
+      var guideModalBody = document.getElementById("guideModalBody");
+      var guideModalPanel = guideModal ? guideModal.querySelector(".guide-modal__panel") : null;
+
+      function openGuide(guideId) {
+        var source = document.getElementById(guideId);
+        if (!source || !guideModal || !guideModalBody) return;
+
+        var titleEl = source.querySelector("h2");
+        guideModalBody.innerHTML = source.innerHTML;
+        if (titleEl) {
+          guideModalBody.querySelector("h2").id = "guideModalTitle";
+        }
+
+        guideModal.classList.add("guide-modal--open");
+        guideModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("guide-modal-open");
+        if (guideModalPanel) guideModalPanel.scrollTop = 0;
+      }
+
+      function closeGuide() {
+        if (!guideModal || !guideModalBody) return;
+        guideModal.classList.remove("guide-modal--open");
+        guideModal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("guide-modal-open");
+        guideModalBody.innerHTML = "";
+      }
+
+      document.querySelectorAll("[data-guide]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          openGuide(btn.getAttribute("data-guide"));
+        });
+      });
+
+      if (guideModalBackdrop) {
+        guideModalBackdrop.addEventListener("click", closeGuide);
+      }
+
+      if (guideModalPanel) {
+        guideModalPanel.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && guideModal && guideModal.classList.contains("guide-modal--open")) {
+          closeGuide();
+        }
+      });
     })();
   </script>
 </body>
