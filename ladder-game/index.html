@@ -4,7 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>사다리타기</title>
+<link rel="stylesheet" href="../shared/toolkit-home.css">
 <link rel="stylesheet" href="css/style.css" />
+<script src="../shared/toolkit-home.js" defer></script>
 </head>
 <body>
 
@@ -57,7 +59,6 @@
     </div>
 
     <div class="actions">
-      <a class="secondary btn-home" href="../index.html">← Tool Kit</a>
       <button class="primary" id="startBtn">시작</button>
       <button class="secondary" id="resetBtn">초기화</button>
     </div>
@@ -70,10 +71,9 @@
     <div class="play-toolbar">
       <div class="toolbar-left">
         <button class="icon-btn" id="backBtn" title="설정으로">← 설정</button>
-        <a class="icon-btn btn-home" href="../index.html">← Tool Kit</a>
       </div>
       <p class="status" id="message">위쪽 번호를 클릭하세요.</p>
-      <button class="icon-btn" id="regenerateBtn" title="다시 만들기">↻</button>
+      <button class="icon-btn" id="regenerateBtn" title="다시 만들기 (R)">↻</button>
     </div>
 
     <div class="canvas-wrap canvas-wrap--full">
@@ -371,12 +371,21 @@ document.getElementById("backBtn").addEventListener("click", () => {
   showView("setup");
 });
 
-document.getElementById("regenerateBtn").addEventListener("click", () => {
+function regenerateBoard() {
   if (!rawItems.length) return;
   stopPathAnimation();
   game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
   setCovered(true);
   renderLadder();
+}
+
+document.getElementById("regenerateBtn").addEventListener("click", regenerateBoard);
+
+document.addEventListener("keydown", (e) => {
+  if (!playView.classList.contains("view--active")) return;
+  if (e.key === "r" || e.key === "R") {
+    regenerateBoard();
+  }
 });
 
 canvas.addEventListener("click", e => {

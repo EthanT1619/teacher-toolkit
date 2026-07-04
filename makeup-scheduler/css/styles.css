@@ -113,44 +113,6 @@ textarea {
   gap: 12px;
 }
 
-.header-brand .btn-home {
-  position: static;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e2e8f0;
-  box-shadow: var(--shadow-sm);
-  color: #1e293b;
-  font-family: var(--font-family);
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-decoration: none;
-  backdrop-filter: blur(6px);
-  flex-shrink: 0;
-}
-
-.header-brand .btn-home:hover {
-  background: #fff;
-  border-color: #c7d2fe;
-  color: #4338ca;
-}
-
-@media (prefers-color-scheme: dark) {
-  .header-brand .btn-home {
-    background: rgba(41, 42, 45, 0.95);
-    border-color: var(--border);
-    color: var(--text-primary);
-  }
-
-  .header-brand .btn-home:hover {
-    background: var(--bg-tertiary);
-    border-color: #5c6bc0;
-    color: #8ab4f8;
-  }
-}
-
 .logo {
   font-size: 1.4rem;
   font-weight: 700;
