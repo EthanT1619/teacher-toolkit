@@ -201,10 +201,12 @@
     .home-top-row__makeup {
       min-width: 0;
       height: var(--dashboard-h);
+      overflow: hidden;
     }
 
     /* ── 오늘 수업 준비 체크리스트 ── */
     .prep-checklist {
+      position: relative;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -234,9 +236,87 @@
     }
 
     .prep-checklist__toolbar {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .prep-checklist__gear {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--text-muted);
+      cursor: pointer;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .prep-checklist__gear:hover,
+    .prep-checklist__gear[aria-expanded="true"] {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      color: #4338ca;
+    }
+
+    .prep-checklist__gear svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .prep-checklist__settings-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      z-index: 2;
+      min-width: 108px;
+      padding: 3px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 8px 16px -4px rgb(0 0 0 / 0.12);
+    }
+
+    .prep-checklist__settings-menu[hidden] {
+      display: none;
+    }
+
+    .prep-checklist__settings-item {
+      display: block;
+      width: 100%;
+      padding: 5px 8px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      text-align: left;
+      font: inherit;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease;
+    }
+
+    .prep-checklist__settings-item:hover {
+      background: #f1f5f9;
+    }
+
+    .prep-checklist__settings-item--danger {
+      color: #b91c1c;
+    }
+
+    .prep-checklist__settings-item--danger:hover {
+      background: #fef2f2;
+    }
+
+    .prep-checklist__settings-divider {
+      height: 1px;
+      margin: 2px 4px;
+      background: var(--border);
     }
 
     .prep-checklist__btn {
@@ -806,10 +886,27 @@
           <div class="prep-checklist__top">
             <h2 class="prep-checklist__title">오늘 수업 준비</h2>
             <div class="prep-checklist__toolbar">
-              <button type="button" class="prep-checklist__btn" id="btnClassSettings">반 설정</button>
-              <button type="button" class="prep-checklist__btn" id="btnItemSettings">항목 설정</button>
-              <button type="button" class="prep-checklist__btn" id="btnResetCurrent">현재 반 초기화</button>
-              <button type="button" class="prep-checklist__btn prep-checklist__btn--danger" id="btnResetAll">전체 초기화</button>
+              <button
+                type="button"
+                class="prep-checklist__gear"
+                id="btnChecklistSettings"
+                aria-label="설정"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="checklistSettingsMenu"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M19.4 13a7.97 7.97 0 0 0 .1-2l2-1.5-2-3.5-2.3.9a8.1 8.1 0 0 0-1.7-1L15 3h-6l-.5 2.9a8.1 8.1 0 0 0-1.7 1L4.5 6 2.5 9.5l2 1.5a7.97 7.97 0 0 0 0 2l-2 1.5 2 3.5 2.3-.9a8.1 8.1 0 0 0 1.7 1L9 21h6l.5-2.9a8.1 8.1 0 0 0 1.7-1l2.3.9 2-3.5-2-1.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="prep-checklist__settings-menu" id="checklistSettingsMenu" role="menu" hidden>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="class-settings">반 설정</button>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="item-settings">항목 설정</button>
+                <div class="prep-checklist__settings-divider" role="separator"></div>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="reset-current">현재 반 초기화</button>
+                <button type="button" class="prep-checklist__settings-item prep-checklist__settings-item--danger" role="menuitem" data-action="reset-all">전체 초기화</button>
+              </div>
             </div>
           </div>
           <div class="prep-checklist__main">
@@ -979,10 +1076,8 @@
         checklistProgress: document.getElementById("checklistProgress"),
         btnPrevClass: document.getElementById("btnPrevClass"),
         btnNextClass: document.getElementById("btnNextClass"),
-        btnClassSettings: document.getElementById("btnClassSettings"),
-        btnItemSettings: document.getElementById("btnItemSettings"),
-        btnResetCurrent: document.getElementById("btnResetCurrent"),
-        btnResetAll: document.getElementById("btnResetAll"),
+        btnChecklistSettings: document.getElementById("btnChecklistSettings"),
+        checklistSettingsMenu: document.getElementById("checklistSettingsMenu"),
         classSettingsDialog: document.getElementById("classSettingsDialog"),
         itemSettingsDialog: document.getElementById("itemSettingsDialog"),
         classSettingsList: document.getElementById("classSettingsList"),
@@ -1430,13 +1525,48 @@
         renderChecklist();
       }
 
+      function closeChecklistSettingsMenu() {
+        if (!els.checklistSettingsMenu || !els.btnChecklistSettings) return;
+        els.checklistSettingsMenu.hidden = true;
+        els.btnChecklistSettings.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleChecklistSettingsMenu() {
+        if (!els.checklistSettingsMenu || !els.btnChecklistSettings) return;
+        const willOpen = els.checklistSettingsMenu.hidden;
+        if (willOpen) {
+          els.checklistSettingsMenu.hidden = false;
+          els.btnChecklistSettings.setAttribute("aria-expanded", "true");
+        } else {
+          closeChecklistSettingsMenu();
+        }
+      }
+
       function bindChecklistEvents() {
         els.btnPrevClass.addEventListener("click", switchToPrevClass);
         els.btnNextClass.addEventListener("click", switchToNextClass);
-        els.btnClassSettings.addEventListener("click", openClassSettingsModal);
-        els.btnItemSettings.addEventListener("click", openItemSettingsModal);
-        els.btnResetCurrent.addEventListener("click", resetCurrentClassChecks);
-        els.btnResetAll.addEventListener("click", resetAllClassChecks);
+        els.btnChecklistSettings.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleChecklistSettingsMenu();
+        });
+        els.checklistSettingsMenu.addEventListener("click", function (e) {
+          const item = e.target.closest("[data-action]");
+          if (!item) return;
+          closeChecklistSettingsMenu();
+          const action = item.dataset.action;
+          if (action === "class-settings") openClassSettingsModal();
+          else if (action === "item-settings") openItemSettingsModal();
+          else if (action === "reset-current") resetCurrentClassChecks();
+          else if (action === "reset-all") resetAllClassChecks();
+        });
+        document.addEventListener("click", function (e) {
+          if (!els.checklistSettingsMenu || els.checklistSettingsMenu.hidden) return;
+          if (e.target.closest(".prep-checklist__toolbar")) return;
+          closeChecklistSettingsMenu();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeChecklistSettingsMenu();
+        });
         els.btnAddClass.addEventListener("click", addClassSettingRow);
         els.btnSaveClasses.addEventListener("click", saveClassSettingsFromModal);
         els.btnCloseClassDialog.addEventListener("click", function () {
