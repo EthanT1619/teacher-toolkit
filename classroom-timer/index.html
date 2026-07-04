@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Classroom Timer</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -123,21 +125,10 @@
       transition: background 0.15s, border-color 0.15s;
     }
 
-    .btn-top:not(.btn-top--home):not(.btn-top--reset):not(.btn-top--sound-on):hover {
+    .btn-top:not(.btn-top--reset):not(.btn-top--sound-on):hover {
       background: var(--surface-2);
       border-color: #c7d2fe;
     }
-
-    .btn-top--home {
-      background: var(--primary-light);
-      color: var(--primary);
-      border-color: #c7d2fe;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .btn-top--home:hover { background: #e0e7ff; color: var(--primary-hover); }
 
     .help-wrap {
       position: relative;
@@ -499,7 +490,6 @@
     <header class="top-bar">
       <h1 class="top-bar__title">Classroom Timer</h1>
       <div class="top-bar__actions">
-        <a class="btn-top btn-top--home" href="../index.html">Tool Kit</a>
         <div class="help-wrap" id="helpWrap">
           <button type="button" class="btn-top btn-top--help" id="btnHelp" aria-expanded="false" aria-controls="helpPopover">How to use</button>
           <div class="help-popover" id="helpPopover" role="tooltip">

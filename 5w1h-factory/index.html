@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WH Factory β</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <script src="../shared/toolkit-home.js" defer></script>
   <style>
     :root {
       --bg: #0f1419;
@@ -101,16 +103,6 @@
     }
 
     .btn:active { transform: scale(0.97); }
-
-    .btn-home {
-      background: var(--surface-light);
-      color: var(--text);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .btn-home:hover { filter: brightness(1.15); }
 
     .btn-secondary {
       background: var(--surface-light);
@@ -524,7 +516,6 @@
 <body>
   <header class="app-header">
     <div class="header-left">
-      <a class="btn btn-home" href="../index.html">← Tool Kit</a>
       <h1 class="header-title">WH Factory β</h1>
     </div>
     <div class="header-stats">
