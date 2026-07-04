@@ -1,6 +1,14 @@
 /** 사용자용 업데이트 안내 (도움말 센터 · NEW 뱃지 공용) */
 window.TOOLKIT_HELP_UPDATES = [
   {
+    date: "2026-07-04",
+    title: "Tool 간 UI 일치정도 개선",
+    items: [
+      "각 Tool 화면 상단에 통일된 홈 링크(← Tool Kit)를 적용했습니다.",
+      "도움말 센터를 추가해 사용 가이드·업데이트·FAQ를 확인할 수 있습니다.",
+    ],
+  },
+  {
     date: "2026-07-03",
     title: "보강 스케줄러 추가",
     items: [
