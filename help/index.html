@@ -648,19 +648,22 @@
         <details class="dropdown dropdown--activity">
           <summary class="dropdown__toggle">
             <span class="dropdown__badge">활동</span>
-            <span class="dropdown__count">8개</span>
+            <span class="dropdown__count">11개</span>
             <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </summary>
           <nav class="dropdown__menu" aria-label="활동">
             <button type="button" class="dropdown__item" data-guide="guide-barrel-game">Barrel Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-castle-siege">Castle Siege</button>
             <button type="button" class="dropdown__item" data-guide="guide-cannon-game">Cannon Game</button>
             <button type="button" class="dropdown__item" data-guide="guide-dice-tool">Dice Tool</button>
             <button type="button" class="dropdown__item" data-guide="guide-ladder-game">Ladder Game</button>
             <button type="button" class="dropdown__item" data-guide="guide-mystery-box">Mystery Box</button>
             <button type="button" class="dropdown__item" data-guide="guide-nerf-gun">Nerf Gun Roulette</button>
+            <button type="button" class="dropdown__item" data-guide="guide-phonics-hunt">Phonics Hunt</button>
             <button type="button" class="dropdown__item" data-guide="guide-pirate-race">Pirate Race</button>
+            <button type="button" class="dropdown__item" data-guide="guide-treasure-hunt">Treasure Hunt</button>
             <button type="button" class="dropdown__item" data-guide="guide-tug-of-war">Tug of War</button>
           </nav>
         </details>
@@ -1088,6 +1091,73 @@ Why: He was late.</p>
         </ul>
         <h3>주의사항</h3>
         <p>턴제 게임이 아니므로 교사가 진행 순서를 직접 관리해야 합니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-phonics-hunt">
+        <h2>Phonics Hunt</h2>
+        <h3>소개</h3>
+        <p>단어가 적힌 칸을 두 팀이 번갈아 열고, 숨겨진 별 칸을 더 많이 찾는 게임입니다. 화면 제목은 <strong>단어 별 찾기</strong>로 표시됩니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>단어를 입력하고 팀 이름, 별 개수, 별 점수를 설정합니다.</li>
+          <li>게임 시작을 누르면 단어 수에 맞는 칸이 자동으로 만들어집니다.</li>
+          <li>각 칸에는 처음부터 단어가 보이고, 별은 정해진 개수만큼 무작위로 숨겨집니다.</li>
+          <li>파란 팀 또는 빨간 팀 턴 버튼을 누른 뒤, 학생이 말한 단어에 해당하는 칸을 클릭해 엽니다.</li>
+          <li>별 칸을 열면 해당 팀에 점수가 더해집니다.</li>
+          <li>모든 칸을 열면 게임이 끝나고 점수를 비교합니다.</li>
+        </ul>
+        <h3>입력 방법</h3>
+        <p>단어는 Enter를 눌러 한 줄에 하나씩 입력합니다. 최소 2개 이상 필요합니다.</p>
+        <h3>주의사항</h3>
+        <p>별 개수는 1개부터 입력한 단어 개수까지 설정할 수 있습니다. 점수 초기화는 점수만 다시 0으로 돌리고, 단어 수정은 설정 화면으로 돌아갑니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-castle-siege">
+        <h2>Castle Siege</h2>
+        <h3>소개</h3>
+        <p>두 팀의 성 HP를 공격·수리·방어하며 라운드별로 대결하는 전투형 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>설정 화면에서 팀 이름, 성 HP, 숙제 완료 보너스, 수업 라운드 수와 이름을 정합니다.</li>
+          <li>Start Battle을 누르면 전투 화면으로 넘어갑니다.</li>
+          <li>각 팀 아래 Attack, Repair, Shield, Charge 버튼으로 행동합니다.</li>
+          <li>Attack은 상대 성 HP를 깎고, Repair는 내 성 HP를 회복합니다.</li>
+          <li>Shield는 방어막을 쌓고, Charge는 다음 턴에 행동을 두 번 할 수 있게 합니다.</li>
+          <li>상대 성 HP가 0이 되면 그 라운드를 이깁니다. End Round로 다음 라운드로 넘길 수도 있습니다.</li>
+          <li>마지막 라운드까지 진행하면 수업이 끝납니다.</li>
+        </ul>
+        <h3>숙제 보너스</h3>
+        <ul>
+          <li>숙제 완료율 50% 이상: 보너스 아이템 1개 선택</li>
+          <li>80% 이상: 아이템 1개 + 시작 방어막 +10</li>
+          <li>100%: 보너스 아이템 2개 선택</li>
+          <li>선택 가능한 아이템: Shield, Repair Kit, Charge</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>공격 데미지와 Shield 수치는 매번 정해진 범위 안에서 무작위로 적용됩니다. Charge를 쓰면 같은 팀이 연속으로 행동할 수 있습니다.</p>
+      </article>
+
+      <article class="help-card" id="guide-treasure-hunt">
+        <h2>Treasure Hunt</h2>
+        <h3>소개</h3>
+        <p>땅속 칸을 파며 보물 점수를 모으는 두 팀 대결 활동입니다.</p>
+        <h3>사용 방법</h3>
+        <ul>
+          <li>Blue Team 또는 Red Team Excavate 버튼으로 턴을 정합니다.</li>
+          <li>칸을 하나 골라 파면 그 안의 내용이 공개됩니다.</li>
+          <li>보물(⭐, 💎, 👑)을 찾으면 해당 팀에 점수가 더해집니다.</li>
+          <li>모든 칸을 다 파면 게임이 끝나고 점수를 비교합니다.</li>
+          <li>Rows, Cols로 칸 크기를 바꾸고 New Map으로 새 맵을 만들 수 있습니다.</li>
+          <li>Reset Game으로 점수와 맵을 처음부터 다시 시작합니다.</li>
+        </ul>
+        <h3>특수 칸</h3>
+        <ul>
+          <li>🗺 Treasure Map: 아직 안 파진 보물 하나의 위치를 잠깐 보여 줍니다.</li>
+          <li>💣 Dynamite: 같은 팀이 한 번 더 칸을 고를 수 있습니다.</li>
+          <li>⛏ Unstable Ground: 아직 안 파진 칸들의 내용이 다시 섞입니다.</li>
+        </ul>
+        <h3>주의사항</h3>
+        <p>칸 크기는 3~8줄, 3~8칸 범위에서 바꿀 수 있습니다. 보물 점수는 ⭐ 1점, 💎 2점, 👑 3점입니다.</p>
       </article>
 
       <article class="help-card" id="guide-tug-of-war">

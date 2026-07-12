@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Castle Siege</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="../shared/toolkit-home.js" defer></script>
+</head>
+<body>
+  <div id="app">
+    <!-- ═══ Setup Screen ═══ -->
+    <div id="setup-screen" class="screen setup-screen">
+      <div class="setup-inner">
+        <header class="setup-header">
+          <h1 class="setup-title">⚔ Castle Siege</h1>
+          <p class="setup-subtitle">Lesson Setup — configure before class</p>
+        </header>
+
+        <div class="setup-body">
+          <section class="setup-section">
+            <h2 class="setup-section-title">Teams</h2>
+            <div class="setup-row">
+              <label>
+                Blue Team Name
+                <input type="text" id="setup-blue-name" value="Blue Team" />
+              </label>
+              <label>
+                Red Team Name
+                <input type="text" id="setup-red-name" value="Red Team" />
+              </label>
+            </div>
+          </section>
+
+          <section class="setup-section">
+            <h2 class="setup-section-title">Castle HP</h2>
+            <label class="setup-hp-label">
+              Starting HP (both teams)
+              <input type="number" id="setup-hp" min="10" max="500" value="100" />
+            </label>
+          </section>
+
+          <section class="setup-section">
+            <h2 class="setup-section-title">Preparation Bonus</h2>
+            <p class="setup-hint">Homework Completed</p>
+            <div class="prep-teams">
+              <div class="prep-team blue-prep" id="prep-blue-block">
+                <h3 class="prep-team-title" id="prep-blue-title">Blue Team</h3>
+                <div class="homework-row">
+                  <label class="hw-label">
+                    <span class="hw-label-text">Completed</span>
+                    <input type="number" id="blue-hw-completed" min="0" value="0" />
+                  </label>
+                  <span class="hw-slash">/</span>
+                  <label class="hw-label">
+                    <span class="hw-label-text">Total</span>
+                    <input type="number" id="blue-hw-total" min="0" value="7" />
+                  </label>
+                </div>
+                <p class="prep-summary" id="blue-prep-summary">No Bonus</p>
+                <div class="prep-item-area hidden" id="blue-prep-items">
+                  <p class="prep-item-hint">Choose Bonus Item:</p>
+                  <div class="prep-item-choices" id="blue-item-choices"></div>
+                  <p class="prep-selected" id="blue-prep-selected">Selected: (none)</p>
+                </div>
+              </div>
+              <div class="prep-team red-prep" id="prep-red-block">
+                <h3 class="prep-team-title" id="prep-red-title">Red Team</h3>
+                <div class="homework-row">
+                  <label class="hw-label">
+                    <span class="hw-label-text">Completed</span>
+                    <input type="number" id="red-hw-completed" min="0" value="0" />
+                  </label>
+                  <span class="hw-slash">/</span>
+                  <label class="hw-label">
+                    <span class="hw-label-text">Total</span>
+                    <input type="number" id="red-hw-total" min="0" value="7" />
+                  </label>
+                </div>
+                <p class="prep-summary" id="red-prep-summary">No Bonus</p>
+                <div class="prep-item-area hidden" id="red-prep-items">
+                  <p class="prep-item-hint">Choose Bonus Item:</p>
+                  <div class="prep-item-choices" id="red-item-choices"></div>
+                  <p class="prep-selected" id="red-prep-selected">Selected: (none)</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="setup-section">
+            <h2 class="setup-section-title">Lesson Rounds</h2>
+            <div class="round-count-row">
+              <span class="round-count-label">Number of Rounds</span>
+              <div class="round-count-controls">
+                <button type="button" class="btn btn-count" id="btn-rounds-minus">−</button>
+                <input type="number" id="setup-round-count" min="1" max="10" value="3" />
+                <button type="button" class="btn btn-count" id="btn-rounds-plus">+</button>
+              </div>
+            </div>
+            <div class="setup-round-names" id="setup-round-names"></div>
+          </section>
+        </div>
+
+        <footer class="setup-footer">
+          <button type="button" class="btn btn-start" id="btn-start-battle">Start Battle →</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ═══ Battle Screen ═══ -->
+    <div id="battle-screen" class="screen battle-screen hidden">
+    <!-- Top: Round Info -->
+    <header class="round-header">
+      <div class="round-info">
+        <span class="round-label" id="round-label">ROUND 1 / 3</span>
+        <span class="round-name" id="round-name">Vocabulary</span>
+      </div>
+      <div class="header-controls">
+        <button type="button" class="btn btn-icon" id="btn-mute" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        <button type="button" class="btn btn-secondary btn-header" id="btn-end-round">End Round →</button>
+        <button type="button" class="btn btn-secondary btn-header" id="btn-back-setup">← Setup</button>
+      </div>
+    </header>
+
+    <!-- Center: Battlefield -->
+    <main class="battlefield">
+      <div class="castle-panel blue-panel" id="blue-panel">
+        <div class="panel-stats">
+          <h2 class="team-name" id="blue-team-name">Blue Team</h2>
+          <div class="hp-row">
+            <div class="hp-bar-wrap">
+              <div class="hp-bar blue-hp" id="blue-hp-bar"></div>
+            </div>
+            <span class="hp-text" id="blue-hp-text">100 / 100</span>
+          </div>
+        </div>
+        <div class="castle-wrap" id="blue-castle-wrap">
+          <div class="castle-shield-badge" id="blue-shield-row">
+            <span class="shield-icon">🛡</span>
+            <span class="shield-value" id="blue-shield">0</span>
+          </div>
+          <div class="castle blue-castle" id="blue-castle">
+            <svg class="castle-svg" viewBox="0 0 280 200" aria-hidden="true">
+              <defs>
+                <linearGradient id="blue-stone" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a8c8f0"/>
+                  <stop offset="45%" stop-color="#5b8fd4"/>
+                  <stop offset="100%" stop-color="#2f5f9e"/>
+                </linearGradient>
+                <linearGradient id="blue-stone-dark" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7aaee0"/>
+                  <stop offset="100%" stop-color="#234a82"/>
+                </linearGradient>
+                <linearGradient id="blue-base" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3d6288"/>
+                  <stop offset="100%" stop-color="#1e3348"/>
+                </linearGradient>
+              </defs>
+              <!-- foundation -->
+              <rect x="4" y="178" width="272" height="16" rx="3" fill="url(#blue-base)" stroke="#152535" stroke-width="2"/>
+              <!-- left tower -->
+              <rect x="14" y="62" width="54" height="116" rx="2" fill="url(#blue-stone)" stroke="#1a3560" stroke-width="2.5"/>
+              <g fill="url(#blue-stone-dark)" stroke="#1a3560" stroke-width="1.5">
+                <rect x="16" y="48" width="10" height="14" rx="1"/>
+                <rect x="28" y="48" width="10" height="14" rx="1"/>
+                <rect x="40" y="48" width="10" height="14" rx="1"/>
+                <rect x="52" y="48" width="10" height="14" rx="1"/>
+              </g>
+              <!-- right tower -->
+              <rect x="212" y="62" width="54" height="116" rx="2" fill="url(#blue-stone)" stroke="#1a3560" stroke-width="2.5"/>
+              <g fill="url(#blue-stone-dark)" stroke="#1a3560" stroke-width="1.5">
+                <rect x="214" y="48" width="10" height="14" rx="1"/>
+                <rect x="226" y="48" width="10" height="14" rx="1"/>
+                <rect x="238" y="48" width="10" height="14" rx="1"/>
+                <rect x="250" y="48" width="10" height="14" rx="1"/>
+              </g>
+              <!-- center wall -->
+              <rect x="68" y="92" width="144" height="86" rx="2" fill="url(#blue-stone)" stroke="#1a3560" stroke-width="2.5"/>
+              <g fill="url(#blue-stone-dark)" stroke="#1a3560" stroke-width="1.5">
+                <rect x="72" y="78" width="9" height="14" rx="1"/>
+                <rect x="84" y="78" width="9" height="14" rx="1"/>
+                <rect x="96" y="78" width="9" height="14" rx="1"/>
+                <rect x="108" y="78" width="9" height="14" rx="1"/>
+                <rect x="120" y="78" width="9" height="14" rx="1"/>
+                <rect x="132" y="78" width="9" height="14" rx="1"/>
+                <rect x="144" y="78" width="9" height="14" rx="1"/>
+                <rect x="156" y="78" width="9" height="14" rx="1"/>
+                <rect x="168" y="78" width="9" height="14" rx="1"/>
+                <rect x="180" y="78" width="9" height="14" rx="1"/>
+                <rect x="192" y="78" width="9" height="14" rx="1"/>
+                <rect x="204" y="78" width="9" height="14" rx="1"/>
+              </g>
+              <!-- tower windows -->
+              <rect x="28" y="82" width="8" height="14" rx="1" fill="#1a2840" stroke="#0f1828" stroke-width="1"/>
+              <rect x="28" y="108" width="8" height="14" rx="1" fill="#1a2840" stroke="#0f1828" stroke-width="1"/>
+              <rect x="246" y="82" width="8" height="14" rx="1" fill="#1a2840" stroke="#0f1828" stroke-width="1"/>
+              <rect x="246" y="108" width="8" height="14" rx="1" fill="#1a2840" stroke="#0f1828" stroke-width="1"/>
+              <!-- wall windows -->
+              <rect x="82" y="108" width="10" height="12" rx="1" fill="#ffe08a" stroke="#c9a030" stroke-width="1"/>
+              <rect x="188" y="108" width="10" height="12" rx="1" fill="#ffe08a" stroke="#c9a030" stroke-width="1"/>
+              <!-- gate -->
+              <rect x="118" y="132" width="44" height="46" fill="#141c28" stroke="#0a1018" stroke-width="2"/>
+              <path d="M118 132 Q140 108 162 132" fill="#141c28" stroke="#0a1018" stroke-width="2"/>
+              <rect x="136" y="148" width="8" height="30" rx="1" fill="#3a2510" opacity="0.6"/>
+              <!-- flag -->
+              <line x1="41" y1="48" x2="41" y2="22" stroke="#1a3560" stroke-width="2.5"/>
+              <polygon points="41,22 41,38 58,30" fill="#2563eb"/>
+            </svg>
+          </div>
+          <div class="charge-aura" id="blue-charge-aura"></div>
+          <div class="shield-barrier" id="blue-shield-barrier"></div>
+          <div class="float-layer" id="blue-float"></div>
+        </div>
+      </div>
+
+      <div class="vs-divider">⚔</div>
+
+      <div class="castle-panel red-panel" id="red-panel">
+        <div class="panel-stats">
+          <h2 class="team-name" id="red-team-name">Red Team</h2>
+          <div class="hp-row">
+            <div class="hp-bar-wrap">
+              <div class="hp-bar red-hp" id="red-hp-bar"></div>
+            </div>
+            <span class="hp-text" id="red-hp-text">100 / 100</span>
+          </div>
+        </div>
+        <div class="castle-wrap" id="red-castle-wrap">
+          <div class="castle-shield-badge" id="red-shield-row">
+            <span class="shield-icon">🛡</span>
+            <span class="shield-value" id="red-shield">0</span>
+          </div>
+          <div class="castle red-castle" id="red-castle">
+            <svg class="castle-svg" viewBox="0 0 280 200" aria-hidden="true">
+              <defs>
+                <linearGradient id="red-stone" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f0a8a8"/>
+                  <stop offset="45%" stop-color="#d45b5b"/>
+                  <stop offset="100%" stop-color="#9e2f2f"/>
+                </linearGradient>
+                <linearGradient id="red-stone-dark" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#e07a7a"/>
+                  <stop offset="100%" stop-color="#822323"/>
+                </linearGradient>
+                <linearGradient id="red-base" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#884040"/>
+                  <stop offset="100%" stop-color="#481e1e"/>
+                </linearGradient>
+              </defs>
+              <rect x="4" y="178" width="272" height="16" rx="3" fill="url(#red-base)" stroke="#351515" stroke-width="2"/>
+              <rect x="14" y="62" width="54" height="116" rx="2" fill="url(#red-stone)" stroke="#601a1a" stroke-width="2.5"/>
+              <g fill="url(#red-stone-dark)" stroke="#601a1a" stroke-width="1.5">
+                <rect x="16" y="48" width="10" height="14" rx="1"/>
+                <rect x="28" y="48" width="10" height="14" rx="1"/>
+                <rect x="40" y="48" width="10" height="14" rx="1"/>
+                <rect x="52" y="48" width="10" height="14" rx="1"/>
+              </g>
+              <rect x="212" y="62" width="54" height="116" rx="2" fill="url(#red-stone)" stroke="#601a1a" stroke-width="2.5"/>
+              <g fill="url(#red-stone-dark)" stroke="#601a1a" stroke-width="1.5">
+                <rect x="214" y="48" width="10" height="14" rx="1"/>
+                <rect x="226" y="48" width="10" height="14" rx="1"/>
+                <rect x="238" y="48" width="10" height="14" rx="1"/>
+                <rect x="250" y="48" width="10" height="14" rx="1"/>
+              </g>
+              <rect x="68" y="92" width="144" height="86" rx="2" fill="url(#red-stone)" stroke="#601a1a" stroke-width="2.5"/>
+              <g fill="url(#red-stone-dark)" stroke="#601a1a" stroke-width="1.5">
+                <rect x="72" y="78" width="9" height="14" rx="1"/>
+                <rect x="84" y="78" width="9" height="14" rx="1"/>
+                <rect x="96" y="78" width="9" height="14" rx="1"/>
+                <rect x="108" y="78" width="9" height="14" rx="1"/>
+                <rect x="120" y="78" width="9" height="14" rx="1"/>
+                <rect x="132" y="78" width="9" height="14" rx="1"/>
+                <rect x="144" y="78" width="9" height="14" rx="1"/>
+                <rect x="156" y="78" width="9" height="14" rx="1"/>
+                <rect x="168" y="78" width="9" height="14" rx="1"/>
+                <rect x="180" y="78" width="9" height="14" rx="1"/>
+                <rect x="192" y="78" width="9" height="14" rx="1"/>
+                <rect x="204" y="78" width="9" height="14" rx="1"/>
+              </g>
+              <rect x="28" y="82" width="8" height="14" rx="1" fill="#281a1a" stroke="#180f0f" stroke-width="1"/>
+              <rect x="28" y="108" width="8" height="14" rx="1" fill="#281a1a" stroke="#180f0f" stroke-width="1"/>
+              <rect x="246" y="82" width="8" height="14" rx="1" fill="#281a1a" stroke="#180f0f" stroke-width="1"/>
+              <rect x="246" y="108" width="8" height="14" rx="1" fill="#281a1a" stroke="#180f0f" stroke-width="1"/>
+              <rect x="82" y="108" width="10" height="12" rx="1" fill="#ffe08a" stroke="#c9a030" stroke-width="1"/>
+              <rect x="188" y="108" width="10" height="12" rx="1" fill="#ffe08a" stroke="#c9a030" stroke-width="1"/>
+              <rect x="118" y="132" width="44" height="46" fill="#141c28" stroke="#0a1018" stroke-width="2"/>
+              <path d="M118 132 Q140 108 162 132" fill="#141c28" stroke="#0a1018" stroke-width="2"/>
+              <rect x="136" y="148" width="8" height="30" rx="1" fill="#3a2510" opacity="0.6"/>
+              <line x1="41" y1="48" x2="41" y2="22" stroke="#601a1a" stroke-width="2.5"/>
+              <polygon points="41,22 41,38 58,30" fill="#dc2626"/>
+            </svg>
+          </div>
+          <div class="charge-aura" id="red-charge-aura"></div>
+          <div class="shield-barrier" id="red-shield-barrier"></div>
+          <div class="float-layer" id="red-float"></div>
+        </div>
+      </div>
+
+      <div class="projectile-layer" id="projectile-layer"></div>
+      <div class="round-advance-banner hidden" id="round-advance-banner"></div>
+    </main>
+
+    <!-- Bottom: Team Action Controls -->
+    <footer class="teacher-controls">
+      <div class="team-actions blue-actions" id="blue-actions">
+        <p class="pending-hint hidden" id="blue-pending-hint">1 more action!</p>
+        <div class="team-items" id="blue-inventory">
+          <button type="button" class="item-icon repair-kit hidden" title="Repair Kit" aria-label="Repair Kit" data-team="blue" data-item="repairKit" id="blue-item-repair">
+            <span class="item-icon-glyph">🔧</span>
+            <span class="item-icon-badge">0</span>
+          </button>
+          <button type="button" class="item-icon charge-item hidden" title="Charge" aria-label="Charge" data-team="blue" data-item="charge" id="blue-item-charge">
+            <span class="item-icon-glyph">⚡</span>
+            <span class="item-icon-badge">0</span>
+          </button>
+        </div>
+        <div class="action-grid">
+          <button class="btn btn-action attack" data-team="blue" data-action="attack">⚔ Attack</button>
+          <button class="btn btn-action repair" data-team="blue" data-action="repair">💚 Repair</button>
+          <button class="btn btn-action shield" data-team="blue" data-action="shield">🛡 Shield</button>
+          <button class="btn btn-action charge" data-team="blue" data-action="charge">⚡ Charge</button>
+        </div>
+      </div>
+      <div class="team-actions red-actions" id="red-actions">
+        <p class="pending-hint hidden" id="red-pending-hint">1 more action!</p>
+        <div class="team-items" id="red-inventory">
+          <button type="button" class="item-icon repair-kit hidden" title="Repair Kit" aria-label="Repair Kit" data-team="red" data-item="repairKit" id="red-item-repair">
+            <span class="item-icon-glyph">🔧</span>
+            <span class="item-icon-badge">0</span>
+          </button>
+          <button type="button" class="item-icon charge-item hidden" title="Charge" aria-label="Charge" data-team="red" data-item="charge" id="red-item-charge">
+            <span class="item-icon-glyph">⚡</span>
+            <span class="item-icon-badge">0</span>
+          </button>
+        </div>
+        <div class="action-grid">
+          <button class="btn btn-action attack" data-team="red" data-action="attack">⚔ Attack</button>
+          <button class="btn btn-action repair" data-team="red" data-action="repair">💚 Repair</button>
+          <button class="btn btn-action shield" data-team="red" data-action="shield">🛡 Shield</button>
+          <button class="btn btn-action charge" data-team="red" data-action="charge">⚡ Charge</button>
+        </div>
+      </div>
+    </footer>
+    </div><!-- /battle-screen -->
+
+    <!-- Winner Overlay -->
+    <div class="modal-overlay hidden" id="winner-modal">
+      <div class="modal winner-modal">
+        <div class="winner-crown">👑</div>
+        <h2 class="winner-title" id="winner-title">Blue Team Wins!</h2>
+        <button class="btn btn-primary" id="btn-reset-after-win">Back to Setup</button>
+      </div>
+    </div>
+
+    <!-- Lesson Complete Overlay -->
+    <div class="modal-overlay hidden" id="lesson-complete-modal">
+      <div class="modal winner-modal">
+        <div class="winner-crown">📜</div>
+        <h2 class="winner-title">All Rounds Complete!</h2>
+        <p class="modal-sub">Great job — the lesson is finished.</p>
+        <button class="btn btn-primary" id="btn-back-setup-complete">Back to Setup</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/Castle.js"></script>
+  <script src="js/PreparationBonus.js"></script>
+  <script src="js/SoundManager.js"></script>
+  <script src="js/AnimationManager.js"></script>
+  <script src="js/ActionSystem.js"></script>
+  <script src="js/SetupManager.js"></script>
+  <script src="js/UIManager.js"></script>
+  <script src="js/Game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
