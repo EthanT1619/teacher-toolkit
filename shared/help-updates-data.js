@@ -1,6 +1,15 @@
 /** 사용자용 업데이트 안내 (도움말 센터 · NEW 뱃지 공용) */
 window.TOOLKIT_HELP_UPDATES = [
   {
+    date: "2026-07-13",
+    title: "학습·활동 Tool 3종 추가",
+    items: [
+      "학습툴 Phonics Hunt(화면 제목: 단어 별 찾기) — 단어 칸을 열며 별 점수를 모으는 두 팀 게임",
+      "활동 Castle Siege — 성 HP를 공격·수리하며 라운드별로 대결하는 전투형 게임",
+      "활동 Treasure Hunt — 땅속 칸을 파며 보물 점수를 모으는 두 팀 게임",
+    ],
+  },
+  {
     date: "2026-07-04",
     title: "Tool 간 UI 일치정도 개선",
     items: [
