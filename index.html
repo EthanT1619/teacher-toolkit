@@ -741,6 +741,16 @@
       padding: 0 4px;
     }
 
+    .makeup-widget__empty a {
+      color: #4338ca;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .makeup-widget__empty a:hover {
+      text-decoration: underline;
+    }
+
     .makeup-widget__index {
       font-size: 0.6875rem;
       font-weight: 700;
@@ -943,7 +953,7 @@
             </div>
             <span class="makeup-widget__index" id="makeupWidgetIndex"></span>
           </div>
-          <a class="makeup-widget__open-btn" href="./makeup-scheduler/">보강 관리 열기</a>
+          <a class="makeup-widget__open-btn" href="../mkup-scheduler-synced/">보강 관리 열기</a>
         </section>
       </div>
     </div>
@@ -1593,6 +1603,8 @@
     <span class="help-fab__label">도움말</span>
   </a>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./shared/supabase-config.js"></script>
   <script src="./shared/makeup-scheduler-widget.js" defer></script>
   <script src="./shared/help-updates-data.js"></script>
   <script>

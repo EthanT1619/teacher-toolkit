@@ -1,6 +1,6 @@
 (function initMakeupSchedulerWidget() {
-  const STORAGE_KEY = "makeup-scheduler-schedules";
-  const APP_HREF = "./makeup-scheduler/";
+  const LOCAL_STORAGE_KEY = "makeup-scheduler-schedules";
+  const SYNC_APP_URL = new URL("../mkup-scheduler-synced/", window.location.href).href;
   const AUTO_INTERVAL_MS = 2000;
 
   const STATUS_LABELS = {
@@ -17,6 +17,7 @@
     index: document.getElementById("makeupWidgetIndex"),
     prev: document.getElementById("makeupWidgetPrev"),
     next: document.getElementById("makeupWidgetNext"),
+    openBtn: document.querySelector(".makeup-widget__open-btn"),
   };
 
   if (!els.slide) return;
@@ -24,10 +25,53 @@
   let todaySchedules = [];
   let currentIndex = 0;
   let autoTimer = null;
+  let supabaseClient = null;
+  let dataSource = "none";
+  let refreshPromise = null;
+
+  if (els.openBtn) {
+    els.openBtn.href = SYNC_APP_URL;
+  }
+
+  function isSupabaseConfigured() {
+    return (
+      typeof SUPABASE_CONFIG !== "undefined" &&
+      SUPABASE_CONFIG.url &&
+      SUPABASE_CONFIG.publishableKey &&
+      typeof supabase !== "undefined" &&
+      supabase.createClient
+    );
+  }
+
+  function getSupabaseClient() {
+    if (!isSupabaseConfigured()) return null;
+    if (!supabaseClient) {
+      supabaseClient = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey);
+    }
+    return supabaseClient;
+  }
+
+  function formatDbTime(value) {
+    if (!value) return "";
+    const str = String(value);
+    return str.length >= 5 ? str.slice(0, 5) : str;
+  }
+
+  function scheduleFromDbRow(row) {
+    return normalizeSchedule({
+      id: row.id,
+      studentName: row.student_name,
+      className: row.class_name || "",
+      date: row.date,
+      startTime: formatDbTime(row.start_time),
+      endTime: formatDbTime(row.end_time),
+      status: row.status,
+    });
+  }
 
   function loadSchedulesFromStorage() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (!raw) return [];
       const data = JSON.parse(raw);
       return Array.isArray(data) ? data.map(normalizeSchedule) : [];
@@ -97,11 +141,52 @@
       .replace(/"/g, "&quot;");
   }
 
-  function getTodaySchedules() {
+  function filterTodaySchedules(schedules) {
     const todayStr = formatTodayDateString();
-    return loadSchedulesFromStorage()
+    return schedules
       .filter(function (schedule) { return schedule.date === todayStr; })
       .sort(compareByTime);
+  }
+
+  async function fetchTodaySchedulesFromSupabase(client) {
+    const todayStr = formatTodayDateString();
+    const { data, error } = await client
+      .from("makeup_schedules")
+      .select("id, student_name, class_name, date, start_time, end_time, status")
+      .eq("date", todayStr)
+      .order("start_time", { ascending: true });
+
+    if (error) {
+      throw new Error(error.message || "일정을 불러오지 못했습니다.");
+    }
+
+    return (data || []).map(scheduleFromDbRow);
+  }
+
+  async function loadTodaySchedules() {
+    const client = getSupabaseClient();
+    if (!client) {
+      dataSource = "local";
+      return filterTodaySchedules(loadSchedulesFromStorage());
+    }
+
+    try {
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (sessionError) {
+        console.warn("보강 위젯: 세션 확인 실패", sessionError);
+      }
+
+      const session = sessionData?.session;
+      if (session) {
+        dataSource = "supabase";
+        return await fetchTodaySchedulesFromSupabase(client);
+      }
+    } catch (err) {
+      console.warn("보강 위젯: Supabase 조회 실패", err);
+    }
+
+    dataSource = "local";
+    return filterTodaySchedules(loadSchedulesFromStorage());
   }
 
   function detectOverlap(schedules) {
@@ -154,11 +239,28 @@
     }
   }
 
+  function renderEmptyState() {
+    if (dataSource === "supabase") {
+      return '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+    }
+
+    if (isSupabaseConfigured()) {
+      return (
+        '<p class="makeup-widget__empty">' +
+          "보강 일정을 보려면 Google 로그인이 필요합니다.<br>" +
+          '<a href="' + escapeHtml(SYNC_APP_URL) + '">보강 캘린더에서 로그인</a>' +
+        "</p>"
+      );
+    }
+
+    return '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+  }
+
   function renderScheduleCard(schedule) {
     const status = schedule.status || "scheduled";
     const statusLabel = STATUS_LABELS[status] || status;
     return (
-      '<a class="makeup-widget__card makeup-widget__card--' + escapeHtml(status) + '" href="' + APP_HREF + '">' +
+      '<a class="makeup-widget__card makeup-widget__card--' + escapeHtml(status) + '" href="' + escapeHtml(SYNC_APP_URL) + '">' +
         '<div class="makeup-widget__card-row">' +
           '<span class="makeup-widget__time">' + escapeHtml(formatTimeRange(schedule)) + "</span>" +
           '<span class="makeup-widget__status">' + escapeHtml(statusLabel) + "</span>" +
@@ -181,7 +283,7 @@
     }
 
     if (!hasItems) {
-      els.slide.innerHTML = '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+      els.slide.innerHTML = renderEmptyState();
       return;
     }
 
@@ -206,7 +308,6 @@
 
   function renderMakeupWidget() {
     const todayStr = formatTodayDateString();
-    todaySchedules = getTodaySchedules();
     clampCurrentIndex();
 
     if (els.date) els.date.textContent = formatDateKorean(todayStr);
@@ -227,6 +328,36 @@
     startAutoRotate();
   }
 
+  function showLoadingState() {
+    stopAutoRotate();
+    if (els.slide) {
+      els.slide.innerHTML = '<p class="makeup-widget__empty">보강 일정을 불러오는 중…</p>';
+    }
+    if (els.prev) els.prev.disabled = true;
+    if (els.next) els.next.disabled = true;
+    if (els.index) els.index.textContent = "";
+  }
+
+  function refreshMakeupWidget() {
+    if (refreshPromise) return refreshPromise;
+
+    refreshPromise = (async function () {
+      showLoadingState();
+      try {
+        todaySchedules = await loadTodaySchedules();
+      } catch (err) {
+        console.warn("보강 위젯: 새로고침 실패", err);
+        dataSource = "local";
+        todaySchedules = filterTodaySchedules(loadSchedulesFromStorage());
+      }
+      renderMakeupWidget();
+    })().finally(function () {
+      refreshPromise = null;
+    });
+
+    return refreshPromise;
+  }
+
   function bindMakeupWidgetEvents() {
     if (els.prev) {
       els.prev.addEventListener("click", function () {
@@ -241,20 +372,31 @@
     }
 
     window.addEventListener("storage", function (event) {
-      if (event.key === STORAGE_KEY) renderMakeupWidget();
+      if (event.key === LOCAL_STORAGE_KEY) {
+        refreshMakeupWidget();
+      }
     });
 
-    window.addEventListener("focus", renderMakeupWidget);
+    window.addEventListener("focus", function () {
+      refreshMakeupWidget();
+    });
 
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
         stopAutoRotate();
       } else {
-        renderMakeupWidget();
+        refreshMakeupWidget();
       }
     });
+
+    const client = getSupabaseClient();
+    if (client) {
+      client.auth.onAuthStateChange(function () {
+        refreshMakeupWidget();
+      });
+    }
   }
 
   bindMakeupWidgetEvents();
-  renderMakeupWidget();
+  refreshMakeupWidget();
 })();
