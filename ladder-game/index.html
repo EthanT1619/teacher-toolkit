@@ -73,7 +73,7 @@
         <button class="icon-btn" id="backBtn" title="설정으로">← 설정</button>
       </div>
       <p class="status" id="message">위쪽 번호를 클릭하세요.</p>
-      <button class="icon-btn" id="regenerateBtn" title="다시 만들기 (R)">↻</button>
+      <button class="icon-btn" id="regenerateBtn" title="새 라운드 (R)">↻</button>
     </div>
 
     <div class="canvas-wrap canvas-wrap--full">
@@ -371,7 +371,7 @@ document.getElementById("backBtn").addEventListener("click", () => {
   showView("setup");
 });
 
-function regenerateBoard() {
+function startNewRound() {
   if (!rawItems.length) return;
   stopPathAnimation();
   game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
@@ -379,12 +379,13 @@ function regenerateBoard() {
   renderLadder();
 }
 
-document.getElementById("regenerateBtn").addEventListener("click", regenerateBoard);
+document.getElementById("regenerateBtn").addEventListener("click", startNewRound);
 
 document.addEventListener("keydown", (e) => {
   if (!playView.classList.contains("view--active")) return;
   if (e.key === "r" || e.key === "R") {
-    regenerateBoard();
+    e.preventDefault();
+    startNewRound();
   }
 });
 
