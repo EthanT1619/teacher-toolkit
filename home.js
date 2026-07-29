@@ -23,7 +23,7 @@ const DEFAULT_ITEMS = [
   { id: 'item_5', label: 'Vocab Test' },
 ];
 
-const MENU_COUNTS = { util: 7, study: 7, activity: 10 };
+const MENU_COUNTS = { util: 7, study: 8, activity: 10 };
 
 let checklistClasses = [];
 let checklistItemsByClass = {};
@@ -73,6 +73,18 @@ function applyExternalToolLinks() {
   );
   if (achievementMenuLink) {
     achievementMenuLink.href = achievementUrl;
+  }
+
+  var vocabCurriculumUrl =
+    typeof window.VOCAB_STUDY_CURRICULUM_URL === "string"
+      ? window.VOCAB_STUDY_CURRICULUM_URL
+      : "https://ethant1619.github.io/vocab-study/";
+
+  var vocabCurriculumLink = document.querySelector(
+    '.dropdown--study a[data-i18n="tool.vocab-study-curriculum.title"]'
+  );
+  if (vocabCurriculumLink) {
+    vocabCurriculumLink.href = vocabCurriculumUrl;
   }
 }
 

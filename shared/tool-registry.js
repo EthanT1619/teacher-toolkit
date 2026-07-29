@@ -26,6 +26,7 @@ export const REGISTERED_TOOL_IDS = Object.freeze([
   'sentence-kitchen',
   'story-forge',
   'vocab-study-mobile',
+  'vocab-study-curriculum',
   '5w1h-factory',
   // Activities (A–Z by menu title)
   'barrel-game',
@@ -64,6 +65,7 @@ export const TOOLS_WITH_HELP_I18N = Object.freeze([
   'phonics-hunt',
   'sentence-battle',
   'vocab-study-mobile',
+  'vocab-study-curriculum',
 ]);
 
 /** Required on every registered tool block. */

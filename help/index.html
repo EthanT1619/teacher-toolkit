@@ -612,7 +612,7 @@
         <details class="dropdown dropdown--util">
           <summary class="dropdown__toggle">
             <span class="dropdown__badge">유틸</span>
-            <span class="dropdown__count">6개</span>
+            <span class="dropdown__count">7개</span>
             <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -623,6 +623,7 @@
             <button type="button" class="dropdown__item" data-guide="guide-participation-tracker" data-i18n="tool.participation-tracker.help.menuLabel">Participation Tracker</button>
             <button type="button" class="dropdown__item" data-guide="guide-random-picker" data-i18n="tool.class-random-picker.help.menuLabel">Random Picker</button>
             <button type="button" class="dropdown__item" data-guide="guide-score-board" data-i18n="tool.edu-scoreboard.help.menuLabel">Score Board</button>
+            <button type="button" class="dropdown__item" data-guide="guide-student-achievement-tracker">Student Achievement Tracker</button>
             <button type="button" class="dropdown__item" data-guide="guide-team-maker" data-i18n="tool.team-maker.help.menuLabel">Team Maker</button>
           </nav>
         </details>
@@ -630,7 +631,7 @@
         <details class="dropdown dropdown--study">
           <summary class="dropdown__toggle">
             <span class="dropdown__badge">학습툴</span>
-            <span class="dropdown__count">7개</span>
+            <span class="dropdown__count">8개</span>
             <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -642,6 +643,7 @@
             <button type="button" class="dropdown__item" data-guide="guide-sentence-kitchen">Sentence Kitchen β</button>
             <button type="button" class="dropdown__item" data-guide="guide-story-forge">Story Forge β</button>
             <button type="button" class="dropdown__item" data-guide="guide-vocab-study" data-i18n="tool.vocab-study-mobile.help.menuLabel">Vocab Study Tool</button>
+            <button type="button" class="dropdown__item" data-guide="guide-vocab-study-curriculum" data-i18n="tool.vocab-study-curriculum.help.menuLabel">Vocab Study (Curriculum)</button>
             <button type="button" class="dropdown__item" data-guide="guide-wh-factory" data-i18n="tool.5w1h-factory.help.menuLabel">WH Factory</button>
           </nav>
         </details>
@@ -849,6 +851,12 @@ Liam</p>
         <p data-i18n="tool.edu-scoreboard.help.notes">Scores reset on refresh. Keep the tab open during class if you need to preserve the board.</p>
       </article>
 
+      <article class="help-card" id="guide-student-achievement-tracker">
+        <h2>Student Achievement Tracker</h2>
+        <h3>사용 방법</h3>
+        <p>Achievement Tracker 내부를 참조해주세요.</p>
+      </article>
+
       <article class="help-card" id="guide-grammar-checkpoint">
         <h2 data-i18n="tool.grammar-checkpoint.help.title">Grammar Checkpoint</h2>
         <h3 data-i18n="tool.grammar-checkpoint.help.introHeading">Introduction</h3>
@@ -934,7 +942,22 @@ Liam</p>
         <h3 data-i18n="tool.vocab-study-mobile.help.inputHeading">Input</h3>
         <p data-i18n="tool.vocab-study-mobile.help.inputLine1">Press Enter in an input field to add a word.</p>
         <h3 data-i18n="tool.vocab-study-mobile.help.notesHeading">Notes</h3>
-        <p data-i18n="tool.vocab-study-mobile.help.notes">When the timer is on, a round may end automatically when time runs out.</p>
+        <p data-i18n="tool.vocab-study-mobile.help.notes">When the timer is on, a round may end automatically when time runs out. For Chessbook chapter presets, use Vocab Study (Curriculum) instead.</p>
+      </article>
+
+      <article class="help-card" id="guide-vocab-study-curriculum">
+        <h2 data-i18n="tool.vocab-study-curriculum.help.title">Vocab Study (Curriculum)</h2>
+        <h3 data-i18n="tool.vocab-study-curriculum.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.vocab-study-curriculum.help.intro">A preset version with Chessbook chapter vocabulary already loaded. Choose a level, lesson, and word list—no manual entry needed.</p>
+        <h3 data-i18n="tool.vocab-study-curriculum.help.usageHeading">How to use</h3>
+        <ul>
+          <li data-i18n="tool.vocab-study-curriculum.help.usage1">Open Vocab Study (Curriculum) from Study Tools.</li>
+          <li data-i18n="tool.vocab-study-curriculum.help.usage2">In Built-in presets, choose level → Lesson → word list (e.g. Vocab 1).</li>
+          <li data-i18n="tool.vocab-study-curriculum.help.usage3">Press Load to import the word list.</li>
+          <li data-i18n="tool.vocab-study-curriculum.help.usage4">Select display fields, then press Start Study for three rounds: matching, meaning quiz, and spelling.</li>
+        </ul>
+        <h3 data-i18n="tool.vocab-study-curriculum.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.vocab-study-curriculum.help.notes">The study flow matches Vocab Study Tool. Built-in preset lists may be added or updated when the app is updated.</p>
       </article>
 
       <article class="help-card" id="guide-wh-factory">
@@ -1277,6 +1300,8 @@ Why: He was late.</p>
     var phonicsMenuBtn = document.querySelector('[data-guide="guide-phonics-hunt"]');
     var vsGuide = document.getElementById('guide-vocab-study');
     var vsMenuBtn = document.querySelector('[data-guide="guide-vocab-study"]');
+    var vsCurriculumGuide = document.getElementById('guide-vocab-study-curriculum');
+    var vsCurriculumMenuBtn = document.querySelector('[data-guide="guide-vocab-study-curriculum"]');
 
     function applyToolHelpI18n() {
       if (whFactoryGuide) applyToDOM(whFactoryGuide);
@@ -1317,6 +1342,8 @@ Why: He was late.</p>
       if (phonicsMenuBtn) applyToDOM(phonicsMenuBtn);
       if (vsGuide) applyToDOM(vsGuide);
       if (vsMenuBtn) applyToDOM(vsMenuBtn);
+      if (vsCurriculumGuide) applyToDOM(vsCurriculumGuide);
+      if (vsCurriculumMenuBtn) applyToDOM(vsCurriculumMenuBtn);
     }
 
     await initI18n({ applyDom: false });

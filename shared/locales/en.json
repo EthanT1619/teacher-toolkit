@@ -777,6 +777,22 @@
     "story-forge": {
       "title": "Story Forge"
     },
+    "vocab-study-curriculum": {
+      "title": "Vocab Study (Curriculum)",
+      "help": {
+        "menuLabel": "Vocab Study (Curriculum)",
+        "title": "Vocab Study (Curriculum)",
+        "introHeading": "Introduction",
+        "intro": "A preset version with Chessbook chapter vocabulary already loaded. Choose a level, lesson, and word list—no manual entry needed.",
+        "usageHeading": "How to use",
+        "usage1": "Open Vocab Study (Curriculum) from Study Tools.",
+        "usage2": "In Built-in presets, choose level → Lesson → word list (e.g. Vocab 1).",
+        "usage3": "Press Load to import the word list.",
+        "usage4": "Select display fields, then press Start Study for three rounds: matching, meaning quiz, and spelling.",
+        "notesHeading": "Notes",
+        "notes": "The study flow matches Vocab Study Tool. Built-in preset lists may be added or updated when the app is updated."
+      }
+    },
     "vocab-study-mobile": {
       "title": "Vocab Study Tool",
       "heading": "📚 Vocab Study Tool",
@@ -895,7 +911,7 @@
         "menuLabel": "Vocab Study Tool",
         "title": "Vocab Study Tool",
         "introHeading": "Introduction",
-        "intro": "A card-based vocabulary activity with three study rounds.",
+        "intro": "A general-purpose vocabulary study tool. Enter words and meanings freely for any class, test, or review.",
         "usageHeading": "How to use",
         "usage1": "Select the fields you need.",
         "usage2": "Add words and meanings.",
@@ -905,7 +921,7 @@
         "inputHeading": "Input",
         "inputLine1": "Press Enter in an input field to add a word.",
         "notesHeading": "Notes",
-        "notes": "When the timer is on, a round may end automatically when time runs out."
+        "notes": "When the timer is on, a round may end automatically when time runs out. For Chessbook chapter presets, use Vocab Study (Curriculum) instead."
       }
     },
     "5w1h-factory": {
