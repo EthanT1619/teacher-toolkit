@@ -515,75 +515,76 @@
 <body>
   <header class="top-bar">
     <div class="title-block">
-      <h1>🏴‍☠️ Pirate Race</h1>
-      <p>Race to the treasure island!</p>
+      <h1>🏴‍☠️ <span data-i18n="tool.pirate-race.title">Pirate Race</span></h1>
+      <p data-i18n="tool.pirate-race.subtitle">Race to the treasure island!</p>
     </div>
     <div class="top-actions">
-      <button class="btn btn-full" id="btnFullscreen" type="button">Fullscreen</button>
-      <button class="btn btn-new" id="btnNewGame" type="button">New Game</button>
+      <button class="btn btn-full" id="btn-language" type="button" data-i18n-aria="tool.pirate-race.aria.switchLanguage">한국어</button>
+      <button class="btn btn-full" id="btnFullscreen" type="button" data-i18n="tool.pirate-race.actions.fullscreen">Fullscreen</button>
+      <button class="btn btn-new" id="btnNewGame" type="button" data-i18n="tool.pirate-race.actions.newGame">New Game</button>
     </div>
   </header>
 
   <details class="settings-panel" open>
-    <summary>⚙️ Game Options</summary>
+    <summary data-i18n="tool.pirate-race.settings.title">⚙️ Game Options</summary>
     <div class="settings-body">
       <div class="setting-row">
-        <label>Goal Distance</label>
+        <label data-i18n="tool.pirate-race.settings.goalDistance">Goal Distance</label>
         <div class="chip-group" id="goalOptions">
-          <label><input type="radio" name="goalDistance" value="20" /><span class="chip">20 spaces</span></label>
-          <label><input type="radio" name="goalDistance" value="30" checked /><span class="chip">30 spaces</span></label>
-          <label><input type="radio" name="goalDistance" value="50" /><span class="chip">50 spaces</span></label>
+          <label><input type="radio" name="goalDistance" value="20" /><span class="chip" data-goal="20">20 spaces</span></label>
+          <label><input type="radio" name="goalDistance" value="30" checked /><span class="chip" data-goal="30">30 spaces</span></label>
+          <label><input type="radio" name="goalDistance" value="50" /><span class="chip" data-goal="50">50 spaces</span></label>
         </div>
       </div>
       <div class="setting-row">
         <label class="toggle-label">
           <input type="checkbox" id="stormMode" />
-          Storm Mode — roll 1 = no move!
+          <span data-i18n="tool.pirate-race.settings.stormMode">Storm Mode — roll 1 = no move!</span>
         </label>
       </div>
       <div class="setting-row">
         <label class="toggle-label">
           <input type="checkbox" id="treasureBonus" />
-          Treasure Bonus — exact landing bonus!
+          <span data-i18n="tool.pirate-race.settings.treasureBonus">Treasure Bonus — exact landing bonus!</span>
         </label>
       </div>
     </div>
   </details>
 
   <main class="race-area">
-    <section class="track-block team-a" aria-label="Team A track">
+    <section class="track-block team-a" data-i18n-aria="tool.pirate-race.track.teamA">
       <div class="track-header">
         <span class="team-name-a">⚓ Team A</span>
         <span class="position-badge" id="posBadgeA">0 / 30</span>
       </div>
       <div class="track-wrap">
-        <span class="track-label">START</span>
+        <span class="track-label" data-i18n="tool.pirate-race.track.start">START</span>
         <div class="track-lane" id="trackA">
           <div class="treasure-zone" id="treasureA" aria-hidden="true">🏝️</div>
-          <div class="ship" id="shipA" aria-label="Team A ship">
+          <div class="ship" id="shipA" data-i18n-aria="tool.pirate-race.aria.teamAShip">
             <img src="assets/pirate-ship.png" alt="Pirate ship" />
             <span class="ship-fallback" aria-hidden="true">🚢</span>
           </div>
         </div>
-        <span class="track-label end">TREASURE<br />ISLAND</span>
+        <span class="track-label end" data-track-end></span>
       </div>
     </section>
 
-    <section class="track-block team-b" aria-label="Team B track">
+    <section class="track-block team-b" data-i18n-aria="tool.pirate-race.track.teamB">
       <div class="track-header">
         <span class="team-name-b">⚓ Team B</span>
         <span class="position-badge" id="posBadgeB">0 / 30</span>
       </div>
       <div class="track-wrap">
-        <span class="track-label">START</span>
+        <span class="track-label" data-i18n="tool.pirate-race.track.start">START</span>
         <div class="track-lane" id="trackB">
           <div class="treasure-zone" id="treasureB" aria-hidden="true">🏝️</div>
-          <div class="ship" id="shipB" aria-label="Team B ship">
+          <div class="ship" id="shipB" data-i18n-aria="tool.pirate-race.aria.teamBShip">
             <img src="assets/pirate-ship.png" alt="Pirate ship" />
             <span class="ship-fallback" aria-hidden="true">🚢</span>
           </div>
         </div>
-        <span class="track-label end">TREASURE<br />ISLAND</span>
+        <span class="track-label end" data-track-end></span>
       </div>
     </section>
   </main>
@@ -591,7 +592,7 @@
   <footer class="controls-area">
     <div class="team-controls" data-team="A">
       <div class="controls-header">
-        <h2 class="team-name-a">Team A — Move</h2>
+        <h2 class="team-name-a" data-i18n="tool.pirate-race.controls.teamAMove">Team A — Move</h2>
         <span class="position-badge" id="posTextA">0 / 30</span>
       </div>
       <div class="move-buttons" id="moveButtonsA">
@@ -601,13 +602,13 @@
         <button class="btn btn-move btn-team-a" data-steps="4" type="button">+4</button>
         <button class="btn btn-move btn-team-a" data-steps="5" type="button">+5</button>
         <button class="btn btn-move btn-team-a" data-steps="6" type="button">+6</button>
-        <button class="btn btn-random btn-random-a" id="randomA" type="button">🎲 Random Move</button>
+        <button class="btn btn-random btn-random-a" id="randomA" type="button" data-i18n="tool.pirate-race.actions.randomMove">🎲 Random Move</button>
       </div>
     </div>
 
     <div class="team-controls" data-team="B">
       <div class="controls-header">
-        <h2 class="team-name-b">Team B — Move</h2>
+        <h2 class="team-name-b" data-i18n="tool.pirate-race.controls.teamBMove">Team B — Move</h2>
         <span class="position-badge" id="posTextB">0 / 30</span>
       </div>
       <div class="move-buttons" id="moveButtonsB">
@@ -617,7 +618,7 @@
         <button class="btn btn-move btn-team-b" data-steps="4" type="button">+4</button>
         <button class="btn btn-move btn-team-b" data-steps="5" type="button">+5</button>
         <button class="btn btn-move btn-team-b" data-steps="6" type="button">+6</button>
-        <button class="btn btn-random btn-random-b" id="randomB" type="button">🎲 Random Move</button>
+        <button class="btn btn-random btn-random-b" id="randomB" type="button" data-i18n="tool.pirate-race.actions.randomMove">🎲 Random Move</button>
       </div>
     </div>
   </footer>
@@ -632,316 +633,10 @@
       <div class="treasure-icon">💎🏝️💎</div>
       <h2 id="winnerTitle">Team A found the treasure!</h2>
       <p id="winnerSubtitle">Great job, pirates!</p>
-      <button class="btn btn-new" id="btnPlayAgain" type="button">New Game</button>
+      <button class="btn btn-new" id="btnPlayAgain" type="button" data-i18n="tool.pirate-race.actions.newGame">New Game</button>
     </div>
   </div>
 
-  <script>
-    // Pirate Race - Ethan's Teacher Toolkit
-
-    function playSound(type) {
-      // type: "move" | "storm" | "win"
-      // Example: new Audio(`sounds/${type}.mp3`).play();
-    }
-
-    const gameState = {
-      teamA: { position: 0 },
-      teamB: { position: 0 },
-      goalDistance: 30,
-      stormMode: false,
-      treasureBonus: false,
-      isAnimating: false,
-      gameOver: false,
-      winner: null
-    };
-
-    const els = {
-      shipA: document.getElementById("shipA"),
-      shipB: document.getElementById("shipB"),
-      trackA: document.getElementById("trackA"),
-      trackB: document.getElementById("trackB"),
-      treasureA: document.getElementById("treasureA"),
-      treasureB: document.getElementById("treasureB"),
-      posBadgeA: document.getElementById("posBadgeA"),
-      posBadgeB: document.getElementById("posBadgeB"),
-      posTextA: document.getElementById("posTextA"),
-      posTextB: document.getElementById("posTextB"),
-      moveButtonsA: document.getElementById("moveButtonsA"),
-      moveButtonsB: document.getElementById("moveButtonsB"),
-      randomA: document.getElementById("randomA"),
-      randomB: document.getElementById("randomB"),
-      goalOptions: document.getElementById("goalOptions"),
-      stormMode: document.getElementById("stormMode"),
-      treasureBonus: document.getElementById("treasureBonus"),
-      toast: document.getElementById("toast"),
-      diceDisplay: document.getElementById("diceDisplay"),
-      winnerOverlay: document.getElementById("winnerOverlay"),
-      winnerTitle: document.getElementById("winnerTitle"),
-      winnerSubtitle: document.getElementById("winnerSubtitle"),
-      btnNewGame: document.getElementById("btnNewGame"),
-      btnPlayAgain: document.getElementById("btnPlayAgain"),
-      btnFullscreen: document.getElementById("btnFullscreen")
-    };
-
-    const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-
-    function initGame() {
-      readSettings();
-      gameState.teamA.position = 0;
-      gameState.teamB.position = 0;
-      gameState.isAnimating = false;
-      gameState.gameOver = false;
-      gameState.winner = null;
-
-      els.winnerOverlay.classList.remove("show");
-      els.treasureA.classList.remove("sparkle");
-      els.treasureB.classList.remove("sparkle");
-      els.shipA.classList.remove("winner");
-      els.shipB.classList.remove("winner");
-
-      setupShipImages();
-      render();
-      animateShip("A", false);
-      animateShip("B", false);
-    }
-
-    function readSettings() {
-      const selected = els.goalOptions.querySelector('input[name="goalDistance"]:checked');
-      gameState.goalDistance = selected ? Number(selected.value) : 30;
-      gameState.stormMode = els.stormMode.checked;
-      gameState.treasureBonus = els.treasureBonus.checked;
-    }
-
-    function setupShipImages() {
-      [els.shipA, els.shipB].forEach((shipEl) => {
-        const img = shipEl.querySelector("img");
-        img.onerror = () => shipEl.classList.add("use-fallback");
-        if (img.complete && img.naturalWidth === 0) {
-          shipEl.classList.add("use-fallback");
-        }
-      });
-    }
-
-    function render() {
-      const { teamA, teamB, goalDistance, isAnimating, gameOver } = gameState;
-      const disabled = isAnimating || gameOver;
-      const posText = (pos) => `${Math.min(pos, goalDistance)} / ${goalDistance}`;
-
-      els.posBadgeA.textContent = posText(teamA.position);
-      els.posBadgeB.textContent = posText(teamB.position);
-      els.posTextA.textContent = posText(teamA.position);
-      els.posTextB.textContent = posText(teamB.position);
-
-      setButtonsDisabled(els.moveButtonsA, disabled);
-      setButtonsDisabled(els.moveButtonsB, disabled);
-    }
-
-    function setButtonsDisabled(container, disabled) {
-      container.querySelectorAll("button").forEach((btn) => {
-        btn.disabled = disabled;
-      });
-    }
-
-    function getShipLeftPercent(team) {
-      const pos = team === "A" ? gameState.teamA.position : gameState.teamB.position;
-      const goal = gameState.goalDistance;
-      const progress = goal > 0 ? Math.min(pos / goal, 1) : 0;
-      // 0% = start, 88% = treasure island (room for island emoji on the right)
-      return progress * 88;
-    }
-
-    function animateShip(team, useTransition = true) {
-      const ship = els[`ship${team}`];
-      if (!useTransition) {
-        ship.style.transition = "none";
-      } else {
-        ship.style.transition = "";
-      }
-
-      const leftPct = getShipLeftPercent(team);
-      ship.style.left = `${leftPct}%`;
-
-      if (!useTransition) {
-        void ship.offsetWidth;
-        ship.style.transition = "";
-      }
-    }
-
-    function showToast(message, type = "", duration = 1800) {
-      els.toast.textContent = message;
-      els.toast.className = "toast show" + (type ? ` ${type}` : "");
-
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => {
-        els.toast.classList.remove("show");
-      }, duration);
-    }
-
-    function rollDiceAnimation(team) {
-      return new Promise((resolve) => {
-        const roll = Math.floor(Math.random() * 6) + 1;
-        const diceEl = els.diceDisplay;
-        let ticks = 0;
-        const maxTicks = 14;
-        const interval = 70;
-
-        diceEl.classList.add("rolling");
-        diceEl.setAttribute("aria-hidden", "false");
-
-        const timer = setInterval(() => {
-          const face = Math.floor(Math.random() * 6);
-          diceEl.textContent = DICE_FACES[face];
-          ticks += 1;
-
-          if (ticks >= maxTicks) {
-            clearInterval(timer);
-            diceEl.textContent = DICE_FACES[roll - 1];
-            diceEl.classList.remove("rolling");
-
-            setTimeout(() => {
-              diceEl.textContent = "";
-              diceEl.setAttribute("aria-hidden", "true");
-              resolve(roll);
-            }, 450);
-          }
-        }, interval);
-      });
-    }
-
-    async function moveTeam(team, steps) {
-      if (gameState.isAnimating || gameState.gameOver || steps <= 0) return;
-
-      gameState.isAnimating = true;
-      render();
-
-      const teamKey = team === "A" ? "teamA" : "teamB";
-      const previousPos = gameState[teamKey].position;
-      gameState[teamKey].position = Math.min(previousPos + steps, gameState.goalDistance + 5);
-
-      playSound("move");
-      animateShip(team);
-
-      await waitForTransition(els[`ship${team}`], 700);
-
-      const finalPos = gameState[teamKey].position;
-      const exactLanding = finalPos === gameState.goalDistance;
-      const reachedGoal = finalPos >= gameState.goalDistance;
-
-      if (gameState.treasureBonus && exactLanding) {
-        showToast("Perfect Landing! ⭐", "bonus", 2200);
-      }
-
-      if (reachedGoal) {
-        els[`treasure${team}`].classList.add("sparkle");
-        els[`ship${team}`].classList.add("winner");
-      }
-
-      checkWinner();
-
-      gameState.isAnimating = false;
-      render();
-    }
-
-    async function randomMove(team) {
-      if (gameState.isAnimating || gameState.gameOver) return;
-
-      gameState.isAnimating = true;
-      render();
-
-      const roll = await rollDiceAnimation(team);
-
-      if (gameState.stormMode && roll === 1) {
-        showToast("Storm! No move! ⛈️", "storm", 2200);
-        playSound("storm");
-        gameState.isAnimating = false;
-        render();
-        return;
-      }
-
-      gameState.isAnimating = false;
-      await moveTeam(team, roll);
-    }
-
-    function waitForTransition(element, fallbackMs) {
-      return new Promise((resolve) => {
-        let done = false;
-        const finish = () => {
-          if (done) return;
-          done = true;
-          element.removeEventListener("transitionend", onEnd);
-          resolve();
-        };
-
-        const onEnd = (e) => {
-          if (e.target === element && e.propertyName === "left") finish();
-        };
-
-        element.addEventListener("transitionend", onEnd);
-        setTimeout(finish, fallbackMs);
-      });
-    }
-
-    function checkWinner() {
-      const { teamA, teamB, goalDistance } = gameState;
-      let winner = null;
-
-      if (teamA.position >= goalDistance) winner = "A";
-      else if (teamB.position >= goalDistance) winner = "B";
-
-      if (!winner) return false;
-
-      gameState.gameOver = true;
-      gameState.winner = winner;
-
-      els.winnerTitle.textContent = `Team ${winner} found the treasure!`;
-      els.winnerSubtitle.textContent = winner === "A"
-        ? "Team A reached Treasure Island first! 🏆"
-        : "Team B reached Treasure Island first! 🏆";
-
-      playSound("win");
-      els.winnerOverlay.classList.add("show");
-      return true;
-    }
-
-    function resetGame() {
-      readSettings();
-      initGame();
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen?.();
-      } else {
-        document.exitFullscreen?.();
-      }
-    }
-
-    function bindMoveButtons(container, team) {
-      container.querySelectorAll(".btn-move").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          moveTeam(team, Number(btn.dataset.steps));
-        });
-      });
-    }
-
-    bindMoveButtons(els.moveButtonsA, "A");
-    bindMoveButtons(els.moveButtonsB, "B");
-    els.randomA.addEventListener("click", () => randomMove("A"));
-    els.randomB.addEventListener("click", () => randomMove("B"));
-    els.btnNewGame.addEventListener("click", resetGame);
-    els.btnPlayAgain.addEventListener("click", resetGame);
-    els.btnFullscreen.addEventListener("click", toggleFullscreen);
-
-    els.goalOptions.addEventListener("change", readSettings);
-    els.stormMode.addEventListener("change", readSettings);
-    els.treasureBonus.addEventListener("change", readSettings);
-
-    window.addEventListener("resize", () => {
-      animateShip("A", false);
-      animateShip("B", false);
-    });
-
-    initGame();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

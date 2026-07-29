@@ -41,11 +41,15 @@ class GridCalculator {
 
   static formatPreview(count) {
     const { rows, cols, emptyCells } = GridCalculator.calculate(count);
-    if (count === 0) return '그리드: —';
+    if (count === 0) {
+      return typeof window.phT === 'function'
+        ? window.phT('grid.previewEmpty')
+        : 'Grid: —';
+    }
 
-    let text = `${rows}×${cols} (${count}칸)`;
+    let text = window.phT('grid.preview', { rows, cols, cells: count });
     if (emptyCells > 0) {
-      text += ` · 빈 칸 ${emptyCells}개`;
+      text += window.phT('grid.previewEmptyCells', { count: emptyCells });
     }
     return text;
   }

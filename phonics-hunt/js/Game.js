@@ -1,5 +1,5 @@
 /**
- * Game — Core game logic for Word Star Hunt.
+ * Game — Core game logic for Phonics Hunt.
  */
 class Game {
   constructor() {
@@ -19,6 +19,8 @@ class Game {
     this.awaitingTile = false;
     this.gameOver = false;
     this.processing = false;
+
+    this._statusState = { key: 'status.selectTeam', params: {} };
 
     this._init();
   }
@@ -51,6 +53,32 @@ class Game {
     });
   }
 
+  _teamName(team) {
+    return team === 'blue' ? this.blueName : this.redName;
+  }
+
+  _setStatusKey(key, params = {}) {
+    this._statusState = { key, params: { ...params } };
+    this._applyStatus();
+  }
+
+  _applyStatus() {
+    const params = { ...this._statusState.params };
+    if (params.team === 'blue' || params.team === 'red') {
+      params.team = this._teamName(params.team);
+    }
+    this.ui.setStatus(window.phT(this._statusState.key, params));
+  }
+
+  refreshI18n() {
+    this._applyStatus();
+    this._refreshPreview();
+    if (this.grid) {
+      this.ui.setGridInfo(this.grid.rows, this.grid.cols, this.entries.length, this.starCount);
+    }
+    this.ui.refreshVictory();
+  }
+
   _refreshPreview() {
     const setup = this.ui.getSetupData();
     const words = WordParser.parse(setup.wordText);
@@ -63,12 +91,12 @@ class Game {
     this.starCount = setup.starCount;
 
     if (this.entries.length < 2) {
-      this.ui.showToast('단어를 2개 이상 입력해 주세요.');
+      this.ui.showToast(window.phT('toast.needTwoWords'));
       return;
     }
 
     if (this.starCount < 1 || this.starCount > this.entries.length) {
-      this.ui.showToast(`별 개수는 1~${this.entries.length} 사이로 설정해 주세요.`);
+      this.ui.showToast(window.phT('toast.starCountRange', { max: this.entries.length }));
       return;
     }
 
@@ -91,7 +119,7 @@ class Game {
     this.ui.showGame();
 
     this._createGrid();
-    this.ui.setStatus('팀을 선택하세요');
+    this._setStatusKey('status.selectTeam');
   }
 
   _createGrid() {
@@ -115,8 +143,7 @@ class Game {
     this.ui.setActiveTeam(team);
     this.ui.setExcavateButtonsEnabled(false);
 
-    const teamName = team === 'blue' ? this.blueName : this.redName;
-    this.ui.setStatus(`${teamName} — 학생이 단어를 말하면 해당 칸을 열어 주세요`);
+    this._setStatusKey('status.openTile', { team });
     this.grid.setAllSelectable(true);
   }
 
@@ -136,9 +163,12 @@ class Game {
     if (tile.isStar) {
       this._awardPoints(tile.points);
       this.sound.playTreasure();
-      this.ui.showToast(`⭐ "${tile.word}" — 별 발견! +${tile.points}점`);
+      this.ui.showToast(window.phT('toast.starFound', {
+        word: tile.word,
+        points: tile.points,
+      }));
     } else {
-      this.ui.showToast(`"${tile.word}" — 칸을 열었습니다`);
+      this.ui.showToast(window.phT('toast.tileOpened', { word: tile.word }));
     }
 
     this.processing = false;
@@ -163,7 +193,7 @@ class Game {
     this.activeTeam = null;
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(true);
-    this.ui.setStatus('팀을 선택하세요');
+    this._setStatusKey('status.selectTeam');
   }
 
   _endGame() {
@@ -171,7 +201,7 @@ class Game {
     this.awaitingTile = false;
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(false);
-    this.ui.setStatus('게임 종료!');
+    this._setStatusKey('status.gameOver');
     this.sound.playVictory();
 
     setTimeout(() => {
@@ -192,7 +222,7 @@ class Game {
     this.ui.updateScores(0, 0);
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(true);
-    this.ui.setStatus('팀을 선택하세요');
+    this._setStatusKey('status.selectTeam');
     this.ui.hideVictory();
 
     this.grid.build();

@@ -81,14 +81,18 @@ function playBgm(type) {
 initAudio();
 
 const MONSTER_SPRITES = ["🐸", "🦇", "👻", "🕷️", "🐺", "🦴", "🐙"];
-const MONSTER_NAMES = ["슬라임", "박쥐", "유령", "거미", "늑대", "해골", "문어"];
+const MONSTER_KEYS = ["slime", "bat", "ghost", "spider", "wolf", "skeleton", "octopus"];
 const BOSS_SPRITE = "🐲";
-const BOSS_NAME = "문법 보스";
+const ITEM_TYPES = ["shield", "hint", "heal"];
+const ITEM_ICONS = {
+  shield: "🛡️",
+  hint: "💡",
+  heal: "❤️",
+};
 
-const ITEMS = {
-  shield: { icon: "🛡️", name: "실드", desc: "다음 실수 HP 피해 방어" },
-  hint: { icon: "💡", name: "힌트", desc: "다음 카드 1개 표시" },
-  heal: { icon: "❤️", name: "회복", desc: "HP +2" },
+const uiState = {
+  lastMessage: null,
+  lastVictory: null,
 };
 
 const state = {
@@ -109,6 +113,27 @@ const state = {
   shieldActive: false,
   bossInitialized: false,
 };
+
+function t(key, params) {
+  return window.sbT(key, params);
+}
+
+function getMonsterName(roundIndex) {
+  const key = MONSTER_KEYS[roundIndex % MONSTER_KEYS.length];
+  return t(`monsters.${key}`);
+}
+
+function getBossName() {
+  return t("monsters.boss");
+}
+
+function getItemMeta(type) {
+  return {
+    icon: ITEM_ICONS[type],
+    name: t(`items.${type}.name`),
+    desc: t(`items.${type}.desc`),
+  };
+}
 
 function isBossRound() {
   return state.round >= state.sentences.length;
@@ -160,12 +185,14 @@ function updateDamagePreview() {
   }
 
   const targets = computeSentenceTargets(bossHp, count);
-  const perRound = targets.map((t, i) => `R${i + 1}:${t}`).join(", ");
+  const perRound = targets
+    .map((hp, i) => t("setup.roundTag", { round: i + 1, hp }))
+    .join(", ");
 
   preview.innerHTML =
-    `<strong>라운드 구성</strong><br>` +
-    `일반 ${count}라운드 (몬스터 HP: ${perRound}) + 보스 1라운드 (HP ${bossHp})<br>` +
-    `보스전: 이전 문장 ${count}개를 순서대로 복습 공격 · 라운드마다 아이템 1개 획득 (보스전에 사용)`;
+    `<strong>${t("setup.roundLayoutHeading")}</strong><br>` +
+    `${t("setup.roundLayoutNormal", { count, perRound, bossHp })}<br>` +
+    t("setup.roundLayoutBossNote", { count });
 }
 
 function showScreen(name) {
@@ -204,8 +231,8 @@ function renderSentenceList() {
     const cards = parseSentenceToCards(s);
     const li = document.createElement("li");
     li.innerHTML =
-      `<span>${displaySentence(s)} <small class="card-count">(${cards.length}장: ${cards.join(" · ")})</small></span>` +
-      `<button data-i="${i}" title="삭제">✕</button>`;
+      `<span>${displaySentence(s)} <small class="card-count">${t("list.cardCount", { count: cards.length, cards: cards.join(" · ") })}</small></span>` +
+      `<button data-i="${i}" title="${t("actions.delete")}">✕</button>`;
     list.appendChild(li);
   });
   $("hint").style.display = state.sentences.length ? "none" : "block";
@@ -219,17 +246,22 @@ function setMessage(text, type = "") {
   el.className = "message" + (type ? ` ${type}` : "");
 }
 
+function setMessageI18n(key, params = {}, type = "") {
+  uiState.lastMessage = { key, params, type };
+  setMessage(t(key, params), type);
+}
+
 function setupMonster(roundIndex) {
   const sprite = MONSTER_SPRITES[roundIndex % MONSTER_SPRITES.length];
-  const name = MONSTER_NAMES[roundIndex % MONSTER_NAMES.length];
+  const name = getMonsterName(roundIndex);
   state.enemyMaxHp = state.sentenceTargets[roundIndex];
   state.enemyHp = state.enemyMaxHp;
 
   $("enemy-panel").classList.remove("boss-panel");
   $("enemy-sprite").classList.remove("defeated");
   $("enemy-sprite").textContent = sprite;
-  $("monster-name").textContent = `라운드 ${roundIndex + 1} — ${name}`;
-  $("enemy-hp-label").textContent = "몬스터 HP";
+  $("monster-name").textContent = t("game.roundMonster", { round: roundIndex + 1, name });
+  $("enemy-hp-label").textContent = t("labels.monsterHp");
   updateHpBars();
 }
 
@@ -241,17 +273,16 @@ function setupBoss() {
   $("enemy-panel").classList.add("boss-panel");
   $("enemy-sprite").classList.remove("defeated");
   $("enemy-sprite").textContent = BOSS_SPRITE;
-  $("monster-name").textContent = `보스 라운드 — ${BOSS_NAME}`;
-  $("enemy-hp-label").textContent = "보스 HP";
+  $("monster-name").textContent = t("game.bossRound", { name: getBossName() });
+  $("enemy-hp-label").textContent = t("labels.bossHp");
   updateHpBars();
 }
 
 function grantRoundItem() {
-  const types = Object.keys(ITEMS);
-  const type = types[Math.floor(Math.random() * types.length)];
+  const type = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
   state.inventory.push(type);
   updateInventoryUI();
-  return ITEMS[type];
+  return getItemMeta(type);
 }
 
 function updateInventoryUI() {
@@ -262,16 +293,16 @@ function updateInventoryUI() {
   list.innerHTML = "";
 
   if (state.inventory.length === 0) {
-    hint.textContent = "아이템 없음 — 일반 라운드 클리어 시 획득";
+    hint.textContent = t("inventory.empty");
     return;
   }
 
   hint.textContent = canUse
-    ? "보스전 — 아이템을 클릭해 사용하세요"
-    : `보유 ${state.inventory.length}개 — 보스전까지 보관 중`;
+    ? t("inventory.bossUse")
+    : t("inventory.stored", { count: state.inventory.length });
 
   state.inventory.forEach((type, index) => {
-    const item = ITEMS[type];
+    const item = getItemMeta(type);
     const btn = document.createElement("button");
     btn.className = "inventory-slot";
     btn.textContent = item.icon;
@@ -291,7 +322,7 @@ function useInventoryItem(index) {
   switch (type) {
     case "shield":
       state.shieldActive = true;
-      setMessage("🛡️ 실드 활성화! 다음 실수 피해를 막습니다.", "success");
+      setMessageI18n("messages.shieldActive", {}, "success");
       break;
     case "hint":
       showHint();
@@ -299,7 +330,7 @@ function useInventoryItem(index) {
     case "heal":
       state.playerHp = Math.min(state.playerMaxHp, state.playerHp + 2);
       updateHpBars();
-      setMessage("❤️ HP +2 회복!", "success");
+      setMessageI18n("messages.healUsed", {}, "success");
       break;
   }
 
@@ -319,7 +350,11 @@ function showHint() {
     }
   });
 
-  setMessage(shown ? "💡 다음에 눌러야 할 카드를 표시했습니다!" : "💡 표시할 카드가 없습니다.", "success");
+  setMessageI18n(
+    shown ? "messages.hintShown" : "messages.hintNone",
+    {},
+    "success"
+  );
 }
 
 function spawnCards(words) {
@@ -334,6 +369,33 @@ function spawnCards(words) {
   });
 }
 
+function updateRoundInfo(sentenceIndex) {
+  const sentence = state.sentences[sentenceIndex];
+  const target = state.sentenceTargets[sentenceIndex];
+  const minDmg = Math.round(target * 0.6);
+
+  if (isBossRound()) {
+    $("round-info").textContent = t("game.bossReview", {
+      current: state.bossPhase + 1,
+      total: state.sentences.length,
+    });
+    $("damage-info").textContent = t("game.damageReview", {
+      sentence: displaySentence(sentence),
+      min: minDmg,
+      max: target,
+    });
+  } else {
+    $("round-info").textContent = t("game.roundNormal", {
+      round: state.round + 1,
+      total: state.sentences.length + 1,
+    });
+    $("damage-info").textContent = t("game.damageNormal", {
+      min: minDmg,
+      max: target,
+    });
+  }
+}
+
 function beginSentence(sentenceIndex) {
   state.sentenceIndex = sentenceIndex;
   const sentence = state.sentences[sentenceIndex];
@@ -342,23 +404,10 @@ function beginSentence(sentenceIndex) {
   state.built = "";
   state.gauge = 0;
 
-  const target = state.sentenceTargets[sentenceIndex];
-  const minDmg = Math.round(target * 0.6);
-
-  if (isBossRound()) {
-    $("round-info").textContent =
-      `보스 라운드 — 복습 ${state.bossPhase + 1} / ${state.sentences.length}`;
-    $("damage-info").textContent =
-      `복습 문장: "${displaySentence(sentence)}" · 데미지 ${minDmg} ~ ${target}`;
-  } else {
-    $("round-info").textContent =
-      `라운드 ${state.round + 1} / ${state.sentences.length + 1} (일반)`;
-    $("damage-info").textContent =
-      `이 문장 데미지: ${minDmg} ~ ${target} (게이지 100% → ${target})`;
-  }
+  updateRoundInfo(sentenceIndex);
 
   $("built").textContent = "";
-  setMessage("카드를 올바른 순서로 클릭하세요");
+  setMessageI18n("game.clickCards");
   updateGauge();
   updateInventoryUI();
   spawnCards(state.correctWords);
@@ -371,8 +420,9 @@ function startRound() {
       setupBoss();
       playBgm("boss");
       updateInventoryUI();
-      setMessage(
-        `👹 보스 등장! 모은 아이템 ${state.inventory.length}개를 사용할 수 있습니다!`,
+      setMessageI18n(
+        "messages.bossAppears",
+        { count: state.inventory.length },
         "success"
       );
     }
@@ -406,7 +456,7 @@ function onCardClick(card, word) {
       Math.round((state.currentIndex / state.correctWords.length) * 100)
     );
     updateGauge();
-    setMessage("정답!", "success");
+    setMessageI18n("messages.correct", {}, "success");
 
     if (state.currentIndex >= state.correctWords.length) {
       setTimeout(attackEnemy, 400);
@@ -432,8 +482,9 @@ function attackEnemy() {
 
   if (isBossRound()) playSfx("player_attack");
 
-  setMessage(
-    `⚔️ 공격! -${damage} (기본 ${base} + 게이지 ${bonus}, 목표 ${target})`,
+  setMessageI18n(
+    "messages.attack",
+    { damage, base, bonus, target },
     "success"
   );
 
@@ -448,23 +499,20 @@ function handleNormalAfterAttack() {
   if (state.enemyHp <= 0) {
     playSfx("player_attack");
     const item = grantRoundItem();
-    setMessage(
-      `🎉 라운드 ${state.round + 1} 클리어! ${item.icon} ${item.name} 획득 (보스전에 사용)`,
+    setMessageI18n(
+      "messages.roundClear",
+      { round: state.round + 1, icon: item.icon, name: item.name },
       "success"
     );
     state.round++;
     setTimeout(() => {
-      if (isBossRound()) {
-        startRound();
-      } else {
-        startRound();
-      }
+      startRound();
     }, 1400);
     return;
   }
 
   setTimeout(() => {
-    setMessage(`몬스터 HP ${state.enemyHp} 남음! 같은 문장으로 다시 공격하세요.`, "fail");
+    setMessageI18n("messages.monsterHpLeft", { hp: state.enemyHp }, "fail");
     retrySentence();
   }, 1000);
 }
@@ -483,7 +531,7 @@ function handleBossAfterAttack() {
   }
 
   setTimeout(() => {
-    setMessage(`보스 HP ${state.enemyHp} 남음 — 다음 복습 문장!`, "success");
+    setMessageI18n("messages.bossHpLeft", { hp: state.enemyHp }, "success");
     beginSentence(state.bossPhase);
   }, 1200);
 }
@@ -498,7 +546,7 @@ function finishVictory() {
   const sprite = $("enemy-sprite");
   sprite.classList.add("defeated");
   sprite.textContent = "💀";
-  setMessage("🎯 보스 처치! 모든 문장 복습 완료!", "success");
+  setMessageI18n("messages.bossDefeated", {}, "success");
 
   setTimeout(() => endGame(true), 1200);
 }
@@ -506,7 +554,7 @@ function finishVictory() {
 function enemyCounterAttack() {
   if (state.shieldActive) {
     state.shieldActive = false;
-    setMessage("🛡️ 실드가 피해를 막았습니다!", "success");
+    setMessageI18n("messages.shieldBlocked", {}, "success");
     return;
   }
 
@@ -514,7 +562,7 @@ function enemyCounterAttack() {
   state.playerHp -= dmg;
   updateHpBars();
   playSfx("player_damage");
-  setMessage(`순서가 틀렸어요! 플레이어 HP -${dmg}`, "fail");
+  setMessageI18n("messages.wrongOrder", { dmg }, "fail");
 
   const sprite = $("enemy-sprite");
   sprite.classList.add("attack-player");
@@ -529,18 +577,72 @@ function endGame(victory) {
   stopBgm();
   if (!victory) playSfx("boss_fail");
 
+  uiState.lastVictory = victory;
   showScreen("result");
   if (victory) {
     $("result-icon").textContent = "🎉";
-    $("result-title").textContent = "승리!";
-    $("result-desc").textContent =
-      "모든 라운드를 클리어하고 보스를 처치했습니다! 문장 복습도 완료!";
+    $("result-title").textContent = t("result.victoryTitle");
+    $("result-desc").textContent = t("result.victoryDesc");
   } else {
     $("result-icon").textContent = "💀";
-    $("result-title").textContent = "패배...";
-    $("result-desc").textContent = "플레이어 HP가 0이 되었습니다. 다시 도전해보세요!";
+    $("result-title").textContent = t("result.defeatTitle");
+    $("result-desc").textContent = t("result.defeatDesc");
   }
 }
+
+function refreshGameUI() {
+  if (!$("game-screen").classList.contains("active")) return;
+
+  if (isBossRound() && state.bossInitialized) {
+    $("monster-name").textContent = t("game.bossRound", { name: getBossName() });
+    $("enemy-hp-label").textContent = t("labels.bossHp");
+  } else if (state.round < state.sentences.length && $("game-screen").classList.contains("active")) {
+    const name = getMonsterName(state.round);
+    $("monster-name").textContent = t("game.roundMonster", { round: state.round + 1, name });
+    $("enemy-hp-label").textContent = t("labels.monsterHp");
+  }
+
+  const sentenceIndex = isBossRound() ? state.bossPhase : state.round;
+  if (
+    state.sentences.length > 0 &&
+    sentenceIndex < state.sentences.length &&
+    (state.round < state.sentences.length || state.bossInitialized)
+  ) {
+    updateRoundInfo(sentenceIndex);
+  }
+
+  updateInventoryUI();
+
+  if (uiState.lastMessage) {
+    const { key, params, type } = uiState.lastMessage;
+    setMessage(t(key, params), type);
+  }
+}
+
+function refreshResultUI() {
+  if (!$("result-screen").classList.contains("active")) return;
+  if (uiState.lastVictory === null) return;
+
+  if (uiState.lastVictory) {
+    $("result-title").textContent = t("result.victoryTitle");
+    $("result-desc").textContent = t("result.victoryDesc");
+  } else {
+    $("result-title").textContent = t("result.defeatTitle");
+    $("result-desc").textContent = t("result.defeatDesc");
+  }
+}
+
+function applyHtmlI18n() {
+  const el = $("hint-brackets");
+  if (el) el.innerHTML = t("setup.hintLine2Html");
+}
+
+window.refreshI18n = function refreshI18n() {
+  applyHtmlI18n();
+  renderSentenceList();
+  refreshGameUI();
+  refreshResultUI();
+};
 
 function startGame() {
   unlockAudio();
@@ -553,6 +655,8 @@ function startGame() {
   state.inventory = [];
   state.shieldActive = false;
   state.bossInitialized = false;
+  uiState.lastMessage = null;
+  uiState.lastVictory = null;
 
   $("enemy-panel").classList.remove("boss-panel");
   updateInventoryUI();
@@ -592,4 +696,13 @@ $("back-btn-2").addEventListener("click", () => {
 });
 $("again-btn").addEventListener("click", startGame);
 
-renderSentenceList();
+function initSentenceBattle() {
+  applyHtmlI18n();
+  renderSentenceList();
+}
+
+if (window.__sbI18nReady) {
+  initSentenceBattle();
+} else {
+  window.addEventListener("sentence-battle:i18nready", initSentenceBattle, { once: true });
+}

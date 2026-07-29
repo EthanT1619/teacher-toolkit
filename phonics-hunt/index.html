@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>단어 별 찾기</title>
+  <title>Phonics Hunt</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="../shared/toolkit-home.js" defer></script>
@@ -13,52 +13,53 @@
     <!-- Setup Screen -->
     <section id="setup-screen" class="screen active">
       <header class="setup-header">
-        <h1>⭐ 단어 별 찾기</h1>
-        <p class="setup-subtitle">단어를 입력하면 자동으로 그리드가 만들어집니다</p>
+        <button type="button" class="btn btn-icon-only btn-language-setup" id="btn-language-setup" data-i18n-aria="tool.phonics-hunt.aria.switchLanguage">한국어</button>
+        <h1 data-i18n="tool.phonics-hunt.heading">⭐ Phonics Hunt</h1>
+        <p class="setup-subtitle" data-i18n="tool.phonics-hunt.setup.subtitle">Enter words and a grid is created automatically</p>
       </header>
 
       <div class="setup-body">
         <div class="setup-panel">
-          <h2>단어 입력</h2>
-          <p class="hint">한 줄에 단어 하나씩 입력하세요.</p>
+          <h2 data-i18n="tool.phonics-hunt.setup.wordInputHeading">Word Input</h2>
+          <p class="hint" data-i18n="tool.phonics-hunt.setup.wordInputHint">Enter one word per line.</p>
           <textarea id="word-input" rows="14" placeholder="apple&#10;banana&#10;cat&#10;dog&#10;elephant&#10;fish"></textarea>
           <div class="word-preview" id="word-preview">
-            <span id="word-count">0</span>개 단어 ·
-            <span id="grid-preview">그리드: —</span>
+            <span id="word-count-label">0 words</span> ·
+            <span id="grid-preview" data-i18n="tool.phonics-hunt.grid.previewEmpty">Grid: —</span>
           </div>
         </div>
 
         <div class="setup-panel setup-side">
-          <h2>게임 설정</h2>
+          <h2 data-i18n="tool.phonics-hunt.setup.gameSettingsHeading">Game Settings</h2>
           <label class="setting-row">
-            <span>팀 이름 (파랑)</span>
+            <span data-i18n="tool.phonics-hunt.setup.teamBlueLabel">Team name (Blue)</span>
             <input type="text" id="team-blue-name" value="Blue Team" maxlength="12">
           </label>
           <label class="setting-row">
-            <span>팀 이름 (빨강)</span>
+            <span data-i18n="tool.phonics-hunt.setup.teamRedLabel">Team name (Red)</span>
             <input type="text" id="team-red-name" value="Red Team" maxlength="12">
           </label>
           <label class="setting-row">
-            <span>별 개수 (랜덤 배치)</span>
+            <span data-i18n="tool.phonics-hunt.setup.starCountLabel">Star count (random placement)</span>
             <input type="number" id="star-count" min="1" max="64" value="3">
           </label>
           <label class="setting-row">
-            <span>별 점수</span>
+            <span data-i18n="tool.phonics-hunt.setup.starPointsLabel">Star points</span>
             <input type="number" id="star-points" min="1" max="10" value="1">
           </label>
 
           <div class="setup-actions">
-            <button class="btn btn-primary" id="btn-start-game">게임 시작</button>
+            <button class="btn btn-primary" id="btn-start-game" data-i18n="tool.phonics-hunt.actions.startGame">Start Game</button>
           </div>
 
           <div class="setup-tips">
-            <h3>사용법</h3>
+            <h3 data-i18n="tool.phonics-hunt.setup.tipsHeading">How to play</h3>
             <ul>
-              <li>입력한 단어 수만큼 칸이 자동으로 배치됩니다</li>
-              <li>단어는 처음부터 카드에 보입니다</li>
-              <li>별 개수만 정하면 칸에 랜덤으로 숨겨집니다</li>
-              <li>학생이 단어를 말하면 강사가 해당 칸을 엽니다</li>
-              <li>별 칸을 열면 점수를 얻습니다</li>
+              <li data-i18n="tool.phonics-hunt.setup.tip1">Tiles are arranged automatically based on the number of words you enter</li>
+              <li data-i18n="tool.phonics-hunt.setup.tip2">Words are visible on the cards from the start</li>
+              <li data-i18n="tool.phonics-hunt.setup.tip3">Set the star count and they are hidden randomly among the tiles</li>
+              <li data-i18n="tool.phonics-hunt.setup.tip4">When a student says a word, the teacher opens that tile</li>
+              <li data-i18n="tool.phonics-hunt.setup.tip5">Opening a star tile earns points for that team</li>
             </ul>
           </div>
         </div>
@@ -71,16 +72,16 @@
         <div class="team-score blue-team" id="blue-score-panel">
           <span class="team-label" id="blue-team-label">Blue Team</span>
           <span class="team-points" id="blue-score">0</span>
-          <span class="team-sub">별 점수</span>
+          <span class="team-sub" data-i18n="tool.phonics-hunt.score.starPoints">Star Points</span>
         </div>
         <div class="game-title">
-          <h1>⭐ 단어 별 찾기</h1>
-          <p class="status-text" id="status-text">팀을 선택하세요</p>
+          <h1 data-i18n="tool.phonics-hunt.heading">⭐ Phonics Hunt</h1>
+          <p class="status-text" id="status-text" data-i18n="tool.phonics-hunt.status.selectTeam">Select a team</p>
         </div>
         <div class="team-score red-team" id="red-score-panel">
           <span class="team-label" id="red-team-label">Red Team</span>
           <span class="team-points" id="red-score">0</span>
-          <span class="team-sub">별 점수</span>
+          <span class="team-sub" data-i18n="tool.phonics-hunt.score.starPoints">Star Points</span>
         </div>
       </header>
 
@@ -89,11 +90,11 @@
       <div class="overlay hidden" id="victory-overlay">
         <div class="overlay-content victory-content">
           <div class="victory-icon">🏆</div>
-          <h2 id="victory-title">게임 종료!</h2>
+          <h2 id="victory-title" data-i18n="tool.phonics-hunt.victory.title">Game Over!</h2>
           <p id="victory-message"></p>
           <div class="victory-actions">
-            <button class="btn btn-primary" id="victory-dismiss">계속하기</button>
-            <button class="btn btn-secondary" id="btn-back-setup">단어 수정</button>
+            <button class="btn btn-primary" id="victory-dismiss" data-i18n="tool.phonics-hunt.actions.continue">Continue</button>
+            <button class="btn btn-secondary" id="btn-back-setup" data-i18n="tool.phonics-hunt.actions.editWords">Edit Words</button>
           </div>
         </div>
       </div>
@@ -102,23 +103,24 @@
         <div class="control-group excavate-group">
           <button class="btn btn-blue" id="btn-blue-excavate">
             <span class="btn-icon">🔵</span>
-            <span id="btn-blue-text">Blue Team</span> 턴
+            <span id="btn-blue-text">Blue Team</span><span class="turn-suffix" data-i18n="tool.phonics-hunt.actions.turnSuffix"> Turn</span>
           </button>
           <button class="btn btn-red" id="btn-red-excavate">
             <span class="btn-icon">🔴</span>
-            <span id="btn-red-text">Red Team</span> 턴
+            <span id="btn-red-text">Red Team</span><span class="turn-suffix" data-i18n="tool.phonics-hunt.actions.turnSuffix"> Turn</span>
           </button>
         </div>
 
         <div class="control-group map-settings">
           <span class="grid-info" id="grid-info">—</span>
-          <button class="btn btn-secondary" id="btn-reset">점수 초기화</button>
-          <button class="btn btn-secondary" id="btn-back-setup-footer">단어 수정</button>
+          <button class="btn btn-secondary" id="btn-reset" data-i18n="tool.phonics-hunt.actions.resetScores">Reset Scores</button>
+          <button class="btn btn-secondary" id="btn-back-setup-footer" data-i18n="tool.phonics-hunt.actions.editWords">Edit Words</button>
         </div>
 
         <div class="control-group audio-group">
-          <button class="btn btn-icon-only" id="btn-mute" title="소리 켜기/끄기">🔊</button>
-          <button class="btn btn-icon-only" id="btn-fullscreen" title="전체 화면">⛶</button>
+          <button class="btn btn-icon-only" id="btn-mute" data-i18n-title="tool.phonics-hunt.aria.toggleSound" title="Toggle Sound">🔊</button>
+          <button class="btn btn-icon-only" id="btn-fullscreen" data-i18n-title="tool.phonics-hunt.aria.fullscreen" title="Fullscreen">⛶</button>
+          <button type="button" class="btn btn-icon-only" id="btn-language" data-i18n-aria="tool.phonics-hunt.aria.switchLanguage">한국어</button>
         </div>
       </footer>
     </section>
@@ -126,6 +128,7 @@
     <div class="toast hidden" id="toast"></div>
   </div>
 
+  <script type="module" src="js/i18n-boot.js"></script>
   <script src="js/WordParser.js"></script>
   <script src="js/GridCalculator.js"></script>
   <script src="js/Tile.js"></script>
@@ -134,6 +137,6 @@
   <script src="js/SoundManager.js"></script>
   <script src="js/UIManager.js"></script>
   <script src="js/Game.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

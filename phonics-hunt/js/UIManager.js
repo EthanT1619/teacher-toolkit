@@ -7,7 +7,7 @@ class UIManager {
       setupScreen: document.getElementById('setup-screen'),
       gameScreen: document.getElementById('game-screen'),
       wordInput: document.getElementById('word-input'),
-      wordCount: document.getElementById('word-count'),
+      wordCountLabel: document.getElementById('word-count-label'),
       gridPreview: document.getElementById('grid-preview'),
       starCount: document.getElementById('star-count'),
       teamBlueName: document.getElementById('team-blue-name'),
@@ -40,6 +40,7 @@ class UIManager {
     };
 
     this.toastTimer = null;
+    this._victoryState = null;
   }
 
   showSetup() {
@@ -55,7 +56,7 @@ class UIManager {
   updateWordPreview(words, starCount) {
     const count = words.length;
 
-    this.els.wordCount.textContent = count;
+    this.els.wordCountLabel.textContent = window.phT('setup.wordCount', { count });
     this.els.gridPreview.textContent = GridCalculator.formatPreview(count);
     this.els.starCount.max = count > 0 ? count : 64;
     if (count > 0 && parseInt(this.els.starCount.value, 10) > count) {
@@ -88,7 +89,12 @@ class UIManager {
   }
 
   setGridInfo(rows, cols, wordCount, starCount) {
-    this.els.gridInfo.textContent = `${rows}×${cols} · ${wordCount}단어 · 별 ${starCount}개`;
+    this.els.gridInfo.textContent = window.phT('grid.info', {
+      rows,
+      cols,
+      wordCount,
+      starCount,
+    });
   }
 
   updateScores(blue, red, scoringTeam = null) {
@@ -123,27 +129,49 @@ class UIManager {
   }
 
   showVictory(blueScore, redScore, blueName, redName) {
+    this._victoryState = { blueScore, redScore, blueName, redName };
+    this._renderVictory();
+    this.els.victoryOverlay.classList.remove('hidden');
+  }
+
+  refreshVictory() {
+    if (!this._victoryState) return;
+    this._renderVictory();
+  }
+
+  _renderVictory() {
+    const { blueScore, redScore, blueName, redName } = this._victoryState;
     let title;
     let message;
 
     if (blueScore > redScore) {
-      title = `${blueName} 승리!`;
-      message = `${blueName}: ${blueScore}점  ·  ${redName}: ${redScore}점`;
+      title = window.phT('victory.teamWins', { team: blueName });
+      message = window.phT('victory.scoreLine', {
+        teamA: blueName,
+        scoreA: blueScore,
+        teamB: redName,
+        scoreB: redScore,
+      });
     } else if (redScore > blueScore) {
-      title = `${redName} 승리!`;
-      message = `${redName}: ${redScore}점  ·  ${blueName}: ${blueScore}점`;
+      title = window.phT('victory.teamWins', { team: redName });
+      message = window.phT('victory.scoreLine', {
+        teamA: redName,
+        scoreA: redScore,
+        teamB: blueName,
+        scoreB: blueScore,
+      });
     } else {
-      title = '무승부!';
-      message = `양 팀 모두 ${blueScore}점`;
+      title = window.phT('victory.tie');
+      message = window.phT('victory.tieMessage', { score: blueScore });
     }
 
     this.els.victoryTitle.textContent = title;
     this.els.victoryMessage.textContent = message;
-    this.els.victoryOverlay.classList.remove('hidden');
   }
 
   hideVictory() {
     this.els.victoryOverlay.classList.add('hidden');
+    this._victoryState = null;
   }
 
   setExcavateButtonsEnabled(enabled) {
