@@ -1,418 +1,102 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>사다리타기</title>
-<link rel="stylesheet" href="../shared/toolkit-home.css">
-<link rel="stylesheet" href="css/style.css" />
-<script src="../shared/toolkit-home.js" defer></script>
-</head>
-<body>
-
-<!-- 설정 화면 -->
-<section id="setupView" class="view view--active">
-  <div class="app">
-    <header>
-      <h1>사다리타기</h1>
-      <p>결과 항목과 복잡도를 설정한 뒤 시작하세요.</p>
-    </header>
-
-    <div class="panel">
-      <div class="controls">
-        <div class="field">
-          <label for="results">결과 항목</label>
-          <textarea id="results" placeholder="한 줄에 하나씩 입력&#10;사탕&#10;방패&#10;스탬프&#10;꽝&#10;당첨"></textarea>
-          <p class="hint">시작하면 아래 칸에 무작위로 배치됩니다.</p>
-        </div>
-
-        <div class="field">
-          <label>사다리 복잡도</label>
-          <div class="complexity-picker" id="complexityPicker">
-            <button type="button" class="complexity-btn" data-level="1">매우 단순</button>
-            <button type="button" class="complexity-btn" data-level="2">단순</button>
-            <button type="button" class="complexity-btn complexity-btn--active" data-level="3">보통</button>
-            <button type="button" class="complexity-btn" data-level="4">복잡</button>
-            <button type="button" class="complexity-btn" data-level="5">매우 복잡</button>
-          </div>
-          <p class="hint">세로줄당 가로줄 2→5개. 매우 복잡에는 사선도 실제 경로로 이동합니다.</p>
-          <p class="hint" style="margin-top: 14px;">참가자 수 (위쪽 자동 번호)</p>
-          <input type="number" id="count" min="2" max="20" value="4" readonly />
-          <p class="hint">결과 항목 수에 맞춰 1, 2, 3… 번호가 자동 배치됩니다.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel panel--presets">
-      <p class="panel-title">프리셋</p>
-      <div class="preset-row">
-        <select id="presetSelect">
-          <option value="">— 프리셋 선택 —</option>
-        </select>
-        <button type="button" class="secondary" id="loadPresetBtn" disabled>불러오기</button>
-      </div>
-      <div class="preset-row">
-        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 3반 보상)" maxlength="30">
-        <button type="button" class="secondary" id="savePresetBtn">저장</button>
-        <button type="button" class="secondary" id="deletePresetBtn" disabled>삭제</button>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="primary" id="startBtn">시작</button>
-      <button class="secondary" id="resetBtn">초기화</button>
-    </div>
-  </div>
-</section>
-
-<!-- 플레이 화면 -->
-<section id="playView" class="view">
-  <div class="play-screen">
-    <div class="play-toolbar">
-      <div class="toolbar-left">
-        <button class="icon-btn" id="backBtn" title="설정으로">← 설정</button>
-      </div>
-      <p class="status" id="message">위쪽 번호를 클릭하세요.</p>
-      <button class="icon-btn" id="regenerateBtn" title="새 라운드 (R)">↻</button>
-    </div>
-
-    <div class="canvas-wrap canvas-wrap--full">
-      <div class="canvas-stage" id="canvasStage">
-        <canvas id="canvas" width="1200" height="920"></canvas>
-        <div class="ladder-cover" id="ladderCover">
-          <span class="ladder-cover__label">?</span>
-          <span class="ladder-cover__hint">클릭하면 사다리가 공개됩니다</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="toast" id="toast"></div>
-
-<script src="js/ladder.js"></script>
-<script>
-const setupView = document.getElementById("setupView");
-const playView = document.getElementById("playView");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const messageEl = document.getElementById("message");
-
-const complexityPicker = document.getElementById("complexityPicker");
-const resultsEl = document.getElementById("results");
-const countEl = document.getElementById("count");
-const presetSelect = document.getElementById("presetSelect");
-const loadPresetBtn = document.getElementById("loadPresetBtn");
-const presetNameInput = document.getElementById("presetNameInput");
-const savePresetBtn = document.getElementById("savePresetBtn");
-const deletePresetBtn = document.getElementById("deletePresetBtn");
-const toastEl = document.getElementById("toast");
-
-const STORAGE_KEY = "ladderGame";
-let presets = [];
-let toastTimer = null;
-
-let game = null;
-let rawItems = [];
-let complexity = 3;
-let isCovered = true;
-let pathAnimation = null;
-
-const canvasStage = document.getElementById("canvasStage");
-const ladderCover = document.getElementById("ladderCover");
-
-function getPlayViewport() {
-  return {
-    width: window.innerWidth,
-    height: window.innerHeight - 56,
-  };
-}
-
-function fitCanvasDisplay() {
-  if (!game) return;
-  const maxW = window.innerWidth * 0.98;
-  const maxH = window.innerHeight - 56;
-  const scale = Math.min(maxW / game.canvasWidth, maxH / game.canvasHeight);
-  const w = Math.round(game.canvasWidth * scale);
-  const h = Math.round(game.canvasHeight * scale);
-  canvasStage.style.width = `${w}px`;
-  canvasStage.style.height = `${h}px`;
-  updateCoverLayout();
-}
-
-function stopPathAnimation() {
-  if (pathAnimation) {
-    pathAnimation.cancel();
-    pathAnimation = null;
-  }
-}
-
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-}
-
-function showToast(message) {
-  toastEl.textContent = message;
-  toastEl.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
-}
-
-function setComplexity(level) {
-  complexity = level;
-  complexityPicker.querySelectorAll(".complexity-btn").forEach(b => {
-    b.classList.toggle("complexity-btn--active", parseInt(b.dataset.level, 10) === level);
-  });
-}
-
-function updateCountFromResults() {
-  const n = resultsEl.value.trim().split("\n").filter(Boolean).length;
-  countEl.value = n >= 2 ? n : 4;
-}
-
-function saveDraft() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    resultsText: resultsEl.value,
-    complexity,
-    presets,
-  }));
-}
-
-function loadDraft() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    if (typeof data.resultsText === "string") resultsEl.value = data.resultsText;
-    if (typeof data.complexity === "number") setComplexity(data.complexity);
-    if (Array.isArray(data.presets)) presets = data.presets;
-    updateCountFromResults();
-  } catch (_) { /* ignore */ }
-}
-
-function renderPresetSelect() {
-  const selected = presetSelect.value;
-  presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
-    presets.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
-  if (selected && presets.some(p => p.id === selected)) {
-    presetSelect.value = selected;
-  }
-  const has = !!presetSelect.value;
-  loadPresetBtn.disabled = !has;
-  deletePresetBtn.disabled = !has;
-}
-
-function savePreset() {
-  const name = presetNameInput.value.trim();
-  const results = resultsEl.value.trim().split("\n").map(s => s.trim()).filter(Boolean);
-  if (!name) {
-    showToast("프리셋 이름을 입력하세요");
-    return;
-  }
-  if (results.length < 2) {
-    showToast("결과 항목을 2개 이상 입력하세요");
-    return;
-  }
-
-  const existing = presets.find(p => p.name.toLowerCase() === name.toLowerCase());
-  if (existing) {
-    existing.results = results;
-    existing.complexity = complexity;
-    presetSelect.value = existing.id;
-    showToast(`"${name}" 업데이트됨`);
-  } else {
-    const preset = { id: generateId(), name, results, complexity };
-    presets.push(preset);
-    presetSelect.value = preset.id;
-    showToast(`"${name}" 저장됨`);
-  }
-
-  renderPresetSelect();
-  saveDraft();
-}
-
-function loadPreset() {
-  const id = presetSelect.value;
-  if (!id) return;
-  const preset = presets.find(p => p.id === id);
-  if (!preset) return;
-
-  resultsEl.value = preset.results.join("\n");
-  setComplexity(preset.complexity);
-  presetNameInput.value = preset.name;
-  updateCountFromResults();
-  saveDraft();
-  showToast(`"${preset.name}" 불러옴`);
-}
-
-function deletePreset() {
-  const id = presetSelect.value;
-  if (!id) return;
-  const preset = presets.find(p => p.id === id);
-  if (!preset || !confirm(`"${preset.name}" 프리셋을 삭제할까요?`)) return;
-
-  presets = presets.filter(p => p.id !== id);
-  presetSelect.value = "";
-  presetNameInput.value = "";
-  renderPresetSelect();
-  saveDraft();
-  showToast("프리셋 삭제됨");
-}
-
-complexityPicker.addEventListener("click", e => {
-  const btn = e.target.closest(".complexity-btn");
-  if (!btn) return;
-  setComplexity(parseInt(btn.dataset.level, 10));
-  saveDraft();
-});
-
-resultsEl.addEventListener("input", () => {
-  updateCountFromResults();
-  saveDraft();
-});
-
-presetSelect.addEventListener("change", () => {
-  const has = !!presetSelect.value;
-  loadPresetBtn.disabled = !has;
-  deletePresetBtn.disabled = !has;
-  if (presetSelect.value) {
-    const preset = presets.find(p => p.id === presetSelect.value);
-    if (preset) presetNameInput.value = preset.name;
-  }
-});
-
-loadPresetBtn.addEventListener("click", loadPreset);
-savePresetBtn.addEventListener("click", savePreset);
-deletePresetBtn.addEventListener("click", deletePreset);
-
-loadDraft();
-renderPresetSelect();
-
-function showView(name) {
-  setupView.classList.toggle("view--active", name === "setup");
-  playView.classList.toggle("view--active", name === "play");
-}
-
-function updateCoverLayout() {
-  if (!game) return;
-  const topPct = (game.topY / game.canvasHeight) * 100;
-  const heightPct = ((game.bottomY - game.topY) / game.canvasHeight) * 100;
-  ladderCover.style.top = `${topPct}%`;
-  ladderCover.style.height = `${heightPct}%`;
-}
-
-function setCovered(covered) {
-  isCovered = covered;
-  ladderCover.classList.toggle("ladder-cover--hidden", !covered);
-  canvas.classList.toggle("canvas--covered", covered);
-  messageEl.textContent = covered
-    ? "네모를 클릭하면 사다리가 공개됩니다."
-    : "위쪽 번호를 클릭하세요.";
-}
-
-function revealLadder() {
-  setCovered(false);
-  renderLadder();
-}
-
-function startGame() {
-  rawItems = resultsEl.value.trim().split("\n").map(s => s.trim()).filter(Boolean);
-  if (rawItems.length < 2) {
-    alert("결과 항목을 2개 이상 입력해 주세요.");
-    return;
-  }
-
-  game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
-  renderLadder();
-  setCovered(true);
-  showView("play");
-  requestAnimationFrame(fitCanvasDisplay);
-}
-
-function renderLadder() {
-  canvas.width = game.canvasWidth;
-  canvas.height = game.canvasHeight;
-  LadderGame.drawLadder(ctx, game);
-  fitCanvasDisplay();
-}
-
-function playPathAnimation(startIndex) {
-  stopPathAnimation();
-  messageEl.textContent = `${game.labels[startIndex]}번 — 경로를 따라가는 중…`;
-
-  pathAnimation = LadderGame.animateTrace(ctx, game, startIndex, {
-    onComplete(endIndex) {
-      pathAnimation = null;
-      messageEl.innerHTML =
-        `<strong>${game.labels[startIndex]}번</strong> → <strong>${game.results[endIndex]}</strong>`;
-    },
-  });
-  pathAnimation.start();
-}
-
-ladderCover.addEventListener("click", () => {
-  if (!game || !isCovered) return;
-  revealLadder();
-});
-
-document.getElementById("startBtn").addEventListener("click", startGame);
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-  resultsEl.value = "";
-  setComplexity(3);
-  updateCountFromResults();
-  presetSelect.value = "";
-  presetNameInput.value = "";
-  renderPresetSelect();
-  saveDraft();
-});
-
-document.getElementById("backBtn").addEventListener("click", () => {
-  showView("setup");
-});
-
-function startNewRound() {
-  if (!rawItems.length) return;
-  stopPathAnimation();
-  game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
-  setCovered(true);
-  renderLadder();
-}
-
-document.getElementById("regenerateBtn").addEventListener("click", startNewRound);
-
-document.addEventListener("keydown", (e) => {
-  if (!playView.classList.contains("view--active")) return;
-  if (e.key === "r" || e.key === "R") {
-    e.preventDefault();
-    startNewRound();
-  }
-});
-
-canvas.addEventListener("click", e => {
-  if (!game || isCovered || pathAnimation) return;
-
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const clickX = (e.clientX - rect.left) * scaleX;
-
-  let closest = 0;
-  let minDist = Infinity;
-  for (let i = 0; i < game.lineXs.length; i++) {
-    const dist = Math.abs(clickX - game.lineXs[i]);
-    if (dist < minDist) {
-      minDist = dist;
-      closest = i;
-    }
-  }
-
-  if (minDist > LadderGame.perColumnWidth(game.lineXs) / 2) return;
-
-  playPathAnimation(closest);
-});
-
-window.addEventListener("resize", fitCanvasDisplay);
-</script>
-
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ladder Game</title>
+<link rel="stylesheet" href="../shared/toolkit-home.css">
+<link rel="stylesheet" href="css/style.css" />
+<script src="../shared/toolkit-home.js" defer></script>
+</head>
+<body>
+
+<!-- 설정 화면 -->
+<section id="setupView" class="view view--active">
+  <div class="app">
+    <header>
+      <div class="top-bar">
+        <div>
+          <h1 data-i18n="tool.ladder-game.title">Ladder Game</h1>
+          <p data-i18n="tool.ladder-game.description">Set result items and complexity, then start.</p>
+        </div>
+        <button type="button" class="secondary" id="btn-language" data-i18n-aria="tool.ladder-game.aria.switchLanguage">한국어</button>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="field">
+          <label for="results" data-i18n="tool.ladder-game.labels.results">Result items</label>
+          <textarea id="results" data-i18n-placeholder="tool.ladder-game.placeholders.results" placeholder="One item per line&#10;Candy&#10;Shield&#10;Stamp&#10;Blank&#10;Winner"></textarea>
+          <p class="hint" data-i18n="tool.ladder-game.hints.resultsShuffle">Items are placed randomly in the bottom row when you start.</p>
+        </div>
+
+        <div class="field">
+          <label data-i18n="tool.ladder-game.labels.complexity">Ladder complexity</label>
+          <div class="complexity-picker" id="complexityPicker">
+            <button type="button" class="complexity-btn" data-level="1" data-i18n="tool.ladder-game.complexity.1">Very simple</button>
+            <button type="button" class="complexity-btn" data-level="2" data-i18n="tool.ladder-game.complexity.2">Simple</button>
+            <button type="button" class="complexity-btn complexity-btn--active" data-level="3" data-i18n="tool.ladder-game.complexity.3">Normal</button>
+            <button type="button" class="complexity-btn" data-level="4" data-i18n="tool.ladder-game.complexity.4">Complex</button>
+            <button type="button" class="complexity-btn" data-level="5" data-i18n="tool.ladder-game.complexity.5">Very complex</button>
+          </div>
+          <p class="hint" data-i18n="tool.ladder-game.hints.complexityDetail">2→5 horizontal rungs per column. Very complex includes diagonals that affect the actual path.</p>
+          <p class="hint" style="margin-top: 14px;" data-i18n="tool.ladder-game.labels.participantCount">Participants (auto-numbered at top)</p>
+          <input type="number" id="count" min="2" max="20" value="4" readonly />
+          <p class="hint" data-i18n="tool.ladder-game.hints.autoNumbers">Numbers 1, 2, 3… are assigned automatically based on the number of result items.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel--presets">
+      <p class="panel-title" data-i18n="tool.ladder-game.presets.title">Presets</p>
+      <div class="preset-row">
+        <select id="presetSelect">
+          <option value="" data-i18n="tool.ladder-game.presets.selectPlaceholder">— Select preset —</option>
+        </select>
+        <button type="button" class="secondary" id="loadPresetBtn" disabled data-i18n="tool.ladder-game.actions.load">Load</button>
+      </div>
+      <div class="preset-row">
+        <input type="text" id="presetNameInput" data-i18n-placeholder="tool.ladder-game.placeholders.presetName" placeholder="Preset name (e.g. Class 3 rewards)" maxlength="30">
+        <button type="button" class="secondary" id="savePresetBtn" data-i18n="tool.ladder-game.actions.save">Save</button>
+        <button type="button" class="secondary" id="deletePresetBtn" disabled data-i18n="tool.ladder-game.actions.delete">Delete</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="startBtn" data-i18n="tool.ladder-game.actions.start">Start</button>
+      <button class="secondary" id="resetBtn" data-i18n="tool.ladder-game.actions.reset">Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- 플레이 화면 -->
+<section id="playView" class="view">
+  <div class="play-screen">
+    <div class="play-toolbar">
+      <div class="toolbar-left">
+        <button class="icon-btn" id="backBtn" data-i18n-title="tool.ladder-game.aria.backToSetup" title="Back to setup" data-i18n="tool.ladder-game.actions.backToSetup">← Setup</button>
+      </div>
+      <p class="status" id="message" data-i18n="tool.ladder-game.play.clickTopNumber">Click a number at the top.</p>
+      <button class="icon-btn" id="regenerateBtn" data-i18n-title="tool.ladder-game.aria.newRound" title="New round (R)">↻</button>
+    </div>
+
+    <div class="canvas-wrap canvas-wrap--full">
+      <div class="canvas-stage" id="canvasStage">
+        <canvas id="canvas" width="1200" height="920"></canvas>
+        <div class="ladder-cover" id="ladderCover">
+          <span class="ladder-cover__label">?</span>
+          <span class="ladder-cover__hint" data-i18n="tool.ladder-game.play.coverHint">Click to reveal the ladder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/ladder.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>

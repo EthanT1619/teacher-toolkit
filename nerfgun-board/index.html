@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -266,13 +266,43 @@
     .fab-back:active {
       transform: scale(0.94);
     }
+
+    .lang-fab {
+      position: fixed;
+      top: clamp(16px, 3vh, 28px);
+      right: clamp(16px, 3vw, 28px);
+      z-index: 50;
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      background: rgba(30, 32, 42, 0.92);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .lang-fab:hover {
+      background: rgba(45, 48, 62, 0.96);
+    }
+
+    .lang-fab:active {
+      transform: scale(0.94);
+    }
   </style>
 </head>
 <body>
+  <button type="button" class="lang-fab" id="btn-language" data-i18n-aria="tool.nerfgun-board.aria.switchLanguage">한국어</button>
+
   <div class="view view-spin active" id="viewSpin">
     <header class="spin-header">
-      <h1>🎯 Nerf Gun Board</h1>
-      <p>15개의 보드 중 하나를 랜덤으로 선택합니다</p>
+      <h1>🎯 <span data-i18n="tool.nerfgun-board.title">Nerf Gun Roulette</span></h1>
+      <p data-i18n="tool.nerfgun-board.subtitle">Randomly selects one of 15 boards</p>
     </header>
 
     <div class="reel-wrap" id="reelWrap">
@@ -283,8 +313,8 @@
     </div>
 
     <div class="spin-actions">
-      <p class="spin-status" id="spinStatus">뽑기 버튼을 눌러주세요</p>
-      <button type="button" class="btn" id="btnSpin">뽑기</button>
+      <p class="spin-status" id="spinStatus"></p>
+      <button type="button" class="btn" id="btnSpin" data-i18n="tool.nerfgun-board.actions.spin">Spin</button>
     </div>
   </div>
 
@@ -294,161 +324,10 @@
     </div>
 
     <div class="fab-wrap">
-      <button type="button" class="fab-back" id="btnBackFab" aria-label="뽑기 화면으로 돌아가기">←</button>
+      <button type="button" class="fab-back" id="btnBackFab" data-i18n-aria="tool.nerfgun-board.aria.backToSpin">←</button>
     </div>
   </div>
 
-  <script>
-    const BOARDS = [
-      "1 Hexagon Mission.png",
-      "2 Circle Arena.png",
-      "3 Diamond Path.png",
-      "4 Star Burst.png",
-      "5 Rocket Launcher.png",
-      "6 Treasure Island.png",
-      "7 Maze Explorer.png",
-      "8 UFO Zone.png",
-      "9 Cloud Kingdom.png",
-      "10 Star Board.png",
-      "11 Under the Sea.png",
-      "12 Fantasy Board.png",
-      "13 SF fantasy.png",
-      "14 Cyberpunk world.png",
-      "15 Wild West Saloon.png",
-    ];
-
-    const ITEM_HEIGHT = 72;
-    const LOOP_COUNT = 3;
-    const SPIN_DURATION_MS = 3800;
-
-    const viewSpin = document.getElementById("viewSpin");
-    const viewResult = document.getElementById("viewResult");
-    const reelWrap = document.getElementById("reelWrap");
-    const reelStrip = document.getElementById("reelStrip");
-    const spinStatus = document.getElementById("spinStatus");
-    const btnSpin = document.getElementById("btnSpin");
-    const btnBackFab = document.getElementById("btnBackFab");
-    const boardImage = document.getElementById("boardImage");
-
-    document.documentElement.style.setProperty("--item-h", ITEM_HEIGHT + "px");
-
-    let spinning = false;
-    let currentOffset = 0;
-    let pendingWinner = null;
-
-    function boardLabel(filename) {
-      return filename.replace(/^\d+\s*/, "").replace(/\.png$/i, "");
-    }
-
-    function boardSrc(filename) {
-      return "assets/" + encodeURIComponent(filename);
-    }
-
-    function buildStrip() {
-      reelStrip.innerHTML = "";
-      reelStrip.classList.remove("spinning");
-      reelStrip.style.transform = "translateY(0)";
-
-      for (let loop = 0; loop < LOOP_COUNT; loop++) {
-        for (const file of BOARDS) {
-          const el = document.createElement("div");
-          el.className = "reel-item";
-          el.textContent = boardLabel(file);
-          reelStrip.appendChild(el);
-        }
-      }
-    }
-
-    function setOffset(index, animate) {
-      reelStrip.classList.toggle("spinning", animate);
-      reelStrip.style.setProperty("--spin-duration", SPIN_DURATION_MS + "ms");
-      reelStrip.style.transform = "translateY(-" + (index * ITEM_HEIGHT) + "px)";
-      currentOffset = index;
-    }
-
-    function showSpinView() {
-      viewResult.classList.remove("active");
-      viewSpin.classList.add("active");
-      reelWrap.classList.remove("is-winner");
-      viewSpin.classList.remove("is-spinning");
-      buildStrip();
-      setOffset(0, false);
-      spinStatus.textContent = "뽑기 버튼을 눌러주세요";
-      btnSpin.disabled = false;
-    }
-
-    function showResultView(file, label) {
-      boardImage.src = boardSrc(file);
-      boardImage.alt = label;
-      viewSpin.classList.remove("active");
-      viewResult.classList.add("active");
-    }
-
-    function preloadImage(src) {
-      return new Promise(function (resolve, reject) {
-        const img = new Image();
-        img.onload = function () { resolve(img); };
-        img.onerror = reject;
-        img.src = src;
-      });
-    }
-
-    function spin() {
-      if (spinning) return;
-      spinning = true;
-      pendingWinner = null;
-      reelWrap.classList.remove("is-winner");
-      viewSpin.classList.add("is-spinning");
-      btnSpin.disabled = true;
-      spinStatus.textContent = "돌아가는 중…";
-
-      const winnerIndex = Math.floor(Math.random() * BOARDS.length);
-      const extraLoops = 1 + Math.floor(Math.random() * 2);
-      const targetIndex = BOARDS.length * extraLoops + winnerIndex;
-      const winnerFile = BOARDS[winnerIndex];
-      const label = boardLabel(winnerFile);
-
-      pendingWinner = { file: winnerFile, label: label };
-      preloadImage(boardSrc(winnerFile)).catch(function () {});
-
-      buildStrip();
-      setOffset(0, false);
-
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          setOffset(targetIndex, true);
-        });
-      });
-
-      reelStrip.addEventListener("transitionend", onSpinEnd, { once: true });
-    }
-
-    function onSpinEnd() {
-      spinning = false;
-      viewSpin.classList.remove("is-spinning");
-      reelWrap.classList.add("is-winner");
-      btnSpin.disabled = false;
-
-      if (!pendingWinner) return;
-
-      spinStatus.textContent = "🎉 " + pendingWinner.label + " !";
-
-      setTimeout(function () {
-        showResultView(pendingWinner.file, pendingWinner.label);
-        pendingWinner = null;
-      }, 600);
-    }
-
-    btnSpin.addEventListener("click", spin);
-    btnBackFab.addEventListener("click", showSpinView);
-
-    window.addEventListener("resize", function () {
-      if (!spinning && viewSpin.classList.contains("active")) {
-        setOffset(currentOffset, false);
-      }
-    });
-
-    buildStrip();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

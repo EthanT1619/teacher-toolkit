@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>줄다리기 게임</title>
+  <title>Tug of War</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <script src="../shared/toolkit-home.js" defer></script>
   <style>
@@ -44,6 +44,12 @@
       margin: 0 auto;
       padding: 40px 16px 48px;
       width: 100%;
+    }
+
+    .setup-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
     }
 
     header { text-align: center; margin-bottom: 28px; }
@@ -274,8 +280,7 @@
       z-index: 1;
     }
 
-    .center-line::after {
-      content: '중앙';
+    .center-line-label {
       position: absolute;
       top: 8px;
       left: 50%;
@@ -603,53 +608,56 @@
 <!-- 설정 -->
 <section id="setupView" class="view active">
   <div class="setup-wrap">
+    <div class="setup-actions">
+      <button class="icon-btn" id="btn-language" type="button" data-i18n-aria="tool.juldarigi.aria.switchLanguage">한국어</button>
+    </div>
     <header>
-      <h1>🪢 줄다리기 게임</h1>
-      <p>카드를 뽑아 팀 점수를 입력하고, 먼저 상대를 끌어당기면 승리!</p>
+      <h1 data-i18n="tool.juldarigi.title">Tug of War</h1>
+      <p data-i18n="tool.juldarigi.subtitle">Draw cards, enter team scores, and pull the rope — first to pull the opponent across wins!</p>
     </header>
 
     <div class="card">
-      <div class="card-title">팀 이름</div>
+      <div class="card-title" data-i18n="tool.juldarigi.setup.teamNames">Team names</div>
       <div class="field-row">
         <div>
-          <label class="field-label" for="teamAName">A팀 (왼쪽)</label>
-          <input type="text" id="teamAName" placeholder="예: 1반" maxlength="12">
+          <label class="field-label" for="teamAName" data-i18n="tool.juldarigi.setup.teamALabel">Team A (left)</label>
+          <input type="text" id="teamAName" data-i18n-placeholder="tool.juldarigi.setup.teamAPlaceholder" placeholder="e.g. Class 1" maxlength="12">
         </div>
         <div>
-          <label class="field-label" for="teamBName">B팀 (오른쪽)</label>
-          <input type="text" id="teamBName" placeholder="예: 2반" maxlength="12">
+          <label class="field-label" for="teamBName" data-i18n="tool.juldarigi.setup.teamBLabel">Team B (right)</label>
+          <input type="text" id="teamBName" data-i18n-placeholder="tool.juldarigi.setup.teamBPlaceholder" placeholder="e.g. Class 2" maxlength="12">
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">승리 조건</div>
-      <label class="field-label" for="winPoints">이기려면 모아야 하는 포인트</label>
+      <div class="card-title" data-i18n="tool.juldarigi.setup.winCondition">Win condition</div>
+      <label class="field-label" for="winPoints" data-i18n="tool.juldarigi.setup.winPointsLabel">Points needed to win</label>
       <input type="number" id="winPoints" min="5" max="100" value="30">
-      <p class="hint">양 팀이 번갈아 카드(1~9) 점수를 입력합니다. 누적 차이가 이 값에 도달하면 승리합니다.</p>
+      <p class="hint" data-i18n="tool.juldarigi.setup.winPointsHint">Teams take turns entering card scores (1–9). Win when the cumulative difference reaches this value.</p>
     </div>
 
-    <button class="btn btn-start" id="startBtn">▶ 게임 시작</button>
+    <button class="btn btn-start" id="startBtn" data-i18n="tool.juldarigi.actions.startGame">▶ Start Game</button>
   </div>
 </section>
 
 <!-- 플레이 -->
 <section id="playView" class="view play-view">
   <div class="top-bar">
-    <button class="icon-btn" id="backBtn">← 설정</button>
-    <span class="status-text" id="statusText">카드를 뽑고 팀 점수를 입력하세요</span>
-    <button class="icon-btn" id="resetBtn">↻ 다시</button>
+    <button class="icon-btn" id="backBtn" data-i18n="tool.juldarigi.actions.backToSetup">← Setup</button>
+    <span class="status-text" id="statusText"></span>
+    <button class="icon-btn" id="resetBtn" data-i18n="tool.juldarigi.actions.reset">↻ Reset</button>
   </div>
 
   <div class="game-area">
     <div class="score-row">
       <div class="team-score a">
-        <div class="name" id="scoreAName">A팀</div>
+        <div class="name" id="scoreAName"></div>
         <div class="pts"><span id="scoreA">0</span></div>
       </div>
-      <div class="vs-badge">VS</div>
+      <div class="vs-badge" data-i18n="tool.juldarigi.play.vs">VS</div>
       <div class="team-score b">
-        <div class="name" id="scoreBName">B팀</div>
+        <div class="name" id="scoreBName"></div>
         <div class="pts"><span id="scoreB">0</span></div>
       </div>
     </div>
@@ -657,9 +665,9 @@
     <div class="tug-field">
       <div class="win-zone left"></div>
       <div class="win-zone right"></div>
-      <div class="center-line"></div>
-      <div class="team-label left" id="fieldAName">A팀</div>
-      <div class="team-label right" id="fieldBName">B팀</div>
+      <div class="center-line"><span class="center-line-label" data-i18n="tool.juldarigi.play.center">Center</span></div>
+      <div class="team-label left" id="fieldAName"></div>
+      <div class="team-label right" id="fieldBName"></div>
 
       <div class="rope-track">
         <div class="rope"></div>
@@ -669,31 +677,29 @@
         </div>
       </div>
 
-      <div class="position-label" id="positionLabel">중앙 (0 / <span id="winLabel">30</span>)</div>
+      <div class="position-label" id="positionLabel"></div>
     </div>
 
     <div class="input-panel">
       <div class="team-input-box a">
-        <div class="label" id="inputAName">A팀 점수</div>
+        <div class="label" id="inputAName"></div>
         <input type="number" class="num-input" id="inputA" min="0" max="9" placeholder="0" inputmode="numeric">
       </div>
 
       <div class="pull-btn-wrap">
-        <button class="btn btn-pull" id="pullBtn">당기기!</button>
-        <span class="pull-hint">Enter 키로도 적용</span>
+        <button class="btn btn-pull" id="pullBtn" data-i18n="tool.juldarigi.actions.pull">Pull!</button>
+        <span class="pull-hint" data-i18n="tool.juldarigi.play.pullHint">Press Enter to apply</span>
       </div>
 
       <div class="team-input-box b">
-        <div class="label" id="inputBName">B팀 점수</div>
+        <div class="label" id="inputBName"></div>
         <input type="number" class="num-input" id="inputB" min="0" max="9" placeholder="0" inputmode="numeric">
       </div>
     </div>
 
     <div class="round-log">
-      <h3>라운드 기록</h3>
-      <div class="log-list" id="logList">
-        <div class="log-item" style="color:var(--text-muted);justify-content:center;">아직 기록이 없습니다</div>
-      </div>
+      <h3 data-i18n="tool.juldarigi.play.roundLog">Round log</h3>
+      <div class="log-list" id="logList"></div>
     </div>
   </div>
 </section>
@@ -702,271 +708,17 @@
 <div class="overlay" id="winOverlay">
   <div class="overlay-card">
     <div class="emoji">🎉</div>
-    <h2 id="winTitle">승리!</h2>
+    <h2 id="winTitle"></h2>
     <p id="winDesc"></p>
     <div class="overlay-actions">
-      <button class="btn btn-secondary" id="winBackBtn">설정으로</button>
-      <button class="btn btn-primary" id="winRematchBtn">다시 하기</button>
+      <button class="btn btn-secondary" id="winBackBtn" data-i18n="tool.juldarigi.actions.toSetup">Back to Setup</button>
+      <button class="btn btn-primary" id="winRematchBtn" data-i18n="tool.juldarigi.actions.rematch">Play Again</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-  const STORAGE_KEY = 'juldarigiGame';
-
-  const state = {
-    teamAName: 'A팀',
-    teamBName: 'B팀',
-    winPoints: 30,
-    position: 0,
-    round: 0,
-    log: [],
-    gameOver: false,
-  };
-
-  const els = {
-    setupView: document.getElementById('setupView'),
-    playView: document.getElementById('playView'),
-    teamAName: document.getElementById('teamAName'),
-    teamBName: document.getElementById('teamBName'),
-    winPoints: document.getElementById('winPoints'),
-    startBtn: document.getElementById('startBtn'),
-    backBtn: document.getElementById('backBtn'),
-    resetBtn: document.getElementById('resetBtn'),
-    statusText: document.getElementById('statusText'),
-    scoreAName: document.getElementById('scoreAName'),
-    scoreBName: document.getElementById('scoreBName'),
-    scoreA: document.getElementById('scoreA'),
-    scoreB: document.getElementById('scoreB'),
-    fieldAName: document.getElementById('fieldAName'),
-    fieldBName: document.getElementById('fieldBName'),
-    flag: document.getElementById('flag'),
-    positionLabel: document.getElementById('positionLabel'),
-    winLabel: document.getElementById('winLabel'),
-    inputAName: document.getElementById('inputAName'),
-    inputBName: document.getElementById('inputBName'),
-    inputA: document.getElementById('inputA'),
-    inputB: document.getElementById('inputB'),
-    pullBtn: document.getElementById('pullBtn'),
-    logList: document.getElementById('logList'),
-    winOverlay: document.getElementById('winOverlay'),
-    winTitle: document.getElementById('winTitle'),
-    winDesc: document.getElementById('winDesc'),
-    winBackBtn: document.getElementById('winBackBtn'),
-    winRematchBtn: document.getElementById('winRematchBtn'),
-    toast: document.getElementById('toast'),
-  };
-
-  function loadSettings() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      if (saved.teamAName) els.teamAName.value = saved.teamAName;
-      if (saved.teamBName) els.teamBName.value = saved.teamBName;
-      if (saved.winPoints) els.winPoints.value = saved.winPoints;
-    } catch { /* ignore */ }
-  }
-
-  function saveSettings() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      teamAName: els.teamAName.value.trim() || 'A팀',
-      teamBName: els.teamBName.value.trim() || 'B팀',
-      winPoints: parseInt(els.winPoints.value, 10) || 30,
-    }));
-  }
-
-  let toastTimer;
-  function showToast(msg) {
-    els.toast.textContent = msg;
-    els.toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2200);
-  }
-
-  function clamp(val, min, max) {
-    return Math.min(max, Math.max(min, val));
-  }
-
-  function parseScore(input) {
-    const raw = input.value.trim();
-    if (raw === '') return 0;
-    const n = parseInt(raw, 10);
-    if (Number.isNaN(n)) return null;
-    return clamp(n, 0, 9);
-  }
-
-  function updateDisplay() {
-    const wp = state.winPoints;
-    const pos = state.position;
-
-    els.scoreAName.textContent = state.teamAName;
-    els.scoreBName.textContent = state.teamBName;
-    els.fieldAName.textContent = state.teamAName;
-    els.fieldBName.textContent = state.teamBName;
-    els.inputAName.textContent = `${state.teamAName} 점수`;
-    els.inputBName.textContent = `${state.teamBName} 점수`;
-    els.winLabel.textContent = wp;
-
-    const aAdv = Math.max(0, pos);
-    const bAdv = Math.max(0, -pos);
-    els.scoreA.textContent = aAdv;
-    els.scoreB.textContent = bAdv;
-
-    const pct = 50 - (pos / wp) * 40;
-    els.flag.style.left = `${clamp(pct, 8, 92)}%`;
-
-    if (pos > 0) {
-      els.positionLabel.innerHTML = `${state.teamAName} 쪽으로 <strong>${pos}</strong> / ${wp}`;
-    } else if (pos < 0) {
-      els.positionLabel.innerHTML = `${state.teamBName} 쪽으로 <strong>${-pos}</strong> / ${wp}`;
-    } else {
-      els.positionLabel.innerHTML = `중앙 (0 / ${wp})`;
-    }
-  }
-
-  function renderLog() {
-    if (state.log.length === 0) {
-      els.logList.innerHTML = '<div class="log-item" style="color:var(--text-muted);justify-content:center;">아직 기록이 없습니다</div>';
-      return;
-    }
-
-    els.logList.innerHTML = state.log.slice().reverse().map(entry => {
-      const delta = entry.a - entry.b;
-      let result;
-      if (delta > 0) result = `<span class="delta-a">${state.teamAName} +${delta}</span>`;
-      else if (delta < 0) result = `<span class="delta-b">${state.teamBName} +${-delta}</span>`;
-      else result = '무승부';
-
-      return `<div class="log-item">
-        <span>${entry.round}라운드 · A ${entry.a} : B ${entry.b}</span>
-        <span>${result}</span>
-      </div>`;
-    }).join('');
-  }
-
-  function resetGame() {
-    state.position = 0;
-    state.round = 0;
-    state.log = [];
-    state.gameOver = false;
-    els.inputA.value = '';
-    els.inputB.value = '';
-    els.winOverlay.classList.remove('show');
-    els.statusText.textContent = '카드를 뽑고 팀 점수를 입력하세요';
-    els.pullBtn.disabled = false;
-    els.inputA.disabled = false;
-    els.inputB.disabled = false;
-    updateDisplay();
-    renderLog();
-    els.inputA.focus();
-  }
-
-  function startGame() {
-    state.teamAName = els.teamAName.value.trim() || 'A팀';
-    state.teamBName = els.teamBName.value.trim() || 'B팀';
-    state.winPoints = clamp(parseInt(els.winPoints.value, 10) || 30, 5, 100);
-    saveSettings();
-
-    els.setupView.classList.remove('active');
-    els.playView.classList.add('active');
-    resetGame();
-    showToast('줄다리기 시작!');
-  }
-
-  function goSetup() {
-    els.playView.classList.remove('active');
-    els.setupView.classList.add('active');
-    els.winOverlay.classList.remove('show');
-  }
-
-  function showWin(winner) {
-    state.gameOver = true;
-    els.pullBtn.disabled = true;
-    els.inputA.disabled = true;
-    els.inputB.disabled = true;
-    els.winTitle.textContent = `${winner} 승리!`;
-    els.winDesc.textContent = `${state.round}라운드 만에 ${state.winPoints}포인트를 달성했습니다.`;
-    els.winOverlay.classList.add('show');
-    els.statusText.textContent = `${winner}의 승리!`;
-  }
-
-  function applyPull() {
-    if (state.gameOver) return;
-
-    const a = parseScore(els.inputA);
-    const b = parseScore(els.inputB);
-
-    if (a === null || b === null) {
-      showToast('0~9 사이 숫자를 입력하세요');
-      return;
-    }
-
-    if (a === 0 && b === 0) {
-      showToast('최소 한 팀은 점수를 입력하세요');
-      return;
-    }
-
-    state.round += 1;
-    state.position += a - b;
-    state.log.push({ round: state.round, a, b });
-
-    els.inputA.value = '';
-    els.inputB.value = '';
-    updateDisplay();
-    renderLog();
-
-    const wp = state.winPoints;
-
-    if (state.position >= wp) {
-      showWin(state.teamAName);
-    } else if (state.position <= -wp) {
-      showWin(state.teamBName);
-    } else {
-      const delta = a - b;
-      if (delta > 0) {
-        showToast(`${state.teamAName} ${delta}칸 당김!`);
-        els.statusText.textContent = `${state.round}라운드 · ${state.teamAName} +${delta}`;
-      } else if (delta < 0) {
-        showToast(`${state.teamBName} ${-delta}칸 당김!`);
-        els.statusText.textContent = `${state.round}라운드 · ${state.teamBName} +${-delta}`;
-      } else {
-        showToast('힘겨루기! 위치 변화 없음');
-        els.statusText.textContent = `${state.round}라운드 · 무승부`;
-      }
-      els.inputA.focus();
-    }
-  }
-
-  els.startBtn.addEventListener('click', startGame);
-  els.backBtn.addEventListener('click', goSetup);
-  els.resetBtn.addEventListener('click', () => {
-    resetGame();
-    showToast('게임을 초기화했습니다');
-  });
-  els.pullBtn.addEventListener('click', applyPull);
-  els.winBackBtn.addEventListener('click', goSetup);
-  els.winRematchBtn.addEventListener('click', resetGame);
-
-  document.addEventListener('keydown', (e) => {
-    if (!els.playView.classList.contains('active')) return;
-    if (e.key === 'Enter' && !state.gameOver) {
-      e.preventDefault();
-      applyPull();
-    }
-    if (e.key === 'Escape') goSetup();
-  });
-
-  [els.inputA, els.inputB].forEach(input => {
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        applyPull();
-      }
-    });
-  });
-
-  loadSettings();
-</script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
