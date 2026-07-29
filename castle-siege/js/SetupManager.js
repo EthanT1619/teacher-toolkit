@@ -7,14 +7,37 @@ class SetupManager {
     'Listening', 'Writing', 'Review'
   ];
 
+  static DEFAULT_ROUND_KEYS = [
+    'vocabulary', 'reading', 'speaking', 'grammar', 'freeTalk',
+    'listening', 'writing', 'review'
+  ];
+
   static ITEM_OPTIONS = [
-    { id: 'shield', label: 'Shield +20' },
-    { id: 'repairKit', label: 'Repair Kit' },
-    { id: 'charge', label: 'Charge' }
+    { id: 'shield', labelKey: 'items.shield' },
+    { id: 'repairKit', labelKey: 'items.repairKit' },
+    { id: 'charge', labelKey: 'items.charge' }
   ];
 
   static MIN_ROUNDS = 1;
   static MAX_ROUNDS = 10;
+
+  static itemLabel(itemId) {
+    const opt = SetupManager.ITEM_OPTIONS.find(o => o.id === itemId);
+    return opt ? csT(opt.labelKey) : itemId;
+  }
+
+  static displayRoundName(name, index) {
+    const canonical = SetupManager.DEFAULT_ROUND_NAMES[index];
+    if (canonical && name === canonical) {
+      const key = SetupManager.DEFAULT_ROUND_KEYS[index];
+      return key ? csT('roundNames.' + key) : name;
+    }
+    return name;
+  }
+
+  static fallbackRoundName(index) {
+    return csT('roundNames.fallback', { num: index + 1 });
+  }
 
   constructor(onStart) {
     this.onStart = onStart;
@@ -49,6 +72,12 @@ class SetupManager {
     this.redSelectedItems = [];
 
     this._bindEvents();
+    this._renderRoundInputs();
+    this._updatePrepUI('blue');
+    this._updatePrepUI('red');
+  }
+
+  refreshI18n() {
     this._renderRoundInputs();
     this._updatePrepUI('blue');
     this._updatePrepUI('red');
@@ -120,10 +149,14 @@ class SetupManager {
     const tier = PreparationBonus.getBonusTier(hw.percent);
 
     el.summary.textContent = hw.total === 0
-      ? 'No Bonus (no students)'
-      : `${hw.completed} / ${hw.total} (${hw.percent}%) — ${tier.label}`;
+      ? csT('prepSummary.noStudents')
+      : csT('prepSummary.progress', {
+        completed: hw.completed,
+        total: hw.total,
+        percent: hw.percent,
+        tier: PreparationBonus.tierLabel(tier)
+      });
 
-    // Trim selections if slots reduced
     let selected = team === 'blue' ? this.blueSelectedItems : this.redSelectedItems;
     if (selected.length > tier.itemSlots) {
       selected = selected.slice(0, tier.itemSlots);
@@ -139,6 +172,7 @@ class SetupManager {
       el.itemArea.classList.add('hidden');
       if (team === 'blue') this.blueSelectedItems = [];
       else this.redSelectedItems = [];
+      this._updateSelectedText(team, [], 0);
     }
   }
 
@@ -147,10 +181,11 @@ class SetupManager {
     el.itemChoices.innerHTML = '';
 
     SetupManager.ITEM_OPTIONS.forEach(opt => {
+      const label = csT(opt.labelKey);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'btn btn-prep-item';
-      btn.textContent = opt.label;
+      btn.textContent = label;
       btn.dataset.team = team;
       btn.dataset.item = opt.id;
 
@@ -159,7 +194,7 @@ class SetupManager {
 
       if (count > 0) {
         btn.classList.add('selected');
-        btn.textContent = `${opt.label} ✓`;
+        btn.textContent = `${label} ✓`;
       }
       if (atMax && count === 0) {
         btn.disabled = true;
@@ -189,14 +224,18 @@ class SetupManager {
   _updateSelectedText(team, selected, maxSlots) {
     const el = this._getTeamElements(team);
     if (selected.length === 0) {
-      el.selectedText.textContent = `Selected: (none) — ${selected.length}/${maxSlots}`;
+      el.selectedText.textContent = csT('prepSelected.none', {
+        count: selected.length,
+        max: maxSlots
+      });
       return;
     }
-    const labels = selected.map(id => {
-      const opt = SetupManager.ITEM_OPTIONS.find(o => o.id === id);
-      return opt ? opt.label : id;
+    const labels = selected.map(id => SetupManager.itemLabel(id));
+    el.selectedText.textContent = csT('prepSelected.items', {
+      items: labels.join(', '),
+      count: selected.length,
+      max: maxSlots
     });
-    el.selectedText.textContent = `Selected: ${labels.join(', ')} (${selected.length}/${maxSlots})`;
   }
 
   _getRoundCount() {
@@ -223,6 +262,21 @@ class SetupManager {
     this._renderRoundInputs();
   }
 
+  _normalizeRoundInputValue(raw, index) {
+    const trimmed = raw.trim();
+    const canonical = SetupManager.DEFAULT_ROUND_NAMES[index];
+    if (!trimmed) {
+      return canonical || `Round ${index + 1}`;
+    }
+    if (canonical) {
+      const translated = csT('roundNames.' + SetupManager.DEFAULT_ROUND_KEYS[index]);
+      if (trimmed === canonical || trimmed === translated) {
+        return canonical;
+      }
+    }
+    return trimmed;
+  }
+
   _renderRoundInputs() {
     const container = this.elements.roundNames;
     container.innerHTML = '';
@@ -230,11 +284,13 @@ class SetupManager {
     this.roundNames.forEach((name, i) => {
       const label = document.createElement('label');
       label.className = 'setup-round-label';
-      label.innerHTML = `Round ${i + 1} Name<input type="text" class="setup-round-input" data-index="${i}" value="${this._escapeAttr(name)}" />`;
+      const displayName = SetupManager.displayRoundName(name, i);
+      const labelText = csT('setup.roundNameLabel', { num: i + 1 });
+      label.innerHTML = `${labelText}<input type="text" class="setup-round-input" data-index="${i}" value="${this._escapeAttr(displayName)}" />`;
       container.appendChild(label);
 
       label.querySelector('input').addEventListener('input', (e) => {
-        this.roundNames[i] = e.target.value;
+        this.roundNames[i] = this._normalizeRoundInputValue(e.target.value, i);
       });
     });
   }
@@ -249,10 +305,8 @@ class SetupManager {
     this.roundNames = [];
 
     for (let i = 0; i < count; i++) {
-      const value = inputs[i] ? inputs[i].value.trim() : '';
-      this.roundNames.push(
-        value || SetupManager.DEFAULT_ROUND_NAMES[i] || `Round ${i + 1}`
-      );
+      const raw = inputs[i] ? inputs[i].value : '';
+      this.roundNames.push(this._normalizeRoundInputValue(raw, i));
     }
   }
 
@@ -269,12 +323,12 @@ class SetupManager {
     const maxHp = parseInt(this.elements.hp.value, 10);
 
     if (!maxHp || maxHp < 10 || maxHp > 500) {
-      alert('Castle HP must be between 10 and 500.');
+      alert(csT('alerts.hpRange'));
       return null;
     }
 
     if (this.roundNames.length === 0) {
-      alert('Add at least one round.');
+      alert(csT('alerts.needRound'));
       return null;
     }
 
@@ -284,11 +338,11 @@ class SetupManager {
     const redTier = PreparationBonus.getBonusTier(redHomework.percent);
 
     if (this.blueSelectedItems.length > blueTier.itemSlots) {
-      alert(`${blueName}: select at most ${blueTier.itemSlots} Bonus Item(s).`);
+      alert(csT('alerts.maxBonusItems', { team: blueName, count: blueTier.itemSlots }));
       return null;
     }
     if (this.redSelectedItems.length > redTier.itemSlots) {
-      alert(`${redName}: select at most ${redTier.itemSlots} Bonus Item(s).`);
+      alert(csT('alerts.maxBonusItems', { team: redName, count: redTier.itemSlots }));
       return null;
     }
 

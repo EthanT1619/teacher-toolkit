@@ -52,6 +52,7 @@ class UIManager {
       roundAdvanceBanner: document.getElementById('round-advance-banner')
     };
     this._roundAdvanceTimer = null;
+    this._isLastRound = false;
   }
 
   showSetup() {
@@ -71,14 +72,18 @@ class UIManager {
   }
 
   updateRound(roundNum, totalRounds, roundName) {
-    this.elements.roundLabel.textContent = `ROUND ${roundNum} / ${totalRounds}`;
+    this.elements.roundLabel.textContent = csT('battle.roundLabel', {
+      current: roundNum,
+      total: totalRounds
+    });
     this.elements.roundName.textContent = roundName;
   }
 
   updateEndRoundButton(isLastRound) {
+    this._isLastRound = isLastRound;
     this.elements.btnEndRound.textContent = isLastRound
-      ? 'Finish Lesson'
-      : 'End Round →';
+      ? csT('battle.finishLesson')
+      : csT('battle.endRound');
   }
 
   updateTeamNames(blueName, redName) {
@@ -118,11 +123,15 @@ class UIManager {
 
     const repairCount = castle.items.repairKit;
     const chargeCount = castle.items.charge;
+    const repairLabel = csT('items.repairKit');
+    const chargeLabel = csT('items.charge');
 
     repairBtn.querySelector('.item-icon-badge').textContent = repairCount;
     chargeBtn.querySelector('.item-icon-badge').textContent = chargeCount;
-    repairBtn.title = `Repair Kit (${repairCount})`;
-    chargeBtn.title = `Charge (${chargeCount})`;
+    repairBtn.title = csT('battle.repairKitTitle', { count: repairCount });
+    chargeBtn.title = csT('battle.chargeTitle', { count: chargeCount });
+    repairBtn.setAttribute('aria-label', repairLabel);
+    chargeBtn.setAttribute('aria-label', chargeLabel);
 
     repairBtn.classList.toggle('hidden', repairCount <= 0);
     chargeBtn.classList.toggle('hidden', chargeCount <= 0);
@@ -145,7 +154,7 @@ class UIManager {
   }
 
   showWinner(winnerName) {
-    this.elements.winnerTitle.textContent = `${winnerName} Wins!`;
+    this.elements.winnerTitle.textContent = csT('battle.winnerTitle', { team: winnerName });
     this.elements.winnerModal.classList.remove('hidden');
   }
 
@@ -169,7 +178,7 @@ class UIManager {
 
     const win = document.createElement('span');
     win.className = 'round-win-text';
-    win.textContent = `${winnerName} wins Round ${roundNum}!`;
+    win.textContent = csT('battle.roundWin', { team: winnerName, num: roundNum });
 
     const name = document.createElement('span');
     name.className = 'round-advance-name';
@@ -187,7 +196,7 @@ class UIManager {
 
     const label = document.createElement('span');
     label.className = 'round-advance-label';
-    label.textContent = `ROUND ${roundNum}`;
+    label.textContent = csT('battle.roundAdvance', { num: roundNum });
 
     const name = document.createElement('span');
     name.className = 'round-advance-name';
@@ -261,7 +270,9 @@ class UIManager {
     const otherHint = isBlue ? this.elements.redPendingHint : this.elements.bluePendingHint;
     const otherPanel = isBlue ? this.elements.redActions : this.elements.blueActions;
 
-    hint.textContent = remaining > 1 ? `${remaining} more actions!` : '1 more action!';
+    hint.textContent = remaining > 1
+      ? csT('battle.pendingActions', { count: remaining })
+      : csT('battle.pendingAction');
     hint.classList.remove('hidden');
     panel.classList.add('pending');
     otherHint.classList.add('hidden');
@@ -277,5 +288,9 @@ class UIManager {
 
   updateMuteButton(muted) {
     this.elements.btnMute.textContent = muted ? '🔇' : '🔊';
+  }
+
+  refreshI18n() {
+    this.updateEndRoundButton(this._isLastRound);
   }
 }

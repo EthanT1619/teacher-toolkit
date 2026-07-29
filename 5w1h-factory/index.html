@@ -4,7 +4,7 @@
   <!-- 5W1H Factory - JLS Teacher Toolkit -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WH Factory β</title>
+  <title>WH Factory</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <script src="../shared/toolkit-home.js" defer></script>
   <style>
@@ -516,32 +516,29 @@
 <body>
   <header class="app-header">
     <div class="header-left">
-      <h1 class="header-title">WH Factory β</h1>
+      <h1 class="header-title" data-i18n="tool.5w1h-factory.title">WH Factory</h1>
     </div>
     <div class="header-stats">
-      <div><span class="stat-label">Score </span><span class="stat-value score" id="score-display">0</span></div>
-      <div><span class="stat-label">Cards </span><span class="stat-value" id="cards-display">0</span></div>
+      <div><span class="stat-label" data-i18n="tool.5w1h-factory.stats.score">Score</span> <span class="stat-value score" id="score-display">0</span></div>
+      <div><span class="stat-label" data-i18n="tool.5w1h-factory.stats.cards">Cards</span> <span class="stat-value" id="cards-display">0</span></div>
     </div>
     <div class="header-actions">
-      <button class="btn btn-secondary" id="btn-fullscreen" type="button">Fullscreen</button>
-      <button class="btn btn-secondary" id="btn-reset" type="button">Reset</button>
+      <button class="btn btn-secondary" id="btn-language" type="button" data-i18n-aria="tool.5w1h-factory.aria.switchLanguage">한국어</button>
+      <button class="btn btn-secondary" id="btn-fullscreen" type="button" data-i18n="tool.5w1h-factory.actions.fullscreen">Fullscreen</button>
+      <button class="btn btn-secondary" id="btn-reset" type="button" data-i18n="tool.5w1h-factory.actions.reset">Reset</button>
     </div>
   </header>
 
   <main class="app-main">
     <section class="view active" id="setup-view">
       <div class="setup-wrap">
-        <h2>문제 설정</h2>
-        <p class="setup-hint">
-          한 줄에 하나씩 입력하세요. 형식: <code>Who: 문장</code> &nbsp;·&nbsp;
-          카테고리 뒤에 <strong>콜론(:)</strong> 을 붙이면 됩니다.
-          (<code>Who: The boy is running.</code>)
-        </p>
-        <textarea class="questions-input" id="questions-input" placeholder="Who: The boy is running.&#10;Where: She lives in Seoul."></textarea>
+        <h2 data-i18n="tool.5w1h-factory.setup.heading">Question setup</h2>
+        <p class="setup-hint" id="setup-hint"></p>
+        <textarea class="questions-input" id="questions-input" data-i18n-placeholder="tool.5w1h-factory.setup.placeholder" placeholder="Who: The boy is running.&#10;Where: She lives in Seoul."></textarea>
         <p class="parse-error" id="parse-error" aria-live="polite"></p>
         <div class="setup-actions">
-          <button class="btn btn-secondary" id="btn-load-sample" type="button">Load Sample</button>
-          <button class="btn btn-primary" id="btn-start" type="button">Start Game</button>
+          <button class="btn btn-secondary" id="btn-load-sample" type="button" data-i18n="tool.5w1h-factory.actions.loadSample">Load Sample</button>
+          <button class="btn btn-primary" id="btn-start" type="button" data-i18n="tool.5w1h-factory.actions.startGame">Start Game</button>
         </div>
       </div>
     </section>
@@ -549,7 +546,7 @@
     <section class="view" id="game-view">
       <div class="game-wrap">
         <div class="conveyor-area">
-          <p class="factory-label">Conveyor Belt</p>
+          <p class="factory-label" data-i18n="tool.5w1h-factory.game.conveyorLabel">Conveyor Belt</p>
           <div class="conveyor-frame">
             <div class="conveyor-roller"></div>
             <div class="conveyor-belt scrolling" id="conveyor-belt">
@@ -563,27 +560,27 @@
         <div class="drop-zones" id="drop-zones">
           <div class="drop-box" data-category="Who">
             <span class="box-label">Who</span>
-            <span class="box-hint">사람 / 누가</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.Who.hint">Person / who</span>
           </div>
           <div class="drop-box" data-category="What">
             <span class="box-label">What</span>
-            <span class="box-hint">사물·행동 / 무엇을</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.What.hint">Thing or action / what</span>
           </div>
           <div class="drop-box" data-category="When">
             <span class="box-label">When</span>
-            <span class="box-hint">시간 / 언제</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.When.hint">Time / when</span>
           </div>
           <div class="drop-box" data-category="Where">
             <span class="box-label">Where</span>
-            <span class="box-hint">장소 / 어디서</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.Where.hint">Place / where</span>
           </div>
           <div class="drop-box" data-category="Why">
             <span class="box-label">Why</span>
-            <span class="box-hint">이유 / 왜</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.Why.hint">Reason / why</span>
           </div>
           <div class="drop-box" data-category="How">
             <span class="box-label">How</span>
-            <span class="box-hint">방법 / 어떻게</span>
+            <span class="box-hint" data-i18n="tool.5w1h-factory.categories.How.hint">Method / how</span>
           </div>
         </div>
       </div>
@@ -592,12 +589,12 @@
     <section class="view" id="result-view">
       <div class="result-wrap">
         <div class="result-panel">
-          <h2>Factory Complete!</h2>
+          <h2 id="result-heading" data-i18n="tool.5w1h-factory.result.heading">Factory Complete!</h2>
           <p class="result-score" id="final-score">0</p>
           <p class="result-detail" id="final-detail">0 / 0 correct</p>
           <div class="result-actions">
-            <button class="btn btn-primary" id="btn-restart" type="button">Restart</button>
-            <button class="btn btn-secondary" id="btn-back-setup" type="button">Back to Setup</button>
+            <button class="btn btn-primary" id="btn-restart" type="button" data-i18n="tool.5w1h-factory.actions.restart">Restart</button>
+            <button class="btn btn-secondary" id="btn-back-setup" type="button" data-i18n="tool.5w1h-factory.actions.backToSetup">Back to Setup</button>
           </div>
         </div>
       </div>
@@ -606,443 +603,6 @@
 
   <div class="toast" id="toast" aria-live="assertive"></div>
 
-  <script>
-    /* 5W1H Factory - JLS Teacher Toolkit */
-
-    const STORAGE_KEY = '5w1h-factory-settings';
-    const VALID_CATEGORIES = ['Who', 'What', 'When', 'Where', 'Why', 'How'];
-
-    const SAMPLE_TEXT = `Who: The girl is reading a book.
-What: I want to eat pizza.
-When: We have English class on Monday.
-Where: They play soccer at the park.
-Why: He is happy because he got a gift.
-How: She goes to school by bus.
-Who: My father cooks dinner.
-What: Tom bought a new pencil.
-When: I wake up at seven.
-Where: The cat is under the table.
-Why: She studies hard because she wants a good score.
-How: He opened the box with a key.`;
-
-    const state = {
-      questions: [],
-      currentIndex: 0,
-      score: 0,
-      correctCount: 0,
-      currentCard: null,
-      isDragging: false,
-      selectedMode: 'setup'
-    };
-
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-    let activePointerId = null;
-    let toastTimer = null;
-    let processingDrop = false;
-
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
-
-    const els = {
-      setupView: $('#setup-view'),
-      gameView: $('#game-view'),
-      resultView: $('#result-view'),
-      questionsInput: $('#questions-input'),
-      parseError: $('#parse-error'),
-      scoreDisplay: $('#score-display'),
-      cardsDisplay: $('#cards-display'),
-      sentenceCard: $('#sentence-card'),
-      cardSlot: $('#card-slot'),
-      dropZones: $('#drop-zones'),
-      toast: $('#toast'),
-      finalScore: $('#final-score'),
-      finalDetail: $('#final-detail')
-    };
-
-    function init() {
-      loadSettings();
-      bindEvents();
-      updateHeader();
-      showView('setup');
-    }
-
-    function bindEvents() {
-      $('#btn-load-sample').addEventListener('click', loadSample);
-      $('#btn-start').addEventListener('click', startGame);
-      $('#btn-fullscreen').addEventListener('click', toggleFullscreen);
-      $('#btn-reset').addEventListener('click', resetGame);
-      $('#btn-restart').addEventListener('click', () => {
-        startGame();
-      });
-      $('#btn-back-setup').addEventListener('click', () => {
-        showView('setup');
-        state.selectedMode = 'setup';
-      });
-
-      els.questionsInput.addEventListener('input', () => {
-        saveSettings();
-        els.parseError.textContent = '';
-      });
-
-      document.addEventListener('fullscreenchange', updateFullscreenLabel);
-      setupDrag();
-    }
-
-    function parseQuestions(text) {
-      const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
-      const questions = [];
-
-      for (let i = 0; i < lines.length; i++) {
-        const parsed = parseQuestionLine(lines[i]);
-        if (!parsed) {
-          return {
-            error: `Line ${i + 1}: use format "Who: sentence" (colon after category)`,
-            questions: []
-          };
-        }
-        const { category, sentence } = parsed;
-        if (!VALID_CATEGORIES.includes(category)) {
-          return { error: `Line ${i + 1}: invalid category "${category}"`, questions: [] };
-        }
-        if (!sentence) {
-          return { error: `Line ${i + 1}: sentence is empty`, questions: [] };
-        }
-        questions.push({ category, sentence });
-      }
-
-      if (questions.length === 0) {
-        return { error: 'Enter at least one question.', questions: [] };
-      }
-
-      return { error: null, questions };
-    }
-
-    function parseQuestionLine(line) {
-      const match = line.match(/^(Who|What|When|Where|Why|How)\s*(?:[:：]|\||\t)\s*(.+)$/i);
-      if (!match) return null;
-      const raw = match[1].toLowerCase();
-      const category = raw.charAt(0).toUpperCase() + raw.slice(1);
-      return { category, sentence: match[2].trim() };
-    }
-
-    function getDropBoxAt(x, y) {
-      const boxes = els.dropZones.querySelectorAll('.drop-box');
-      for (const box of boxes) {
-        const r = box.getBoundingClientRect();
-        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) {
-          return box;
-        }
-      }
-      return null;
-    }
-
-    function saveSettings() {
-      localStorage.setItem(STORAGE_KEY, els.questionsInput.value);
-    }
-
-    function loadSettings() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      els.questionsInput.value = saved !== null ? saved : '';
-    }
-
-    function loadSample() {
-      els.questionsInput.value = SAMPLE_TEXT;
-      saveSettings();
-      els.parseError.textContent = '';
-    }
-
-    function showView(mode) {
-      state.selectedMode = mode;
-      els.setupView.classList.toggle('active', mode === 'setup');
-      els.gameView.classList.toggle('active', mode === 'game');
-      els.resultView.classList.toggle('active', mode === 'result');
-    }
-
-    function updateHeader() {
-      els.scoreDisplay.textContent = state.score;
-      const remaining = state.questions.length
-        ? Math.max(0, state.questions.length - state.currentIndex)
-        : 0;
-      els.cardsDisplay.textContent = state.selectedMode === 'game' ? remaining : state.questions.length || 0;
-    }
-
-    function startGame() {
-      saveSettings();
-      const { error, questions } = parseQuestions(els.questionsInput.value);
-      if (error) {
-        els.parseError.textContent = error;
-        return;
-      }
-
-      els.parseError.textContent = '';
-      state.questions = questions;
-      state.currentIndex = 0;
-      state.score = 0;
-      state.correctCount = 0;
-      state.currentCard = null;
-      state.isDragging = false;
-      processingDrop = false;
-
-      showView('game');
-      renderGame();
-    }
-
-    function renderGame() {
-      updateHeader();
-      showCurrentCard();
-    }
-
-    function showCurrentCard() {
-      const card = els.sentenceCard;
-      resetCardStyles();
-
-      if (state.currentIndex >= state.questions.length) {
-        showResult();
-        return;
-      }
-
-      const q = state.questions[state.currentIndex];
-      state.currentCard = q;
-      card.textContent = q.sentence;
-      card.classList.remove('hidden');
-      card.classList.add('on-belt');
-      updateHeader();
-    }
-
-    function resetCardStyles() {
-      const card = els.sentenceCard;
-      card.className = 'sentence-card on-belt hidden';
-      card.style.position = '';
-      card.style.left = '';
-      card.style.top = '';
-      card.style.width = '';
-      card.style.transform = '';
-      card.style.transition = '';
-      card.style.opacity = '';
-      card.style.zIndex = '';
-    }
-
-    function setupDrag() {
-      const card = els.sentenceCard;
-
-      card.addEventListener('pointerdown', onPointerDown);
-      document.addEventListener('pointermove', onPointerMove);
-      document.addEventListener('pointerup', onPointerUp);
-      document.addEventListener('pointercancel', onPointerUp);
-    }
-
-    function onPointerDown(e) {
-      if (state.selectedMode !== 'game' || processingDrop) return;
-      if (state.currentIndex >= state.questions.length) return;
-      if (els.sentenceCard.classList.contains('hidden')) return;
-
-      e.preventDefault();
-      const card = els.sentenceCard;
-      const rect = card.getBoundingClientRect();
-
-      activePointerId = e.pointerId;
-      state.isDragging = true;
-      dragOffsetX = e.clientX - rect.left;
-      dragOffsetY = e.clientY - rect.top;
-
-      card.setPointerCapture(e.pointerId);
-      card.classList.add('dragging');
-      card.classList.remove('on-belt', 'shaking', 'returning', 'absorbing');
-
-      card.style.position = 'fixed';
-      card.style.width = rect.width + 'px';
-      card.style.left = rect.left + 'px';
-      card.style.top = rect.top + 'px';
-      card.style.transform = 'none';
-      card.style.zIndex = '1000';
-    }
-
-    function onPointerMove(e) {
-      if (!state.isDragging || e.pointerId !== activePointerId) return;
-
-      const card = els.sentenceCard;
-      card.style.left = (e.clientX - dragOffsetX) + 'px';
-      card.style.top = (e.clientY - dragOffsetY) + 'px';
-
-      highlightDropZone(e.clientX, e.clientY);
-    }
-
-    function onPointerUp(e) {
-      if (!state.isDragging || e.pointerId !== activePointerId) return;
-
-      state.isDragging = false;
-      activePointerId = null;
-
-      const card = els.sentenceCard;
-      try { card.releasePointerCapture(e.pointerId); } catch (_) {}
-
-      clearDropHighlights();
-
-      const box = getDropBoxAt(e.clientX, e.clientY);
-
-      if (box) {
-        handleDrop(box.dataset.category, box);
-      } else {
-        returnCardToBelt();
-      }
-
-      card.classList.remove('dragging');
-    }
-
-    function highlightDropZone(x, y) {
-      clearDropHighlights();
-      const box = getDropBoxAt(x, y);
-      if (box) box.classList.add('drop-hover');
-    }
-
-    function clearDropHighlights() {
-      $$('.drop-box').forEach((b) => b.classList.remove('drop-hover'));
-    }
-
-    function returnCardToBelt() {
-      const card = els.sentenceCard;
-      card.classList.add('returning');
-      card.style.position = '';
-      card.style.left = '';
-      card.style.top = '';
-      card.style.width = '';
-      card.style.transform = '';
-      card.style.zIndex = '';
-
-      setTimeout(() => {
-        card.classList.remove('returning');
-        card.classList.add('on-belt');
-      }, 400);
-    }
-
-    function handleDrop(category, boxEl) {
-      if (processingDrop || !state.currentCard) return;
-
-      if (category === state.currentCard.category) {
-        handleCorrect(boxEl);
-      } else {
-        handleWrong();
-      }
-    }
-
-    function handleCorrect(boxEl) {
-      processingDrop = true;
-      state.score += 10;
-      state.correctCount += 1;
-      updateHeader();
-      showToast('Correct!', 'correct');
-
-      boxEl.classList.add('correct-flash');
-      setTimeout(() => boxEl.classList.remove('correct-flash'), 500);
-
-      const card = els.sentenceCard;
-      const cardRect = card.getBoundingClientRect();
-      const boxRect = boxEl.getBoundingClientRect();
-      const dx = (boxRect.left + boxRect.width / 2) - (cardRect.left + cardRect.width / 2);
-      const dy = (boxRect.top + boxRect.height / 2) - (cardRect.top + cardRect.height / 2);
-
-      card.classList.add('absorbing');
-      card.style.transform = `translate(${dx}px, ${dy}px) scale(0.15)`;
-      card.style.opacity = '0';
-
-      setTimeout(() => {
-        nextQuestion();
-        processingDrop = false;
-      }, 580);
-    }
-
-    function handleWrong() {
-      state.score -= 5;
-      updateHeader();
-      showToast('Try again!', 'wrong');
-
-      const card = els.sentenceCard;
-      card.style.position = '';
-      card.style.left = '';
-      card.style.top = '';
-      card.style.width = '';
-      card.style.zIndex = '';
-      card.style.transform = '';
-      card.style.transition = '';
-      card.style.opacity = '';
-      card.classList.remove('dragging', 'absorbing', 'returning');
-      card.classList.add('shaking', 'on-belt');
-
-      setTimeout(() => {
-        card.classList.remove('shaking');
-      }, 560);
-    }
-
-    function nextQuestion() {
-      state.currentIndex += 1;
-      state.currentCard = null;
-
-      if (state.currentIndex >= state.questions.length) {
-        showResult();
-      } else {
-        showCurrentCard();
-      }
-    }
-
-    function showResult() {
-      state.selectedMode = 'result';
-      els.finalScore.textContent = state.score;
-      els.finalDetail.textContent =
-        `${state.correctCount} / ${state.questions.length} correct`;
-      showView('result');
-      updateHeader();
-    }
-
-    function resetGame() {
-      if (state.selectedMode === 'setup') {
-        els.questionsInput.value = '';
-        saveSettings();
-        els.parseError.textContent = '';
-        return;
-      }
-
-      processingDrop = false;
-      state.currentIndex = 0;
-      state.score = 0;
-      state.correctCount = 0;
-      state.currentCard = null;
-      state.isDragging = false;
-      activePointerId = null;
-      clearDropHighlights();
-
-      if (state.questions.length > 0) {
-        showView('game');
-        renderGame();
-      } else {
-        showView('setup');
-      }
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen();
-      }
-    }
-
-    function updateFullscreenLabel() {
-      $('#btn-fullscreen').textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
-    }
-
-    function showToast(message, type) {
-      const toast = els.toast;
-      toast.textContent = message;
-      toast.className = 'toast ' + type + ' show';
-
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 1400);
-    }
-
-    init();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

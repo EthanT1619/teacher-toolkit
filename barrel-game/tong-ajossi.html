@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>통아저씨 게임</title>
+  <title>Barrel Game</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <script src="../shared/toolkit-home.js" defer></script>
   <style>
@@ -39,6 +39,11 @@
     }
 
     .setup-wrap header { text-align: center; margin-bottom: 28px; }
+    .setup-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
     .setup-wrap h1 { font-size: 1.8rem; font-weight: 900; color: var(--gold); }
     .setup-wrap p { color: #a09080; margin-top: 8px; font-size: 0.95rem; }
 
@@ -465,22 +470,25 @@
 <!-- 설정 -->
 <section id="setupView" class="view active">
   <div class="setup-wrap">
+    <div class="setup-actions">
+      <button class="icon-btn" id="btn-language" type="button" data-i18n-aria="tool.barrel-game.aria.switchLanguage">한국어</button>
+    </div>
     <header>
-      <h1>🏴‍☠️ 통아저씨 게임</h1>
-      <p>칼을 골라 통에 꽂으세요. 통아저씨가 튀어나오면 끝!</p>
+      <h1 data-i18n="tool.barrel-game.title">Barrel Game</h1>
+      <p data-i18n="tool.barrel-game.subtitle">Pick a sword and stab the barrel. When the pirate pops out, it's over!</p>
     </header>
     <div class="card">
-      <label class="field-label" for="slotCount">칼(구멍) 개수</label>
+      <label class="field-label" for="slotCount" data-i18n="tool.barrel-game.setup.slotCountLabel">Number of swords (holes)</label>
       <input type="number" id="slotCount" min="4" max="12" value="10">
-      <p class="hint">4~12개. 시작할 때마다 통아저씨 위치가 바뀝니다.</p>
+      <p class="hint" data-i18n="tool.barrel-game.setup.slotCountHint">4–12. The pirate's position changes each round.</p>
     </div>
     <div class="card">
       <label class="checkbox-label">
         <input type="checkbox" id="soundEnabled" checked>
-        <span>효과음 켜기</span>
+        <span data-i18n="tool.barrel-game.settings.soundEnabled">Enable sound effects</span>
       </label>
     </div>
-    <button class="btn btn-start" id="startBtn">▶ 게임 시작</button>
+    <button class="btn btn-start" id="startBtn" data-i18n="tool.barrel-game.actions.startGame">▶ Start Game</button>
   </div>
 </section>
 
@@ -489,9 +497,9 @@
   <div class="cave-bg"></div>
   <div class="game-ui">
     <div class="top-bar">
-      <button class="icon-btn" id="backBtn">← 설정</button>
-      <span class="status-text" id="statusText">칼 번호를 골라 통에 꽂으세요</span>
-      <button class="icon-btn" id="resetBtn">↻ 다시</button>
+      <button class="icon-btn" id="backBtn" data-i18n="tool.barrel-game.actions.backToSetup">← Setup</button>
+      <span class="status-text" id="statusText"></span>
+      <button class="icon-btn" id="resetBtn" data-i18n="tool.barrel-game.actions.reset">↻ Reset</button>
     </div>
 
     <div class="sword-row" id="swordRow"></div>
@@ -552,7 +560,7 @@
     </div>
 
     <div class="bottom-bar">
-      <button class="btn-next" id="nextBtn">Next ▶</button>
+      <button class="btn-next" id="nextBtn" data-i18n="tool.barrel-game.actions.next">Next ▶</button>
       <svg class="parrot-mascot" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="40" cy="70" rx="20" ry="6" fill="#1a1000" opacity="0.3"/>
         <ellipse cx="40" cy="55" rx="22" ry="18" fill="#4caf50"/>
@@ -571,295 +579,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-  const STORAGE_KEY = 'tongAjossiGame';
-
-  const state = {
-    slotCount: 10,
-    triggerIndex: -1,
-    used: new Set(),
-    gameOver: false,
-    soundEnabled: true,
-    animating: false,
-  };
-
-  const els = {
-    setupView: document.getElementById('setupView'),
-    playView: document.getElementById('playView'),
-    slotCount: document.getElementById('slotCount'),
-    soundEnabled: document.getElementById('soundEnabled'),
-    startBtn: document.getElementById('startBtn'),
-    backBtn: document.getElementById('backBtn'),
-    resetBtn: document.getElementById('resetBtn'),
-    statusText: document.getElementById('statusText'),
-    swordRow: document.getElementById('swordRow'),
-    barrelSlots: document.getElementById('barrelSlots'),
-    pirateWrap: document.getElementById('pirateWrap'),
-    bombBoard: document.getElementById('bombBoard'),
-    safeBoard: document.getElementById('safeBoard'),
-    safeList: document.getElementById('safeList'),
-    nextBtn: document.getElementById('nextBtn'),
-    toast: document.getElementById('toast'),
-  };
-
-  let toastTimer = null;
-  let audioCtx = null;
-
-  /* Slot positions around barrel (percent of barrel-wrap) */
-  function getSlotPositions(count) {
-    const positions = [];
-    const cx = 50, cy = 55;
-    const rx = 46, ry = 38;
-    for (let i = 0; i < count; i++) {
-      const angle = -Math.PI / 2 + (2 * Math.PI * i) / count;
-      positions.push({
-        x: cx + rx * Math.cos(angle),
-        y: cy + ry * Math.sin(angle),
-        angleDeg: (angle * 180 / Math.PI) + 90,
-      });
-    }
-    return positions;
-  }
-
-  function swordSvg() {
-    return `<svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
-      <rect x="27" y="10" width="6" height="30" rx="2" fill="#c0c0c0"/>
-      <rect x="22" y="38" width="16" height="5" rx="1" fill="#ffd700"/>
-      <rect x="28" y="42" width="4" height="28" rx="1" fill="#8b6914"/>
-      <polygon points="30,70 26,80 34,80" fill="#6b5010"/>
-      <ellipse cx="30" cy="8" rx="8" ry="4" fill="#d0d0d0"/>
-    </svg>`;
-  }
-
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      slotCount: state.slotCount,
-      soundEnabled: state.soundEnabled,
-    }));
-  }
-
-  function load() {
-    try {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      if (data.slotCount) { state.slotCount = data.slotCount; els.slotCount.value = data.slotCount; }
-      if (typeof data.soundEnabled === 'boolean') {
-        state.soundEnabled = data.soundEnabled;
-        els.soundEnabled.checked = data.soundEnabled;
-      }
-    } catch { /* ignore */ }
-  }
-
-  function showToast(msg) {
-    els.toast.textContent = msg;
-    els.toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
-  }
-
-  function playSound(type) {
-    if (!state.soundEnabled) return;
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      if (type === 'insert') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
-        gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-        osc.start(now);
-        osc.stop(now + 0.2);
-      } else if (type === 'pop') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(200, now);
-        osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
-        osc.frequency.exponentialRampToValueAtTime(150, now + 0.5);
-        gain.gain.setValueAtTime(0.4, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
-        osc.start(now);
-        osc.stop(now + 0.55);
-      }
-    } catch { /* ignore */ }
-  }
-
-  function renderSwords() {
-    els.swordRow.innerHTML = Array.from({ length: state.slotCount }, (_, i) => `
-      <button class="sword-btn" data-index="${i}" aria-label="칼 ${i + 1}">
-        <span class="sword-num">${i + 1}</span>
-        ${swordSvg()}
-      </button>
-    `).join('');
-  }
-
-  function renderBarrelSlots() {
-    const positions = getSlotPositions(state.slotCount);
-    els.barrelSlots.innerHTML = positions.map((pos, i) => `
-      <div class="slot-marker" data-slot="${i}" style="left:${pos.x}%;top:${pos.y}%;"></div>
-    `).join('');
-  }
-
-  function updateBoards() {
-    const safe = state.used.size;
-    const total = state.slotCount;
-    els.safeBoard.textContent = state.gameOver
-      ? `총 ${safe}번 안전`
-      : `${safe} / ${total - 1}`;
-    els.safeList.innerHTML = [...state.used]
-      .filter(i => i !== state.triggerIndex)
-      .sort((a, b) => a - b)
-      .map(i => `<span class="safe-chip">${i + 1}</span>`)
-      .join('');
-    els.bombBoard.textContent = state.gameOver
-      ? `${state.triggerIndex + 1}번!`
-      : '???';
-  }
-
-  function resetPirate() {
-    els.pirateWrap.classList.remove('pop');
-    void els.pirateWrap.offsetWidth;
-  }
-
-  function newRound() {
-    state.triggerIndex = Math.floor(Math.random() * state.slotCount);
-    state.used = new Set();
-    state.gameOver = false;
-    state.animating = false;
-
-    resetPirate();
-    renderSwords();
-    renderBarrelSlots();
-    els.nextBtn.classList.remove('visible');
-    els.statusText.textContent = '칼 번호를 골라 통에 꽂으세요';
-    updateBoards();
-  }
-
-  function startGame() {
-    state.slotCount = Math.min(12, Math.max(4, parseInt(els.slotCount.value, 10) || 10));
-    state.soundEnabled = els.soundEnabled.checked;
-    save();
-
-    els.setupView.classList.remove('active');
-    els.playView.classList.add('active');
-    newRound();
-    showToast('통아저씨가 어디에 숨었을까요?');
-  }
-
-  function insertSwordAtSlot(index) {
-    const positions = getSlotPositions(state.slotCount);
-    const pos = positions[index];
-    const marker = els.barrelSlots.querySelector(`[data-slot="${index}"]`);
-    if (!marker) return;
-
-    marker.classList.add('filled');
-    const sword = document.createElement('div');
-    sword.className = 'inserted-sword';
-    sword.style.cssText = `left:${pos.x}%;top:${pos.y}%;--angle:${pos.angleDeg}deg;`;
-    sword.innerHTML = swordSvg();
-    els.barrelSlots.appendChild(sword);
-  }
-
-  function flySword(fromBtn, index, callback) {
-    const positions = getSlotPositions(state.slotCount);
-    const pos = positions[index];
-    const barrelRect = document.getElementById('barrelWrap').getBoundingClientRect();
-    const targetX = barrelRect.left + barrelRect.width * pos.x / 100;
-    const targetY = barrelRect.top + barrelRect.height * pos.y / 100;
-
-    const btnRect = fromBtn.getBoundingClientRect();
-    const flyer = document.createElement('div');
-    flyer.className = 'flying-sword';
-    flyer.innerHTML = swordSvg();
-    flyer.style.left = `${btnRect.left + btnRect.width / 2 - 20}px`;
-    flyer.style.top = `${btnRect.top + btnRect.height / 2 - 30}px`;
-    document.body.appendChild(flyer);
-
-    requestAnimationFrame(() => {
-      flyer.style.left = `${targetX - 20}px`;
-      flyer.style.top = `${targetY - 30}px`;
-      flyer.style.transform = `rotate(${pos.angleDeg}deg)`;
-    });
-
-    setTimeout(() => {
-      flyer.remove();
-      callback();
-    }, 480);
-  }
-
-  function pickSword(index) {
-    if (state.gameOver || state.animating || state.used.has(index)) return;
-
-    const btn = els.swordRow.querySelector(`[data-index="${index}"]`);
-    if (!btn) return;
-
-    state.animating = true;
-    btn.classList.add('used');
-    btn.disabled = true;
-
-    flySword(btn, index, () => {
-      state.used.add(index);
-      insertSwordAtSlot(index);
-      playSound('insert');
-
-      const isTrigger = index === state.triggerIndex;
-
-      if (isTrigger) {
-        state.gameOver = true;
-        els.statusText.textContent = `${index + 1}번 — 통아저씨 등장!!!`;
-        setTimeout(() => {
-          playSound('pop');
-          els.pirateWrap.classList.add('pop');
-          document.body.classList.add('shake');
-          if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 150]);
-          setTimeout(() => document.body.classList.remove('shake'), 500);
-          els.nextBtn.classList.add('visible');
-          updateBoards();
-        }, 200);
-      } else {
-        const remaining = state.slotCount - state.used.size;
-        els.statusText.textContent = `${index + 1}번 안전! ${remaining}개 남음`;
-        updateBoards();
-      }
-
-      state.animating = false;
-    });
-  }
-
-  /* Events */
-  els.startBtn.addEventListener('click', startGame);
-  els.backBtn.addEventListener('click', () => {
-    els.playView.classList.remove('active');
-    els.setupView.classList.add('active');
-  });
-  els.resetBtn.addEventListener('click', () => { newRound(); showToast('다시 섞었습니다'); });
-  els.nextBtn.addEventListener('click', () => { newRound(); showToast('새 라운드!'); });
-
-  els.swordRow.addEventListener('click', (e) => {
-    const btn = e.target.closest('.sword-btn');
-    if (!btn || btn.disabled) return;
-    pickSword(Number(btn.dataset.index));
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (!els.playView.classList.contains('active')) return;
-    if (e.key === 'Escape') {
-      els.playView.classList.remove('active');
-      els.setupView.classList.add('active');
-    }
-    if ((e.key === 'r' || e.key === 'R') && !state.animating) {
-      newRound();
-      showToast('다시 섞었습니다');
-    }
-    if (e.key === 'Enter' && state.gameOver) newRound();
-    const num = parseInt(e.key, 10);
-    if (num >= 1 && num <= state.slotCount) pickSword(num - 1);
-  });
-
-  load();
-</script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

@@ -21,15 +21,20 @@ class PreparationBonus {
   /** Bonus tier from completion percent. */
   static getBonusTier(percent) {
     if (percent >= 100) {
-      return { itemSlots: 2, autoShield: 0, label: 'Bonus Item x2' };
+      return { itemSlots: 2, autoShield: 0, tierKey: 'twoItems' };
     }
     if (percent >= 80) {
-      return { itemSlots: 1, autoShield: 10, label: 'Bonus Item x1 + Shield +10' };
+      return { itemSlots: 1, autoShield: 10, tierKey: 'oneItemShield' };
     }
     if (percent >= 50) {
-      return { itemSlots: 1, autoShield: 0, label: 'Bonus Item x1' };
+      return { itemSlots: 1, autoShield: 0, tierKey: 'oneItem' };
     }
-    return { itemSlots: 0, autoShield: 0, label: 'No Bonus' };
+    return { itemSlots: 0, autoShield: 0, tierKey: 'none' };
+  }
+
+  /** Localized tier label for UI display. */
+  static tierLabel(tier) {
+    return csT('prepTier.' + tier.tierKey);
   }
 
   /** Count selected items by type. */

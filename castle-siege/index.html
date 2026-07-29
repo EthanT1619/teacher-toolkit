@@ -14,53 +14,54 @@
     <div id="setup-screen" class="screen setup-screen">
       <div class="setup-inner">
         <header class="setup-header">
-          <h1 class="setup-title">⚔ Castle Siege</h1>
-          <p class="setup-subtitle">Lesson Setup — configure before class</p>
+          <button type="button" class="btn btn-secondary btn-language" data-i18n-aria="tool.castle-siege.aria.switchLanguage">한국어</button>
+          <h1 class="setup-title" data-i18n="tool.castle-siege.title">⚔ Castle Siege</h1>
+          <p class="setup-subtitle" data-i18n="tool.castle-siege.setup.subtitle">Lesson Setup — configure before class</p>
         </header>
 
         <div class="setup-body">
           <section class="setup-section">
-            <h2 class="setup-section-title">Teams</h2>
+            <h2 class="setup-section-title" data-i18n="tool.castle-siege.setup.teams">Teams</h2>
             <div class="setup-row">
               <label>
-                Blue Team Name
+                <span data-i18n="tool.castle-siege.setup.blueTeamNameLabel">Blue Team Name</span>
                 <input type="text" id="setup-blue-name" value="Blue Team" />
               </label>
               <label>
-                Red Team Name
+                <span data-i18n="tool.castle-siege.setup.redTeamNameLabel">Red Team Name</span>
                 <input type="text" id="setup-red-name" value="Red Team" />
               </label>
             </div>
           </section>
 
           <section class="setup-section">
-            <h2 class="setup-section-title">Castle HP</h2>
+            <h2 class="setup-section-title" data-i18n="tool.castle-siege.setup.castleHp">Castle HP</h2>
             <label class="setup-hp-label">
-              Starting HP (both teams)
+              <span data-i18n="tool.castle-siege.setup.startingHp">Starting HP (both teams)</span>
               <input type="number" id="setup-hp" min="10" max="500" value="100" />
             </label>
           </section>
 
           <section class="setup-section">
-            <h2 class="setup-section-title">Preparation Bonus</h2>
-            <p class="setup-hint">Homework Completed</p>
+            <h2 class="setup-section-title" data-i18n="tool.castle-siege.setup.preparationBonus">Preparation Bonus</h2>
+            <p class="setup-hint" data-i18n="tool.castle-siege.setup.homeworkCompleted">Homework Completed</p>
             <div class="prep-teams">
               <div class="prep-team blue-prep" id="prep-blue-block">
                 <h3 class="prep-team-title" id="prep-blue-title">Blue Team</h3>
                 <div class="homework-row">
                   <label class="hw-label">
-                    <span class="hw-label-text">Completed</span>
+                    <span class="hw-label-text" data-i18n="tool.castle-siege.setup.completed">Completed</span>
                     <input type="number" id="blue-hw-completed" min="0" value="0" />
                   </label>
                   <span class="hw-slash">/</span>
                   <label class="hw-label">
-                    <span class="hw-label-text">Total</span>
+                    <span class="hw-label-text" data-i18n="tool.castle-siege.setup.total">Total</span>
                     <input type="number" id="blue-hw-total" min="0" value="7" />
                   </label>
                 </div>
                 <p class="prep-summary" id="blue-prep-summary">No Bonus</p>
                 <div class="prep-item-area hidden" id="blue-prep-items">
-                  <p class="prep-item-hint">Choose Bonus Item:</p>
+                  <p class="prep-item-hint" data-i18n="tool.castle-siege.setup.chooseBonusItem">Choose Bonus Item:</p>
                   <div class="prep-item-choices" id="blue-item-choices"></div>
                   <p class="prep-selected" id="blue-prep-selected">Selected: (none)</p>
                 </div>
@@ -69,18 +70,18 @@
                 <h3 class="prep-team-title" id="prep-red-title">Red Team</h3>
                 <div class="homework-row">
                   <label class="hw-label">
-                    <span class="hw-label-text">Completed</span>
+                    <span class="hw-label-text" data-i18n="tool.castle-siege.setup.completed">Completed</span>
                     <input type="number" id="red-hw-completed" min="0" value="0" />
                   </label>
                   <span class="hw-slash">/</span>
                   <label class="hw-label">
-                    <span class="hw-label-text">Total</span>
+                    <span class="hw-label-text" data-i18n="tool.castle-siege.setup.total">Total</span>
                     <input type="number" id="red-hw-total" min="0" value="7" />
                   </label>
                 </div>
                 <p class="prep-summary" id="red-prep-summary">No Bonus</p>
                 <div class="prep-item-area hidden" id="red-prep-items">
-                  <p class="prep-item-hint">Choose Bonus Item:</p>
+                  <p class="prep-item-hint" data-i18n="tool.castle-siege.setup.chooseBonusItem">Choose Bonus Item:</p>
                   <div class="prep-item-choices" id="red-item-choices"></div>
                   <p class="prep-selected" id="red-prep-selected">Selected: (none)</p>
                 </div>
@@ -89,9 +90,9 @@
           </section>
 
           <section class="setup-section">
-            <h2 class="setup-section-title">Lesson Rounds</h2>
+            <h2 class="setup-section-title" data-i18n="tool.castle-siege.setup.lessonRounds">Lesson Rounds</h2>
             <div class="round-count-row">
-              <span class="round-count-label">Number of Rounds</span>
+              <span class="round-count-label" data-i18n="tool.castle-siege.setup.numberOfRounds">Number of Rounds</span>
               <div class="round-count-controls">
                 <button type="button" class="btn btn-count" id="btn-rounds-minus">−</button>
                 <input type="number" id="setup-round-count" min="1" max="10" value="3" />
@@ -103,7 +104,7 @@
         </div>
 
         <footer class="setup-footer">
-          <button type="button" class="btn btn-start" id="btn-start-battle">Start Battle →</button>
+          <button type="button" class="btn btn-start" id="btn-start-battle" data-i18n="tool.castle-siege.setup.startBattle">Start Battle →</button>
         </footer>
       </div>
     </div>
@@ -117,9 +118,10 @@
         <span class="round-name" id="round-name">Vocabulary</span>
       </div>
       <div class="header-controls">
-        <button type="button" class="btn btn-icon" id="btn-mute" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
-        <button type="button" class="btn btn-secondary btn-header" id="btn-end-round">End Round →</button>
-        <button type="button" class="btn btn-secondary btn-header" id="btn-back-setup">← Setup</button>
+        <button type="button" class="btn btn-secondary btn-language" data-i18n-aria="tool.castle-siege.aria.switchLanguage">한국어</button>
+        <button type="button" class="btn btn-icon" id="btn-mute" data-i18n-title="tool.castle-siege.battle.toggleSound" data-i18n-aria="tool.castle-siege.battle.toggleSound" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        <button type="button" class="btn btn-secondary btn-header" id="btn-end-round" data-i18n="tool.castle-siege.battle.endRound">End Round →</button>
+        <button type="button" class="btn btn-secondary btn-header" id="btn-back-setup" data-i18n="tool.castle-siege.battle.backToSetup">← Setup</button>
       </div>
     </header>
 
@@ -316,10 +318,10 @@
           </button>
         </div>
         <div class="action-grid">
-          <button class="btn btn-action attack" data-team="blue" data-action="attack">⚔ Attack</button>
-          <button class="btn btn-action repair" data-team="blue" data-action="repair">💚 Repair</button>
-          <button class="btn btn-action shield" data-team="blue" data-action="shield">🛡 Shield</button>
-          <button class="btn btn-action charge" data-team="blue" data-action="charge">⚡ Charge</button>
+          <button class="btn btn-action attack" data-team="blue" data-action="attack" data-i18n="tool.castle-siege.battle.attack">⚔ Attack</button>
+          <button class="btn btn-action repair" data-team="blue" data-action="repair" data-i18n="tool.castle-siege.battle.repair">💚 Repair</button>
+          <button class="btn btn-action shield" data-team="blue" data-action="shield" data-i18n="tool.castle-siege.battle.shield">🛡 Shield</button>
+          <button class="btn btn-action charge" data-team="blue" data-action="charge" data-i18n="tool.castle-siege.battle.charge">⚡ Charge</button>
         </div>
       </div>
       <div class="team-actions red-actions" id="red-actions">
@@ -335,10 +337,10 @@
           </button>
         </div>
         <div class="action-grid">
-          <button class="btn btn-action attack" data-team="red" data-action="attack">⚔ Attack</button>
-          <button class="btn btn-action repair" data-team="red" data-action="repair">💚 Repair</button>
-          <button class="btn btn-action shield" data-team="red" data-action="shield">🛡 Shield</button>
-          <button class="btn btn-action charge" data-team="red" data-action="charge">⚡ Charge</button>
+          <button class="btn btn-action attack" data-team="red" data-action="attack" data-i18n="tool.castle-siege.battle.attack">⚔ Attack</button>
+          <button class="btn btn-action repair" data-team="red" data-action="repair" data-i18n="tool.castle-siege.battle.repair">💚 Repair</button>
+          <button class="btn btn-action shield" data-team="red" data-action="shield" data-i18n="tool.castle-siege.battle.shield">🛡 Shield</button>
+          <button class="btn btn-action charge" data-team="red" data-action="charge" data-i18n="tool.castle-siege.battle.charge">⚡ Charge</button>
         </div>
       </div>
     </footer>
@@ -349,7 +351,7 @@
       <div class="modal winner-modal">
         <div class="winner-crown">👑</div>
         <h2 class="winner-title" id="winner-title">Blue Team Wins!</h2>
-        <button class="btn btn-primary" id="btn-reset-after-win">Back to Setup</button>
+        <button class="btn btn-primary" id="btn-reset-after-win" data-i18n="tool.castle-siege.modals.backToSetup">Back to Setup</button>
       </div>
     </div>
 
@@ -357,9 +359,9 @@
     <div class="modal-overlay hidden" id="lesson-complete-modal">
       <div class="modal winner-modal">
         <div class="winner-crown">📜</div>
-        <h2 class="winner-title">All Rounds Complete!</h2>
-        <p class="modal-sub">Great job — the lesson is finished.</p>
-        <button class="btn btn-primary" id="btn-back-setup-complete">Back to Setup</button>
+        <h2 class="winner-title" data-i18n="tool.castle-siege.modals.allRoundsComplete">All Rounds Complete!</h2>
+        <p class="modal-sub" data-i18n="tool.castle-siege.modals.lessonFinished">Great job — the lesson is finished.</p>
+        <button class="btn btn-primary" id="btn-back-setup-complete" data-i18n="tool.castle-siege.modals.backToSetup">Back to Setup</button>
       </div>
     </div>
   </div>
@@ -372,6 +374,6 @@
   <script src="js/SetupManager.js"></script>
   <script src="js/UIManager.js"></script>
   <script src="js/Game.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

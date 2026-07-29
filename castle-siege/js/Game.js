@@ -69,9 +69,21 @@ class Game {
   }
 
   get currentRoundName() {
-    return this.lessonConfig
-      ? this.lessonConfig.rounds[this.currentRoundIndex]
-      : '';
+    if (!this.lessonConfig) return '';
+    const raw = this.lessonConfig.rounds[this.currentRoundIndex];
+    return SetupManager.displayRoundName(raw, this.currentRoundIndex);
+  }
+
+  refreshI18n() {
+    if (this.setup && typeof this.setup.refreshI18n === 'function') {
+      this.setup.refreshI18n();
+    }
+    if (this.ui && typeof this.ui.refreshI18n === 'function') {
+      this.ui.refreshI18n();
+    }
+    if (this.lessonConfig) {
+      this._render();
+    }
   }
 
   get isLastRound() {
@@ -108,7 +120,7 @@ class Game {
 
   startBattle(config) {
     if (!config.rounds || config.rounds.length < 1) {
-      alert('Please configure at least one round.');
+      alert(csT('alerts.needConfiguredRound'));
       return;
     }
 
@@ -165,7 +177,7 @@ class Game {
       if (!result) return;
 
       if (result.alreadyActive) {
-        alert('Charge is already active for this team!');
+        alert(csT('alerts.chargeActive'));
         return;
       }
 
