@@ -620,10 +620,10 @@
           <nav class="dropdown__menu" aria-label="유틸 도구">
             <button type="button" class="dropdown__item" data-guide="guide-classroom-timer">Classroom Timer</button>
             <button type="button" class="dropdown__item" data-guide="guide-makeup-scheduler">Makeup Scheduler</button>
-            <button type="button" class="dropdown__item" data-guide="guide-participation-tracker">Participation Tracker</button>
-            <button type="button" class="dropdown__item" data-guide="guide-random-picker">Random Picker</button>
-            <button type="button" class="dropdown__item" data-guide="guide-team-maker">Team Maker</button>
-            <button type="button" class="dropdown__item" data-guide="guide-score-board">Score Board</button>
+            <button type="button" class="dropdown__item" data-guide="guide-participation-tracker" data-i18n="tool.participation-tracker.help.menuLabel">Participation Tracker</button>
+            <button type="button" class="dropdown__item" data-guide="guide-random-picker" data-i18n="tool.class-random-picker.help.menuLabel">Random Picker</button>
+            <button type="button" class="dropdown__item" data-guide="guide-score-board" data-i18n="tool.edu-scoreboard.help.menuLabel">Score Board</button>
+            <button type="button" class="dropdown__item" data-guide="guide-team-maker" data-i18n="tool.team-maker.help.menuLabel">Team Maker</button>
           </nav>
         </details>
 
@@ -636,13 +636,13 @@
             </svg>
           </summary>
           <nav class="dropdown__menu" aria-label="학습툴">
-            <button type="button" class="dropdown__item" data-guide="guide-grammar-checkpoint">Grammar Checkpoint β</button>
-            <button type="button" class="dropdown__item" data-guide="guide-phonics-hunt">Phonics Hunt</button>
-            <button type="button" class="dropdown__item" data-guide="guide-sentence-battle">Sentence Battle</button>
+            <button type="button" class="dropdown__item" data-guide="guide-grammar-checkpoint" data-i18n="tool.grammar-checkpoint.help.menuLabel">Grammar Checkpoint</button>
+            <button type="button" class="dropdown__item" data-guide="guide-phonics-hunt" data-i18n="tool.phonics-hunt.help.menuLabel">Phonics Hunt</button>
+            <button type="button" class="dropdown__item" data-guide="guide-sentence-battle" data-i18n="tool.sentence-battle.help.menuLabel">Sentence Battle</button>
             <button type="button" class="dropdown__item" data-guide="guide-sentence-kitchen">Sentence Kitchen β</button>
             <button type="button" class="dropdown__item" data-guide="guide-story-forge">Story Forge β</button>
-            <button type="button" class="dropdown__item" data-guide="guide-vocab-study">Vocab Study Tool</button>
-            <button type="button" class="dropdown__item" data-guide="guide-wh-factory">WH Factory β</button>
+            <button type="button" class="dropdown__item" data-guide="guide-vocab-study" data-i18n="tool.vocab-study-mobile.help.menuLabel">Vocab Study Tool</button>
+            <button type="button" class="dropdown__item" data-guide="guide-wh-factory" data-i18n="tool.5w1h-factory.help.menuLabel">WH Factory</button>
           </nav>
         </details>
 
@@ -655,16 +655,17 @@
             </svg>
           </summary>
           <nav class="dropdown__menu" aria-label="활동">
-            <button type="button" class="dropdown__item" data-guide="guide-barrel-game">Barrel Game</button>
-            <button type="button" class="dropdown__item" data-guide="guide-castle-siege">Castle Siege</button>
+            <button type="button" class="dropdown__item" data-guide="guide-barrel-game" data-i18n="tool.barrel-game.help.menuLabel">Barrel Game</button>
             <button type="button" class="dropdown__item" data-guide="guide-cannon-game">Cannon Game</button>
-            <button type="button" class="dropdown__item" data-guide="guide-dice-tool">Dice Tool</button>
-            <button type="button" class="dropdown__item" data-guide="guide-ladder-game">Ladder Game</button>
-            <button type="button" class="dropdown__item" data-guide="guide-mystery-box">Mystery Box</button>
-            <button type="button" class="dropdown__item" data-guide="guide-nerf-gun">Nerf Gun Roulette</button>
-            <button type="button" class="dropdown__item" data-guide="guide-pirate-race">Pirate Race</button>
-            <button type="button" class="dropdown__item" data-guide="guide-treasure-hunt">Treasure Hunt</button>
-            <button type="button" class="dropdown__item" data-guide="guide-tug-of-war">Tug of War</button>
+            <button type="button" class="dropdown__item" data-guide="guide-castle-siege" data-i18n="tool.castle-siege.help.menuLabel">Castle Siege</button>
+            <button type="button" class="dropdown__item" data-guide="guide-dice-tool" data-i18n="tool.dice-chance.help.menuLabel">Dice Chance</button>
+            <button type="button" class="dropdown__item" data-guide="guide-fortress-battle" data-i18n="tool.fortress-battle.help.menuLabel">Fortress Battle</button>
+            <button type="button" class="dropdown__item" data-guide="guide-ladder-game" data-i18n="tool.ladder-game.help.menuLabel">Ladder Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-mystery-box" data-i18n="tool.mystery-box-picker.help.menuLabel">Mystery Box</button>
+            <button type="button" class="dropdown__item" data-guide="guide-nerf-gun" data-i18n="tool.nerfgun-board.help.menuLabel">Nerf Gun Roulette</button>
+            <button type="button" class="dropdown__item" data-guide="guide-pirate-race" data-i18n="tool.pirate-race.help.menuLabel">Pirate Race</button>
+            <button type="button" class="dropdown__item" data-guide="guide-treasure-hunt" data-i18n="tool.treasure-hunt.help.menuLabel">Treasure Hunt</button>
+            <button type="button" class="dropdown__item" data-guide="guide-tug-of-war" data-i18n="tool.juldarigi.help.menuLabel">Tug of War</button>
           </nav>
         </details>
       </div>
@@ -780,107 +781,106 @@ Sophia</p>
       </article>
 
       <article class="help-card" id="guide-participation-tracker">
-        <h2>Participation Tracker</h2>
-        <h3>소개</h3>
-        <p>학생별 발표와 참여 횟수를 기록하는 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.participation-tracker.help.title">Participation Tracker</h2>
+        <h3 data-i18n="tool.participation-tracker.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.participation-tracker.help.intro">Track how many times each student participates during class.</p>
+        <h3 data-i18n="tool.participation-tracker.help.usageHeading">How to use</h3>
         <ul>
-          <li>학생 이름을 입력합니다.</li>
-          <li>수업 시작을 누릅니다.</li>
-          <li>학생 카드를 터치하면 참여 횟수가 1 증가합니다.</li>
-          <li>학생 카드를 길게 누르면 참여 횟수가 1 감소합니다.</li>
+          <li data-i18n="tool.participation-tracker.help.usage1">Enter student names.</li>
+          <li data-i18n="tool.participation-tracker.help.usage2">Press Start class.</li>
+          <li data-i18n="tool.participation-tracker.help.usage3">Tap a student card to add 1.</li>
+          <li data-i18n="tool.participation-tracker.help.usage4">Long-press a card to subtract 1.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>학생 이름은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3 data-i18n="tool.participation-tracker.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.participation-tracker.help.inputLine1">Enter one student name per line (press Enter after each line).</p>
         <p class="help-pre">Kevin
 Emma
 Sophia
 Liam</p>
-        <h3>주의사항</h3>
-        <p>길게 누르기는 약 0.5초 정도 유지해야 작동합니다. 프리셋을 불러올 때 기존 횟수를 유지할지 확인이 나올 수 있습니다.</p>
+        <h3 data-i18n="tool.participation-tracker.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.participation-tracker.help.notes">Long-press takes about 0.5 seconds. Loading a preset may ask whether to keep existing counts.</p>
       </article>
 
       <article class="help-card" id="guide-random-picker">
-        <h2>Class Random Picker</h2>
-        <h3>소개</h3>
-        <p>학생을 무작위로 뽑는 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.class-random-picker.help.title">Random Picker</h2>
+        <h3 data-i18n="tool.class-random-picker.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.class-random-picker.help.intro">Randomly pick a student from your class list.</p>
+        <h3 data-i18n="tool.class-random-picker.help.usageHeading">How to use</h3>
         <ul>
-          <li>학생 이름을 추가합니다.</li>
-          <li>랜덤 뽑기 버튼을 누릅니다.</li>
-          <li>이미 뽑힌 학생을 제외할지 선택할 수 있습니다.</li>
-          <li>뽑기 초기화로 다시 전체 학생을 대상으로 뽑을 수 있습니다.</li>
+          <li data-i18n="tool.class-random-picker.help.usage1">Add student names.</li>
+          <li data-i18n="tool.class-random-picker.help.usage2">Press Pick Random.</li>
+          <li data-i18n="tool.class-random-picker.help.usage3">Optionally exclude already picked students.</li>
+          <li data-i18n="tool.class-random-picker.help.usage4">Use Reset Picks to pick from the full list again.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>학생 이름을 입력한 뒤 추가합니다. 이름 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.</p>
-        <h3>주의사항</h3>
-        <p>뽑기 초기화는 뽑힌 상태만 초기화합니다. 학생 목록과 뽑기 기록 전체를 지우려면 전체 삭제를 사용합니다.</p>
+        <h3 data-i18n="tool.class-random-picker.help.inputHeading">Input</h3>
+        <p data-i18n="tool.class-random-picker.help.inputLine1">Type a name and tap Add. While editing, Enter saves and Esc cancels.</p>
+        <h3 data-i18n="tool.class-random-picker.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.class-random-picker.help.notes">Reset Picks clears pick state only. Use Clear All to remove the entire student list and history.</p>
       </article>
 
       <article class="help-card" id="guide-team-maker">
-        <h2>Team Maker</h2>
-        <h3>소개</h3>
-        <p>학생들을 자동으로 팀에 배정하는 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.team-maker.help.title">Team Maker</h2>
+        <h3 data-i18n="tool.team-maker.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.team-maker.help.intro">Automatically assign students to teams.</p>
+        <h3 data-i18n="tool.team-maker.help.usageHeading">How to use</h3>
         <ul>
-          <li>학생 이름을 추가합니다.</li>
-          <li>팀 수 기준 또는 팀당 인원 기준을 선택합니다.</li>
-          <li>Assign Teams를 누릅니다.</li>
-          <li>다시 섞고 싶으면 Reassign을 누릅니다.</li>
+          <li data-i18n="tool.team-maker.help.usage1">Add student names.</li>
+          <li data-i18n="tool.team-maker.help.usage2">Choose by team count or members per team.</li>
+          <li data-i18n="tool.team-maker.help.usage3">Press Assign Teams.</li>
+          <li data-i18n="tool.team-maker.help.usage4">Press Reassign to shuffle again.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>학생 이름을 입력한 뒤 추가합니다. 이름 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.</p>
-        <h3>주의사항</h3>
-        <p>최소 2명 이상이 필요합니다. 팀 수가 학생 수보다 많으면 자동으로 조정됩니다.</p>
+        <h3 data-i18n="tool.team-maker.help.inputHeading">Input</h3>
+        <p data-i18n="tool.team-maker.help.inputLine1">Type a name and tap Add. While editing, Enter saves and Esc cancels.</p>
+        <h3 data-i18n="tool.team-maker.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.team-maker.help.notes">At least 2 students are required. If team count exceeds student count, it is adjusted automatically.</p>
       </article>
 
       <article class="help-card" id="guide-score-board">
-        <h2>Score Board</h2>
-        <h3>소개</h3>
-        <p>두 팀의 점수와 자원을 관리하는 점수판입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.edu-scoreboard.help.title">Score Board</h2>
+        <h3 data-i18n="tool.edu-scoreboard.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.edu-scoreboard.help.intro">Manage scores and resources for two teams.</p>
+        <h3 data-i18n="tool.edu-scoreboard.help.usageHeading">How to use</h3>
         <ul>
-          <li>팀 이름과 Bomb Count를 설정합니다.</li>
-          <li>점수와 Candy, Shield, Stamp를 조정합니다.</li>
-          <li>메뉴에서 Bomb, Switch Point, Switch Everything을 사용할 수 있습니다.</li>
+          <li data-i18n="tool.edu-scoreboard.help.usage1">Set team names and bomb count.</li>
+          <li data-i18n="tool.edu-scoreboard.help.usage2">Adjust Score, Candy, Shield, and Stamp.</li>
+          <li data-i18n="tool.edu-scoreboard.help.usage3">Use the menu for Bomb, Switch Point, and Switch Everything.</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>이 도구는 새로고침하면 기록이 사라집니다. 필요한 경우 수업 중 화면을 유지하세요.</p>
-        <p>Switch Point는 점수만 교환합니다. Switch Everything은 팀의 전체 상태를 교환합니다.</p>
+        <h3 data-i18n="tool.edu-scoreboard.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.edu-scoreboard.help.notes">Scores reset on refresh. Keep the tab open during class if you need to preserve the board.</p>
       </article>
 
       <article class="help-card" id="guide-grammar-checkpoint">
-        <h2>Grammar Checkpoint</h2>
-        <h3>소개</h3>
-        <p>문법 문장을 보고 맞는 문장인지 틀린 문장인지 판단하는 활동입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.grammar-checkpoint.help.title">Grammar Checkpoint</h2>
+        <h3 data-i18n="tool.grammar-checkpoint.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.grammar-checkpoint.help.intro">Decide whether each grammar sentence is correct or incorrect.</p>
+        <h3 data-i18n="tool.grammar-checkpoint.help.usageHeading">How to use</h3>
         <ul>
-          <li>Day, Rule, 문항 수를 선택합니다.</li>
-          <li>Start를 누릅니다.</li>
-          <li>문장을 보고 Approve 또는 Reject를 선택합니다.</li>
-          <li>필요한 경우 Fix Sentence를 진행합니다.</li>
-          <li>결과 화면에서 점수를 확인합니다.</li>
+          <li data-i18n="tool.grammar-checkpoint.help.usage1">Choose Day, Rule, and number of questions.</li>
+          <li data-i18n="tool.grammar-checkpoint.help.usage2">Press Start.</li>
+          <li data-i18n="tool.grammar-checkpoint.help.usage3">Approve or Reject each sentence.</li>
+          <li data-i18n="tool.grammar-checkpoint.help.usage4">Complete Fix Sentence when prompted.</li>
+          <li data-i18n="tool.grammar-checkpoint.help.usage5">Review your score on the results screen.</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>게임 중에는 Teacher 패널이 숨겨집니다. 오답인 경우 Fix 단계 없이 다음 문항으로 넘어갈 수 있습니다.</p>
+        <h3 data-i18n="tool.grammar-checkpoint.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.grammar-checkpoint.help.notes">The Teacher panel is hidden during play. Some wrong answers skip Fix and move to the next sentence.</p>
       </article>
 
       <article class="help-card" id="guide-sentence-battle">
-        <h2>Sentence Battle</h2>
-        <h3>소개</h3>
-        <p>문장 순서를 맞히며 몬스터와 전투하는 RPG형 문장 배열 게임입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.sentence-battle.help.title">Sentence Battle</h2>
+        <h3 data-i18n="tool.sentence-battle.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.sentence-battle.help.intro">An RPG-style sentence ordering game where you battle monsters by arranging words in the correct order.</p>
+        <h3 data-i18n="tool.sentence-battle.help.usageHeading">How to use</h3>
         <ul>
-          <li>문장을 추가합니다.</li>
-          <li>몬스터와 보스 HP를 설정합니다.</li>
-          <li>게임을 시작합니다.</li>
-          <li>단어 카드를 올바른 순서로 클릭합니다.</li>
-          <li>보스전에서 아이템을 사용할 수 있습니다.</li>
+          <li data-i18n="tool.sentence-battle.help.usage1">Add your sentences.</li>
+          <li data-i18n="tool.sentence-battle.help.usage2">Set monster and boss HP.</li>
+          <li data-i18n="tool.sentence-battle.help.usage3">Start the game.</li>
+          <li data-i18n="tool.sentence-battle.help.usage4">Click word cards in the correct order.</li>
+          <li data-i18n="tool.sentence-battle.help.usage5">Use items during the boss fight.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>문장 입력 후 Enter를 누르면 문장이 추가됩니다.</p>
-        <h3>주의사항</h3>
-        <p>[in common]처럼 묶인 표현은 하나의 카드로 처리됩니다. 아이템은 보스전에서만 사용할 수 있습니다.</p>
+        <h3 data-i18n="tool.sentence-battle.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.sentence-battle.help.input">Press Enter after typing a sentence to add it.</p>
+        <h3 data-i18n="tool.sentence-battle.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.sentence-battle.help.notes">Bracketed phrases like [in common] count as one card. Items can only be used during the boss fight.</p>
       </article>
 
       <article class="help-card" id="guide-sentence-kitchen">
@@ -920,83 +920,83 @@ Liam</p>
       </article>
 
       <article class="help-card" id="guide-vocab-study">
-        <h2>Vocab Study Tool</h2>
-        <h3>소개</h3>
-        <p>단어를 3단계로 학습하는 카드형 어휘 활동입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.vocab-study-mobile.help.title">Vocab Study Tool</h2>
+        <h3 data-i18n="tool.vocab-study-mobile.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.vocab-study-mobile.help.intro">A card-based vocabulary activity with three study rounds.</p>
+        <h3 data-i18n="tool.vocab-study-mobile.help.usageHeading">How to use</h3>
         <ul>
-          <li>필요한 필드를 선택합니다.</li>
-          <li>단어와 뜻을 추가합니다.</li>
-          <li>프리셋을 저장하거나 불러올 수 있습니다.</li>
-          <li>학습을 시작합니다.</li>
-          <li>페어 맞추기, 뜻 확인, 스펠링 활동을 진행합니다.</li>
+          <li data-i18n="tool.vocab-study-mobile.help.usage1">Select the fields you need.</li>
+          <li data-i18n="tool.vocab-study-mobile.help.usage2">Add words and meanings.</li>
+          <li data-i18n="tool.vocab-study-mobile.help.usage3">Save or load presets.</li>
+          <li data-i18n="tool.vocab-study-mobile.help.usage4">Start study.</li>
+          <li data-i18n="tool.vocab-study-mobile.help.usage5">Complete pair matching, meaning quiz, and spelling activities.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>입력란에서 Enter를 누르면 단어가 추가됩니다.</p>
-        <h3>주의사항</h3>
-        <p>타이머를 켜면 시간이 끝났을 때 라운드가 강제로 종료될 수 있습니다.</p>
+        <h3 data-i18n="tool.vocab-study-mobile.help.inputHeading">Input</h3>
+        <p data-i18n="tool.vocab-study-mobile.help.inputLine1">Press Enter in an input field to add a word.</p>
+        <h3 data-i18n="tool.vocab-study-mobile.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.vocab-study-mobile.help.notes">When the timer is on, a round may end automatically when time runs out.</p>
       </article>
 
       <article class="help-card" id="guide-wh-factory">
-        <h2>WH Factory</h2>
-        <h3>소개</h3>
-        <p>Who, What, When, Where, Why, How 문장을 분류하는 드래그 활동입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.5w1h-factory.help.title">WH Factory</h2>
+        <h3 data-i18n="tool.5w1h-factory.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.5w1h-factory.help.intro">A drag activity where students sort Who, What, When, Where, Why, and How sentences into the matching boxes.</p>
+        <h3 data-i18n="tool.5w1h-factory.help.usageHeading">How to use</h3>
         <ul>
-          <li>문장을 입력합니다.</li>
-          <li>Start Game을 누릅니다.</li>
-          <li>카드를 알맞은 5W1H 박스로 드래그합니다.</li>
-          <li>결과를 확인합니다.</li>
+          <li data-i18n="tool.5w1h-factory.help.usage1">Enter your sentences.</li>
+          <li data-i18n="tool.5w1h-factory.help.usage2">Press Start Game.</li>
+          <li data-i18n="tool.5w1h-factory.help.usage3">Drag each card to the correct 5W1H box.</li>
+          <li data-i18n="tool.5w1h-factory.help.usage4">Review your score on the results screen.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>문장은 Enter를 눌러 한 줄씩 입력합니다.</p>
+        <h3 data-i18n="tool.5w1h-factory.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.5w1h-factory.help.inputLine1">Enter one sentence per line (press Enter after each line).</p>
         <p class="help-pre">Who: The boy is running.
 Where: She lives in Seoul.
 Why: He was late.</p>
-        <h3>주의사항</h3>
-        <p>오답 카드는 다시 원래 위치로 돌아갑니다. 박스 밖에 놓으면 점수 변화가 없습니다.</p>
+        <h3 data-i18n="tool.5w1h-factory.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.5w1h-factory.help.notes">Wrong cards return to the belt. Dropping outside a box does not change your score.</p>
       </article>
 
       <article class="help-card" id="guide-phonics-hunt">
-        <h2>Phonics Hunt</h2>
-        <h3>소개</h3>
-        <p>단어가 적힌 칸을 두 팀이 번갈아 열고, 숨겨진 별 칸을 더 많이 찾는 학습 게임입니다. 화면 제목은 <strong>단어 별 찾기</strong>로 표시됩니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.phonics-hunt.help.title">Phonics Hunt</h2>
+        <h3 data-i18n="tool.phonics-hunt.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.phonics-hunt.help.intro">A two-team learning game where teams take turns opening word tiles and finding hidden stars.</p>
+        <h3 data-i18n="tool.phonics-hunt.help.usageHeading">How to use</h3>
         <ul>
-          <li>단어를 입력하고 팀 이름, 별 개수, 별 점수를 설정합니다.</li>
-          <li>게임 시작을 누르면 단어 수에 맞는 칸이 자동으로 만들어집니다.</li>
-          <li>각 칸에는 처음부터 단어가 보이고, 별은 정해진 개수만큼 무작위로 숨겨집니다.</li>
-          <li>파란 팀 또는 빨간 팀 턴 버튼을 누른 뒤, 학생이 말한 단어에 해당하는 칸을 클릭해 엽니다.</li>
-          <li>별 칸을 열면 해당 팀에 점수가 더해집니다.</li>
-          <li>모든 칸을 열면 게임이 끝나고 점수를 비교합니다.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage1">Enter words and set team names, star count, and star points.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage2">Press Start Game to create tiles automatically based on the word count.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage3">Each tile shows its word from the start; stars are hidden randomly in the set number of tiles.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage4">Press the Blue Team or Red Team turn button, then open the tile matching the word the student says.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage5">Opening a star tile adds points to that team.</li>
+          <li data-i18n="tool.phonics-hunt.help.usage6">When all tiles are opened, the game ends and scores are compared.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>단어는 Enter를 눌러 한 줄에 하나씩 입력합니다. 최소 2개 이상 필요합니다.</p>
-        <h3>주의사항</h3>
-        <p>별 개수는 1개부터 입력한 단어 개수까지 설정할 수 있습니다. 점수 초기화는 점수만 다시 0으로 돌리고, 단어 수정은 설정 화면으로 돌아갑니다.</p>
+        <h3 data-i18n="tool.phonics-hunt.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.phonics-hunt.help.inputLine1">Enter one word per line (press Enter after each line). At least 2 words are required.</p>
+        <h3 data-i18n="tool.phonics-hunt.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.phonics-hunt.help.notes">Star count can be set from 1 up to the number of words entered. Reset Scores clears points only; Edit Words returns to the setup screen.</p>
       </article>
 
       <article class="help-card" id="guide-barrel-game">
-        <h2>Barrel Game</h2>
-        <h3>소개</h3>
-        <p>구멍을 선택해 칼을 꽂고, 통아저씨가 튀어나오는 칸을 찾는 게임입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.barrel-game.help.title">Barrel Game</h2>
+        <h3 data-i18n="tool.barrel-game.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.barrel-game.help.intro">Pick a hole and stab a sword into the barrel — find which slot makes the pirate pop out.</p>
+        <h3 data-i18n="tool.barrel-game.help.usageHeading">How to use</h3>
         <ul>
-          <li>구멍 수와 효과음을 설정합니다.</li>
-          <li>게임을 시작합니다.</li>
-          <li>칼 또는 구멍을 선택합니다.</li>
-          <li>통아저씨가 나오면 라운드가 종료됩니다.</li>
-          <li>Next 또는 다시 시작으로 다음 라운드를 진행합니다.</li>
+          <li data-i18n="tool.barrel-game.help.usage1">Set the number of holes and sound options.</li>
+          <li data-i18n="tool.barrel-game.help.usage2">Press Start Game.</li>
+          <li data-i18n="tool.barrel-game.help.usage3">Pick a sword or hole number.</li>
+          <li data-i18n="tool.barrel-game.help.usage4">When the pirate pops out, the round ends.</li>
+          <li data-i18n="tool.barrel-game.help.usage5">Press Next or Reset to play another round.</li>
         </ul>
-        <h3>단축키</h3>
+        <h3 data-i18n="tool.barrel-game.help.shortcutsHeading">Keyboard shortcuts</h3>
         <ul>
-          <li>숫자 1–N: 구멍 선택</li>
-          <li>R: 다시 시작</li>
-          <li>Esc: 취소</li>
-          <li>Enter: 게임 종료 후 다음 진행</li>
+          <li data-i18n="tool.barrel-game.help.shortcutNumbers">1–N: select a hole</li>
+          <li data-i18n="tool.barrel-game.help.shortcutR">R: reset</li>
+          <li data-i18n="tool.barrel-game.help.shortcutEsc">Esc: back to setup</li>
+          <li data-i18n="tool.barrel-game.help.shortcutEnter">Enter: next round after game over</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>메뉴에는 Barrel Game으로 표시되지만, 실제 화면 제목은 통아저씨 게임입니다.</p>
+        <h3 data-i18n="tool.barrel-game.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.barrel-game.help.notes">The pirate's position is randomized each round.</p>
       </article>
 
       <article class="help-card" id="guide-cannon-game">
@@ -1015,173 +1015,189 @@ Why: He was late.</p>
       </article>
 
       <article class="help-card" id="guide-dice-tool">
-        <h2>Dice Tool</h2>
-        <h3>소개</h3>
-        <p>주사위 결과에 따라 숨겨진 보상이나 미션을 공개하는 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.dice-chance.help.title">Dice Chance</h2>
+        <h3 data-i18n="tool.dice-chance.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.dice-chance.help.intro">Reveal hidden rewards or missions based on dice results.</p>
+        <h3 data-i18n="tool.dice-chance.help.usageHeading">How to use</h3>
         <ul>
-          <li>최소 6개의 보상 또는 미션을 입력합니다.</li>
-          <li>Start를 누릅니다.</li>
-          <li>결과 행을 클릭해 내용을 공개합니다.</li>
-          <li>Reset Round로 새 라운드를 시작합니다.</li>
+          <li data-i18n="tool.dice-chance.help.usage1">Enter at least 6 rewards or missions.</li>
+          <li data-i18n="tool.dice-chance.help.usage2">Press Start Game.</li>
+          <li data-i18n="tool.dice-chance.help.usage3">Click a result row to reveal its content.</li>
+          <li data-i18n="tool.dice-chance.help.usage4">Press Reset Round to start a new round.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>보상 또는 미션은 Enter를 눌러 한 줄씩 입력합니다.</p>
-        <h3>단축키</h3>
+        <h3 data-i18n="tool.dice-chance.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.dice-chance.help.inputLine1">Enter one reward or mission per line (press Enter after each line).</p>
+        <h3 data-i18n="tool.dice-chance.help.shortcutsHeading">Keyboard shortcuts</h3>
         <ul>
-          <li>Esc: 닫기</li>
-          <li>R: 리셋</li>
-          <li>F: 전체화면</li>
-          <li>Enter/Space: 선택 항목 공개</li>
+          <li data-i18n="tool.dice-chance.help.shortcutEsc">Esc: back to setup</li>
+          <li data-i18n="tool.dice-chance.help.shortcutR">R: reset round</li>
+          <li data-i18n="tool.dice-chance.help.shortcutF">F: fullscreen</li>
+          <li data-i18n="tool.dice-chance.help.shortcutEnter">Enter/Space: reveal selected row</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>최소 6개 항목이 필요합니다.</p>
+        <h3 data-i18n="tool.dice-chance.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.dice-chance.help.notes">At least 6 items are required. With more than 6 items, 6 are chosen at random each round.</p>
       </article>
 
       <article class="help-card" id="guide-ladder-game">
-        <h2>Ladder Game</h2>
-        <h3>소개</h3>
-        <p>사다리타기로 순서나 결과를 정하는 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.ladder-game.help.title">Ladder Game</h2>
+        <h3 data-i18n="tool.ladder-game.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.ladder-game.help.intro">Use a ladder draw to assign order or results.</p>
+        <h3 data-i18n="tool.ladder-game.help.usageHeading">How to use</h3>
         <ul>
-          <li>결과 항목을 입력합니다.</li>
-          <li>게임을 시작합니다.</li>
-          <li>가림막을 클릭합니다.</li>
-          <li>번호를 선택해 결과를 확인합니다.</li>
-          <li>R키 또는 ↻ 버튼으로 새 라운드를 시작할 수 있습니다. (사다리가 다시 만들어지고 가림막이 내려갑니다)</li>
+          <li data-i18n="tool.ladder-game.help.usage1">Enter result items.</li>
+          <li data-i18n="tool.ladder-game.help.usage2">Press Start.</li>
+          <li data-i18n="tool.ladder-game.help.usage3">Click the cover to reveal the ladder.</li>
+          <li data-i18n="tool.ladder-game.help.usage4">Select a number to see the result.</li>
+          <li data-i18n="tool.ladder-game.help.usage5">Press R or ↻ to start a new round (ladder rebuilds and cover returns).</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>결과 항목은 Enter를 눌러 한 줄씩 입력합니다.</p>
-        <h3>단축키</h3>
+        <h3 data-i18n="tool.ladder-game.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.ladder-game.help.inputLine1">Enter one result item per line (press Enter after each line).</p>
+        <h3 data-i18n="tool.ladder-game.help.shortcutsHeading">Keyboard shortcuts</h3>
         <ul>
-          <li>R: 새 라운드 시작</li>
+          <li data-i18n="tool.ladder-game.help.shortcutR">R: new round</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>참가자 수는 결과 항목 수에 따라 자동으로 정해집니다.</p>
+        <h3 data-i18n="tool.ladder-game.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.ladder-game.help.notes">The number of participants is set automatically from the number of result items.</p>
       </article>
 
       <article class="help-card" id="guide-mystery-box">
-        <h2>Mystery Box</h2>
-        <h3>소개</h3>
-        <p>여러 항목을 박스에 숨기고 하나씩 공개하는 추첨 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.mystery-box-picker.help.title">Mystery Box</h2>
+        <h3 data-i18n="tool.mystery-box-picker.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.mystery-box-picker.help.intro">Hide several items in boxes and reveal them one at a time.</p>
+        <h3 data-i18n="tool.mystery-box-picker.help.usageHeading">How to use</h3>
         <ul>
-          <li>항목을 입력합니다.</li>
-          <li>게임을 시작합니다.</li>
-          <li>박스를 클릭해 숨겨진 내용을 확인합니다.</li>
-          <li>다시 섞기로 새 라운드를 진행할 수 있습니다.</li>
+          <li data-i18n="tool.mystery-box-picker.help.usage1">Enter your items.</li>
+          <li data-i18n="tool.mystery-box-picker.help.usage2">Press Start.</li>
+          <li data-i18n="tool.mystery-box-picker.help.usage3">Click a box to reveal its hidden content.</li>
+          <li data-i18n="tool.mystery-box-picker.help.usage4">Use Reshuffle to start a new round.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>항목은 Enter를 눌러 한 줄씩 입력합니다.</p>
-        <h3>단축키</h3>
+        <h3 data-i18n="tool.mystery-box-picker.help.inputHeading">Input format</h3>
+        <p data-i18n="tool.mystery-box-picker.help.inputLine1">Enter one item per line (press Enter after each line).</p>
+        <h3 data-i18n="tool.mystery-box-picker.help.shortcutsHeading">Keyboard shortcuts</h3>
         <ul>
-          <li>Esc: 닫기</li>
-          <li>R: 리셋</li>
-          <li>F: 전체화면</li>
-          <li>Enter/Space: 선택 항목 공개</li>
+          <li data-i18n="tool.mystery-box-picker.help.shortcutEsc">Esc: back to setup</li>
+          <li data-i18n="tool.mystery-box-picker.help.shortcutR">R: reshuffle</li>
+          <li data-i18n="tool.mystery-box-picker.help.shortcutF">F: fullscreen</li>
+          <li data-i18n="tool.mystery-box-picker.help.shortcutEnter">Enter/Space: reveal selected box</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>새 라운드마다 다시 섞기 옵션을 끄면 Reset 후에도 배치 순서가 유지됩니다.</p>
+        <h3 data-i18n="tool.mystery-box-picker.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.mystery-box-picker.help.notes">If "Reshuffle each new round" is off, item order stays the same after Reset.</p>
       </article>
 
       <article class="help-card" id="guide-nerf-gun">
-        <h2>Nerf Gun Roulette</h2>
-        <h3>소개</h3>
-        <p>여러 보드 이미지 중 하나를 무작위로 뽑는 슬롯형 활동 도구입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.nerfgun-board.help.title">Nerf Gun Roulette</h2>
+        <h3 data-i18n="tool.nerfgun-board.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.nerfgun-board.help.intro">A slot-style activity that randomly picks one of several board images.</p>
+        <h3 data-i18n="tool.nerfgun-board.help.usageHeading">How to use</h3>
         <ul>
-          <li>뽑기 버튼을 누릅니다.</li>
-          <li>슬롯 애니메이션이 진행됩니다.</li>
-          <li>결과 보드가 자동으로 표시됩니다.</li>
-          <li>뒤로 가기로 다시 뽑기 화면으로 돌아갑니다.</li>
+          <li data-i18n="tool.nerfgun-board.help.usage1">Press the Spin button.</li>
+          <li data-i18n="tool.nerfgun-board.help.usage2">Watch the slot animation.</li>
+          <li data-i18n="tool.nerfgun-board.help.usage3">The winning board is shown automatically.</li>
+          <li data-i18n="tool.nerfgun-board.help.usage4">Use the back button to return to the spin screen.</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>보드 목록은 고정되어 있으며, 화면에서 직접 항목을 수정하는 기능은 없습니다.</p>
+        <h3 data-i18n="tool.nerfgun-board.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.nerfgun-board.help.notes">The board list is fixed; you cannot edit items on screen.</p>
       </article>
 
       <article class="help-card" id="guide-pirate-race">
-        <h2>Pirate Race</h2>
-        <h3>소개</h3>
-        <p>두 팀이 해적선을 움직여 목표 지점에 먼저 도착하는 레이스 게임입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.pirate-race.help.title">Pirate Race</h2>
+        <h3 data-i18n="tool.pirate-race.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.pirate-race.help.intro">A race game where two teams move pirate ships toward the goal.</p>
+        <h3 data-i18n="tool.pirate-race.help.usageHeading">How to use</h3>
         <ul>
-          <li>목표 거리, Storm, Treasure 설정을 조정합니다.</li>
-          <li>+1부터 +6까지 이동 값을 선택하거나 Random Move를 사용합니다.</li>
-          <li>먼저 목표 지점에 도착한 팀이 승리합니다.</li>
+          <li data-i18n="tool.pirate-race.help.usage1">Adjust goal distance, Storm Mode, and Treasure Bonus settings.</li>
+          <li data-i18n="tool.pirate-race.help.usage2">Select move values +1 through +6 or use Random Move.</li>
+          <li data-i18n="tool.pirate-race.help.usage3">The first team to reach the goal wins.</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>턴제 게임이 아니므로 교사가 진행 순서를 직접 관리해야 합니다.</p>
+        <h3 data-i18n="tool.pirate-race.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.pirate-race.help.notes">This is not turn-enforced — the teacher manages play order.</p>
+      </article>
+
+      <article class="help-card" id="guide-fortress-battle">
+        <h2 data-i18n="tool.fortress-battle.help.title">Fortress Battle</h2>
+        <h3 data-i18n="tool.fortress-battle.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.fortress-battle.help.intro">A turn-based classroom battle where Team A and Team B attack each other's fortress HP.</p>
+        <h3 data-i18n="tool.fortress-battle.help.usageHeading">How to use</h3>
+        <ul>
+          <li data-i18n="tool.fortress-battle.help.usage1">Set starting HP and damage values in Game Settings, then press Apply.</li>
+          <li data-i18n="tool.fortress-battle.help.usage2">Switch turns with Team A Turn / Team B Turn.</li>
+          <li data-i18n="tool.fortress-battle.help.usage3">Choose Attack 1–4 to deal damage based on your configured values.</li>
+          <li data-i18n="tool.fortress-battle.help.usage4">When a fortress reaches 0 HP, the other team wins.</li>
+          <li data-i18n="tool.fortress-battle.help.usage5">Press New Game to restart.</li>
+        </ul>
+        <h3 data-i18n="tool.fortress-battle.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.fortress-battle.help.notes">Damage values are comma-separated numbers (e.g. 0,10,20,30). A value of 0 shows MISS!</p>
       </article>
 
       <article class="help-card" id="guide-castle-siege">
-        <h2>Castle Siege</h2>
-        <h3>소개</h3>
-        <p>두 팀의 성 HP를 공격·수리·방어하며 라운드별로 대결하는 전투형 활동입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.castle-siege.help.title">Castle Siege</h2>
+        <h3 data-i18n="tool.castle-siege.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.castle-siege.help.intro">A battle activity where two teams attack, repair, and defend castle HP across lesson rounds.</p>
+        <h3 data-i18n="tool.castle-siege.help.usageHeading">How to use</h3>
         <ul>
-          <li>설정 화면에서 팀 이름, 성 HP, 숙제 완료 보너스, 수업 라운드 수와 이름을 정합니다.</li>
-          <li>Start Battle을 누르면 전투 화면으로 넘어갑니다.</li>
-          <li>각 팀 아래 Attack, Repair, Shield, Charge 버튼으로 행동합니다.</li>
-          <li>Attack은 상대 성 HP를 깎고, Repair는 내 성 HP를 회복합니다.</li>
-          <li>Shield는 방어막을 쌓고, Charge는 다음 턴에 행동을 두 번 할 수 있게 합니다.</li>
-          <li>상대 성 HP가 0이 되면 그 라운드를 이깁니다. End Round로 다음 라운드로 넘길 수도 있습니다.</li>
-          <li>마지막 라운드까지 진행하면 수업이 끝납니다.</li>
+          <li data-i18n="tool.castle-siege.help.usage1">On the setup screen, set team names, castle HP, homework bonus, and lesson rounds.</li>
+          <li data-i18n="tool.castle-siege.help.usage2">Press Start Battle to enter the battle screen.</li>
+          <li data-i18n="tool.castle-siege.help.usage3">Use Attack, Repair, Shield, and Charge under each team.</li>
+          <li data-i18n="tool.castle-siege.help.usage4">Attack reduces the opponent's castle HP; Repair restores your team's HP.</li>
+          <li data-i18n="tool.castle-siege.help.usage5">Shield builds defense; Charge lets a team act twice on the next turn.</li>
+          <li data-i18n="tool.castle-siege.help.usage6">When an opponent's castle HP reaches 0, that team wins the round. End Round advances to the next round.</li>
+          <li data-i18n="tool.castle-siege.help.usage7">After the final round, the lesson is complete.</li>
         </ul>
-        <h3>숙제 보너스</h3>
+        <h3 data-i18n="tool.castle-siege.help.prepHeading">Homework bonus</h3>
         <ul>
-          <li>숙제 완료율 50% 이상: 보너스 아이템 1개 선택</li>
-          <li>80% 이상: 아이템 1개 + 시작 방어막 +10</li>
-          <li>100%: 보너스 아이템 2개 선택</li>
-          <li>선택 가능한 아이템: Shield, Repair Kit, Charge</li>
+          <li data-i18n="tool.castle-siege.help.prep1">50%+ homework completion: choose 1 bonus item</li>
+          <li data-i18n="tool.castle-siege.help.prep2">80%+: 1 item + starting Shield +10</li>
+          <li data-i18n="tool.castle-siege.help.prep3">100%: choose 2 bonus items</li>
+          <li data-i18n="tool.castle-siege.help.prep4">Available items: Shield, Repair Kit, Charge</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>공격 데미지와 Shield 수치는 매번 정해진 범위 안에서 무작위로 적용됩니다. Charge를 쓰면 같은 팀이 연속으로 행동할 수 있습니다.</p>
+        <h3 data-i18n="tool.castle-siege.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.castle-siege.help.notes">Attack damage and Shield values are randomized within set ranges. Charge lets the same team act twice in a row.</p>
       </article>
 
       <article class="help-card" id="guide-treasure-hunt">
-        <h2>Treasure Hunt</h2>
-        <h3>소개</h3>
-        <p>땅속 칸을 파며 보물 점수를 모으는 두 팀 대결 활동입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.treasure-hunt.help.title">Treasure Hunt</h2>
+        <h3 data-i18n="tool.treasure-hunt.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.treasure-hunt.help.intro">A two-team activity where players dig tiles to collect treasure points.</p>
+        <h3 data-i18n="tool.treasure-hunt.help.usageHeading">How to use</h3>
         <ul>
-          <li>Blue Team 또는 Red Team Excavate 버튼으로 턴을 정합니다.</li>
-          <li>칸을 하나 골라 파면 그 안의 내용이 공개됩니다.</li>
-          <li>보물(⭐, 💎, 👑)을 찾으면 해당 팀에 점수가 더해집니다.</li>
-          <li>모든 칸을 다 파면 게임이 끝나고 점수를 비교합니다.</li>
-          <li>Rows, Cols로 칸 크기를 바꾸고 New Map으로 새 맵을 만들 수 있습니다.</li>
-          <li>Reset Game으로 점수와 맵을 처음부터 다시 시작합니다.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage1">Select Blue Team or Red Team Excavate to choose the active team.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage2">Pick a tile to dig and reveal its contents.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage3">Treasures (⭐, 💎, 👑) add points to that team.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage4">When all tiles are dug, the game ends and scores are compared.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage5">Change grid size with Rows/Cols and press New Map for a fresh board.</li>
+          <li data-i18n="tool.treasure-hunt.help.usage6">Reset Game clears scores and starts over.</li>
         </ul>
-        <h3>특수 칸</h3>
+        <h3 data-i18n="tool.treasure-hunt.help.specialHeading">Special tiles</h3>
         <ul>
-          <li>🗺 Treasure Map: 아직 안 파진 보물 하나의 위치를 잠깐 보여 줍니다.</li>
-          <li>💣 Dynamite: 같은 팀이 한 번 더 칸을 고를 수 있습니다.</li>
-          <li>⛏ Unstable Ground: 아직 안 파진 칸들의 내용이 다시 섞입니다.</li>
+          <li data-i18n="tool.treasure-hunt.help.special1">🗺 Treasure Map: briefly shows one undug treasure location.</li>
+          <li data-i18n="tool.treasure-hunt.help.special2">💣 Dynamite: the same team picks one more tile.</li>
+          <li data-i18n="tool.treasure-hunt.help.special3">⛏ Unstable Ground: reshuffles undug tile contents.</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>칸 크기는 3~8줄, 3~8칸 범위에서 바꿀 수 있습니다. 보물 점수는 ⭐ 1점, 💎 2점, 👑 3점입니다.</p>
+        <h3 data-i18n="tool.treasure-hunt.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.treasure-hunt.help.notes">Grid size ranges from 3–8 rows and 3–8 columns. Treasure points: ⭐ 1, 💎 2, 👑 3.</p>
       </article>
 
       <article class="help-card" id="guide-tug-of-war">
-        <h2>Tug of War</h2>
-        <h3>소개</h3>
-        <p>두 팀의 점수 차이에 따라 줄이 움직이는 줄다리기 게임입니다.</p>
-        <h3>사용 방법</h3>
+        <h2 data-i18n="tool.juldarigi.help.title">Tug of War</h2>
+        <h3 data-i18n="tool.juldarigi.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.juldarigi.help.intro">A tug-of-war game where the rope moves based on the score difference between two teams.</p>
+        <h3 data-i18n="tool.juldarigi.help.usageHeading">How to use</h3>
         <ul>
-          <li>팀 이름과 승리 포인트를 설정합니다.</li>
-          <li>게임을 시작합니다.</li>
-          <li>A팀과 B팀의 점수를 입력합니다.</li>
-          <li>당기기 버튼을 눌러 줄을 이동시킵니다.</li>
-          <li>승리 포인트에 먼저 도달한 팀이 승리합니다.</li>
+          <li data-i18n="tool.juldarigi.help.usage1">Set team names and the win point target.</li>
+          <li data-i18n="tool.juldarigi.help.usage2">Press Start Game.</li>
+          <li data-i18n="tool.juldarigi.help.usage3">Enter scores for Team A and Team B.</li>
+          <li data-i18n="tool.juldarigi.help.usage4">Press Pull to move the rope.</li>
+          <li data-i18n="tool.juldarigi.help.usage5">The first team to reach the win point target wins.</li>
         </ul>
-        <h3>입력 방법</h3>
-        <p>점수는 숫자로 직접 입력합니다. Enter를 누르면 당기기가 실행됩니다.</p>
-        <h3>단축키</h3>
+        <h3 data-i18n="tool.juldarigi.help.inputHeading">Input</h3>
+        <p data-i18n="tool.juldarigi.help.inputLine1">Enter scores as numbers. Press Enter to pull.</p>
+        <h3 data-i18n="tool.juldarigi.help.shortcutsHeading">Keyboard shortcuts</h3>
         <ul>
-          <li>Enter: 당기기</li>
-          <li>Esc: 설정 열기 또는 닫기</li>
+          <li data-i18n="tool.juldarigi.help.shortcutEnter">Enter: pull</li>
+          <li data-i18n="tool.juldarigi.help.shortcutEsc">Esc: back to setup</li>
         </ul>
-        <h3>주의사항</h3>
-        <p>화면 문구에 카드 표현이 있을 수 있지만, 현재 코드 기준으로는 카드를 뽑는 기능이 아니라 숫자를 직접 입력하는 방식입니다.</p>
+        <h3 data-i18n="tool.juldarigi.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.juldarigi.help.notes">Scores are entered directly as numbers (0–9), not drawn from cards.</p>
       </article>
       </div>
     </section>
@@ -1220,6 +1236,93 @@ Why: He was late.</p>
   </div>
 
   <script src="../shared/help-updates-data.js"></script>
+  <script type="module">
+    import { initI18n, applyToDOM } from '../shared/i18n.js';
+
+    var whFactoryGuide = document.getElementById('guide-wh-factory');
+    var whFactoryMenuBtn = document.querySelector('[data-guide="guide-wh-factory"]');
+    var grammarGuide = document.getElementById('guide-grammar-checkpoint');
+    var grammarMenuBtn = document.querySelector('[data-guide="guide-grammar-checkpoint"]');
+    var castleGuide = document.getElementById('guide-castle-siege');
+    var castleMenuBtn = document.querySelector('[data-guide="guide-castle-siege"]');
+    var treasureGuide = document.getElementById('guide-treasure-hunt');
+    var treasureMenuBtn = document.querySelector('[data-guide="guide-treasure-hunt"]');
+    var pirateGuide = document.getElementById('guide-pirate-race');
+    var pirateMenuBtn = document.querySelector('[data-guide="guide-pirate-race"]');
+    var fortressGuide = document.getElementById('guide-fortress-battle');
+    var fortressMenuBtn = document.querySelector('[data-guide="guide-fortress-battle"]');
+    var nerfGuide = document.getElementById('guide-nerf-gun');
+    var nerfMenuBtn = document.querySelector('[data-guide="guide-nerf-gun"]');
+    var diceGuide = document.getElementById('guide-dice-tool');
+    var diceMenuBtn = document.querySelector('[data-guide="guide-dice-tool"]');
+    var ladderGuide = document.getElementById('guide-ladder-game');
+    var ladderMenuBtn = document.querySelector('[data-guide="guide-ladder-game"]');
+    var mysteryGuide = document.getElementById('guide-mystery-box');
+    var mysteryMenuBtn = document.querySelector('[data-guide="guide-mystery-box"]');
+    var tugGuide = document.getElementById('guide-tug-of-war');
+    var tugMenuBtn = document.querySelector('[data-guide="guide-tug-of-war"]');
+    var barrelGuide = document.getElementById('guide-barrel-game');
+    var barrelMenuBtn = document.querySelector('[data-guide="guide-barrel-game"]');
+    var ptGuide = document.getElementById('guide-participation-tracker');
+    var ptMenuBtn = document.querySelector('[data-guide="guide-participation-tracker"]');
+    var rpGuide = document.getElementById('guide-random-picker');
+    var rpMenuBtn = document.querySelector('[data-guide="guide-random-picker"]');
+    var tmGuide = document.getElementById('guide-team-maker');
+    var tmMenuBtn = document.querySelector('[data-guide="guide-team-maker"]');
+    var sbBattleGuide = document.getElementById('guide-sentence-battle');
+    var sbBattleMenuBtn = document.querySelector('[data-guide="guide-sentence-battle"]');
+    var sbGuide = document.getElementById('guide-score-board');
+    var sbMenuBtn = document.querySelector('[data-guide="guide-score-board"]');
+    var phonicsGuide = document.getElementById('guide-phonics-hunt');
+    var phonicsMenuBtn = document.querySelector('[data-guide="guide-phonics-hunt"]');
+    var vsGuide = document.getElementById('guide-vocab-study');
+    var vsMenuBtn = document.querySelector('[data-guide="guide-vocab-study"]');
+
+    function applyToolHelpI18n() {
+      if (whFactoryGuide) applyToDOM(whFactoryGuide);
+      if (whFactoryMenuBtn) applyToDOM(whFactoryMenuBtn);
+      if (grammarGuide) applyToDOM(grammarGuide);
+      if (grammarMenuBtn) applyToDOM(grammarMenuBtn);
+      if (castleGuide) applyToDOM(castleGuide);
+      if (castleMenuBtn) applyToDOM(castleMenuBtn);
+      if (treasureGuide) applyToDOM(treasureGuide);
+      if (treasureMenuBtn) applyToDOM(treasureMenuBtn);
+      if (pirateGuide) applyToDOM(pirateGuide);
+      if (pirateMenuBtn) applyToDOM(pirateMenuBtn);
+      if (fortressGuide) applyToDOM(fortressGuide);
+      if (fortressMenuBtn) applyToDOM(fortressMenuBtn);
+      if (nerfGuide) applyToDOM(nerfGuide);
+      if (nerfMenuBtn) applyToDOM(nerfMenuBtn);
+      if (diceGuide) applyToDOM(diceGuide);
+      if (diceMenuBtn) applyToDOM(diceMenuBtn);
+      if (ladderGuide) applyToDOM(ladderGuide);
+      if (ladderMenuBtn) applyToDOM(ladderMenuBtn);
+      if (mysteryGuide) applyToDOM(mysteryGuide);
+      if (mysteryMenuBtn) applyToDOM(mysteryMenuBtn);
+      if (tugGuide) applyToDOM(tugGuide);
+      if (tugMenuBtn) applyToDOM(tugMenuBtn);
+      if (barrelGuide) applyToDOM(barrelGuide);
+      if (barrelMenuBtn) applyToDOM(barrelMenuBtn);
+      if (ptGuide) applyToDOM(ptGuide);
+      if (ptMenuBtn) applyToDOM(ptMenuBtn);
+      if (rpGuide) applyToDOM(rpGuide);
+      if (rpMenuBtn) applyToDOM(rpMenuBtn);
+      if (tmGuide) applyToDOM(tmGuide);
+      if (tmMenuBtn) applyToDOM(tmMenuBtn);
+      if (sbBattleGuide) applyToDOM(sbBattleGuide);
+      if (sbBattleMenuBtn) applyToDOM(sbBattleMenuBtn);
+      if (sbGuide) applyToDOM(sbGuide);
+      if (sbMenuBtn) applyToDOM(sbMenuBtn);
+      if (phonicsGuide) applyToDOM(phonicsGuide);
+      if (phonicsMenuBtn) applyToDOM(phonicsMenuBtn);
+      if (vsGuide) applyToDOM(vsGuide);
+      if (vsMenuBtn) applyToDOM(vsMenuBtn);
+    }
+
+    await initI18n({ applyDom: false });
+    applyToolHelpI18n();
+    window.addEventListener('toolkit:localechange', applyToolHelpI18n);
+  </script>
   <script>
     (function initHelpCenter() {
       var tabs = [

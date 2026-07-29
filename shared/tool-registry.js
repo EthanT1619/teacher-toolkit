@@ -11,14 +11,15 @@ export const SPECIAL_TOOL_ROOT_KEYS = ['home', 'help'];
  * @type {readonly string[]}
  */
 export const REGISTERED_TOOL_IDS = Object.freeze([
-  // Utilities
+  // Utilities (A–Z by menu title)
   'classroom-timer',
   'makeup-scheduler',
   'participation-tracker',
   'class-random-picker',
-  'team-maker',
   'edu-scoreboard',
-  // Study tools
+  'student-achievement-tracker',
+  'team-maker',
+  // Study tools (A–Z by menu title)
   'grammar-checkpoint',
   'phonics-hunt',
   'sentence-battle',
@@ -26,11 +27,11 @@ export const REGISTERED_TOOL_IDS = Object.freeze([
   'story-forge',
   'vocab-study-mobile',
   '5w1h-factory',
-  // Activities
+  // Activities (A–Z by menu title)
   'barrel-game',
   'castle-siege',
-  'fortress-battle',
   'dice-chance',
+  'fortress-battle',
   'ladder-game',
   'mystery-box-picker',
   'nerfgun-board',

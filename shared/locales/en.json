@@ -158,6 +158,9 @@
     "makeup-scheduler": {
       "title": "Makeup Scheduler"
     },
+    "student-achievement-tracker": {
+      "title": "Student Achievement Tracker"
+    },
     "participation-tracker": {
       "title": "Participation Tracker",
       "description": "Helps everyone get at least one more turn to practice.",

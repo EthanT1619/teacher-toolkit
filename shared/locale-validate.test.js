@@ -152,7 +152,7 @@ describe('validateLocaleFiles (integration)', function () {
   });
 
   it('covers registry size aligned with home menu tool count', function () {
-    assert.equal(REGISTERED_TOOL_IDS.length, 23);
+    assert.equal(REGISTERED_TOOL_IDS.length, 24);
   });
 });
 

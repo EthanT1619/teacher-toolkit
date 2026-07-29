@@ -23,7 +23,7 @@ const DEFAULT_ITEMS = [
   { id: 'item_5', label: 'Vocab Test' },
 ];
 
-const MENU_COUNTS = { util: 6, study: 7, activity: 10 };
+const MENU_COUNTS = { util: 7, study: 7, activity: 10 };
 
 let checklistClasses = [];
 let checklistItemsByClass = {};
@@ -47,21 +47,32 @@ function updateLanguageButton() {
 }
 
 function applyExternalToolLinks() {
-  var url =
+  var makeupUrl =
     typeof window.MAKEUP_SCHEDULER_SYNC_URL === "string"
       ? window.MAKEUP_SCHEDULER_SYNC_URL
       : "https://ethant1619.github.io/mkup-scheduler-synced/";
+  var achievementUrl =
+    typeof window.STUDENT_ACHIEVEMENT_TRACKER_URL === "string"
+      ? window.STUDENT_ACHIEVEMENT_TRACKER_URL
+      : "https://ethant1619.github.io/student-achievement-tracker/";
 
   var makeupMenuLink = document.querySelector(
     '.dropdown--util a[data-i18n="tool.makeup-scheduler.title"]'
   );
   if (makeupMenuLink) {
-    makeupMenuLink.href = url;
+    makeupMenuLink.href = makeupUrl;
   }
 
   var makeupOpenBtn = document.querySelector(".makeup-widget__open-btn");
   if (makeupOpenBtn) {
-    makeupOpenBtn.href = url;
+    makeupOpenBtn.href = makeupUrl;
+  }
+
+  var achievementMenuLink = document.querySelector(
+    '.dropdown--util a[data-i18n="tool.student-achievement-tracker.title"]'
+  );
+  if (achievementMenuLink) {
+    achievementMenuLink.href = achievementUrl;
   }
 }
 
