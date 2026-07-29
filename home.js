@@ -46,6 +46,25 @@ function updateLanguageButton() {
       : t('tool.home.language.switchToEn');
 }
 
+function applyExternalToolLinks() {
+  var url =
+    typeof window.MAKEUP_SCHEDULER_SYNC_URL === "string"
+      ? window.MAKEUP_SCHEDULER_SYNC_URL
+      : "https://ethant1619.github.io/mkup-scheduler-synced/";
+
+  var makeupMenuLink = document.querySelector(
+    '.dropdown--util a[data-i18n="tool.makeup-scheduler.title"]'
+  );
+  if (makeupMenuLink) {
+    makeupMenuLink.href = url;
+  }
+
+  var makeupOpenBtn = document.querySelector(".makeup-widget__open-btn");
+  if (makeupOpenBtn) {
+    makeupOpenBtn.href = url;
+  }
+}
+
 function renderHomeChrome() {
   updatePageMeta();
   updateLanguageButton();
@@ -59,6 +78,8 @@ function renderHomeChrome() {
   if (els.activityMenuCount) {
     els.activityMenuCount.textContent = t('tool.home.menu.count', { count: MENU_COUNTS.activity });
   }
+
+  applyExternalToolLinks();
 }
 
 function refreshI18nUI() {
