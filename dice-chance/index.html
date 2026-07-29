@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <!-- Dice Chance - Ethan's Teacher Toolkit -->
   <meta charset="UTF-8">
@@ -526,8 +526,7 @@
       margin-right: 8px;
     }
 
-    .reward-cover::after {
-      content: "???";
+    .reward-cover .cover-text {
       font-size: clamp(1.2rem, 3vw, 1.6rem);
       font-weight: 900;
       color: white;
@@ -603,8 +602,8 @@
   <div class="setup-wrap">
     <div class="setup-top">
       <header>
-        <h1>🎲 Dice Chance</h1>
-        <p>주사위 결과에 따라 팀이 포인트나 아이템을 얻는 수업용 게임</p>
+        <h1>🎲 <span data-i18n="tool.dice-chance.title">Dice Chance</span></h1>
+        <p data-i18n="tool.dice-chance.subtitle">A classroom game where teams earn points or items based on dice rolls</p>
         <div class="dice-hero">
           <div class="dice-icon-wrap" id="setupDiceIcon">
             <img src="assets/dice.png" alt="" class="dice-img" id="setupDiceImg">
@@ -617,61 +616,62 @@
           </div>
         </div>
       </header>
+      <button type="button" class="btn btn-secondary" id="btn-language" data-i18n-aria="tool.dice-chance.aria.switchLanguage">한국어</button>
     </div>
 
     <div class="card">
-      <div class="card-title">Rewards / Items</div>
-      <label class="field-label" for="optionsInput">보상·아이템 목록 (한 줄에 하나)</label>
-      <textarea id="optionsInput" placeholder="+10 POINTS&#10;+20 POINTS&#10;BOMB&#10;SHIELD&#10;SWITCH POINT&#10;THROW AGAIN&#10;STEAL 10&#10;DOUBLE POINTS&#10;MISS&#10;CHANGE SCORE"></textarea>
-      <p class="hint">6개 이상 입력하면 게임 시작 시 무작위로 6개만 선택됩니다.</p>
+      <div class="card-title" data-i18n="tool.dice-chance.sections.rewards">Rewards / Items</div>
+      <label class="field-label" for="optionsInput" data-i18n="tool.dice-chance.labels.optionsList">Reward and item list (one per line)</label>
+      <textarea id="optionsInput" data-i18n-placeholder="tool.dice-chance.placeholders.optionsList" placeholder="+10 POINTS&#10;+20 POINTS&#10;BOMB&#10;SHIELD&#10;SWITCH POINT&#10;THROW AGAIN&#10;STEAL 10&#10;DOUBLE POINTS&#10;MISS&#10;CHANGE SCORE"></textarea>
+      <p class="hint" data-i18n="tool.dice-chance.hints.optionsMinSix">If you enter 6 or more items, only 6 are chosen at random when the game starts.</p>
     </div>
 
     <div class="card">
-      <div class="card-title">Dice Mode</div>
+      <div class="card-title" data-i18n="tool.dice-chance.sections.diceMode">Dice Mode</div>
       <div class="mode-picker">
         <label class="mode-option">
           <input type="radio" name="diceMode" value="1" checked>
           <span class="mode-chip">
-            🎲 1 Dice Mode
-            <span>결과 1 ~ 6 (6칸)</span>
+            🎲 <span data-i18n="tool.dice-chance.modes.oneDice">1 Dice Mode</span>
+            <span data-i18n="tool.dice-chance.modes.oneDiceDesc">Results 1 ~ 6 (6 slots)</span>
           </span>
         </label>
         <label class="mode-option">
           <input type="radio" name="diceMode" value="2">
           <span class="mode-chip">
-            🎲🎲 2 Dice Mode
-            <span>1~2 / 3~4 … 11~12 (6칸)</span>
+            🎲🎲 <span data-i18n="tool.dice-chance.modes.twoDice">2 Dice Mode</span>
+            <span data-i18n="tool.dice-chance.modes.twoDiceDesc">1~2 / 3~4 … 11~12 (6 slots)</span>
           </span>
         </label>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">Options</div>
+      <div class="card-title" data-i18n="tool.dice-chance.sections.options">Options</div>
       <label class="checkbox-label">
         <input type="checkbox" id="hideToolbar" checked>
-        <span>발표 중 상단 메뉴 자동 숨김</span>
+        <span data-i18n="tool.dice-chance.labels.hideToolbar">Auto-hide top menu during presentation</span>
       </label>
     </div>
 
     <div class="card">
-      <div class="card-title">Preset</div>
+      <div class="card-title" data-i18n="tool.dice-chance.sections.preset">Preset</div>
       <div class="preset-row">
         <select id="presetSelect">
-          <option value="">— 프리셋 선택 —</option>
+          <option value="" data-i18n="tool.dice-chance.preset.selectPlaceholder">— Select preset —</option>
         </select>
-        <button class="btn btn-secondary" id="loadPresetBtn" disabled>Load Preset</button>
+        <button class="btn btn-secondary" id="loadPresetBtn" disabled data-i18n="tool.dice-chance.actions.loadPreset">Load Preset</button>
       </div>
       <div class="preset-row">
-        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 3반 Dice Chance)" maxlength="30">
-        <button class="btn btn-secondary" id="savePresetBtn">Save Preset</button>
-        <button class="btn btn-secondary" id="deletePresetBtn" disabled>Delete Preset</button>
+        <input type="text" id="presetNameInput" data-i18n-placeholder="tool.dice-chance.placeholders.presetName" placeholder="Preset name (e.g. Class 3 Dice Chance)" maxlength="30">
+        <button class="btn btn-secondary" id="savePresetBtn" data-i18n="tool.dice-chance.actions.savePreset">Save Preset</button>
+        <button class="btn btn-secondary" id="deletePresetBtn" disabled data-i18n="tool.dice-chance.actions.deletePreset">Delete Preset</button>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" id="startBtn">Start Game</button>
-      <button class="btn btn-secondary" id="sampleBtn">Sample Load</button>
+      <button class="btn btn-primary" id="startBtn" data-i18n="tool.dice-chance.actions.startGame">Start Game</button>
+      <button class="btn btn-secondary" id="sampleBtn" data-i18n="tool.dice-chance.actions.sampleLoad">Sample Load</button>
     </div>
   </div>
 </section>
@@ -683,419 +683,30 @@
   </div>
 
   <div class="play-toolbar" id="playToolbar">
-    <button class="icon-btn" id="backBtn">← Back to Setup</button>
+    <button class="icon-btn" id="backBtn" data-i18n="tool.dice-chance.actions.backToSetup">← Back to Setup</button>
     <div class="toolbar-center">
-      <span class="toolbar-title">🎲 Dice Chance</span>
-      <span class="status" id="statusText">주사위 숫자를 클릭해 보상을 공개하세요</span>
+      <span class="toolbar-title">🎲 <span data-i18n="tool.dice-chance.title">Dice Chance</span></span>
+      <span class="status" id="statusText"></span>
     </div>
     <div class="toolbar-actions">
-      <button class="icon-btn" id="resetRoundBtn" title="Reset Round (R)">↻ Reset Round</button>
-      <button class="icon-btn" id="fullscreenBtn" title="Fullscreen (F)">⛶ Fullscreen</button>
+      <button class="icon-btn" id="resetRoundBtn" data-i18n="tool.dice-chance.actions.resetRound" data-i18n-title="tool.dice-chance.aria.resetRound">↻ Reset Round</button>
+      <button class="icon-btn" id="fullscreenBtn" data-i18n="tool.dice-chance.actions.fullscreen" data-i18n-title="tool.dice-chance.aria.fullscreen">⛶ Fullscreen</button>
     </div>
   </div>
 
   <div class="board-wrap">
     <div class="board-header">
-      <h2>🎲 Dice Chance</h2>
-      <p id="modeLabel">1 Dice Mode · 1 ~ 6</p>
+      <h2>🎲 <span data-i18n="tool.dice-chance.title">Dice Chance</span></h2>
+      <p id="modeLabel"></p>
     </div>
     <div class="dice-board" id="diceBoard"></div>
   </div>
 
-  <div class="play-hint" id="playHint">주사위 결과 칸을 클릭하면 보상이 공개됩니다 · R: 새 라운드 · Esc: 설정</div>
+  <div class="play-hint" id="playHint" data-i18n="tool.dice-chance.playHint">Click a dice slot to reveal its reward · R: new round · Esc: setup</div>
 </section>
 
 <div class="toast" id="toast"></div>
 
-<script>
-  /* Dice Chance - Ethan's Teacher Toolkit */
-
-  const STORAGE_KEY = 'diceChanceGame';
-
-  const gameState = {
-    optionsText: '',
-    options: [],
-    diceMode: 1,
-    slotCount: 6,
-    roundRewards: [],
-    revealed: new Set(),
-    hideToolbar: true,
-    presets: [],
-  };
-
-  const els = {
-    setupView: document.getElementById('setupView'),
-    playView: document.getElementById('playView'),
-    optionsInput: document.getElementById('optionsInput'),
-    hideToolbar: document.getElementById('hideToolbar'),
-    startBtn: document.getElementById('startBtn'),
-    sampleBtn: document.getElementById('sampleBtn'),
-    presetSelect: document.getElementById('presetSelect'),
-    loadPresetBtn: document.getElementById('loadPresetBtn'),
-    presetNameInput: document.getElementById('presetNameInput'),
-    savePresetBtn: document.getElementById('savePresetBtn'),
-    deletePresetBtn: document.getElementById('deletePresetBtn'),
-    playToolbar: document.getElementById('playToolbar'),
-    backBtn: document.getElementById('backBtn'),
-    statusText: document.getElementById('statusText'),
-    resetRoundBtn: document.getElementById('resetRoundBtn'),
-    fullscreenBtn: document.getElementById('fullscreenBtn'),
-    diceBoard: document.getElementById('diceBoard'),
-    modeLabel: document.getElementById('modeLabel'),
-    playHint: document.getElementById('playHint'),
-    toast: document.getElementById('toast'),
-    setupDiceImg: document.getElementById('setupDiceImg'),
-    setupDiceIcon: document.getElementById('setupDiceIcon'),
-  };
-
-  let toastTimer = null;
-
-  function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  function getDiceMode() {
-    const checked = document.querySelector('input[name="diceMode"]:checked');
-    return checked ? Number(checked.value) : 1;
-  }
-
-  function setDiceMode(mode) {
-    const input = document.querySelector(`input[name="diceMode"][value="${mode}"]`);
-    if (input) input.checked = true;
-  }
-
-  function getSlotCount() {
-    return 6;
-  }
-
-  function getDiceLabel(index) {
-    if (gameState.diceMode === 2) {
-      const low = index * 2 + 1;
-      const high = low + 1;
-      return `${low}~${high}`;
-    }
-    return String(index + 1);
-  }
-
-  function getModeLabelText() {
-    return gameState.diceMode === 2
-      ? '2 Dice Mode · 1~2 / 3~4 / … / 11~12'
-      : '1 Dice Mode · 1 ~ 6';
-  }
-
-  function persist() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      optionsText: els.optionsInput.value,
-      diceMode: gameState.diceMode,
-      hideToolbar: gameState.hideToolbar,
-      presets: gameState.presets,
-    }));
-  }
-
-  function showToast(msg) {
-    els.toast.textContent = msg;
-    els.toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
-  }
-
-  function parseOptions() {
-    gameState.options = els.optionsInput.value
-      .split('\n')
-      .map(line => line.trim())
-      .filter(Boolean);
-    gameState.optionsText = els.optionsInput.value;
-    return gameState.options;
-  }
-
-  function pickRandomRewards(options, count) {
-    if (options.length < count) return null;
-    return shuffle(options).slice(0, count);
-  }
-
-  function generateRound() {
-    const rewards = pickRandomRewards(gameState.options, gameState.slotCount);
-    if (!rewards) return false;
-    gameState.roundRewards = rewards;
-    gameState.revealed = new Set();
-    return true;
-  }
-
-  function updateStatus() {
-    const total = gameState.slotCount;
-    const revealed = gameState.revealed.size;
-    const modeText = gameState.diceMode === 2 ? '2 Dice' : '1 Dice';
-
-    if (revealed === 0) {
-      els.statusText.textContent = `${modeText} · ${total}칸 · 클릭해서 공개하세요`;
-    } else if (revealed < total) {
-      els.statusText.textContent = `${revealed} / ${total} 공개됨`;
-    } else {
-      els.statusText.textContent = '모두 공개됨 · R 키로 새 라운드';
-    }
-
-    els.playHint.classList.toggle('hidden', revealed > 0);
-  }
-
-  function renderBoard() {
-    els.diceBoard.className = 'dice-board';
-    els.modeLabel.textContent = getModeLabelText();
-
-    els.diceBoard.innerHTML = gameState.roundRewards.map((reward, i) => {
-      const label = getDiceLabel(i);
-      const isRange = gameState.diceMode === 2;
-      const revealed = gameState.revealed.has(i);
-      return `
-        <div class="dice-row${revealed ? ' revealed' : ''}" data-index="${i}" role="button" tabindex="0" aria-label="주사위 ${label}${revealed ? ', ' + reward : ', 보상 숨김'}">
-          <div class="dice-number${isRange ? ' range' : ''}" aria-hidden="true">${label}</div>
-          <div class="reward-cell${revealed ? ' revealed' : ''}">
-            <div class="reward-text${revealed ? ' reveal-pop' : ''}">${escapeHtml(reward)}</div>
-            <div class="reward-cover" aria-hidden="true"></div>
-          </div>
-        </div>`;
-    }).join('');
-
-    updateStatus();
-  }
-
-  function revealResult(index) {
-    if (gameState.revealed.has(index)) return;
-    gameState.revealed.add(index);
-
-    const row = els.diceBoard.querySelector(`[data-index="${index}"]`);
-    if (row) {
-      row.classList.add('revealed');
-      row.querySelector('.reward-cell')?.classList.add('revealed');
-      row.querySelector('.reward-text')?.classList.add('reveal-pop');
-      row.setAttribute('aria-label', `주사위 ${getDiceLabel(index)}, ${gameState.roundRewards[index]}`);
-    }
-
-    updateStatus();
-    if (navigator.vibrate) navigator.vibrate(30);
-  }
-
-  function startGame() {
-    gameState.diceMode = getDiceMode();
-    gameState.slotCount = getSlotCount();
-    gameState.hideToolbar = els.hideToolbar.checked;
-
-    const options = parseOptions();
-    if (options.length === 0) {
-      showToast('보상·아이템을 한 줄 이상 입력해 주세요');
-      els.optionsInput.focus();
-      return;
-    }
-
-    if (options.length < gameState.slotCount) {
-      showToast(`옵션이 ${gameState.slotCount}개 이상 필요합니다 (현재 ${options.length}개)`);
-      els.optionsInput.focus();
-      return;
-    }
-
-    if (!generateRound()) {
-      showToast('라운드를 생성할 수 없습니다');
-      return;
-    }
-
-    persist();
-
-    els.setupView.classList.remove('active');
-    els.playView.classList.add('active');
-    els.playToolbar.classList.toggle('visible', !gameState.hideToolbar);
-
-    renderBoard();
-    showToast(`Dice Chance 준비 완료! (${gameState.slotCount}칸)`);
-  }
-
-  function resetRound() {
-    if (!generateRound()) {
-      showToast(`옵션이 ${gameState.slotCount}개 이상 필요합니다`);
-      return;
-    }
-    renderBoard();
-    showToast('New Dice Chance Round!');
-  }
-
-  function goSetup() {
-    els.playView.classList.remove('active');
-    els.setupView.classList.add('active');
-    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-  }
-
-  function toggleFullscreen() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
-    } else {
-      document.documentElement.requestFullscreen().catch(() => showToast('전체 화면을 사용할 수 없습니다'));
-    }
-  }
-
-  function renderPresets() {
-    const selected = els.presetSelect.value;
-    els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
-      gameState.presets.map(p => {
-        const mode = p.diceMode === 2 ? '2 Dice' : '1 Dice';
-        return `<option value="${p.id}"${p.id === selected ? ' selected' : ''}>${escapeHtml(p.name)} (${p.options.length}개 · ${mode})</option>`;
-      }).join('');
-    const has = !!els.presetSelect.value;
-    els.loadPresetBtn.disabled = !has;
-    els.deletePresetBtn.disabled = !has;
-  }
-
-  function savePreset() {
-    const name = els.presetNameInput.value.trim();
-    if (!name) {
-      showToast('프리셋 이름을 입력해 주세요');
-      return;
-    }
-
-    const options = parseOptions();
-    if (options.length === 0) {
-      showToast('저장할 옵션이 없습니다');
-      return;
-    }
-
-    const diceMode = getDiceMode();
-    const existing = gameState.presets.find(p => p.name.toLowerCase() === name.toLowerCase());
-
-    if (existing) {
-      if (!confirm(`"${name}" 프리셋이 있습니다. 덮어쓸까요?`)) return;
-      existing.options = options;
-      existing.diceMode = diceMode;
-    } else {
-      gameState.presets.push({ id: generateId(), name, options, diceMode });
-    }
-
-    persist();
-    renderPresets();
-    showToast(`"${name}" 저장됨`);
-  }
-
-  function loadPreset() {
-    const id = els.presetSelect.value;
-    if (!id) return;
-    const preset = gameState.presets.find(p => p.id === id);
-    if (!preset) return;
-
-    els.optionsInput.value = preset.options.join('\n');
-    els.presetNameInput.value = preset.name;
-    setDiceMode(preset.diceMode || 1);
-    gameState.diceMode = preset.diceMode || 1;
-
-    persist();
-    showToast(`"${preset.name}" 불러옴`);
-  }
-
-  function deletePreset() {
-    const id = els.presetSelect.value;
-    if (!id) return;
-    const preset = gameState.presets.find(p => p.id === id);
-    if (!preset || !confirm(`"${preset.name}" 프리셋을 삭제할까요?`)) return;
-
-    gameState.presets = gameState.presets.filter(p => p.id !== id);
-    els.presetSelect.value = '';
-    persist();
-    renderPresets();
-    showToast('프리셋 삭제됨');
-  }
-
-  function loadSample() {
-    els.optionsInput.value = [
-      '+10 POINTS',
-      '+20 POINTS',
-      'BOMB',
-      'SHIELD',
-      'SWITCH POINT',
-      'THROW AGAIN',
-      'STEAL 10',
-      'DOUBLE POINTS',
-      'MISS',
-      'CHANGE SCORE',
-    ].join('\n');
-    showToast('샘플 옵션을 불러왔습니다');
-  }
-
-  function tryLoadDiceImage() {
-    const img = els.setupDiceImg;
-    img.onload = () => els.setupDiceIcon.classList.add('has-img');
-    img.onerror = () => els.setupDiceIcon.classList.remove('has-img');
-    if (img.complete && img.naturalWidth > 0) {
-      els.setupDiceIcon.classList.add('has-img');
-    }
-  }
-
-  function init() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const data = JSON.parse(raw);
-        if (typeof data.optionsText === 'string') els.optionsInput.value = data.optionsText;
-        if (typeof data.diceMode === 'number') {
-          gameState.diceMode = data.diceMode;
-          setDiceMode(data.diceMode);
-        }
-        if (typeof data.hideToolbar === 'boolean') gameState.hideToolbar = data.hideToolbar;
-        if (Array.isArray(data.presets)) gameState.presets = data.presets;
-      }
-    } catch { /* ignore */ }
-
-    els.hideToolbar.checked = gameState.hideToolbar;
-    renderPresets();
-    tryLoadDiceImage();
-
-    els.startBtn.addEventListener('click', startGame);
-    els.sampleBtn.addEventListener('click', loadSample);
-    els.backBtn.addEventListener('click', goSetup);
-    els.resetRoundBtn.addEventListener('click', resetRound);
-    els.fullscreenBtn.addEventListener('click', toggleFullscreen);
-    els.savePresetBtn.addEventListener('click', savePreset);
-    els.loadPresetBtn.addEventListener('click', loadPreset);
-    els.deletePresetBtn.addEventListener('click', deletePreset);
-
-    els.presetSelect.addEventListener('change', () => {
-      const has = !!els.presetSelect.value;
-      els.loadPresetBtn.disabled = !has;
-      els.deletePresetBtn.disabled = !has;
-    });
-
-    els.diceBoard.addEventListener('click', (e) => {
-      const row = e.target.closest('.dice-row');
-      if (!row || row.classList.contains('revealed')) return;
-      revealResult(Number(row.dataset.index));
-    });
-
-    els.diceBoard.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      const row = e.target.closest('.dice-row');
-      if (!row || row.classList.contains('revealed')) return;
-      e.preventDefault();
-      revealResult(Number(row.dataset.index));
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (!els.playView.classList.contains('active')) return;
-      if (e.key === 'Escape') { goSetup(); return; }
-      if (e.key === 'r' || e.key === 'R') { resetRound(); return; }
-      if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); return; }
-    });
-  }
-
-  init();
-</script>
+<script type="module" src="./app.js"></script>
 </body>
 </html>

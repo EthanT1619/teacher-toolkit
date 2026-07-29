@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>교육 점수판</title>
+  <title>Score Board</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <script src="../shared/toolkit-home.js" defer></script>
   <style>
@@ -40,6 +40,25 @@
       height: 100%;
       gap: 24px;
       padding: 32px;
+      position: relative;
+    }
+
+    .settings-top {
+      position: absolute;
+      top: max(16px, env(safe-area-inset-top));
+      right: max(16px, env(safe-area-inset-right));
+    }
+
+    .btn-language {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 10px;
+      background: var(--accent2);
+      color: var(--text);
+      min-height: 40px;
+      border: none;
+      cursor: pointer;
     }
 
     #settings h1 {
@@ -591,43 +610,46 @@
 
   <!-- Settings -->
   <div id="settings">
-    <h1>팀 설정</h1>
+    <div class="settings-top">
+      <button type="button" class="btn-language" id="btn-language" data-i18n-aria="tool.edu-scoreboard.aria.switchLanguage">한국어</button>
+    </div>
+    <h1 data-i18n="tool.edu-scoreboard.settingsTitle">Team setup</h1>
     <form class="settings-form" id="settingsForm">
       <label>
-        팀 1 이름
-        <input type="text" id="team1Name" placeholder="팀 1" value="팀 1" maxlength="20">
+        <span data-i18n="tool.edu-scoreboard.labels.team1Name">Team 1 name</span>
+        <input type="text" id="team1Name" placeholder="Team 1" value="Team 1" maxlength="20">
       </label>
       <label>
-        팀 2 이름
-        <input type="text" id="team2Name" placeholder="팀 2" value="팀 2" maxlength="20">
+        <span data-i18n="tool.edu-scoreboard.labels.team2Name">Team 2 name</span>
+        <input type="text" id="team2Name" placeholder="Team 2" value="Team 2" maxlength="20">
       </label>
       <label>
-        Bomb count
+        <span data-i18n="tool.edu-scoreboard.labels.bombCount">Bomb count</span>
         <input type="number" id="bombCount" min="1" max="5" value="1" inputmode="numeric">
-        <span class="settings-hint">1 = 즉시 점수 0 · 2~5 = 💣 누적 후 0</span>
+        <span class="settings-hint" data-i18n="tool.edu-scoreboard.hints.bombCount">1 = score resets immediately · 2–5 = 💣 accumulates before reset</span>
       </label>
-      <button type="submit" class="btn-start">시작</button>
+      <button type="submit" class="btn-start" data-i18n="tool.edu-scoreboard.actions.start">Start</button>
     </form>
   </div>
 
   <!-- Scoreboard -->
   <div id="scoreboard">
     <div class="top-bar">
-      <button id="btnBack">← 설정</button>
-      <button id="btnReset">점수 초기화</button>
+      <button id="btnBack" data-i18n="tool.edu-scoreboard.actions.backToSettings">← Settings</button>
+      <button id="btnReset" data-i18n="tool.edu-scoreboard.actions.resetScores">Reset scores</button>
     </div>
     <div class="teams-header">
-      <div class="team-header team-a" id="headerTeamA">팀 1</div>
+      <div class="team-header team-a" id="headerTeamA">Team 1</div>
       <div class="header-center">
-        <button type="button" class="btn-menu" id="btnMenu" aria-label="메뉴">☰</button>
+        <button type="button" class="btn-menu" id="btnMenu" data-i18n-aria="tool.edu-scoreboard.aria.menu">☰</button>
         <div class="menu-popup" id="menuPopup">
           <button type="button" class="danger" id="btnBomb1"></button>
           <button type="button" class="danger" id="btnBomb2"></button>
-          <button type="button" class="swap" id="btnSwitchPoint">Switch point</button>
-          <button type="button" class="swap" id="btnSwitchAll">Switch Everything</button>
+          <button type="button" class="swap" id="btnSwitchPoint" data-i18n="tool.edu-scoreboard.actions.switchPoint">Switch Point</button>
+          <button type="button" class="swap" id="btnSwitchAll" data-i18n="tool.edu-scoreboard.actions.switchEverything">Switch Everything</button>
         </div>
       </div>
-      <div class="team-header team-b" id="headerTeamB">팀 2</div>
+      <div class="team-header team-b" id="headerTeamB">Team 2</div>
     </div>
     <div class="menu-backdrop" id="menuBackdrop"></div>
     <div class="teams">
@@ -636,233 +658,7 @@
     </div>
   </div>
 
-  <script>
-    const RESOURCES = [
-      { key: "candy", name: "Candy" },
-      { key: "shield", name: "Shield" },
-      { key: "stamp", name: "Stamp" },
-    ];
-
-    const state = {
-      team1Name: "팀 1",
-      team2Name: "팀 2",
-      bombCount: 1,
-      teams: [
-        { score: 0, candy: 0, stamp: 0, shield: 0, bombHits: 0 },
-        { score: 0, candy: 0, stamp: 0, shield: 0, bombHits: 0 },
-      ],
-    };
-
-    const $ = (sel) => document.querySelector(sel);
-
-    function showScreen(screen) {
-      $("#settings").style.display = screen === "settings" ? "flex" : "none";
-      $("#scoreboard").style.display = screen === "scoreboard" ? "flex" : "none";
-    }
-
-    function bombLabel(name) {
-      if (state.bombCount <= 1) return `${name} Bomb (점수 0)`;
-      return `${name} Bomb (${state.bombCount}회)`;
-    }
-
-    function updateHeaders() {
-      $("#headerTeamA").textContent = state.team1Name;
-      $("#headerTeamB").textContent = state.team2Name;
-      $("#btnBomb1").textContent = bombLabel(state.team1Name);
-      $("#btnBomb2").textContent = bombLabel(state.team2Name);
-    }
-
-    function bombTrackHtml(hits) {
-      if (hits <= 0) return "";
-      return Array.from({ length: hits }, () => '<span class="bomb-badge">💣</span>').join("");
-    }
-
-    function updateBombDisplay(teamIdx) {
-      const container = teamIdx === 0 ? $("#teamA") : $("#teamB");
-      const track = container.querySelector(".bomb-track");
-      if (!track) return;
-      track.innerHTML = bombTrackHtml(state.teams[teamIdx].bombHits);
-    }
-
-    function bombTeam(teamIdx) {
-      const team = state.teams[teamIdx];
-      const limit = state.bombCount;
-
-      if (limit <= 1) {
-        team.score = 0;
-        team.bombHits = 0;
-        updateDisplay(teamIdx, "score");
-        updateBombDisplay(teamIdx);
-        closeMenu();
-        return;
-      }
-
-      team.bombHits += 1;
-      if (team.bombHits >= limit) {
-        team.score = 0;
-        team.bombHits = 0;
-        updateDisplay(teamIdx, "score");
-      }
-      updateBombDisplay(teamIdx);
-      closeMenu();
-    }
-
-    function openMenu() {
-      const btn = $("#btnMenu");
-      const popup = $("#menuPopup");
-      const rect = btn.getBoundingClientRect();
-      popup.style.top = `${rect.bottom + 6}px`;
-      popup.classList.add("show");
-      $("#menuBackdrop").classList.add("show");
-      btn.classList.add("open");
-    }
-
-    function closeMenu() {
-      $("#menuPopup").classList.remove("show");
-      $("#menuBackdrop").classList.remove("show");
-      $("#btnMenu").classList.remove("open");
-    }
-
-    function switchPoints() {
-      const tmp = state.teams[0].score;
-      state.teams[0].score = state.teams[1].score;
-      state.teams[1].score = tmp;
-      updateDisplay(0, "score");
-      updateDisplay(1, "score");
-      closeMenu();
-    }
-
-    function switchEverything() {
-      [state.teams[0], state.teams[1]] = [state.teams[1], state.teams[0]];
-      renderScoreboard();
-      closeMenu();
-    }
-
-    function buildTeamPanel(container, teamIdx) {
-      const data = state.teams[teamIdx];
-
-      container.innerHTML = `
-        <div class="score-area">
-          <div class="score-controls" data-team="${teamIdx}" data-key="score">
-            <div class="score-side score-side-minus">
-              <button class="btn-circle btn-minus btn-score" data-delta="-1">−</button>
-              <div class="score-helpers">
-                <button type="button" class="btn-helper btn-helper-minus" data-delta="-5">−5</button>
-                <button type="button" class="btn-helper btn-helper-minus" data-delta="-10">−10</button>
-              </div>
-            </div>
-            <div class="score-center">
-              <span class="score-display">${data.score}</span>
-              <div class="bomb-track">${bombTrackHtml(data.bombHits)}</div>
-            </div>
-            <div class="score-side score-side-plus">
-              <button class="btn-circle btn-plus btn-score" data-delta="1">+</button>
-              <div class="score-helpers">
-                <button type="button" class="btn-helper btn-helper-plus" data-delta="5">+5</button>
-                <button type="button" class="btn-helper btn-helper-plus" data-delta="10">+10</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="resources">
-          ${RESOURCES.map((res) => `
-              <div class="resource-box" data-team="${teamIdx}" data-key="${res.key}">
-                <span class="resource-label" aria-label="${res.name}">
-                  <span class="resource-name">${res.name}</span>
-                </span>
-                <span class="resource-value">${data[res.key]}</span>
-                <div class="resource-btns">
-                  <button class="btn-circle btn-minus btn-resource" data-delta="-1">−</button>
-                  <button class="btn-circle btn-plus btn-resource" data-delta="1">+</button>
-                </div>
-              </div>`).join("")}
-        </div>`;
-
-      container.querySelectorAll("[data-team][data-key]").forEach((row) => {
-        row.querySelectorAll("button[data-delta]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const team = Number(row.dataset.team);
-            const key = row.dataset.key;
-            const delta = Number(btn.dataset.delta);
-            const next = state.teams[team][key] + delta;
-            state.teams[team][key] = key === "score" ? next : Math.max(0, next);
-            updateDisplay(team, key);
-          });
-        });
-      });
-    }
-
-    function updateDisplay(teamIdx, key) {
-      const container = teamIdx === 0 ? $("#teamA") : $("#teamB");
-      const val = state.teams[teamIdx][key];
-      const row = container.querySelector(`[data-key="${key}"]`);
-      if (!row) return;
-      const display = row.querySelector(key === "score" ? ".score-display" : ".resource-value");
-      if (display) display.textContent = val;
-    }
-
-    function renderScoreboard() {
-      updateHeaders();
-      buildTeamPanel($("#teamA"), 0);
-      buildTeamPanel($("#teamB"), 1);
-    }
-
-    function resetScores() {
-      state.teams.forEach((t) => {
-        t.score = 0;
-        t.candy = 0;
-        t.stamp = 0;
-        t.shield = 0;
-        t.bombHits = 0;
-      });
-      renderScoreboard();
-    }
-
-    $("#settingsForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      state.team1Name = $("#team1Name").value.trim() || "팀 1";
-      state.team2Name = $("#team2Name").value.trim() || "팀 2";
-      state.bombCount = Math.max(1, Math.min(5, parseInt($("#bombCount").value, 10) || 1));
-      $("#bombCount").value = state.bombCount;
-      renderScoreboard();
-      showScreen("scoreboard");
-    });
-
-    $("#btnBack").addEventListener("click", () => {
-      closeMenu();
-      $("#team1Name").value = state.team1Name;
-      $("#team2Name").value = state.team2Name;
-      $("#bombCount").value = state.bombCount;
-      showScreen("settings");
-    });
-    $("#btnReset").addEventListener("click", () => {
-      if (confirm("모든 점수와 자원을 0으로 초기화할까요?")) resetScores();
-    });
-
-    $("#btnMenu").addEventListener("click", (e) => {
-      e.stopPropagation();
-      if ($("#menuPopup").classList.contains("show")) closeMenu();
-      else openMenu();
-    });
-    $("#menuBackdrop").addEventListener("click", closeMenu);
-    $("#menuPopup").addEventListener("click", (e) => e.stopPropagation());
-
-    $("#btnBomb1").addEventListener("click", (e) => {
-      e.stopPropagation();
-      bombTeam(0);
-    });
-    $("#btnBomb2").addEventListener("click", (e) => {
-      e.stopPropagation();
-      bombTeam(1);
-    });
-    $("#btnSwitchPoint").addEventListener("click", (e) => {
-      e.stopPropagation();
-      switchPoints();
-    });
-    $("#btnSwitchAll").addEventListener("click", (e) => {
-      e.stopPropagation();
-      switchEverything();
-    });
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
+

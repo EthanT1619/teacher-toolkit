@@ -480,20 +480,21 @@
 <body>
   <header class="top-bar">
     <div class="title-block">
-      <h1>Fortress Battle</h1>
-      <p>Team A vs Team B — Classroom Battle Game</p>
+      <h1 data-i18n="tool.fortress-battle.title">Fortress Battle</h1>
+      <p data-i18n="tool.fortress-battle.subtitle">Team A vs Team B — Classroom Battle Game</p>
     </div>
     <div class="top-actions">
-      <button class="btn btn-new" id="btnNewGame" type="button">New Game</button>
-      <button class="btn btn-full" id="btnFullscreen" type="button">Fullscreen</button>
+      <button class="btn btn-full" id="btn-language" type="button" data-i18n-aria="tool.fortress-battle.aria.switchLanguage">한국어</button>
+      <button class="btn btn-new" id="btnNewGame" type="button" data-i18n="tool.fortress-battle.actions.newGame">New Game</button>
+      <button class="btn btn-full" id="btnFullscreen" type="button" data-i18n="tool.fortress-battle.actions.fullscreen">Fullscreen</button>
     </div>
   </header>
 
   <details class="settings-panel" id="settingsPanel">
-    <summary>⚙ Game Settings</summary>
+    <summary data-i18n="tool.fortress-battle.settings.title">⚙ Game Settings</summary>
     <div class="settings-body">
       <div class="setting-row">
-        <label>Start HP</label>
+        <label data-i18n="tool.fortress-battle.settings.startHp">Start HP</label>
         <div class="hp-options" id="hpOptions">
           <label><input type="radio" name="startHp" value="30" /> 30</label>
           <label><input type="radio" name="startHp" value="50" checked /> 50</label>
@@ -501,18 +502,18 @@
         </div>
       </div>
       <div class="setting-row damage-row">
-        <label for="damageInput">Damage values</label>
+        <label for="damageInput" data-i18n="tool.fortress-battle.settings.damageValues">Damage values</label>
         <input class="damage-input" id="damageInput" type="text" value="0,10,20,30" />
-        <button class="btn btn-apply" id="btnApplyDamage" type="button">Apply</button>
+        <button class="btn btn-apply" id="btnApplyDamage" type="button" data-i18n="tool.fortress-battle.actions.apply">Apply</button>
       </div>
-      <p class="setting-hint">Comma-separated numbers. Example: 0,10,20,30</p>
+      <p class="setting-hint" data-i18n="tool.fortress-battle.settings.hint">Comma-separated numbers. Example: 0,10,20,30</p>
     </div>
   </details>
 
   <main class="game-wrap">
     <div class="turn-row">
-      <button class="btn btn-turn" id="btnTurnA" type="button">Team A Turn</button>
-      <button class="btn btn-turn" id="btnTurnB" type="button">Team B Turn</button>
+      <button class="btn btn-turn" id="btnTurnA" type="button" data-i18n="tool.fortress-battle.turn.teamAButton">Team A Turn</button>
+      <button class="btn btn-turn" id="btnTurnB" type="button" data-i18n="tool.fortress-battle.turn.teamBButton">Team B Turn</button>
     </div>
 
     <section class="battlefield" id="battlefield">
@@ -534,10 +535,10 @@
       <div class="center-panel">
         <p class="turn-badge" id="turnBadge">Team A's Turn</p>
         <div class="attack-grid">
-          <button class="btn btn-attack" data-attack="0" type="button">Attack 1</button>
-          <button class="btn btn-attack" data-attack="1" type="button">Attack 2</button>
-          <button class="btn btn-attack" data-attack="2" type="button">Attack 3</button>
-          <button class="btn btn-attack" data-attack="3" type="button">Attack 4</button>
+          <button class="btn btn-attack" data-attack="0" type="button" data-i18n="tool.fortress-battle.attack.1">Attack 1</button>
+          <button class="btn btn-attack" data-attack="1" type="button" data-i18n="tool.fortress-battle.attack.2">Attack 2</button>
+          <button class="btn btn-attack" data-attack="2" type="button" data-i18n="tool.fortress-battle.attack.3">Attack 3</button>
+          <button class="btn btn-attack" data-attack="3" type="button" data-i18n="tool.fortress-battle.attack.4">Attack 4</button>
         </div>
       </div>
 
@@ -563,322 +564,10 @@
     <div class="winner-card">
       <h2 id="winnerTitle">Team A Wins!</h2>
       <p id="winnerSubtitle">The fortress has fallen!</p>
-      <button class="btn btn-new" id="btnPlayAgain" type="button">New Game</button>
+      <button class="btn btn-new" id="btnPlayAgain" type="button" data-i18n="tool.fortress-battle.actions.newGame">New Game</button>
     </div>
   </div>
 
-  <script>
-    // Fortress Battle - Ethan's Teacher Toolkit
-
-    // ── Sound placeholders (add audio files later) ──
-    function playSound(type) {
-      // type: "hit" | "miss" | "win"
-      // Example: new Audio(`sounds/${type}.mp3`).play();
-    }
-
-    // ── Game state (single source of truth) ──
-    const gameState = {
-      teamA: { hp: 50, maxHp: 50 },
-      teamB: { hp: 50, maxHp: 50 },
-      currentTurn: "A",
-      isAnimating: false,
-      gameOver: false,
-      winner: null,
-      startHp: 50,
-      damageOptions: [0, 10, 20, 30]
-    };
-
-    // ── DOM references ──
-    const els = {
-      hpTextA: document.getElementById("hpTextA"),
-      hpTextB: document.getElementById("hpTextB"),
-      hpFillA: document.getElementById("hpFillA"),
-      hpFillB: document.getElementById("hpFillB"),
-      teamPanelA: document.getElementById("teamPanelA"),
-      teamPanelB: document.getElementById("teamPanelB"),
-      turnBadge: document.getElementById("turnBadge"),
-      btnTurnA: document.getElementById("btnTurnA"),
-      btnTurnB: document.getElementById("btnTurnB"),
-      attackButtons: document.querySelectorAll(".btn-attack"),
-      btnNewGame: document.getElementById("btnNewGame"),
-      btnPlayAgain: document.getElementById("btnPlayAgain"),
-      btnFullscreen: document.getElementById("btnFullscreen"),
-      winnerOverlay: document.getElementById("winnerOverlay"),
-      winnerTitle: document.getElementById("winnerTitle"),
-      winnerSubtitle: document.getElementById("winnerSubtitle"),
-      damagePopupA: document.getElementById("damagePopupA"),
-      damagePopupB: document.getElementById("damagePopupB"),
-      arenaLayer: document.getElementById("arenaLayer"),
-      damageInput: document.getElementById("damageInput"),
-      btnApplyDamage: document.getElementById("btnApplyDamage"),
-      hpOptions: document.getElementById("hpOptions")
-    };
-
-    // ── Initialize game ──
-    function initGame() {
-      readStartHpFromSettings();
-      gameState.teamA.hp = gameState.startHp;
-      gameState.teamA.maxHp = gameState.startHp;
-      gameState.teamB.hp = gameState.startHp;
-      gameState.teamB.maxHp = gameState.startHp;
-      gameState.currentTurn = "A";
-      gameState.isAnimating = false;
-      gameState.gameOver = false;
-      gameState.winner = null;
-      els.winnerOverlay.classList.remove("show");
-      render();
-    }
-
-    function readStartHpFromSettings() {
-      const selected = els.hpOptions.querySelector('input[name="startHp"]:checked');
-      gameState.startHp = selected ? Number(selected.value) : 50;
-    }
-
-    function parseDamageOptions(text) {
-      const values = text
-        .split(",")
-        .map((v) => v.trim())
-        .filter((v) => v !== "")
-        .map(Number)
-        .filter((n) => !Number.isNaN(n) && n >= 0);
-
-      return values.length ? values : [0, 10, 20, 30];
-    }
-
-    function applyDamageSettings() {
-      gameState.damageOptions = parseDamageOptions(els.damageInput.value);
-      els.damageInput.value = gameState.damageOptions.join(",");
-    }
-
-    // ── Render UI from gameState ──
-    function render() {
-      const { teamA, teamB, currentTurn, isAnimating, gameOver } = gameState;
-      const disabled = isAnimating || gameOver;
-
-      els.hpTextA.textContent = `${Math.max(teamA.hp, 0)} / ${teamA.maxHp}`;
-      els.hpTextB.textContent = `${Math.max(teamB.hp, 0)} / ${teamB.maxHp}`;
-
-      const pctA = Math.max(0, (teamA.hp / teamA.maxHp) * 100);
-      const pctB = Math.max(0, (teamB.hp / teamB.maxHp) * 100);
-      els.hpFillA.style.width = `${pctA}%`;
-      els.hpFillB.style.width = `${pctB}%`;
-
-      els.teamPanelA.classList.toggle("active", currentTurn === "A" && !gameOver);
-      els.teamPanelB.classList.toggle("active", currentTurn === "B" && !gameOver);
-
-      els.btnTurnA.classList.toggle("active-a", currentTurn === "A");
-      els.btnTurnB.classList.toggle("active-b", currentTurn === "B");
-
-      els.turnBadge.textContent = gameOver
-        ? "Game Over"
-        : currentTurn === "A"
-          ? "Team A's Turn — Attack!"
-          : "Team B's Turn — Attack!";
-
-      els.attackButtons.forEach((btn) => {
-        btn.disabled = disabled;
-      });
-
-      els.btnTurnA.disabled = disabled;
-      els.btnTurnB.disabled = disabled;
-    }
-
-    // ── Pick random damage from configured options ──
-    function rollDamage() {
-      const opts = gameState.damageOptions;
-      return opts[Math.floor(Math.random() * opts.length)];
-    }
-
-    // ── Attack flow ──
-    async function attack(powerIndex) {
-      if (gameState.isAnimating || gameState.gameOver) return;
-
-      gameState.isAnimating = true;
-      render();
-
-      const damage = rollDamage();
-      const attacker = gameState.currentTurn;
-
-      await animateProjectile(attacker, damage, powerIndex);
-
-      const targetTeam = attacker === "A" ? "B" : "A";
-      applyDamage(targetTeam, damage);
-
-      if (!checkWinner()) {
-        switchTurn();
-      }
-
-      gameState.isAnimating = false;
-      render();
-    }
-
-    // ── Get center point of a team's fortress for animation ──
-    function getFortressPoint(team) {
-      const panel = team === "A" ? els.teamPanelA : els.teamPanelB;
-      const fortress = panel.querySelector(".fortress");
-      const rect = fortress.getBoundingClientRect();
-      return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
-      };
-    }
-
-    // ── Parabolic projectile animation ──
-    function animateProjectile(attacker, damage, powerIndex) {
-      return new Promise((resolve) => {
-        const target = attacker === "A" ? "B" : "A";
-        const start = getFortressPoint(attacker);
-        const end = getFortressPoint(target);
-
-        const projectile = document.createElement("div");
-        projectile.className = "projectile";
-        // Alternate cannonball emoji / circle by button index
-        if (powerIndex % 2 === 0) {
-          projectile.textContent = "💣";
-        } else {
-          projectile.classList.add("ball");
-        }
-
-        els.arenaLayer.appendChild(projectile);
-
-        const duration = 850;
-        const arcHeight = Math.min(160, Math.abs(end.x - start.x) * 0.18 + 80);
-        let startTime = null;
-
-        function frame(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const t = Math.min((timestamp - startTime) / duration, 1);
-
-          const x = start.x + (end.x - start.x) * t;
-          const linearY = start.y + (end.y - start.y) * t;
-          const y = linearY - arcHeight * 4 * t * (1 - t);
-
-          projectile.style.left = `${x}px`;
-          projectile.style.top = `${y}px`;
-
-          if (t < 1) {
-            requestAnimationFrame(frame);
-          } else {
-            projectile.remove();
-            showExplosion(end.x, end.y, resolve);
-          }
-        }
-
-        requestAnimationFrame(frame);
-      });
-    }
-
-    function showExplosion(x, y, onDone) {
-      const boom = document.createElement("div");
-      boom.className = "explosion boom";
-      boom.style.left = `${x}px`;
-      boom.style.top = `${y}px`;
-      els.arenaLayer.appendChild(boom);
-
-      boom.addEventListener("animationend", () => {
-        boom.remove();
-        if (onDone) onDone();
-      }, { once: true });
-    }
-
-    // ── Apply damage and show floating text ──
-    function applyDamage(targetTeam, damage) {
-      const teamKey = targetTeam === "A" ? "teamA" : "teamB";
-      gameState[teamKey].hp -= damage;
-
-      const popup = targetTeam === "A" ? els.damagePopupA : els.damagePopupB;
-      popup.classList.remove("show", "miss", "hit");
-
-      if (damage === 0) {
-        popup.textContent = "MISS!";
-        popup.classList.add("miss");
-        playSound("miss");
-      } else {
-        popup.textContent = `-${damage}`;
-        popup.classList.add("hit");
-        playSound("hit");
-      }
-
-      // Restart animation
-      void popup.offsetWidth;
-      popup.classList.add("show");
-    }
-
-    // ── Switch turn to the other team ──
-    function switchTurn() {
-      gameState.currentTurn = gameState.currentTurn === "A" ? "B" : "A";
-    }
-
-    // ── Check for winner; returns true if game ended ──
-    function checkWinner() {
-      const { teamA, teamB } = gameState;
-
-      if (teamA.hp <= 0 || teamB.hp <= 0) {
-        gameState.gameOver = true;
-
-        if (teamA.hp <= 0 && teamB.hp <= 0) {
-          gameState.winner = "Draw";
-          els.winnerTitle.textContent = "It's a Draw!";
-          els.winnerSubtitle.textContent = "Both fortresses fell at the same time!";
-        } else if (teamA.hp <= 0) {
-          gameState.winner = "B";
-          els.winnerTitle.textContent = "Team B Wins!";
-          els.winnerSubtitle.textContent = "Team A's fortress has fallen!";
-        } else {
-          gameState.winner = "A";
-          els.winnerTitle.textContent = "Team A Wins!";
-          els.winnerSubtitle.textContent = "Team B's fortress has fallen!";
-        }
-
-        playSound("win");
-        els.winnerOverlay.classList.add("show");
-        return true;
-      }
-
-      return false;
-    }
-
-    function resetGame() {
-      applyDamageSettings();
-      readStartHpFromSettings();
-      initGame();
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen?.();
-      } else {
-        document.exitFullscreen?.();
-      }
-    }
-
-    function setTurn(team) {
-      if (gameState.isAnimating || gameState.gameOver) return;
-      gameState.currentTurn = team;
-      render();
-    }
-
-    // ── Event listeners ──
-    els.attackButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        attack(Number(btn.dataset.attack));
-      });
-    });
-
-    els.btnTurnA.addEventListener("click", () => setTurn("A"));
-    els.btnTurnB.addEventListener("click", () => setTurn("B"));
-    els.btnNewGame.addEventListener("click", resetGame);
-    els.btnPlayAgain.addEventListener("click", resetGame);
-    els.btnFullscreen.addEventListener("click", toggleFullscreen);
-    els.btnApplyDamage.addEventListener("click", applyDamageSettings);
-
-    els.hpOptions.addEventListener("change", () => {
-      readStartHpFromSettings();
-    });
-
-    // ── Start ──
-    applyDamageSettings();
-    initGame();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
