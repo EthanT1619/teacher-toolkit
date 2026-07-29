@@ -1,6 +1,9 @@
 /**
  * main.js — Entry point for Treasure Hunt.
  */
-document.addEventListener('DOMContentLoaded', () => {
-  new Game();
+import boot from './i18n-boot.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await boot();
+  window.gameInstance = new Game();
 });

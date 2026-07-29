@@ -1,0 +1,1714 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "close": "Close",
+    "confirm": "Confirm",
+    "loading": "Loading…",
+    "back": "Back",
+    "home": "Home",
+    "help": "Help"
+  },
+  "navigation": {
+    "brand": "Tool Kit",
+    "homeLink": "← Tool Kit",
+    "homeAriaLabel": "Back to Tool Kit for JLS Teachers",
+    "helpCenter": "Help Center",
+    "section": {
+      "utils": "Utilities",
+      "study": "Study Tools",
+      "activity": "Activities"
+    }
+  },
+  "settings": {
+    "language": "Language",
+    "languageEn": "English",
+    "languageKo": "한국어"
+  },
+  "feedback": {
+    "saved": "Saved.",
+    "clipboardCopied": "Copied to clipboard.",
+    "confirmDelete": "Delete \"{name}\"?",
+    "presetSaved": "Preset \"{name}\" saved."
+  },
+  "tool": {
+    "home": {
+      "title": "Toolkit for JLS Teachers",
+      "subtitle": "Select a category to see the tool list.",
+      "metaDescription": "Toolkit for JLS Teachers — utilities, study tools, and classroom activities.",
+      "footer": "Toolkit for JLS Teachers",
+      "menu": {
+        "count": "{count} tools",
+        "utilAria": "Utility tools",
+        "studyAria": "Study tools",
+        "activityAria": "Activities"
+      },
+      "language": {
+        "switchToKo": "한국어",
+        "switchToEn": "English",
+        "switchAria": "Switch language"
+      },
+      "helpFab": {
+        "aria": "Help Center",
+        "label": "Help"
+      },
+      "checklist": {
+        "sectionAria": "Today's class prep checklist",
+        "title": "Today's class prep",
+        "settings": "Settings",
+        "classSettings": "Class settings",
+        "itemSettings": "Item settings",
+        "resetCurrent": "Reset current class checks",
+        "resetAll": "Reset all class checks",
+        "prevClass": "Previous class",
+        "nextClass": "Next class",
+        "emptyNoClasses": "No classes yet. Add one in Class settings.",
+        "emptyNoItems": "No checklist items. Add some in Item settings.",
+        "progress": "{done} / {total} done",
+        "classSettingsTitle": "Class settings",
+        "classSettingsHint": "Rename, add, or remove classes. Each class keeps its own checklist items and check states.",
+        "itemSettingsTitle": "Item settings",
+        "itemSettingsHintClosed": "Edit checklist items for the selected class.",
+        "itemSettingsHint": "Edit checklist items for \"{name}\". Other classes may use different items.",
+        "addClass": "Add class",
+        "save": "Save",
+        "close": "Close",
+        "delete": "Delete",
+        "addItem": "Add item",
+        "newClassPlaceholder": "New class name",
+        "newItemPlaceholder": "New item name",
+        "classNameAria": "Class name",
+        "itemNameAria": "Item name",
+        "confirmResetCurrent": "Clear all checks for \"{name}\"?",
+        "confirmResetAll": "Clear checks for all classes?",
+        "alertMinOneClass": "At least one class must remain.",
+        "alertMinOneItem": "At least one item must remain.",
+        "alertSelectClassFirst": "Select a class first.",
+        "alertEmptyClassName": "Class name cannot be empty.",
+        "alertDuplicateClassName": "The name \"{name}\" is duplicated.",
+        "alertEmptyItemName": "Item name cannot be empty.",
+        "alertDuplicateItemLabel": "The item \"{label}\" is duplicated."
+      },
+      "makeupWidget": {
+        "sectionAria": "Today's makeup sessions",
+        "title": "Today's makeup",
+        "totalCount": "{count} total",
+        "openManager": "Open makeup manager",
+        "prevSession": "Previous session",
+        "nextSession": "Next session",
+        "loading": "Loading makeup schedule…",
+        "empty": "No makeup sessions scheduled for today.",
+        "emptyLoginHtml": "Sign in with Google to view makeup schedules.<br><a href=\"{url}\">Log in on the makeup calendar</a>",
+        "overlap": "{count} sessions overlap — review schedule",
+        "statusScheduled": "Scheduled",
+        "statusCompleted": "Completed",
+        "statusCancelled": "Cancelled"
+      }
+    },
+    "help": {
+      "title": "Help Center"
+    },
+    "classroom-timer": {
+      "title": "Classroom Timer",
+      "actions": {
+        "howToUse": "How to use",
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen",
+        "reset": "Reset",
+        "soundOn": "Sound ON",
+        "soundOff": "Sound OFF",
+        "start": "Start",
+        "pause": "Pause",
+        "resume": "Resume",
+        "clear": "Clear",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "timerControls": "Timer controls",
+        "toggleFullscreen": "Toggle fullscreen",
+        "switchLanguage": "Switch language"
+      },
+      "status": {
+        "timesUp": "TIME'S UP!",
+        "running": "Running…",
+        "paused": "Paused",
+        "inputPrefix": "Input: {value}",
+        "enterDigitsHint": "Enter digits (e.g. 630 → 6 min 30 sec)"
+      },
+      "labels": {
+        "adjustWhileRunning": "Adjust time (while running)"
+      },
+      "help": {
+        "title": "Keyboard shortcuts",
+        "digitsHint": "Enter time (e.g. 630 → 6:30)",
+        "enterStart": "Start / Resume",
+        "spacePause": "Pause",
+        "clearResetFullscreen": "Clear · Reset · Fullscreen",
+        "backspaceEsc": "Delete digit · Cancel / exit full"
+      },
+      "toast": {
+        "maxDigits": "Maximum 6 digits",
+        "enterTime": "Please enter a time",
+        "invalidTime": "Invalid time",
+        "fullscreenUnavailable": "Fullscreen not available"
+      }
+    },
+    "makeup-scheduler": {
+      "title": "Makeup Scheduler"
+    },
+    "participation-tracker": {
+      "title": "Participation Tracker",
+      "description": "Helps everyone get at least one more turn to practice.",
+      "sections": {
+        "studentList": "Student list",
+        "preset": "Preset"
+      },
+      "labels": {
+        "studentNames": "Enter names (one per line)",
+        "sortQuietFirst": "Quiet students first",
+        "quietBadge": "Hands not raised yet",
+        "handCount": "Times raised"
+      },
+      "placeholders": {
+        "studentNames": "Alex\nBrandon\nCharlie\nDexter\n...",
+        "presetName": "Preset name (e.g. Wed 4:30 PM class)"
+      },
+      "hints": {
+        "studentNames": "Commas or spaces also work. Empty lines are ignored.",
+        "tap": "Tap +1 · Long press −1"
+      },
+      "actions": {
+        "startClass": "Start class",
+        "backToSettings": "← Settings",
+        "undo": "↩ Undo",
+        "resetSession": "Reset this session",
+        "loadPreset": "Load",
+        "savePreset": "Save new",
+        "updatePreset": "Update current preset",
+        "deletePreset": "Delete preset",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "preset": {
+        "selectPlaceholder": "— Select preset —",
+        "activeNone": "Current preset: None",
+        "activeWithName": "Current preset: {name} ({count} students)",
+        "optionMeta": "{name} ({count} students)"
+      },
+      "status": {
+        "studentCount": "{count} students"
+      },
+      "summary": {
+        "handsNotRaised": "Hands not raised {count}",
+        "handsRaised": "Hands raised {count}"
+      },
+      "empty": {
+        "line1": "Student list is empty.",
+        "line2": "Enter names in Settings."
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "studentCard": "{name}, raised {count} times, tap to add 1, long press to subtract 1"
+      },
+      "toast": {
+        "undone": "{name} undone",
+        "alreadyZero": "Already at 0",
+        "decremented": "{name} −1",
+        "presetNameRequired": "Please enter a preset name.",
+        "noStudentsToSave": "No students to save.",
+        "presetSaved": "\"{name}\" preset saved.",
+        "presetLoaded": "\"{name}\" preset loaded.",
+        "presetUpdated": "\"{name}\" preset updated.",
+        "presetDeleted": "Preset deleted.",
+        "enterStudentNames": "Please enter student names.",
+        "sessionReset": "This session has been reset."
+      },
+      "confirm": {
+        "overwritePreset": "Preset \"{name}\" already exists. Overwrite?",
+        "replaceTempList": "Replace the current temporary list ({count} students) with preset \"{name}\"?",
+        "switchPreset": "Switch from preset \"{from}\" to \"{to}\"?",
+        "updatePreset": "Update preset \"{name}\" with the current student list ({count} students)?",
+        "deletePreset": "Delete preset \"{name}\"?\nThe current student list will be kept.",
+        "resetSession": "Reset all hand-raise counts for this session to 0?"
+      },
+      "help": {
+        "menuLabel": "Participation Tracker",
+        "title": "Participation Tracker",
+        "introHeading": "Introduction",
+        "intro": "Track how many times each student participates during class.",
+        "usageHeading": "How to use",
+        "usage1": "Enter student names.",
+        "usage2": "Press Start class.",
+        "usage3": "Tap a student card to add 1.",
+        "usage4": "Long-press a card to subtract 1.",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one student name per line (press Enter after each line).",
+        "notesHeading": "Notes",
+        "notes": "Long-press takes about 0.5 seconds. Loading a preset may ask whether to keep existing counts."
+      }
+    },
+    "class-random-picker": {
+      "title": "Random Picker",
+      "subtitle": "Register student names and pick one fairly",
+      "sections": {
+        "preset": "Preset",
+        "settings": "Picker Settings",
+        "students": "Student List",
+        "history": "Pick History"
+      },
+      "labels": {
+        "selectedStudent": "Selected Student",
+        "excludePicked": "Exclude already picked students",
+        "studentListCount": "Student List ({count})"
+      },
+      "placeholders": {
+        "studentName": "Enter student name",
+        "presetName": "Preset name (e.g. Grade 1 Class 3)"
+      },
+      "display": {
+        "dash": "—",
+        "addStudentsFirst": "Add students first"
+      },
+      "stats": {
+        "poolExcluded": "Available: {available} / {total} total",
+        "poolAllowDup": "Available: {total} (duplicates allowed)"
+      },
+      "empty": {
+        "students": "No students registered yet.",
+        "studentsHint": "Enter a name above and tap Add.",
+        "history": "No picks yet"
+      },
+      "actions": {
+        "pickRandom": "🎯 Pick Random",
+        "pickAgain": "🔄 Pick Again",
+        "resetPicked": "↩️ Reset Picks",
+        "loadPreset": "Load",
+        "savePreset": "Save New",
+        "updatePreset": "Update Active Preset",
+        "deletePreset": "Delete Preset",
+        "addStudent": "Add",
+        "clearAll": "Clear All",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "editStudent": "Edit",
+        "deleteStudent": "Delete"
+      },
+      "preset": {
+        "selectPlaceholder": "— Select preset —",
+        "optionMeta": "{count} students",
+        "activeNone": "Active preset: None",
+        "activeNamed": "Active preset: {name} ({count} students)"
+      },
+      "errors": {
+        "nameRequired": "Please enter a name.",
+        "duplicateName": "This name is already registered."
+      },
+      "toast": {
+        "presetNameRequired": "Please enter a preset name.",
+        "noStudentsToSave": "No students to save.",
+        "presetSaved": "\"{name}\" saved.",
+        "presetLoaded": "\"{name}\" loaded.",
+        "presetUpdated": "\"{name}\" updated.",
+        "presetDeleted": "Preset deleted.",
+        "studentAdded": "\"{name}\" added.",
+        "studentDeleted": "Student deleted.",
+        "nameUpdated": "Name updated.",
+        "nameEmpty": "Name cannot be empty.",
+        "duplicateName": "This name is already registered.",
+        "nothingToReset": "Nothing to reset.",
+        "pickReset": "Pick state reset.",
+        "allStudentsCleared": "All students cleared.",
+        "allPicked": "Everyone has been picked. Tap Reset Picks.",
+        "picked": "🎉 {name} was selected!"
+      },
+      "confirm": {
+        "overwritePreset": "Preset \"{name}\" already exists. Overwrite?",
+        "replaceTempList": "Replace the temporary list ({count} students) with preset \"{name}\"?",
+        "switchPreset": "Switch from \"{from}\" to \"{to}\"?\nPick state will be reset.",
+        "updatePreset": "Update preset \"{name}\" with the current list ({count} students)?",
+        "deletePreset": "Delete preset \"{name}\"?\nThe current student list will be kept.",
+        "deleteStudent": "Delete student \"{name}\"?",
+        "resetPicked": "Reset picked students and selection?\n(Student list and pick history are kept.)",
+        "clearAll": "Delete all {count} registered students?\nThis cannot be undone."
+      },
+      "help": {
+        "menuLabel": "Random Picker",
+        "title": "Random Picker",
+        "introHeading": "Introduction",
+        "intro": "Randomly pick a student from your class list.",
+        "usageHeading": "How to use",
+        "usage1": "Add student names.",
+        "usage2": "Press Pick Random.",
+        "usage3": "Optionally exclude already picked students.",
+        "usage4": "Use Reset Picks to pick from the full list again.",
+        "inputHeading": "Input",
+        "inputLine1": "Type a name and tap Add. While editing, Enter saves and Esc cancels.",
+        "notesHeading": "Notes",
+        "notes": "Reset Picks clears pick state only. Use Clear All to remove the entire student list and history."
+      }
+    },
+    "team-maker": {
+      "title": "Team Maker",
+      "sections": {
+        "result": "Result",
+        "teamSettings": "Team Settings",
+        "students": "Student List",
+        "preset": "Preset"
+      },
+      "labels": {
+        "modeByCount": "By team count",
+        "modeBySize": "By members per team",
+        "teamCount": "Number of teams",
+        "teamSize": "Members per team",
+        "studentListCount": "Student List ({count})"
+      },
+      "placeholders": {
+        "studentName": "Enter student name",
+        "presetName": "Preset name (e.g. Grade 1 Class 3)"
+      },
+      "preview": {
+        "empty": "Add students to see a preview",
+        "byCount": "{total} students → {teams} teams ({sizes}) · {evenNote}",
+        "bySize": "{total} students → about {size} per team, {teams} teams ({sizes}) · {evenNote}",
+        "evenFixed": "{count} per team",
+        "evenRange": "{min}–{max} per team (remainder distributed evenly)"
+      },
+      "results": {
+        "emptyNoStudents": "Add students and configure teams, then tap Assign Teams",
+        "emptyReady": "{count} students ready! Tap Assign Teams",
+        "forming": "Assigning teams..."
+      },
+      "empty": {
+        "students": "No students registered yet.",
+        "studentsHint": "Enter a name above and tap Add."
+      },
+      "actions": {
+        "assignTeams": "🎲 Assign Teams",
+        "reassign": "🔄 Reassign",
+        "clearResult": "↩️ Clear",
+        "loadPreset": "Load",
+        "savePreset": "Save New",
+        "updatePreset": "Update Active Preset",
+        "deletePreset": "Delete Preset",
+        "addStudent": "Add",
+        "clearAll": "Clear All",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "editStudent": "Edit",
+        "deleteStudent": "Delete"
+      },
+      "preset": {
+        "selectPlaceholder": "— Select preset —",
+        "optionMeta": "{count} students",
+        "activeNone": "Active preset: None",
+        "activeNamed": "Active preset: {name} ({count} students)"
+      },
+      "errors": {
+        "nameRequired": "Please enter a name.",
+        "duplicateName": "This name is already registered."
+      },
+      "toast": {
+        "presetNameRequired": "Please enter a preset name.",
+        "noStudentsToSave": "No students to save.",
+        "presetSaved": "\"{name}\" saved.",
+        "presetLoaded": "\"{name}\" loaded.",
+        "presetUpdated": "\"{name}\" updated.",
+        "presetDeleted": "Preset deleted.",
+        "studentAdded": "\"{name}\" added.",
+        "studentDeleted": "Student deleted.",
+        "nameUpdated": "Name updated.",
+        "nameEmpty": "Name cannot be empty.",
+        "duplicateName": "This name is already registered.",
+        "allStudentsCleared": "All students cleared.",
+        "needTwoStudents": "At least 2 students are required.",
+        "noResultToClear": "No result to clear.",
+        "resultCleared": "Result cleared.",
+        "teamsAssigned": "🎉 {count} teams assigned ({sizes})"
+      },
+      "confirm": {
+        "overwritePreset": "Preset \"{name}\" already exists. Overwrite?",
+        "replaceTempList": "Replace the temporary list ({count} students) with preset \"{name}\"?",
+        "switchPreset": "Switch from \"{from}\" to \"{to}\"?\nTeam assignment will be reset.",
+        "updatePreset": "Update preset \"{name}\" with the current list ({count} students)?",
+        "deletePreset": "Delete preset \"{name}\"?\nThe current student list will be kept.",
+        "deleteStudent": "Delete student \"{name}\"?",
+        "clearAll": "Delete all {count} registered students?\nThis cannot be undone.",
+        "clearTeams": "Clear the team assignment result?"
+      },
+      "help": {
+        "menuLabel": "Team Maker",
+        "title": "Team Maker",
+        "introHeading": "Introduction",
+        "intro": "Automatically assign students to teams.",
+        "usageHeading": "How to use",
+        "usage1": "Add student names.",
+        "usage2": "Choose by team count or members per team.",
+        "usage3": "Press Assign Teams.",
+        "usage4": "Press Reassign to shuffle again.",
+        "inputHeading": "Input",
+        "inputLine1": "Type a name and tap Add. While editing, Enter saves and Esc cancels.",
+        "notesHeading": "Notes",
+        "notes": "At least 2 students are required. If team count exceeds student count, it is adjusted automatically."
+      }
+    },
+    "edu-scoreboard": {
+      "title": "Score Board",
+      "settingsTitle": "Team setup",
+      "labels": {
+        "team1Name": "Team 1 name",
+        "team2Name": "Team 2 name",
+        "bombCount": "Bomb count"
+      },
+      "hints": {
+        "bombCount": "1 = score resets immediately · 2–5 = 💣 accumulates before reset"
+      },
+      "actions": {
+        "start": "Start",
+        "backToSettings": "← Settings",
+        "resetScores": "Reset scores",
+        "switchPoint": "Switch Point",
+        "switchEverything": "Switch Everything",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "bomb": {
+        "resetsScore": "{name} Bomb (resets score)",
+        "withHits": "{name} Bomb ({count} hits)"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "menu": "Menu"
+      },
+      "confirm": {
+        "resetScores": "Reset all scores and resources to 0?"
+      },
+      "help": {
+        "menuLabel": "Score Board",
+        "title": "Score Board",
+        "introHeading": "Introduction",
+        "intro": "Manage scores and resources for two teams.",
+        "usageHeading": "How to use",
+        "usage1": "Set team names and bomb count.",
+        "usage2": "Adjust Score, Candy, Shield, and Stamp.",
+        "usage3": "Use the menu for Bomb, Switch Point, and Switch Everything.",
+        "notesHeading": "Notes",
+        "notes": "Scores reset on refresh. Keep the tab open during class if you need to preserve the board."
+      }
+    },
+    "grammar-checkpoint": {
+      "title": "Grammar Checkpoint",
+      "metaDescription": "Grammar Checkpoint — approve or reject English sentences and fix grammar errors.",
+      "actions": {
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen",
+        "reset": "Reset",
+        "start": "Start",
+        "approve": "Approve",
+        "reject": "Reject",
+        "playAgain": "Play Again",
+        "menu": "Menu",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "header": {
+        "score": "Score",
+        "rule": "Rule",
+        "day": "Day"
+      },
+      "teacher": {
+        "title": "Teacher Mode",
+        "daySection": "Day",
+        "ruleSection": "Rule",
+        "questionsSection": "Questions",
+        "dayLabel": "Day {day}"
+      },
+      "checkpoint": {
+        "windowLabel": "Immigration Desk",
+        "welcomeHtml": "<strong>Grammar Checkpoint</strong><br>Select a rule and press START<br>to begin inspection."
+      },
+      "fix": {
+        "label": "Fix Sentence"
+      },
+      "rulePanel": {
+        "title": "Today's Rule",
+        "ruleNumber": "Rule #{number}"
+      },
+      "stamp": {
+        "approved": "APPROVED",
+        "rejected": "REJECTED"
+      },
+      "feedback": {
+        "wrongHasError": "Wrong! This sentence has an error.",
+        "wrongIsCorrect": "Wrong! This sentence is correct.",
+        "correct": "Correct!",
+        "fixReveal": "Not quite. The answer is \"{answer}\"."
+      },
+      "result": {
+        "heading": "Shift Complete",
+        "detail": "{correct} correct · {wrong} wrong · {total} documents inspected"
+      },
+      "help": {
+        "menuLabel": "Grammar Checkpoint",
+        "title": "Grammar Checkpoint",
+        "introHeading": "Introduction",
+        "intro": "Decide whether each grammar sentence is correct or incorrect.",
+        "usageHeading": "How to use",
+        "usage1": "Choose Day, Rule, and number of questions.",
+        "usage2": "Press Start.",
+        "usage3": "Approve or Reject each sentence.",
+        "usage4": "Complete Fix Sentence when prompted.",
+        "usage5": "Review your score on the results screen.",
+        "notesHeading": "Notes",
+        "notes": "The Teacher panel is hidden during play. Some wrong answers skip Fix and move to the next sentence."
+      }
+    },
+    "phonics-hunt": {
+      "title": "Phonics Hunt",
+      "heading": "⭐ Phonics Hunt",
+      "setup": {
+        "subtitle": "Enter words and a grid is created automatically",
+        "wordInputHeading": "Word Input",
+        "wordInputHint": "Enter one word per line.",
+        "wordCount": "{count} words",
+        "gameSettingsHeading": "Game Settings",
+        "teamBlueLabel": "Team name (Blue)",
+        "teamRedLabel": "Team name (Red)",
+        "starCountLabel": "Star count (random placement)",
+        "starPointsLabel": "Star points",
+        "tipsHeading": "How to play",
+        "tip1": "Tiles are arranged automatically based on the number of words you enter",
+        "tip2": "Words are visible on the cards from the start",
+        "tip3": "Set the star count and they are hidden randomly among the tiles",
+        "tip4": "When a student says a word, the teacher opens that tile",
+        "tip5": "Opening a star tile earns points for that team"
+      },
+      "score": {
+        "starPoints": "Star Points"
+      },
+      "status": {
+        "selectTeam": "Select a team",
+        "openTile": "{team} — open the tile when the student says the word",
+        "gameOver": "Game over!"
+      },
+      "toast": {
+        "needTwoWords": "Please enter at least 2 words.",
+        "starCountRange": "Set star count between 1 and {max}.",
+        "starFound": "⭐ \"{word}\" — Star found! +{points} pts",
+        "tileOpened": "\"{word}\" — Tile opened"
+      },
+      "grid": {
+        "previewEmpty": "Grid: —",
+        "preview": "{rows}×{cols} ({cells} tiles)",
+        "previewEmptyCells": " · {count} empty",
+        "info": "{rows}×{cols} · {wordCount} words · {starCount} stars"
+      },
+      "victory": {
+        "title": "Game Over!",
+        "teamWins": "{team} wins!",
+        "scoreLine": "{teamA}: {scoreA} pts  ·  {teamB}: {scoreB} pts",
+        "tie": "It's a tie!",
+        "tieMessage": "Both teams scored {score} points"
+      },
+      "actions": {
+        "startGame": "Start Game",
+        "continue": "Continue",
+        "editWords": "Edit Words",
+        "resetScores": "Reset Scores",
+        "turnSuffix": " Turn",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "toggleSound": "Toggle Sound",
+        "fullscreen": "Fullscreen",
+        "switchLanguage": "Switch language"
+      },
+      "help": {
+        "menuLabel": "Phonics Hunt",
+        "title": "Phonics Hunt",
+        "introHeading": "Introduction",
+        "intro": "A two-team learning game where teams take turns opening word tiles and finding hidden stars. The product name is Phonics Hunt.",
+        "usageHeading": "How to use",
+        "usage1": "Enter words and set team names, star count, and star points.",
+        "usage2": "Press Start Game to create tiles automatically based on the word count.",
+        "usage3": "Each tile shows its word from the start; stars are hidden randomly in the set number of tiles.",
+        "usage4": "Press the Blue Team or Red Team turn button, then open the tile matching the word the student says.",
+        "usage5": "Opening a star tile adds points to that team.",
+        "usage6": "When all tiles are opened, the game ends and scores are compared.",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one word per line (press Enter after each line). At least 2 words are required.",
+        "notesHeading": "Notes",
+        "notes": "Star count can be set from 1 up to the number of words entered. Reset Scores clears points only; Edit Words returns to the setup screen."
+      }
+    },
+    "sentence-battle": {
+      "title": "Sentence Battle",
+      "subtitle": "Defeat monsters each round and finish off the boss!",
+      "actions": {
+        "add": "Add",
+        "startGame": "Start Game",
+        "retrySentence": "Retry This Sentence",
+        "backToSetup": "Back to Setup",
+        "playAgain": "Play Again",
+        "delete": "Delete",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "setup": {
+        "heading": "Teacher Setup",
+        "placeholder": "e.g. I am [in common] with him",
+        "hintLine1": "Add sentences, then start the game.",
+        "hintLine2Html": "Wrap phrases that count as one card in brackets, like <code>[in common]</code>.",
+        "bossHp": "Boss HP",
+        "playerHp": "Player HP",
+        "roundLayoutHeading": "Round layout",
+        "roundLayoutNormal": "Normal {count} rounds (monster HP: {perRound}) + 1 boss round (HP {bossHp})",
+        "roundLayoutBossNote": "Boss fight: review all {count} sentences in order · earn 1 item per round (use in boss fight)",
+        "roundTag": "R{round}:{hp}"
+      },
+      "list": {
+        "cardCount": "({count} cards: {cards})"
+      },
+      "labels": {
+        "monster": "Monster",
+        "monsterHp": "Monster HP",
+        "bossHp": "Boss HP",
+        "playerHp": "Player HP",
+        "attackGauge": "Attack Gauge",
+        "inventory": "Inventory"
+      },
+      "inventory": {
+        "empty": "No items — earn by clearing normal rounds",
+        "defaultHint": "Earned when you clear a round",
+        "bossUse": "Boss fight — click an item to use it",
+        "stored": "{count} held — saved until boss fight"
+      },
+      "monsters": {
+        "slime": "Slime",
+        "bat": "Bat",
+        "ghost": "Ghost",
+        "spider": "Spider",
+        "wolf": "Wolf",
+        "skeleton": "Skeleton",
+        "octopus": "Octopus",
+        "boss": "Grammar Boss"
+      },
+      "items": {
+        "shield": {
+          "name": "Shield",
+          "desc": "Block HP damage from your next mistake"
+        },
+        "hint": {
+          "name": "Hint",
+          "desc": "Reveal the next card to click"
+        },
+        "heal": {
+          "name": "Heal",
+          "desc": "HP +2"
+        }
+      },
+      "game": {
+        "clickCards": "Click cards in the correct order",
+        "roundMonster": "Round {round} — {name}",
+        "bossRound": "Boss Round — {name}",
+        "roundNormal": "Round {round} / {total} (Normal)",
+        "bossReview": "Boss Round — Review {current} / {total}",
+        "damageReview": "Review sentence: \"{sentence}\" · Damage {min} ~ {max}",
+        "damageNormal": "Sentence damage: {min} ~ {max} (100% gauge → {max})"
+      },
+      "messages": {
+        "shieldActive": "🛡️ Shield active! Blocks damage from your next mistake.",
+        "healUsed": "❤️ HP +2 restored!",
+        "hintShown": "💡 The next card to click is highlighted!",
+        "hintNone": "💡 No card available to highlight.",
+        "bossAppears": "👹 Boss appears! You can use {count} collected item(s)!",
+        "correct": "Correct!",
+        "attack": "⚔️ Attack! -{damage} (base {base} + gauge {bonus}, target {target})",
+        "roundClear": "🎉 Round {round} clear! Got {icon} {name} (for boss fight)",
+        "monsterHpLeft": "Monster HP {hp} left — attack again with the same sentence.",
+        "bossHpLeft": "Boss HP {hp} left — next review sentence!",
+        "bossDefeated": "🎯 Boss defeated! All sentences reviewed!",
+        "shieldBlocked": "🛡️ Shield blocked the damage!",
+        "wrongOrder": "Wrong order! Player HP -{dmg}"
+      },
+      "result": {
+        "victoryTitle": "Victory!",
+        "victoryDesc": "You cleared every round and defeated the boss! Sentence review complete!",
+        "defeatTitle": "Defeat...",
+        "defeatDesc": "Player HP reached 0. Try again!"
+      },
+      "help": {
+        "menuLabel": "Sentence Battle",
+        "title": "Sentence Battle",
+        "introHeading": "Introduction",
+        "intro": "An RPG-style sentence ordering game where you battle monsters by arranging words in the correct order.",
+        "usageHeading": "How to use",
+        "usage1": "Add your sentences.",
+        "usage2": "Set monster and boss HP.",
+        "usage3": "Start the game.",
+        "usage4": "Click word cards in the correct order.",
+        "usage5": "Use items during the boss fight.",
+        "inputHeading": "Input format",
+        "input": "Press Enter after typing a sentence to add it.",
+        "notesHeading": "Notes",
+        "notes": "Bracketed phrases like [in common] count as one card. Items can only be used during the boss fight."
+      }
+    },
+    "sentence-kitchen": {
+      "title": "Sentence Kitchen"
+    },
+    "story-forge": {
+      "title": "Story Forge"
+    },
+    "vocab-study-mobile": {
+      "title": "Vocab Study Tool",
+      "heading": "📚 Vocab Study Tool",
+      "subtitle": "Learn vocabulary with card games",
+      "actions": {
+        "addWord": "+ Add Word",
+        "clearAll": "Clear All",
+        "save": "Save",
+        "load": "Load",
+        "delete": "Delete",
+        "startStudy": "Start Study",
+        "resetSpelling": "Reset Selection",
+        "retryWrong": "Retry Wrong Words Only",
+        "restart": "Start Over",
+        "backToSetup": "Back to Word List",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "removeWord": "Remove"
+      },
+      "setup": {
+        "settingsHeading": "⚙️ Study Settings",
+        "wordInputHeading": "📝 Word Input",
+        "wordListHeading": "📋 Word List",
+        "presetsHeading": "💾 Presets"
+      },
+      "fieldLabels": {
+        "korean": "Korean meaning",
+        "english": "English meaning",
+        "example": "Example sentence"
+      },
+      "fieldToggles": {
+        "korean": "Korean meaning",
+        "english": "English meaning",
+        "example": "English example sentence"
+      },
+      "timer": {
+        "enable": "Use time limit",
+        "secondsLabel": "Time limit per round (seconds)"
+      },
+      "labels": {
+        "englishWord": "English word",
+        "korean": "Korean meaning",
+        "english": "English meaning",
+        "example": "English example sentence",
+        "progress": "Progress",
+        "score": "Score",
+        "accuracy": "Accuracy",
+        "timeRemaining": "Time left",
+        "totalScore": "Total Score",
+        "correct": "Correct",
+        "wrong": "Wrong",
+        "wrongWords": "Wrong words"
+      },
+      "placeholders": {
+        "word": "e.g. apple",
+        "korean": "e.g. 사과",
+        "english": "e.g. a round fruit",
+        "example": "e.g. I eat an apple.",
+        "presetName": "Preset name (e.g. Grade 3 Class 1)"
+      },
+      "rounds": {
+        "round1Label": "Round 1",
+        "round1Title": "Pair Match",
+        "round2Label": "Round 2",
+        "round2Title": "Meaning Quiz",
+        "round3Label": "Round 3",
+        "round3Title": "Spelling"
+      },
+      "hints": {
+        "round1": "Tap English and meaning cards in turn to make pairs. (Up to 4 pairs at a time)",
+        "round2": "Choose the English word that matches the meaning below.",
+        "round3": "Tap letters in order to complete the spelling.",
+        "spellingFallback": "Tap letters in order to spell the word."
+      },
+      "wordList": {
+        "koreanPrefix": "Korean:",
+        "englishPrefix": "English:",
+        "examplePrefix": "Example:"
+      },
+      "presets": {
+        "empty": "No saved presets.",
+        "meta": "{count} words · {fields}"
+      },
+      "toast": {
+        "wordAdded": "Word added.",
+        "presetSaved": "Preset \"{name}\" saved.",
+        "presetLoaded": "Preset \"{name}\" loaded.",
+        "presetDeleted": "Preset deleted.",
+        "timeUp": "Time's up!",
+        "correct": "Correct!",
+        "wrongTryAgain": "Wrong. Try again.",
+        "nextCardSet": "Next card set!",
+        "wrongAnswer": "Wrong! Answer: {word}",
+        "noWrongToRetry": "No wrong words to review."
+      },
+      "confirm": {
+        "deletePreset": "Delete preset \"{name}\"?",
+        "clearAllWords": "Delete all words?"
+      },
+      "errors": {
+        "selectField": "Select at least one of Korean meaning, English meaning, or example sentence.",
+        "enterWord": "Enter an English word.",
+        "enterField": "Enter {field}.",
+        "presetNameRequired": "Enter a preset name.",
+        "noWordsToSave": "No words to save.",
+        "addWordsFirst": "Add words first."
+      },
+      "result": {
+        "complete": "🎉 Study Complete!",
+        "retryComplete": "🔄 Review Complete!"
+      },
+      "help": {
+        "menuLabel": "Vocab Study Tool",
+        "title": "Vocab Study Tool",
+        "introHeading": "Introduction",
+        "intro": "A card-based vocabulary activity with three study rounds.",
+        "usageHeading": "How to use",
+        "usage1": "Select the fields you need.",
+        "usage2": "Add words and meanings.",
+        "usage3": "Save or load presets.",
+        "usage4": "Start study.",
+        "usage5": "Complete pair matching, meaning quiz, and spelling activities.",
+        "inputHeading": "Input",
+        "inputLine1": "Press Enter in an input field to add a word.",
+        "notesHeading": "Notes",
+        "notes": "When the timer is on, a round may end automatically when time runs out."
+      }
+    },
+    "5w1h-factory": {
+      "title": "WH Factory",
+      "metaDescription": "WH Factory — drag WH-question sentences onto the matching category boxes.",
+      "actions": {
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen",
+        "reset": "Reset",
+        "loadSample": "Load Sample",
+        "startGame": "Start Game",
+        "restart": "Restart",
+        "backToSetup": "Back to Setup",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "stats": {
+        "score": "Score",
+        "cards": "Cards"
+      },
+      "setup": {
+        "heading": "Question setup",
+        "hintHtml": "Enter one question per line. Format: <code>Who: sentence</code> &nbsp;·&nbsp; put a <strong>colon (:)</strong> after the category. (<code>Who: The boy is running.</code>)",
+        "placeholder": "Who: The boy is running.\nWhere: She lives in Seoul."
+      },
+      "game": {
+        "conveyorLabel": "Conveyor Belt"
+      },
+      "categories": {
+        "Who": { "hint": "Person / who" },
+        "What": { "hint": "Thing or action / what" },
+        "When": { "hint": "Time / when" },
+        "Where": { "hint": "Place / where" },
+        "Why": { "hint": "Reason / why" },
+        "How": { "hint": "Method / how" }
+      },
+      "parse": {
+        "lineFormat": "Line {line}: use format \"Who: sentence\" (colon after category)",
+        "invalidCategory": "Line {line}: invalid category \"{category}\"",
+        "emptySentence": "Line {line}: sentence is empty",
+        "noQuestions": "Enter at least one question."
+      },
+      "toast": {
+        "correct": "Correct!",
+        "tryAgain": "Try again!"
+      },
+      "result": {
+        "heading": "Factory Complete!",
+        "detail": "{correct} / {total} correct"
+      },
+      "help": {
+        "menuLabel": "WH Factory",
+        "title": "WH Factory",
+        "introHeading": "Introduction",
+        "intro": "A drag activity where students sort Who, What, When, Where, Why, and How sentences into the matching boxes.",
+        "usageHeading": "How to use",
+        "usage1": "Enter your sentences.",
+        "usage2": "Press Start Game.",
+        "usage3": "Drag each card to the correct 5W1H box.",
+        "usage4": "Review your score on the results screen.",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one sentence per line (press Enter after each line).",
+        "notesHeading": "Notes",
+        "notes": "Wrong cards return to the belt. Dropping outside a box does not change your score."
+      }
+    },
+    "barrel-game": {
+      "title": "Barrel Game",
+      "subtitle": "Pick a sword and stab the barrel. When the pirate pops out, it's over!",
+      "setup": {
+        "slotCountLabel": "Number of swords (holes)",
+        "slotCountHint": "4–12. The pirate's position changes each round."
+      },
+      "settings": {
+        "soundEnabled": "Enable sound effects"
+      },
+      "actions": {
+        "startGame": "▶ Start Game",
+        "backToSetup": "← Setup",
+        "reset": "↻ Reset",
+        "next": "Next ▶",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "sword": "Sword {n}"
+      },
+      "status": {
+        "pickSword": "Pick a sword number to stab the barrel",
+        "pirateAppears": "{n} — Pirate appears!!!",
+        "safe": "{n} safe! {remaining} left",
+        "safeBoardProgress": "{safe} / {total}",
+        "safeBoardTotal": "{safe} safe total",
+        "bombReveal": "{n}!"
+      },
+      "toast": {
+        "startHint": "Where is the pirate hiding?",
+        "reshuffled": "Shuffled again",
+        "newRound": "New round!"
+      },
+      "help": {
+        "menuLabel": "Barrel Game",
+        "title": "Barrel Game",
+        "introHeading": "Introduction",
+        "intro": "Pick a hole and stab a sword into the barrel — find which slot makes the pirate pop out.",
+        "usageHeading": "How to use",
+        "usage1": "Set the number of holes and sound options.",
+        "usage2": "Press Start Game.",
+        "usage3": "Pick a sword or hole number.",
+        "usage4": "When the pirate pops out, the round ends.",
+        "usage5": "Press Next or Reset to play another round.",
+        "shortcutsHeading": "Keyboard shortcuts",
+        "shortcutNumbers": "1–N: select a hole",
+        "shortcutR": "R: reset",
+        "shortcutEsc": "Esc: back to setup",
+        "shortcutEnter": "Enter: next round after game over",
+        "notesHeading": "Notes",
+        "notes": "The pirate's position is randomized each round."
+      }
+    },
+    "castle-siege": {
+      "title": "⚔ Castle Siege",
+      "setup": {
+        "subtitle": "Lesson Setup — configure before class",
+        "teams": "Teams",
+        "blueTeamNameLabel": "Blue Team Name",
+        "redTeamNameLabel": "Red Team Name",
+        "castleHp": "Castle HP",
+        "startingHp": "Starting HP (both teams)",
+        "preparationBonus": "Preparation Bonus",
+        "homeworkCompleted": "Homework Completed",
+        "completed": "Completed",
+        "total": "Total",
+        "chooseBonusItem": "Choose Bonus Item:",
+        "lessonRounds": "Lesson Rounds",
+        "numberOfRounds": "Number of Rounds",
+        "roundNameLabel": "Round {num} Name",
+        "startBattle": "Start Battle →"
+      },
+      "battle": {
+        "roundLabel": "ROUND {current} / {total}",
+        "finishLesson": "Finish Lesson",
+        "endRound": "End Round →",
+        "backToSetup": "← Setup",
+        "toggleSound": "Toggle Sound",
+        "attack": "⚔ Attack",
+        "repair": "💚 Repair",
+        "shield": "🛡 Shield",
+        "charge": "⚡ Charge",
+        "pendingActions": "{count} more actions!",
+        "pendingAction": "1 more action!",
+        "roundAdvance": "ROUND {num}",
+        "roundWin": "{team} wins Round {num}!",
+        "winnerTitle": "{team} Wins!",
+        "repairKitTitle": "Repair Kit ({count})",
+        "chargeTitle": "Charge ({count})"
+      },
+      "modals": {
+        "allRoundsComplete": "All Rounds Complete!",
+        "lessonFinished": "Great job — the lesson is finished.",
+        "backToSetup": "Back to Setup"
+      },
+      "prepTier": {
+        "none": "No Bonus",
+        "oneItem": "Bonus Item x1",
+        "oneItemShield": "Bonus Item x1 + Shield +10",
+        "twoItems": "Bonus Item x2"
+      },
+      "prepSummary": {
+        "noStudents": "No Bonus (no students)",
+        "progress": "{completed} / {total} ({percent}%) — {tier}"
+      },
+      "prepSelected": {
+        "none": "Selected: (none) — {count}/{max}",
+        "items": "Selected: {items} ({count}/{max})"
+      },
+      "items": {
+        "shield": "Shield +20",
+        "repairKit": "Repair Kit",
+        "charge": "Charge"
+      },
+      "roundNames": {
+        "vocabulary": "Vocabulary",
+        "reading": "Reading",
+        "speaking": "Speaking",
+        "grammar": "Grammar",
+        "freeTalk": "Free Talk",
+        "listening": "Listening",
+        "writing": "Writing",
+        "review": "Review",
+        "fallback": "Round {num}"
+      },
+      "actions": {
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "alerts": {
+        "hpRange": "Castle HP must be between 10 and 500.",
+        "needRound": "Add at least one round.",
+        "maxBonusItems": "{team}: select at most {count} Bonus Item(s).",
+        "needConfiguredRound": "Please configure at least one round.",
+        "chargeActive": "Charge is already active for this team!"
+      },
+      "help": {
+        "menuLabel": "Castle Siege",
+        "title": "Castle Siege",
+        "introHeading": "Introduction",
+        "intro": "A battle activity where two teams attack, repair, and defend castle HP across lesson rounds.",
+        "usageHeading": "How to use",
+        "usage1": "On the setup screen, set team names, castle HP, homework bonus, and lesson rounds.",
+        "usage2": "Press Start Battle to enter the battle screen.",
+        "usage3": "Use Attack, Repair, Shield, and Charge under each team.",
+        "usage4": "Attack reduces the opponent's castle HP; Repair restores your team's HP.",
+        "usage5": "Shield builds defense; Charge lets a team act twice on the next turn.",
+        "usage6": "When an opponent's castle HP reaches 0, that team wins the round. End Round advances to the next round.",
+        "usage7": "After the final round, the lesson is complete.",
+        "prepHeading": "Homework bonus",
+        "prep1": "50%+ homework completion: choose 1 bonus item",
+        "prep2": "80%+: 1 item + starting Shield +10",
+        "prep3": "100%: choose 2 bonus items",
+        "prep4": "Available items: Shield, Repair Kit, Charge",
+        "notesHeading": "Notes",
+        "notes": "Attack damage and Shield values are randomized within set ranges. Charge lets the same team act twice in a row."
+      }
+    },
+    "fortress-battle": {
+      "title": "Fortress Battle",
+      "subtitle": "Team A vs Team B — Classroom Battle Game",
+      "actions": {
+        "newGame": "New Game",
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen",
+        "apply": "Apply",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "settings": {
+        "title": "⚙ Game Settings",
+        "startHp": "Start HP",
+        "damageValues": "Damage values",
+        "hint": "Comma-separated numbers. Example: 0,10,20,30"
+      },
+      "turn": {
+        "teamAButton": "Team A Turn",
+        "teamBButton": "Team B Turn",
+        "badgeA": "Team A's Turn — Attack!",
+        "badgeB": "Team B's Turn — Attack!",
+        "gameOver": "Game Over"
+      },
+      "attack": {
+        "1": "Attack 1",
+        "2": "Attack 2",
+        "3": "Attack 3",
+        "4": "Attack 4"
+      },
+      "damage": {
+        "miss": "MISS!"
+      },
+      "winner": {
+        "teamAWins": "Team A Wins!",
+        "teamBWins": "Team B Wins!",
+        "draw": "It's a Draw!",
+        "subtitleTeamA": "Team A's fortress has fallen!",
+        "subtitleTeamB": "Team B's fortress has fallen!",
+        "subtitleDraw": "Both fortresses fell at the same time!"
+      },
+      "help": {
+        "menuLabel": "Fortress Battle",
+        "title": "Fortress Battle",
+        "introHeading": "Introduction",
+        "intro": "A turn-based classroom battle where Team A and Team B attack each other's fortress HP.",
+        "usageHeading": "How to use",
+        "usage1": "Set starting HP and damage values in Game Settings, then press Apply.",
+        "usage2": "Switch turns with Team A Turn / Team B Turn.",
+        "usage3": "Choose Attack 1–4 to deal damage based on your configured values.",
+        "usage4": "When a fortress reaches 0 HP, the other team wins.",
+        "usage5": "Press New Game to restart.",
+        "notesHeading": "Notes",
+        "notes": "Damage values are comma-separated numbers (e.g. 0,10,20,30). A value of 0 shows MISS!"
+      }
+    },
+    "dice-chance": {
+      "title": "Dice Chance",
+      "subtitle": "A classroom game where teams earn points or items based on dice rolls",
+      "sections": {
+        "rewards": "Rewards / Items",
+        "diceMode": "Dice Mode",
+        "options": "Options",
+        "preset": "Preset"
+      },
+      "labels": {
+        "optionsList": "Reward and item list (one per line)",
+        "hideToolbar": "Auto-hide top menu during presentation"
+      },
+      "placeholders": {
+        "optionsList": "+10 POINTS\n+20 POINTS\nBOMB\nSHIELD\nSWITCH POINT\nTHROW AGAIN\nSTEAL 10\nDOUBLE POINTS\nMISS\nCHANGE SCORE",
+        "presetName": "Preset name (e.g. Class 3 Dice Chance)"
+      },
+      "hints": {
+        "optionsMinSix": "If you enter 6 or more items, only 6 are chosen at random when the game starts."
+      },
+      "modes": {
+        "oneDice": "1 Dice Mode",
+        "oneDiceDesc": "Results 1 ~ 6 (6 slots)",
+        "twoDice": "2 Dice Mode",
+        "twoDiceDesc": "1~2 / 3~4 … 11~12 (6 slots)"
+      },
+      "modeLabel": {
+        "oneDice": "1 Dice Mode · 1 ~ 6",
+        "twoDice": "2 Dice Mode · 1~2 / 3~4 / … / 11~12"
+      },
+      "actions": {
+        "startGame": "Start Game",
+        "sampleLoad": "Sample Load",
+        "loadPreset": "Load Preset",
+        "savePreset": "Save Preset",
+        "deletePreset": "Delete Preset",
+        "backToSetup": "← Back to Setup",
+        "resetRound": "↻ Reset Round",
+        "fullscreen": "⛶ Fullscreen",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "resetRound": "Reset Round (R)",
+        "fullscreen": "Fullscreen (F)",
+        "diceRowHidden": "Dice {label}, reward hidden",
+        "diceRowRevealed": "Dice {label}, {reward}"
+      },
+      "status": {
+        "oneDiceShort": "1 Dice",
+        "twoDiceShort": "2 Dice",
+        "initial": "{mode} · {total} slots · Click to reveal",
+        "partial": "{revealed} / {total} revealed",
+        "allRevealed": "All revealed · Press R for a new round"
+      },
+      "playHint": "Click a dice slot to reveal its reward · R: new round · Esc: setup",
+      "cover": {
+        "hidden": "???"
+      },
+      "preset": {
+        "selectPlaceholder": "— Select preset —",
+        "optionMeta": "{count} items · {mode}",
+        "modeOneDice": "1 Dice",
+        "modeTwoDice": "2 Dice"
+      },
+      "toast": {
+        "needOptions": "Please enter at least one reward or item.",
+        "needMoreOptions": "At least {required} options are required (currently {current}).",
+        "cannotGenerateRound": "Unable to generate a round.",
+        "gameReady": "Dice Chance ready! ({count} slots)",
+        "newRound": "New Dice Chance Round!",
+        "fullscreenUnavailable": "Fullscreen is not available.",
+        "presetNameRequired": "Please enter a preset name.",
+        "noOptionsToSave": "No options to save.",
+        "presetSaved": "\"{name}\" saved.",
+        "presetLoaded": "\"{name}\" loaded.",
+        "presetDeleted": "Preset deleted.",
+        "sampleLoaded": "Sample options loaded."
+      },
+      "confirm": {
+        "overwritePreset": "Preset \"{name}\" already exists. Overwrite?",
+        "deletePreset": "Delete preset \"{name}\"?"
+      },
+      "help": {
+        "menuLabel": "Dice Chance",
+        "title": "Dice Chance",
+        "introHeading": "Introduction",
+        "intro": "Reveal hidden rewards or missions based on dice results.",
+        "usageHeading": "How to use",
+        "usage1": "Enter at least 6 rewards or missions.",
+        "usage2": "Press Start Game.",
+        "usage3": "Click a result row to reveal its content.",
+        "usage4": "Press Reset Round to start a new round.",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one reward or mission per line (press Enter after each line).",
+        "shortcutsHeading": "Keyboard shortcuts",
+        "shortcutEsc": "Esc: back to setup",
+        "shortcutR": "R: reset round",
+        "shortcutF": "F: fullscreen",
+        "shortcutEnter": "Enter/Space: reveal selected row",
+        "notesHeading": "Notes",
+        "notes": "At least 6 items are required. With more than 6 items, 6 are chosen at random each round."
+      }
+    },
+    "ladder-game": {
+      "title": "Ladder Game",
+      "description": "Set result items and complexity, then start.",
+      "labels": {
+        "results": "Result items",
+        "complexity": "Ladder complexity",
+        "participantCount": "Participants (auto-numbered at top)"
+      },
+      "placeholders": {
+        "results": "One item per line\nCandy\nShield\nStamp\nBlank\nWinner",
+        "presetName": "Preset name (e.g. Class 3 rewards)"
+      },
+      "hints": {
+        "resultsShuffle": "Items are placed randomly in the bottom row when you start.",
+        "complexityDetail": "2→5 horizontal rungs per column. Very complex includes diagonals that affect the actual path.",
+        "autoNumbers": "Numbers 1, 2, 3… are assigned automatically based on the number of result items."
+      },
+      "complexity": {
+        "1": "Very simple",
+        "2": "Simple",
+        "3": "Normal",
+        "4": "Complex",
+        "5": "Very complex"
+      },
+      "presets": {
+        "title": "Presets",
+        "selectPlaceholder": "— Select preset —"
+      },
+      "actions": {
+        "start": "Start",
+        "reset": "Reset",
+        "load": "Load",
+        "save": "Save",
+        "delete": "Delete",
+        "backToSetup": "← Setup",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "backToSetup": "Back to setup",
+        "newRound": "New round (R)",
+        "switchLanguage": "Switch language"
+      },
+      "play": {
+        "clickTopNumber": "Click a number at the top.",
+        "clickCoverToReveal": "Click the box to reveal the ladder.",
+        "coverHint": "Click to reveal the ladder",
+        "tracingPath": "{number} — Following the path…",
+        "resultLine": "{number} → {result}"
+      },
+      "toast": {
+        "enterPresetName": "Enter a preset name",
+        "minTwoResults": "Enter at least 2 result items",
+        "presetUpdated": "\"{name}\" updated",
+        "presetSaved": "\"{name}\" saved",
+        "presetLoaded": "\"{name}\" loaded",
+        "presetDeleted": "Preset deleted"
+      },
+      "confirm": {
+        "deletePreset": "Delete preset \"{name}\"?"
+      },
+      "alert": {
+        "minTwoResults": "Please enter at least 2 result items."
+      },
+      "help": {
+        "menuLabel": "Ladder Game",
+        "title": "Ladder Game",
+        "introHeading": "Introduction",
+        "intro": "Use a ladder draw to assign order or results.",
+        "usageHeading": "How to use",
+        "usage1": "Enter result items.",
+        "usage2": "Press Start.",
+        "usage3": "Click the cover to reveal the ladder.",
+        "usage4": "Select a number to see the result.",
+        "usage5": "Press R or ↻ to start a new round (ladder rebuilds and cover returns).",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one result item per line (press Enter after each line).",
+        "shortcutsHeading": "Keyboard shortcuts",
+        "shortcutR": "R: new round",
+        "notesHeading": "Notes",
+        "notes": "The number of participants is set automatically from the number of result items."
+      }
+    },
+    "mystery-box-picker": {
+      "title": "Mystery Box",
+      "subtitle": "Enter items and start — click boxes to reveal them, like a presentation",
+      "sections": {
+        "items": "Items",
+        "options": "Options",
+        "preset": "Preset"
+      },
+      "labels": {
+        "itemsList": "Box contents (one per line)",
+        "shuffleEachRound": "Reshuffle each new round",
+        "hideToolbar": "Auto-hide top menu during presentation"
+      },
+      "placeholders": {
+        "itemsList": "Switch points\n+6\n+1\n꽝\n×2",
+        "presetName": "Preset name (e.g. Class 3 score pick)"
+      },
+      "hints": {
+        "itemsShuffle": "One box is created per line; items are shuffled randomly each time you start."
+      },
+      "actions": {
+        "start": "▶ Start",
+        "sampleLoad": "Load Sample",
+        "loadPreset": "Load",
+        "savePreset": "Save",
+        "deletePreset": "Delete",
+        "backToSetup": "← Setup",
+        "reshuffle": "↻ Reshuffle",
+        "fullscreen": "⛶ Fullscreen",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "reshuffle": "Reshuffle with same items (R)",
+        "fullscreen": "Fullscreen (F)",
+        "boxHidden": "Box {number}",
+        "boxRevealed": "Box {number}, {item}"
+      },
+      "status": {
+        "initial": "{total} boxes · Click to reveal",
+        "partial": "{revealed} / {total} revealed",
+        "allRevealed": "All revealed · Press R to reshuffle"
+      },
+      "playHint": "Click a box to reveal its contents · R: reshuffle · Esc: setup",
+      "preset": {
+        "selectPlaceholder": "— Select preset —",
+        "optionMeta": "{count} items"
+      },
+      "toast": {
+        "needItems": "Please enter at least one item.",
+        "gameReady": "{count} boxes ready!",
+        "newRound": "A new round has started.",
+        "fullscreenUnavailable": "Fullscreen is not available.",
+        "presetNameRequired": "Please enter a preset name.",
+        "noItemsToSave": "No items to save.",
+        "presetSaved": "\"{name}\" saved.",
+        "presetLoaded": "\"{name}\" loaded.",
+        "presetDeleted": "Preset deleted.",
+        "sampleLoaded": "Sample items loaded."
+      },
+      "confirm": {
+        "overwritePreset": "Preset \"{name}\" already exists. Overwrite?",
+        "deletePreset": "Delete preset \"{name}\"?"
+      },
+      "help": {
+        "menuLabel": "Mystery Box",
+        "title": "Mystery Box",
+        "introHeading": "Introduction",
+        "intro": "Hide several items in boxes and reveal them one at a time.",
+        "usageHeading": "How to use",
+        "usage1": "Enter your items.",
+        "usage2": "Press Start.",
+        "usage3": "Click a box to reveal its hidden content.",
+        "usage4": "Use Reshuffle to start a new round.",
+        "inputHeading": "Input format",
+        "inputLine1": "Enter one item per line (press Enter after each line).",
+        "shortcutsHeading": "Keyboard shortcuts",
+        "shortcutEsc": "Esc: back to setup",
+        "shortcutR": "R: reshuffle",
+        "shortcutF": "F: fullscreen",
+        "shortcutEnter": "Enter/Space: reveal selected box",
+        "notesHeading": "Notes",
+        "notes": "If \"Reshuffle each new round\" is off, item order stays the same after Reset."
+      }
+    },
+    "nerfgun-board": {
+      "title": "Nerf Gun Roulette",
+      "subtitle": "Randomly selects one of 15 boards",
+      "actions": {
+        "spin": "Spin",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "backToSpin": "Return to spin screen"
+      },
+      "spinStatus": {
+        "idle": "Press the spin button",
+        "spinning": "Spinning…",
+        "winner": "🎉 {label} !"
+      },
+      "help": {
+        "menuLabel": "Nerf Gun Roulette",
+        "title": "Nerf Gun Roulette",
+        "introHeading": "Introduction",
+        "intro": "A slot-style activity that randomly picks one of several board images.",
+        "usageHeading": "How to use",
+        "usage1": "Press the Spin button.",
+        "usage2": "Watch the slot animation.",
+        "usage3": "The winning board is shown automatically.",
+        "usage4": "Use the back button to return to the spin screen.",
+        "notesHeading": "Notes",
+        "notes": "The board list is fixed; you cannot edit items on screen."
+      }
+    },
+    "pirate-race": {
+      "title": "Pirate Race",
+      "subtitle": "Race to the treasure island!",
+      "actions": {
+        "newGame": "New Game",
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen",
+        "randomMove": "🎲 Random Move",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language",
+        "teamAShip": "Team A ship",
+        "teamBShip": "Team B ship"
+      },
+      "settings": {
+        "title": "⚙️ Game Options",
+        "goalDistance": "Goal Distance",
+        "spaces": "{n} spaces",
+        "stormMode": "Storm Mode — roll 1 = no move!",
+        "treasureBonus": "Treasure Bonus — exact landing bonus!"
+      },
+      "track": {
+        "teamA": "Team A track",
+        "teamB": "Team B track",
+        "start": "START",
+        "treasureIslandHtml": "TREASURE<br />ISLAND"
+      },
+      "controls": {
+        "teamAMove": "Team A — Move",
+        "teamBMove": "Team B — Move"
+      },
+      "toast": {
+        "perfectLanding": "Perfect Landing! ⭐",
+        "storm": "Storm! No move! ⛈️"
+      },
+      "winner": {
+        "foundTreasure": "Team {team} found the treasure!",
+        "subtitleA": "Team A reached Treasure Island first! 🏆",
+        "subtitleB": "Team B reached Treasure Island first! 🏆"
+      },
+      "help": {
+        "menuLabel": "Pirate Race",
+        "title": "Pirate Race",
+        "introHeading": "Introduction",
+        "intro": "A race game where two teams move pirate ships toward the goal.",
+        "usageHeading": "How to use",
+        "usage1": "Adjust goal distance, Storm Mode, and Treasure Bonus settings.",
+        "usage2": "Select move values +1 through +6 or use Random Move.",
+        "usage3": "The first team to reach the goal wins.",
+        "notesHeading": "Notes",
+        "notes": "This is not turn-enforced — the teacher manages play order."
+      }
+    },
+    "treasure-hunt": {
+      "title": "Treasure Hunt",
+      "heading": "⛏ Treasure Hunt",
+      "teams": {
+        "blue": "Blue Team",
+        "red": "Red Team"
+      },
+      "score": {
+        "treasurePoints": "Treasure Points"
+      },
+      "status": {
+        "selectTeam": "Select a team to excavate",
+        "chooseTile": "{team} — choose a tile to excavate!",
+        "bonusDig": "💣 Bonus dig! {team} — choose another tile!",
+        "expeditionComplete": "Expedition complete!",
+        "newMapReady": "New map ready — select a team to excavate"
+      },
+      "toast": {
+        "noTreasures": "🗺 No hidden treasures remain!",
+        "treasureNearby": "🗺 A treasure is hidden nearby!",
+        "dynamite": "💣 Dynamite! Excavate one more tile!",
+        "groundShift": "⛏ The ground shifts! Hidden tiles reshuffled!"
+      },
+      "victory": {
+        "title": "Expedition Complete!",
+        "blueWins": "Blue Team Wins!",
+        "redWins": "Red Team Wins!",
+        "tie": "It's a Tie!",
+        "scoreLine": "{leadingTeam}: {leadingScore} pts  ·  {trailingTeam}: {trailingScore} pts",
+        "tieMessage": "Both teams scored {score} Treasure Points!"
+      },
+      "actions": {
+        "continue": "Continue",
+        "blueExcavate": "Blue Team Excavate",
+        "redExcavate": "Red Team Excavate",
+        "newMap": "New Map",
+        "reset": "Reset Game",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "labels": {
+        "rows": "Rows",
+        "cols": "Cols"
+      },
+      "aria": {
+        "toggleSound": "Toggle Sound",
+        "fullscreen": "Fullscreen",
+        "switchLanguage": "Switch language"
+      },
+      "help": {
+        "menuLabel": "Treasure Hunt",
+        "title": "Treasure Hunt",
+        "introHeading": "Introduction",
+        "intro": "A two-team activity where players dig tiles to collect treasure points.",
+        "usageHeading": "How to use",
+        "usage1": "Select Blue Team or Red Team Excavate to choose the active team.",
+        "usage2": "Pick a tile to dig and reveal its contents.",
+        "usage3": "Treasures (⭐, 💎, 👑) add points to that team.",
+        "usage4": "When all tiles are dug, the game ends and scores are compared.",
+        "usage5": "Change grid size with Rows/Cols and press New Map for a fresh board.",
+        "usage6": "Reset Game clears scores and starts over.",
+        "specialHeading": "Special tiles",
+        "special1": "🗺 Treasure Map: briefly shows one undug treasure location.",
+        "special2": "💣 Dynamite: the same team picks one more tile.",
+        "special3": "⛏ Unstable Ground: reshuffles undug tile contents.",
+        "notesHeading": "Notes",
+        "notes": "Grid size ranges from 3–8 rows and 3–8 columns. Treasure points: ⭐ 1, 💎 2, 👑 3."
+      }
+    },
+    "juldarigi": {
+      "title": "Tug of War",
+      "subtitle": "Draw cards, enter team scores, and pull the rope — first to pull the opponent across wins!",
+      "setup": {
+        "teamNames": "Team names",
+        "teamALabel": "Team A (left)",
+        "teamBLabel": "Team B (right)",
+        "teamAPlaceholder": "e.g. Class 1",
+        "teamBPlaceholder": "e.g. Class 2",
+        "winCondition": "Win condition",
+        "winPointsLabel": "Points needed to win",
+        "winPointsHint": "Teams take turns entering card scores (1–9). Win when the cumulative difference reaches this value."
+      },
+      "defaults": {
+        "teamA": "Team A",
+        "teamB": "Team B"
+      },
+      "actions": {
+        "startGame": "▶ Start Game",
+        "backToSetup": "← Setup",
+        "reset": "↻ Reset",
+        "pull": "Pull!",
+        "toSetup": "Back to Setup",
+        "rematch": "Play Again",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "play": {
+        "vs": "VS",
+        "roundLog": "Round log",
+        "pullHint": "Press Enter to apply",
+        "center": "Center",
+        "centerPosition": "Center (0 / {wp})"
+      },
+      "status": {
+        "enterScores": "Draw a card and enter team scores",
+        "roundTeamPlus": "Round {round} · {team} +{delta}",
+        "roundTie": "Round {round} · Tie",
+        "teamWins": "{team} wins!"
+      },
+      "position": {
+        "towardTeamHtml": "{team} side <strong>{pos}</strong> / {wp}"
+      },
+      "input": {
+        "teamScore": "{team} score"
+      },
+      "log": {
+        "empty": "No rounds yet",
+        "roundLine": "Round {round} · {teamA} {a} : {teamB} {b}",
+        "tie": "Tie",
+        "teamPlus": "{team} +{delta}"
+      },
+      "toast": {
+        "started": "Tug of war started!",
+        "invalidScore": "Enter a number from 0 to 9",
+        "minOneScore": "At least one team must enter a score",
+        "teamPulled": "{team} pulled {delta}!",
+        "stalemate": "Stalemate! No movement",
+        "reset": "Game reset"
+      },
+      "win": {
+        "title": "{team} Wins!",
+        "desc": "Reached {wp} points in {round} rounds!"
+      },
+      "help": {
+        "menuLabel": "Tug of War",
+        "title": "Tug of War",
+        "introHeading": "Introduction",
+        "intro": "A tug-of-war game where the rope moves based on the score difference between two teams.",
+        "usageHeading": "How to use",
+        "usage1": "Set team names and the win point target.",
+        "usage2": "Press Start Game.",
+        "usage3": "Enter scores for Team A and Team B.",
+        "usage4": "Press Pull to move the rope.",
+        "usage5": "The first team to reach the win point target wins.",
+        "inputHeading": "Input",
+        "inputLine1": "Enter scores as numbers. Press Enter to pull.",
+        "shortcutsHeading": "Keyboard shortcuts",
+        "shortcutEnter": "Enter: pull",
+        "shortcutEsc": "Esc: back to setup",
+        "notesHeading": "Notes",
+        "notes": "Scores are entered directly as numbers (0–9), not drawn from cards."
+      }
+    }
+  }
+}

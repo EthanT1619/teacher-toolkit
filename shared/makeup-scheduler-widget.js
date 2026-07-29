@@ -3,12 +3,6 @@
   const SYNC_APP_URL = new URL("../mkup-scheduler-synced/", window.location.href).href;
   const AUTO_INTERVAL_MS = 2000;
 
-  const STATUS_LABELS = {
-    scheduled: "예정",
-    completed: "완료",
-    cancelled: "취소",
-  };
-
   const els = {
     date: document.getElementById("makeupWidgetDate"),
     count: document.getElementById("makeupWidgetCount"),
@@ -18,6 +12,7 @@
     prev: document.getElementById("makeupWidgetPrev"),
     next: document.getElementById("makeupWidgetNext"),
     openBtn: document.querySelector(".makeup-widget__open-btn"),
+    root: document.getElementById("makeupWidget"),
   };
 
   if (!els.slide) return;
@@ -31,6 +26,29 @@
 
   if (els.openBtn) {
     els.openBtn.href = SYNC_APP_URL;
+  }
+
+  function widgetT(key, params) {
+    var i18n = window.toolkitI18n;
+    if (i18n && typeof i18n.t === "function") {
+      return i18n.t(key, params);
+    }
+    return key;
+  }
+
+  function getWidgetLocale() {
+    var i18n = window.toolkitI18n;
+    if (i18n && typeof i18n.getLocale === "function") {
+      return i18n.getLocale();
+    }
+    return "ko";
+  }
+
+  function applyWidgetStaticI18n() {
+    var i18n = window.toolkitI18n;
+    if (i18n && typeof i18n.applyToDOM === "function" && els.root) {
+      i18n.applyToDOM(els.root);
+    }
   }
 
   function isSupabaseConfigured() {
@@ -105,11 +123,21 @@
     return y + "-" + m + "-" + d;
   }
 
-  function formatDateKorean(dateStr) {
+  function formatDateDisplay(dateStr) {
     const parts = dateStr.split("-").map(Number);
-    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
     const date = new Date(parts[0], parts[1] - 1, parts[2]);
-    return parts[0] + "년 " + parts[1] + "월 " + parts[2] + "일 (" + dayNames[date.getDay()] + ")";
+
+    if (getWidgetLocale() === "ko") {
+      const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+      return parts[0] + "년 " + parts[1] + "월 " + parts[2] + "일 (" + dayNames[date.getDay()] + ")";
+    }
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "short",
+    });
   }
 
   function getStartTime(schedule) {
@@ -141,6 +169,16 @@
       .replace(/"/g, "&quot;");
   }
 
+  function statusLabel(status) {
+    if (status === "completed") {
+      return widgetT("tool.home.makeupWidget.statusCompleted");
+    }
+    if (status === "cancelled") {
+      return widgetT("tool.home.makeupWidget.statusCancelled");
+    }
+    return widgetT("tool.home.makeupWidget.statusScheduled");
+  }
+
   function filterTodaySchedules(schedules) {
     const todayStr = formatTodayDateString();
     return schedules
@@ -157,7 +195,7 @@
       .order("start_time", { ascending: true });
 
     if (error) {
-      throw new Error(error.message || "일정을 불러오지 못했습니다.");
+      throw new Error(error.message || widgetT("tool.home.makeupWidget.loading"));
     }
 
     return (data || []).map(scheduleFromDbRow);
@@ -173,7 +211,7 @@
     try {
       const { data: sessionData, error: sessionError } = await client.auth.getSession();
       if (sessionError) {
-        console.warn("보강 위젯: 세션 확인 실패", sessionError);
+        console.warn("Makeup widget: session check failed", sessionError);
       }
 
       const session = sessionData?.session;
@@ -182,7 +220,7 @@
         return await fetchTodaySchedulesFromSupabase(client);
       }
     } catch (err) {
-      console.warn("보강 위젯: Supabase 조회 실패", err);
+      console.warn("Makeup widget: Supabase fetch failed", err);
     }
 
     dataSource = "local";
@@ -241,29 +279,35 @@
 
   function renderEmptyState() {
     if (dataSource === "supabase") {
-      return '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+      return (
+        '<p class="makeup-widget__empty">' +
+        escapeHtml(widgetT("tool.home.makeupWidget.empty")) +
+        "</p>"
+      );
     }
 
     if (isSupabaseConfigured()) {
       return (
         '<p class="makeup-widget__empty">' +
-          "보강 일정을 보려면 Google 로그인이 필요합니다.<br>" +
-          '<a href="' + escapeHtml(SYNC_APP_URL) + '">보강 캘린더에서 로그인</a>' +
+        widgetT("tool.home.makeupWidget.emptyLoginHtml", { url: SYNC_APP_URL }) +
         "</p>"
       );
     }
 
-    return '<p class="makeup-widget__empty">오늘 예정된 보강이 없습니다.</p>';
+    return (
+      '<p class="makeup-widget__empty">' +
+      escapeHtml(widgetT("tool.home.makeupWidget.empty")) +
+      "</p>"
+    );
   }
 
   function renderScheduleCard(schedule) {
     const status = schedule.status || "scheduled";
-    const statusLabel = STATUS_LABELS[status] || status;
     return (
       '<a class="makeup-widget__card makeup-widget__card--' + escapeHtml(status) + '" href="' + escapeHtml(SYNC_APP_URL) + '">' +
         '<div class="makeup-widget__card-row">' +
           '<span class="makeup-widget__time">' + escapeHtml(formatTimeRange(schedule)) + "</span>" +
-          '<span class="makeup-widget__status">' + escapeHtml(statusLabel) + "</span>" +
+          '<span class="makeup-widget__status">' + escapeHtml(statusLabel(status)) + "</span>" +
         "</div>" +
         '<span class="makeup-widget__name">' + escapeHtml(schedule.studentName || "-") + "</span>" +
         '<span class="makeup-widget__class">' + escapeHtml(schedule.className || "-") + "</span>" +
@@ -307,16 +351,24 @@
   }
 
   function renderMakeupWidget() {
+    applyWidgetStaticI18n();
+
     const todayStr = formatTodayDateString();
     clampCurrentIndex();
 
-    if (els.date) els.date.textContent = formatDateKorean(todayStr);
-    if (els.count) els.count.textContent = "총 " + todaySchedules.length + "건";
+    if (els.date) els.date.textContent = formatDateDisplay(todayStr);
+    if (els.count) {
+      els.count.textContent = widgetT("tool.home.makeupWidget.totalCount", {
+        count: todaySchedules.length,
+      });
+    }
 
     const overlapLanes = detectOverlap(todaySchedules);
     if (els.overlap) {
       if (overlapLanes > 1) {
-        els.overlap.textContent = "같은 시간대 보강 " + overlapLanes + "건 — 일정 겹침 확인";
+        els.overlap.textContent = widgetT("tool.home.makeupWidget.overlap", {
+          count: overlapLanes,
+        });
         els.overlap.classList.remove("makeup-widget__overlap--hidden");
       } else {
         els.overlap.textContent = "";
@@ -331,7 +383,10 @@
   function showLoadingState() {
     stopAutoRotate();
     if (els.slide) {
-      els.slide.innerHTML = '<p class="makeup-widget__empty">보강 일정을 불러오는 중…</p>';
+      els.slide.innerHTML =
+        '<p class="makeup-widget__empty">' +
+        escapeHtml(widgetT("tool.home.makeupWidget.loading")) +
+        "</p>";
     }
     if (els.prev) els.prev.disabled = true;
     if (els.next) els.next.disabled = true;
@@ -346,7 +401,7 @@
       try {
         todaySchedules = await loadTodaySchedules();
       } catch (err) {
-        console.warn("보강 위젯: 새로고침 실패", err);
+        console.warn("Makeup widget: refresh failed", err);
         dataSource = "local";
         todaySchedules = filterTodaySchedules(loadSchedulesFromStorage());
       }
@@ -389,6 +444,10 @@
       }
     });
 
+    window.addEventListener("toolkit:localechange", function () {
+      renderMakeupWidget();
+    });
+
     const client = getSupabaseClient();
     if (client) {
       client.auth.onAuthStateChange(function () {
@@ -397,6 +456,14 @@
     }
   }
 
-  bindMakeupWidgetEvents();
-  refreshMakeupWidget();
+  function startWidget() {
+    bindMakeupWidgetEvents();
+    refreshMakeupWidget();
+  }
+
+  if (window.toolkitI18n && typeof window.toolkitI18n.t === "function") {
+    startWidget();
+  } else {
+    window.addEventListener("toolkit:i18n-ready", startWidget, { once: true });
+  }
 })();

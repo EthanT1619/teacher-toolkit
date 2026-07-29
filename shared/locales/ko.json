@@ -1,0 +1,1714 @@
+{
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "close": "닫기",
+    "confirm": "확인",
+    "loading": "불러오는 중…",
+    "back": "뒤로",
+    "home": "홈",
+    "help": "도움말"
+  },
+  "navigation": {
+    "brand": "Tool Kit",
+    "homeLink": "← Tool Kit",
+    "homeAriaLabel": "Tool Kit for JLS Teacher 홈으로 돌아가기",
+    "helpCenter": "도움말 센터",
+    "section": {
+      "utils": "유틸",
+      "study": "학습툴",
+      "activity": "활동"
+    }
+  },
+  "settings": {
+    "language": "언어",
+    "languageEn": "English",
+    "languageKo": "한국어"
+  },
+  "feedback": {
+    "saved": "저장했습니다.",
+    "clipboardCopied": "클립보드에 복사했습니다.",
+    "confirmDelete": "\"{name}\"을(를) 삭제할까요?",
+    "presetSaved": "\"{name}\" 프리셋을 저장했습니다."
+  },
+  "tool": {
+    "home": {
+      "title": "Toolkit for JLS Teachers",
+      "subtitle": "카테고리를 선택하면 도구 목록이 펼쳐집니다.",
+      "metaDescription": "Toolkit for JLS Teachers — 수업용 유틸, 학습툴, 활동 모음",
+      "footer": "Toolkit for JLS Teachers",
+      "menu": {
+        "count": "{count}개",
+        "utilAria": "유틸 도구",
+        "studyAria": "학습툴",
+        "activityAria": "활동"
+      },
+      "language": {
+        "switchToKo": "한국어",
+        "switchToEn": "English",
+        "switchAria": "언어 전환"
+      },
+      "helpFab": {
+        "aria": "도움말 센터",
+        "label": "도움말"
+      },
+      "checklist": {
+        "sectionAria": "오늘 수업 준비 체크리스트",
+        "title": "오늘 수업 준비",
+        "settings": "설정",
+        "classSettings": "반 설정",
+        "itemSettings": "항목 설정",
+        "resetCurrent": "현재 반 초기화",
+        "resetAll": "전체 초기화",
+        "prevClass": "이전 반",
+        "nextClass": "다음 반",
+        "emptyNoClasses": "등록된 반이 없습니다. 반 설정에서 추가해 주세요.",
+        "emptyNoItems": "체크 항목이 없습니다. 항목 설정에서 추가해 주세요.",
+        "progress": "{done} / {total} 완료",
+        "classSettingsTitle": "반 설정",
+        "classSettingsHint": "반 이름을 바꾸거나 추가·삭제할 수 있습니다. 각 반의 체크 항목과 체크 상태는 따로 저장됩니다.",
+        "itemSettingsTitle": "항목 설정",
+        "itemSettingsHintClosed": "반을 선택한 뒤 항목 설정에서 체크 항목을 편집할 수 있습니다.",
+        "itemSettingsHint": "\"{name}\" 반의 체크 항목을 편집합니다. 다른 반과 항목 목록이 다를 수 있습니다.",
+        "addClass": "반 추가",
+        "save": "저장",
+        "close": "닫기",
+        "delete": "삭제",
+        "addItem": "항목 추가",
+        "newClassPlaceholder": "새 반 이름",
+        "newItemPlaceholder": "새 항목 이름",
+        "classNameAria": "반 이름",
+        "itemNameAria": "항목 이름",
+        "confirmResetCurrent": "\"{name}\" 반의 체크 상태를 모두 해제할까요?",
+        "confirmResetAll": "모든 반의 체크 상태를 해제할까요?",
+        "alertMinOneClass": "최소 한 개의 반은 남겨 두어야 합니다.",
+        "alertMinOneItem": "최소 한 개의 항목은 남겨 두어야 합니다.",
+        "alertSelectClassFirst": "먼저 반을 선택해 주세요.",
+        "alertEmptyClassName": "반 이름을 비워 둘 수 없습니다.",
+        "alertDuplicateClassName": "\"{name}\" 이름이 중복됩니다.",
+        "alertEmptyItemName": "항목 이름을 비워 둘 수 없습니다.",
+        "alertDuplicateItemLabel": "\"{label}\" 항목이 중복됩니다."
+      },
+      "makeupWidget": {
+        "sectionAria": "오늘 보강",
+        "title": "오늘 보강",
+        "totalCount": "총 {count}건",
+        "openManager": "보강 관리 열기",
+        "prevSession": "이전 보강",
+        "nextSession": "다음 보강",
+        "loading": "보강 일정을 불러오는 중…",
+        "empty": "오늘 예정된 보강이 없습니다.",
+        "emptyLoginHtml": "보강 일정을 보려면 Google 로그인이 필요합니다.<br><a href=\"{url}\">보강 캘린더에서 로그인</a>",
+        "overlap": "같은 시간대 보강 {count}건 — 일정 겹침 확인",
+        "statusScheduled": "예정",
+        "statusCompleted": "완료",
+        "statusCancelled": "취소"
+      }
+    },
+    "help": {
+      "title": "도움말 센터"
+    },
+    "classroom-timer": {
+      "title": "Classroom Timer",
+      "actions": {
+        "howToUse": "사용 방법",
+        "fullscreen": "전체 화면",
+        "exitFullscreen": "전체 화면 종료",
+        "reset": "초기화",
+        "soundOn": "소리 켜짐",
+        "soundOff": "소리 꺼짐",
+        "start": "시작",
+        "pause": "일시정지",
+        "resume": "재개",
+        "clear": "지우기",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "timerControls": "타이머 조작",
+        "toggleFullscreen": "전체 화면 전환",
+        "switchLanguage": "언어 전환"
+      },
+      "status": {
+        "timesUp": "시간 종료!",
+        "running": "진행 중…",
+        "paused": "일시정지됨",
+        "inputPrefix": "입력: {value}",
+        "enterDigitsHint": "숫자 입력 (예: 630 → 6분 30초)"
+      },
+      "labels": {
+        "adjustWhileRunning": "시간 조절 (실행 중)"
+      },
+      "help": {
+        "title": "키보드 단축키",
+        "digitsHint": "시간 입력 (예: 630 → 6:30)",
+        "enterStart": "시작 / 재개",
+        "spacePause": "일시정지",
+        "clearResetFullscreen": "지우기 · 초기화 · 전체 화면",
+        "backspaceEsc": "숫자 삭제 · 취소 / 전체 화면 종료"
+      },
+      "toast": {
+        "maxDigits": "최대 6자리까지 입력할 수 있습니다",
+        "enterTime": "시간을 입력해 주세요",
+        "invalidTime": "올바르지 않은 시간입니다",
+        "fullscreenUnavailable": "전체 화면을 사용할 수 없습니다"
+      }
+    },
+    "makeup-scheduler": {
+      "title": "Makeup Scheduler"
+    },
+    "participation-tracker": {
+      "title": "Participation Tracker",
+      "description": "모두가 한번이라도 더 연습할 수 있도록 돕습니다.",
+      "sections": {
+        "studentList": "학생 목록",
+        "preset": "프리셋"
+      },
+      "labels": {
+        "studentNames": "이름 입력 (한 줄에 한 명)",
+        "sortQuietFirst": "조용한 학생 먼저",
+        "quietBadge": "아직 손 안 듦",
+        "handCount": "손 든 횟수"
+      },
+      "placeholders": {
+        "studentNames": "Alex\nBrandon\nCharlie\nDexter\n...",
+        "presetName": "프리셋 이름 (예: 월수 4시반)"
+      },
+      "hints": {
+        "studentNames": "쉼표나 공백으로 구분해도 됩니다. 빈 줄은 무시됩니다.",
+        "tap": "터치 +1 · 길게 누르기 −1"
+      },
+      "actions": {
+        "startClass": "수업 시작",
+        "backToSettings": "← 설정",
+        "undo": "↩ 되돌리기",
+        "resetSession": "이번 수업 초기화",
+        "loadPreset": "불러오기",
+        "savePreset": "새로 저장",
+        "updatePreset": "현재 프리셋 업데이트",
+        "deletePreset": "프리셋 삭제",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "preset": {
+        "selectPlaceholder": "— 프리셋 선택 —",
+        "activeNone": "현재 프리셋: 없음",
+        "activeWithName": "현재 프리셋: {name} ({count}명)",
+        "optionMeta": "{name} ({count}명)"
+      },
+      "status": {
+        "studentCount": "{count}명"
+      },
+      "summary": {
+        "handsNotRaised": "손 안 듦 {count}명",
+        "handsRaised": "손 듦 {count}명"
+      },
+      "empty": {
+        "line1": "학생 목록이 비어 있습니다.",
+        "line2": "설정에서 이름을 입력해 주세요."
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "studentCard": "{name}, 손 든 횟수 {count}, 터치하면 1 증가, 길게 누르면 1 감소"
+      },
+      "toast": {
+        "undone": "{name} 되돌림",
+        "alreadyZero": "이미 0입니다",
+        "decremented": "{name} −1",
+        "presetNameRequired": "프리셋 이름을 입력해 주세요",
+        "noStudentsToSave": "저장할 학생이 없습니다",
+        "presetSaved": "\"{name}\" 프리셋이 저장되었습니다",
+        "presetLoaded": "\"{name}\" 프리셋을 불러왔습니다",
+        "presetUpdated": "\"{name}\" 프리셋이 업데이트되었습니다",
+        "presetDeleted": "프리셋이 삭제되었습니다",
+        "enterStudentNames": "학생 이름을 입력해 주세요",
+        "sessionReset": "이번 수업 기록이 초기화되었습니다"
+      },
+      "confirm": {
+        "overwritePreset": "\"{name}\" 프리셋이 이미 있습니다. 덮어쓸까요?",
+        "replaceTempList": "현재 임시 목록({count}명)을 \"{name}\" 프리셋으로 바꿀까요?",
+        "switchPreset": "\"{from}\"에서 \"{to}\" 프리셋으로 바꿀까요?",
+        "updatePreset": "\"{name}\" 프리셋을 현재 학생 목록({count}명)으로 업데이트할까요?",
+        "deletePreset": "\"{name}\" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.",
+        "resetSession": "이번 수업의 손 든 횟수를 모두 0으로 초기화할까요?"
+      },
+      "help": {
+        "menuLabel": "Participation Tracker",
+        "title": "Participation Tracker",
+        "introHeading": "소개",
+        "intro": "수업 중 학생별 참여 횟수를 기록하는 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "학생 이름을 입력합니다.",
+        "usage2": "수업 시작을 누릅니다.",
+        "usage3": "학생 카드를 터치하면 1 증가합니다.",
+        "usage4": "학생 카드를 길게 누르면 1 감소합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "학생 이름은 Enter를 눌러 한 줄씩 입력합니다.",
+        "notesHeading": "주의사항",
+        "notes": "길게 누르기는 약 0.5초 정도 유지해야 작동합니다. 프리셋을 불러올 때 기존 횟수를 유지할지 확인이 나올 수 있습니다."
+      }
+    },
+    "class-random-picker": {
+      "title": "Random Picker",
+      "subtitle": "학생 이름을 등록하고 공정하게 한 명을 뽑아보세요",
+      "sections": {
+        "preset": "프리셋",
+        "settings": "뽑기 설정",
+        "students": "학생 목록",
+        "history": "뽑기 기록"
+      },
+      "labels": {
+        "selectedStudent": "선택된 학생",
+        "excludePicked": "이미 뽑힌 학생 제외",
+        "studentListCount": "학생 목록 ({count}명)"
+      },
+      "placeholders": {
+        "studentName": "학생 이름 입력",
+        "presetName": "프리셋 이름 (예: 1학년 3반)"
+      },
+      "display": {
+        "dash": "—",
+        "addStudentsFirst": "학생을 추가해 주세요"
+      },
+      "stats": {
+        "poolExcluded": "뽑기 가능: {available}명 / 전체 {total}명",
+        "poolAllowDup": "뽑기 가능: {total}명 (중복 허용)"
+      },
+      "empty": {
+        "students": "아직 등록된 학생이 없습니다.",
+        "studentsHint": "위 입력창에 이름을 입력하고 추가해 보세요.",
+        "history": "아직 뽑기 기록이 없습니다"
+      },
+      "actions": {
+        "pickRandom": "🎯 랜덤 뽑기",
+        "pickAgain": "🔄 다시 뽑기",
+        "resetPicked": "↩️ 뽑기 초기화",
+        "loadPreset": "불러오기",
+        "savePreset": "새로 저장",
+        "updatePreset": "현재 프리셋 업데이트",
+        "deletePreset": "프리셋 삭제",
+        "addStudent": "추가",
+        "clearAll": "전체 삭제",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "editStudent": "수정",
+        "deleteStudent": "삭제"
+      },
+      "preset": {
+        "selectPlaceholder": "— 프리셋 선택 —",
+        "optionMeta": "{count}명",
+        "activeNone": "현재 프리셋: 없음",
+        "activeNamed": "현재 프리셋: {name} ({count}명)"
+      },
+      "errors": {
+        "nameRequired": "이름을 입력해 주세요.",
+        "duplicateName": "이미 등록된 이름입니다."
+      },
+      "toast": {
+        "presetNameRequired": "프리셋 이름을 입력해 주세요",
+        "noStudentsToSave": "저장할 학생이 없습니다",
+        "presetSaved": "\"{name}\" 프리셋이 저장되었습니다",
+        "presetLoaded": "\"{name}\" 프리셋을 불러왔습니다",
+        "presetUpdated": "\"{name}\" 프리셋이 업데이트되었습니다",
+        "presetDeleted": "프리셋이 삭제되었습니다",
+        "studentAdded": "\"{name}\" 학생이 추가되었습니다",
+        "studentDeleted": "학생이 삭제되었습니다",
+        "nameUpdated": "이름이 수정되었습니다",
+        "nameEmpty": "이름은 비울 수 없습니다",
+        "duplicateName": "이미 등록된 이름입니다",
+        "nothingToReset": "초기화할 뽑기 기록이 없습니다",
+        "pickReset": "뽑기 상태가 초기화되었습니다",
+        "allStudentsCleared": "모든 학생이 삭제되었습니다",
+        "allPicked": "모든 학생이 뽑혔습니다. \"뽑기 초기화\"를 눌러 주세요.",
+        "picked": "🎉 {name} 학생이 선택되었습니다!"
+      },
+      "confirm": {
+        "overwritePreset": "\"{name}\" 프리셋이 이미 있습니다. 덮어쓸까요?",
+        "replaceTempList": "현재 임시 목록({count}명)을 \"{name}\" 프리셋으로 바꿀까요?",
+        "switchPreset": "\"{from}\"에서 \"{to}\" 프리셋으로 바꿀까요?\n뽑기 상태는 초기화됩니다.",
+        "updatePreset": "\"{name}\" 프리셋을 현재 학생 목록({count}명)으로 업데이트할까요?",
+        "deletePreset": "\"{name}\" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.",
+        "deleteStudent": "\"{name}\" 학생을 삭제할까요?",
+        "resetPicked": "뽑힌 학생 목록과 선택 상태를 초기화할까요?\n(학생 목록과 뽑기 기록은 유지됩니다)",
+        "clearAll": "등록된 학생 {count}명을 모두 삭제할까요?\n이 작업은 되돌릴 수 없습니다."
+      },
+      "help": {
+        "menuLabel": "Random Picker",
+        "title": "Random Picker",
+        "introHeading": "소개",
+        "intro": "학급 명단에서 학생을 공정하게 무작위로 뽑는 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "학생 이름을 추가합니다.",
+        "usage2": "랜덤 뽑기 버튼을 누릅니다.",
+        "usage3": "이미 뽑힌 학생을 제외할 수 있습니다.",
+        "usage4": "뽑기 초기화로 다시 전체 학생을 대상으로 뽑을 수 있습니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "이름을 입력한 뒤 추가합니다. 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.",
+        "notesHeading": "주의사항",
+        "notes": "뽑기 초기화는 뽑힌 상태만 초기화합니다. 학생 목록과 뽑기 기록 전체를 지우려면 전체 삭제를 사용합니다."
+      }
+    },
+    "team-maker": {
+      "title": "Team Maker",
+      "sections": {
+        "result": "결과",
+        "teamSettings": "팀 설정",
+        "students": "학생 목록",
+        "preset": "프리셋"
+      },
+      "labels": {
+        "modeByCount": "팀 수 기준",
+        "modeBySize": "팀당 인원 기준",
+        "teamCount": "팀 수",
+        "teamSize": "팀당 인원",
+        "studentListCount": "학생 목록 ({count}명)"
+      },
+      "placeholders": {
+        "studentName": "학생 이름 입력",
+        "presetName": "프리셋 이름 (예: 1학년 3반)"
+      },
+      "preview": {
+        "empty": "학생을 추가하면 미리보기가 표시됩니다",
+        "byCount": "{total}명 → {teams}팀 ({sizes}명) · {evenNote}",
+        "bySize": "{total}명 → 팀당 약 {size}명 기준 {teams}팀 ({sizes}명) · {evenNote}",
+        "evenFixed": "각 팀 {count}명",
+        "evenRange": "팀별 {min}~{max}명 (나머지 균등 배분)"
+      },
+      "results": {
+        "emptyNoStudents": "학생을 추가하고 팀을 설정한 뒤 팀 배정을 눌러 주세요",
+        "emptyReady": "{count}명 준비 완료! 팀 배정을 눌러 주세요",
+        "forming": "팀 배정 중..."
+      },
+      "empty": {
+        "students": "아직 등록된 학생이 없습니다.",
+        "studentsHint": "위 입력창에 이름을 입력하고 추가해 보세요."
+      },
+      "actions": {
+        "assignTeams": "🎲 팀 배정",
+        "reassign": "🔄 다시 배정",
+        "clearResult": "↩️ 결과 지우기",
+        "loadPreset": "불러오기",
+        "savePreset": "새로 저장",
+        "updatePreset": "현재 프리셋 업데이트",
+        "deletePreset": "프리셋 삭제",
+        "addStudent": "추가",
+        "clearAll": "전체 삭제",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "editStudent": "수정",
+        "deleteStudent": "삭제"
+      },
+      "preset": {
+        "selectPlaceholder": "— 프리셋 선택 —",
+        "optionMeta": "{count}명",
+        "activeNone": "현재 프리셋: 없음",
+        "activeNamed": "현재 프리셋: {name} ({count}명)"
+      },
+      "errors": {
+        "nameRequired": "이름을 입력해 주세요.",
+        "duplicateName": "이미 등록된 이름입니다."
+      },
+      "toast": {
+        "presetNameRequired": "프리셋 이름을 입력해 주세요",
+        "noStudentsToSave": "저장할 학생이 없습니다",
+        "presetSaved": "\"{name}\" 프리셋이 저장되었습니다",
+        "presetLoaded": "\"{name}\" 프리셋을 불러왔습니다",
+        "presetUpdated": "\"{name}\" 프리셋이 업데이트되었습니다",
+        "presetDeleted": "프리셋이 삭제되었습니다",
+        "studentAdded": "\"{name}\" 학생이 추가되었습니다",
+        "studentDeleted": "학생이 삭제되었습니다",
+        "nameUpdated": "이름이 수정되었습니다",
+        "nameEmpty": "이름은 비울 수 없습니다",
+        "duplicateName": "이미 등록된 이름입니다",
+        "allStudentsCleared": "모든 학생이 삭제되었습니다",
+        "needTwoStudents": "팀을 만들려면 학생 2명 이상이 필요합니다",
+        "noResultToClear": "지울 결과가 없습니다",
+        "resultCleared": "결과가 지워졌습니다",
+        "teamsAssigned": "🎉 {count}팀 배정 완료 ({sizes})"
+      },
+      "confirm": {
+        "overwritePreset": "\"{name}\" 프리셋이 이미 있습니다. 덮어쓸까요?",
+        "replaceTempList": "현재 임시 목록({count}명)을 \"{name}\" 프리셋으로 바꿀까요?",
+        "switchPreset": "\"{from}\"에서 \"{to}\" 프리셋으로 바꿀까요?\n팀 배정 결과는 초기화됩니다.",
+        "updatePreset": "\"{name}\" 프리셋을 현재 학생 목록({count}명)으로 업데이트할까요?",
+        "deletePreset": "\"{name}\" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.",
+        "deleteStudent": "\"{name}\" 학생을 삭제할까요?",
+        "clearAll": "등록된 학생 {count}명을 모두 삭제할까요?\n이 작업은 되돌릴 수 없습니다.",
+        "clearTeams": "팀 배정 결과를 지울까요?"
+      },
+      "help": {
+        "menuLabel": "Team Maker",
+        "title": "Team Maker",
+        "introHeading": "소개",
+        "intro": "학생들을 자동으로 팀에 배정하는 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "학생 이름을 추가합니다.",
+        "usage2": "팀 수 기준 또는 팀당 인원 기준을 선택합니다.",
+        "usage3": "팀 배정을 누릅니다.",
+        "usage4": "다시 섞고 싶으면 다시 배정을 누릅니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "이름을 입력한 뒤 추가합니다. 수정 중에는 Enter로 저장하고 Esc로 취소할 수 있습니다.",
+        "notesHeading": "주의사항",
+        "notes": "최소 2명 이상이 필요합니다. 팀 수가 학생 수보다 많으면 자동으로 조정됩니다."
+      }
+    },
+    "edu-scoreboard": {
+      "title": "Score Board",
+      "settingsTitle": "팀 설정",
+      "labels": {
+        "team1Name": "팀 1 이름",
+        "team2Name": "팀 2 이름",
+        "bombCount": "Bomb 횟수"
+      },
+      "hints": {
+        "bombCount": "1 = 즉시 점수 0 · 2~5 = 💣 누적 후 0"
+      },
+      "actions": {
+        "start": "시작",
+        "backToSettings": "← 설정",
+        "resetScores": "점수 초기화",
+        "switchPoint": "점수 교환",
+        "switchEverything": "전체 교환",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "bomb": {
+        "resetsScore": "{name} Bomb (점수 0)",
+        "withHits": "{name} Bomb ({count}회)"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "menu": "메뉴"
+      },
+      "confirm": {
+        "resetScores": "모든 점수와 자원을 0으로 초기화할까요?"
+      },
+      "help": {
+        "menuLabel": "Score Board",
+        "title": "Score Board",
+        "introHeading": "소개",
+        "intro": "두 팀의 점수와 자원을 관리하는 점수판입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "팀 이름과 Bomb count를 설정합니다.",
+        "usage2": "Score, Candy, Shield, Stamp를 조정합니다.",
+        "usage3": "메뉴에서 Bomb, Switch Point, Switch Everything을 사용할 수 있습니다.",
+        "notesHeading": "주의사항",
+        "notes": "새로고침하면 기록이 사라집니다. 수업 중 화면을 유지하세요."
+      }
+    },
+    "grammar-checkpoint": {
+      "title": "Grammar Checkpoint",
+      "metaDescription": "Grammar Checkpoint — 영어 문장의 문법 오류를 판별하고 고치는 활동",
+      "actions": {
+        "fullscreen": "전체 화면",
+        "exitFullscreen": "전체 화면 종료",
+        "reset": "초기화",
+        "start": "시작",
+        "approve": "승인",
+        "reject": "거부",
+        "playAgain": "다시 하기",
+        "menu": "메뉴",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "header": {
+        "score": "점수",
+        "rule": "규칙",
+        "day": "일차"
+      },
+      "teacher": {
+        "title": "교사 모드",
+        "daySection": "일차",
+        "ruleSection": "규칙",
+        "questionsSection": "문항 수",
+        "dayLabel": "{day}일차"
+      },
+      "checkpoint": {
+        "windowLabel": "Immigration Desk",
+        "welcomeHtml": "<strong>Grammar Checkpoint</strong><br>규칙을 선택하고 <strong>시작</strong>을 눌러<br>검사를 시작하세요."
+      },
+      "fix": {
+        "label": "문장 고치기"
+      },
+      "rulePanel": {
+        "title": "오늘의 규칙",
+        "ruleNumber": "규칙 #{number}"
+      },
+      "stamp": {
+        "approved": "승인",
+        "rejected": "거부"
+      },
+      "feedback": {
+        "wrongHasError": "오답! 이 문장에는 오류가 있습니다.",
+        "wrongIsCorrect": "오답! 이 문장은 올바릅니다.",
+        "correct": "정답!",
+        "fixReveal": "아쉽습니다. 정답은 \"{answer}\"입니다."
+      },
+      "result": {
+        "heading": "Shift Complete",
+        "detail": "정답 {correct} · 오답 {wrong} · 총 {total}문항 검사"
+      },
+      "help": {
+        "menuLabel": "Grammar Checkpoint",
+        "title": "Grammar Checkpoint",
+        "introHeading": "소개",
+        "intro": "문법 문장을 보고 맞는 문장인지 틀린 문장인지 판단하는 활동입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "일차, 규칙, 문항 수를 선택합니다.",
+        "usage2": "시작을 누릅니다.",
+        "usage3": "문장을 보고 승인 또는 거부를 선택합니다.",
+        "usage4": "필요한 경우 문장 고치기를 진행합니다.",
+        "usage5": "결과 화면에서 점수를 확인합니다.",
+        "notesHeading": "주의사항",
+        "notes": "게임 중에는 교사 모드 패널이 숨겨집니다. 오답인 경우 문장 고치기 단계 없이 다음 문항으로 넘어갈 수 있습니다."
+      }
+    },
+    "phonics-hunt": {
+      "title": "Phonics Hunt",
+      "heading": "⭐ Phonics Hunt",
+      "setup": {
+        "subtitle": "단어를 입력하면 자동으로 그리드가 만들어집니다",
+        "wordInputHeading": "단어 입력",
+        "wordInputHint": "한 줄에 단어 하나씩 입력하세요.",
+        "wordCount": "{count}개 단어",
+        "gameSettingsHeading": "게임 설정",
+        "teamBlueLabel": "팀 이름 (파랑)",
+        "teamRedLabel": "팀 이름 (빨강)",
+        "starCountLabel": "별 개수 (랜덤 배치)",
+        "starPointsLabel": "별 점수",
+        "tipsHeading": "사용법",
+        "tip1": "입력한 단어 수만큼 칸이 자동으로 배치됩니다",
+        "tip2": "단어는 처음부터 카드에 보입니다",
+        "tip3": "별 개수만 정하면 칸에 랜덤으로 숨겨집니다",
+        "tip4": "학생이 단어를 말하면 강사가 해당 칸을 엽니다",
+        "tip5": "별 칸을 열면 점수를 얻습니다"
+      },
+      "score": {
+        "starPoints": "별 점수"
+      },
+      "status": {
+        "selectTeam": "팀을 선택하세요",
+        "openTile": "{team} — 학생이 단어를 말하면 해당 칸을 열어 주세요",
+        "gameOver": "게임 종료!"
+      },
+      "toast": {
+        "needTwoWords": "단어를 2개 이상 입력해 주세요.",
+        "starCountRange": "별 개수는 1~{max} 사이로 설정해 주세요.",
+        "starFound": "⭐ \"{word}\" — 별 발견! +{points}점",
+        "tileOpened": "\"{word}\" — 칸을 열었습니다"
+      },
+      "grid": {
+        "previewEmpty": "그리드: —",
+        "preview": "{rows}×{cols} ({cells}칸)",
+        "previewEmptyCells": " · 빈 칸 {count}개",
+        "info": "{rows}×{cols} · {wordCount}단어 · 별 {starCount}개"
+      },
+      "victory": {
+        "title": "게임 종료!",
+        "teamWins": "{team} 승리!",
+        "scoreLine": "{teamA}: {scoreA}점  ·  {teamB}: {scoreB}점",
+        "tie": "무승부!",
+        "tieMessage": "양 팀 모두 {score}점"
+      },
+      "actions": {
+        "startGame": "게임 시작",
+        "continue": "계속하기",
+        "editWords": "단어 수정",
+        "resetScores": "점수 초기화",
+        "turnSuffix": " 턴",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "toggleSound": "소리 켜기/끄기",
+        "fullscreen": "전체 화면",
+        "switchLanguage": "언어 전환"
+      },
+      "help": {
+        "menuLabel": "Phonics Hunt",
+        "title": "Phonics Hunt",
+        "introHeading": "소개",
+        "intro": "단어가 적힌 칸을 두 팀이 번갈아 열고, 숨겨진 별 칸을 더 많이 찾는 학습 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "단어를 입력하고 팀 이름, 별 개수, 별 점수를 설정합니다.",
+        "usage2": "게임 시작을 누르면 단어 수에 맞는 칸이 자동으로 만들어집니다.",
+        "usage3": "각 칸에는 처음부터 단어가 보이고, 별은 정해진 개수만큼 무작위로 숨겨집니다.",
+        "usage4": "파란 팀 또는 빨간 팀 턴 버튼을 누른 뒤, 학생이 말한 단어에 해당하는 칸을 클릭해 엽니다.",
+        "usage5": "별 칸을 열면 해당 팀에 점수가 더해집니다.",
+        "usage6": "모든 칸을 열면 게임이 끝나고 점수를 비교합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "단어는 Enter를 눌러 한 줄에 하나씩 입력합니다. 최소 2개 이상 필요합니다.",
+        "notesHeading": "주의사항",
+        "notes": "별 개수는 1개부터 입력한 단어 개수까지 설정할 수 있습니다. 점수 초기화는 점수만 다시 0으로 돌리고, 단어 수정은 설정 화면으로 돌아갑니다."
+      }
+    },
+    "sentence-battle": {
+      "title": "Sentence Battle",
+      "subtitle": "라운드마다 몬스터를 물리치고, 보스를 처치하세요!",
+      "actions": {
+        "add": "추가",
+        "startGame": "게임 시작",
+        "retrySentence": "이 문장 다시",
+        "backToSetup": "설정으로",
+        "playAgain": "다시 하기",
+        "delete": "삭제",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "setup": {
+        "heading": "선생님 설정",
+        "placeholder": "예: I am [in common] with him",
+        "hintLine1": "문장을 추가한 뒤 게임을 시작하세요.",
+        "hintLine2Html": "한 장으로 묶을 구는 <code>[in common]</code> 처럼 대괄호로 감싸세요.",
+        "bossHp": "보스 HP",
+        "playerHp": "플레이어 HP",
+        "roundLayoutHeading": "라운드 구성",
+        "roundLayoutNormal": "일반 {count}라운드 (몬스터 HP: {perRound}) + 보스 1라운드 (HP {bossHp})",
+        "roundLayoutBossNote": "보스전: 이전 문장 {count}개를 순서대로 복습 공격 · 라운드마다 아이템 1개 획득 (보스전에 사용)",
+        "roundTag": "R{round}:{hp}"
+      },
+      "list": {
+        "cardCount": "({count}장: {cards})"
+      },
+      "labels": {
+        "monster": "몬스터",
+        "monsterHp": "몬스터 HP",
+        "bossHp": "보스 HP",
+        "playerHp": "플레이어 HP",
+        "attackGauge": "공격 게이지",
+        "inventory": "보유 아이템"
+      },
+      "inventory": {
+        "empty": "아이템 없음 — 일반 라운드 클리어 시 획득",
+        "defaultHint": "라운드 클리어 시 획득",
+        "bossUse": "보스전 — 아이템을 클릭해 사용하세요",
+        "stored": "보유 {count}개 — 보스전까지 보관 중"
+      },
+      "monsters": {
+        "slime": "슬라임",
+        "bat": "박쥐",
+        "ghost": "유령",
+        "spider": "거미",
+        "wolf": "늑대",
+        "skeleton": "해골",
+        "octopus": "문어",
+        "boss": "문법 보스"
+      },
+      "items": {
+        "shield": {
+          "name": "실드",
+          "desc": "다음 실수 HP 피해 방어"
+        },
+        "hint": {
+          "name": "힌트",
+          "desc": "다음 카드 1개 표시"
+        },
+        "heal": {
+          "name": "회복",
+          "desc": "HP +2"
+        }
+      },
+      "game": {
+        "clickCards": "카드를 올바른 순서로 클릭하세요",
+        "roundMonster": "라운드 {round} — {name}",
+        "bossRound": "보스 라운드 — {name}",
+        "roundNormal": "라운드 {round} / {total} (일반)",
+        "bossReview": "보스 라운드 — 복습 {current} / {total}",
+        "damageReview": "복습 문장: \"{sentence}\" · 데미지 {min} ~ {max}",
+        "damageNormal": "이 문장 데미지: {min} ~ {max} (게이지 100% → {max})"
+      },
+      "messages": {
+        "shieldActive": "🛡️ 실드 활성화! 다음 실수 피해를 막습니다.",
+        "healUsed": "❤️ HP +2 회복!",
+        "hintShown": "💡 다음에 눌러야 할 카드를 표시했습니다!",
+        "hintNone": "💡 표시할 카드가 없습니다.",
+        "bossAppears": "👹 보스 등장! 모은 아이템 {count}개를 사용할 수 있습니다!",
+        "correct": "정답!",
+        "attack": "⚔️ 공격! -{damage} (기본 {base} + 게이지 {bonus}, 목표 {target})",
+        "roundClear": "🎉 라운드 {round} 클리어! {icon} {name} 획득 (보스전에 사용)",
+        "monsterHpLeft": "몬스터 HP {hp} 남음! 같은 문장으로 다시 공격하세요.",
+        "bossHpLeft": "보스 HP {hp} 남음 — 다음 복습 문장!",
+        "bossDefeated": "🎯 보스 처치! 모든 문장 복습 완료!",
+        "shieldBlocked": "🛡️ 실드가 피해를 막았습니다!",
+        "wrongOrder": "순서가 틀렸어요! 플레이어 HP -{dmg}"
+      },
+      "result": {
+        "victoryTitle": "승리!",
+        "victoryDesc": "모든 라운드를 클리어하고 보스를 처치했습니다! 문장 복습도 완료!",
+        "defeatTitle": "패배...",
+        "defeatDesc": "플레이어 HP가 0이 되었습니다. 다시 도전해보세요!"
+      },
+      "help": {
+        "menuLabel": "Sentence Battle",
+        "title": "Sentence Battle",
+        "introHeading": "소개",
+        "intro": "문장 순서를 맞히며 몬스터와 전투하는 RPG형 문장 배열 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "문장을 추가합니다.",
+        "usage2": "몬스터와 보스 HP를 설정합니다.",
+        "usage3": "게임을 시작합니다.",
+        "usage4": "단어 카드를 올바른 순서로 클릭합니다.",
+        "usage5": "보스전에서 아이템을 사용할 수 있습니다.",
+        "inputHeading": "입력 방법",
+        "input": "문장 입력 후 Enter를 누르면 문장이 추가됩니다.",
+        "notesHeading": "주의사항",
+        "notes": "[in common]처럼 묶인 표현은 하나의 카드로 처리됩니다. 아이템은 보스전에서만 사용할 수 있습니다."
+      }
+    },
+    "sentence-kitchen": {
+      "title": "Sentence Kitchen"
+    },
+    "story-forge": {
+      "title": "Story Forge"
+    },
+    "vocab-study-mobile": {
+      "title": "Vocab Study Tool",
+      "heading": "📚 Vocab Study Tool",
+      "subtitle": "카드 게임으로 단어를 외워보세요",
+      "actions": {
+        "addWord": "+ 단어 추가",
+        "clearAll": "전체 삭제",
+        "save": "저장",
+        "load": "불러오기",
+        "delete": "삭제",
+        "startStudy": "학습 시작",
+        "resetSpelling": "다시 선택",
+        "retryWrong": "틀린 단어만 다시 풀기",
+        "restart": "처음부터 다시",
+        "backToSetup": "단어 목록으로",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "removeWord": "삭제"
+      },
+      "setup": {
+        "settingsHeading": "⚙️ 학습 설정",
+        "wordInputHeading": "📝 단어 입력",
+        "wordListHeading": "📋 단어 목록",
+        "presetsHeading": "💾 프리셋"
+      },
+      "fieldLabels": {
+        "korean": "한글 뜻",
+        "english": "영어 뜻",
+        "example": "예시문장"
+      },
+      "fieldToggles": {
+        "korean": "한글 뜻",
+        "english": "영어 뜻",
+        "example": "영어 예시문장"
+      },
+      "timer": {
+        "enable": "제한 시간 사용",
+        "secondsLabel": "라운드당 제한 시간 (초)"
+      },
+      "labels": {
+        "englishWord": "영어 단어",
+        "korean": "한글 뜻",
+        "english": "영어 뜻",
+        "example": "영어 예시문장",
+        "progress": "진행",
+        "score": "점수",
+        "accuracy": "정답률",
+        "timeRemaining": "남은 시간",
+        "totalScore": "총 점수",
+        "correct": "정답",
+        "wrong": "오답",
+        "wrongWords": "틀린 단어"
+      },
+      "placeholders": {
+        "word": "예: apple",
+        "korean": "예: 사과",
+        "english": "예: a round fruit",
+        "example": "예: I eat an apple.",
+        "presetName": "프리셋 이름 (예: 3학년 1반)"
+      },
+      "rounds": {
+        "round1Label": "라운드 1",
+        "round1Title": "페어 찾기",
+        "round2Label": "라운드 2",
+        "round2Title": "뜻 맞추기",
+        "round3Label": "라운드 3",
+        "round3Title": "스펠링 맞추기"
+      },
+      "hints": {
+        "round1": "영어 카드와 뜻 카드를 차례로 눌러 짝을 맞추세요. (한 번에 최대 4쌍)",
+        "round2": "아래 뜻에 맞는 영어 단어를 고르세요.",
+        "round3": "글자를 순서대로 눌러 스펠링을 완성하세요.",
+        "spellingFallback": "글자를 순서대로 눌러 단어를 완성하세요."
+      },
+      "wordList": {
+        "koreanPrefix": "한글:",
+        "englishPrefix": "영어:",
+        "examplePrefix": "예문:"
+      },
+      "presets": {
+        "empty": "저장된 프리셋이 없습니다.",
+        "meta": "{count}개 단어 · {fields}"
+      },
+      "toast": {
+        "wordAdded": "단어가 추가되었습니다.",
+        "presetSaved": "\"{name}\" 프리셋이 저장되었습니다.",
+        "presetLoaded": "\"{name}\" 프리셋을 불러왔습니다.",
+        "presetDeleted": "프리셋이 삭제되었습니다.",
+        "timeUp": "시간이 종료되었습니다!",
+        "correct": "정답!",
+        "wrongTryAgain": "틀렸어요. 다시 시도해보세요.",
+        "nextCardSet": "다음 카드 세트!",
+        "wrongAnswer": "오답! 정답: {word}",
+        "noWrongToRetry": "복습할 틀린 단어가 없습니다."
+      },
+      "confirm": {
+        "deletePreset": "\"{name}\" 프리셋을 삭제할까요?",
+        "clearAllWords": "모든 단어를 삭제할까요?"
+      },
+      "errors": {
+        "selectField": "한글 뜻, 영어 뜻, 예시문장 중 하나 이상을 선택해주세요.",
+        "enterWord": "영어 단어를 입력해주세요.",
+        "enterField": "{field}을(를) 입력해주세요.",
+        "presetNameRequired": "프리셋 이름을 입력해주세요.",
+        "noWordsToSave": "저장할 단어가 없습니다.",
+        "addWordsFirst": "단어를 먼저 추가해주세요."
+      },
+      "result": {
+        "complete": "🎉 학습 완료!",
+        "retryComplete": "🔄 복습 완료!"
+      },
+      "help": {
+        "menuLabel": "Vocab Study Tool",
+        "title": "Vocab Study Tool",
+        "introHeading": "소개",
+        "intro": "단어를 3단계로 학습하는 카드형 어휘 활동입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "필요한 필드를 선택합니다.",
+        "usage2": "단어와 뜻을 추가합니다.",
+        "usage3": "프리셋을 저장하거나 불러올 수 있습니다.",
+        "usage4": "학습을 시작합니다.",
+        "usage5": "페어 맞추기, 뜻 확인, 스펠링 활동을 진행합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "입력란에서 Enter를 누르면 단어가 추가됩니다.",
+        "notesHeading": "주의사항",
+        "notes": "타이머를 켜면 시간이 끝났을 때 라운드가 강제로 종료될 수 있습니다."
+      }
+    },
+    "5w1h-factory": {
+      "title": "WH Factory",
+      "metaDescription": "WH Factory — Who, What, When, Where, Why, How 문장을 분류하는 드래그 활동",
+      "actions": {
+        "fullscreen": "전체 화면",
+        "exitFullscreen": "전체 화면 종료",
+        "reset": "초기화",
+        "loadSample": "샘플 불러오기",
+        "startGame": "게임 시작",
+        "restart": "다시 시작",
+        "backToSetup": "설정으로 돌아가기",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "stats": {
+        "score": "점수",
+        "cards": "카드"
+      },
+      "setup": {
+        "heading": "문제 설정",
+        "hintHtml": "한 줄에 하나씩 입력하세요. 형식: <code>Who: 문장</code> &nbsp;·&nbsp; 카테고리 뒤에 <strong>콜론(:)</strong>을 붙이면 됩니다. (<code>Who: The boy is running.</code>)",
+        "placeholder": "Who: The boy is running.\nWhere: She lives in Seoul."
+      },
+      "game": {
+        "conveyorLabel": "컨베이어 벨트"
+      },
+      "categories": {
+        "Who": { "hint": "사람 / 누가" },
+        "What": { "hint": "사물·행동 / 무엇을" },
+        "When": { "hint": "시간 / 언제" },
+        "Where": { "hint": "장소 / 어디서" },
+        "Why": { "hint": "이유 / 왜" },
+        "How": { "hint": "방법 / 어떻게" }
+      },
+      "parse": {
+        "lineFormat": "{line}번째 줄: \"Who: 문장\" 형식을 사용하세요 (카테고리 뒤 콜론)",
+        "invalidCategory": "{line}번째 줄: \"{category}\"는 올바른 카테고리가 아닙니다",
+        "emptySentence": "{line}번째 줄: 문장이 비어 있습니다",
+        "noQuestions": "문제를 하나 이상 입력하세요."
+      },
+      "toast": {
+        "correct": "정답!",
+        "tryAgain": "다시 시도!"
+      },
+      "result": {
+        "heading": "공장 가동 완료!",
+        "detail": "{correct} / {total} 정답"
+      },
+      "help": {
+        "menuLabel": "WH Factory",
+        "title": "WH Factory",
+        "introHeading": "소개",
+        "intro": "Who, What, When, Where, Why, How 문장을 분류하는 드래그 활동입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "문장을 입력합니다.",
+        "usage2": "Start Game을 누릅니다.",
+        "usage3": "카드를 알맞은 5W1H 박스로 드래그합니다.",
+        "usage4": "결과 화면에서 점수를 확인합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "문장은 Enter를 눌러 한 줄씩 입력합니다.",
+        "notesHeading": "주의사항",
+        "notes": "오답 카드는 다시 원래 위치로 돌아갑니다. 박스 밖에 놓으면 점수 변화가 없습니다."
+      }
+    },
+    "barrel-game": {
+      "title": "Barrel Game",
+      "subtitle": "칼을 골라 통에 꽂으세요. 통아저씨가 튀어나오면 끝!",
+      "setup": {
+        "slotCountLabel": "칼(구멍) 개수",
+        "slotCountHint": "4~12개. 시작할 때마다 통아저씨 위치가 바뀝니다."
+      },
+      "settings": {
+        "soundEnabled": "효과음 켜기"
+      },
+      "actions": {
+        "startGame": "▶ 게임 시작",
+        "backToSetup": "← 설정",
+        "reset": "↻ 다시",
+        "next": "Next ▶",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "sword": "칼 {n}"
+      },
+      "status": {
+        "pickSword": "칼 번호를 골라 통에 꽂으세요",
+        "pirateAppears": "{n}번 — 통아저씨 등장!!!",
+        "safe": "{n}번 안전! {remaining}개 남음",
+        "safeBoardProgress": "{safe} / {total}",
+        "safeBoardTotal": "총 {safe}번 안전",
+        "bombReveal": "{n}번!"
+      },
+      "toast": {
+        "startHint": "통아저씨가 어디에 숨었을까요?",
+        "reshuffled": "다시 섞었습니다",
+        "newRound": "새 라운드!"
+      },
+      "help": {
+        "menuLabel": "Barrel Game",
+        "title": "Barrel Game",
+        "introHeading": "소개",
+        "intro": "구멍을 선택해 칼을 꽂고, 통아저씨가 튀어나오는 칸을 찾는 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "구멍 수와 효과음을 설정합니다.",
+        "usage2": "게임을 시작합니다.",
+        "usage3": "칼 또는 구멍 번호를 선택합니다.",
+        "usage4": "통아저씨가 나오면 라운드가 종료됩니다.",
+        "usage5": "Next 또는 다시 시작으로 다음 라운드를 진행합니다.",
+        "shortcutsHeading": "단축키",
+        "shortcutNumbers": "숫자 1–N: 구멍 선택",
+        "shortcutR": "R: 다시 시작",
+        "shortcutEsc": "Esc: 설정으로",
+        "shortcutEnter": "Enter: 게임 종료 후 다음 진행",
+        "notesHeading": "주의사항",
+        "notes": "통아저씨 위치는 매 라운드마다 무작위로 바뀝니다."
+      }
+    },
+    "castle-siege": {
+      "title": "⚔ Castle Siege",
+      "setup": {
+        "subtitle": "수업 설정 — 수업 전에 구성하세요",
+        "teams": "팀",
+        "blueTeamNameLabel": "블루 팀 이름",
+        "redTeamNameLabel": "레드 팀 이름",
+        "castleHp": "성 HP",
+        "startingHp": "시작 HP (양팀 동일)",
+        "preparationBonus": "준비 보너스",
+        "homeworkCompleted": "숙제 완료",
+        "completed": "완료",
+        "total": "전체",
+        "chooseBonusItem": "보너스 아이템 선택:",
+        "lessonRounds": "수업 라운드",
+        "numberOfRounds": "라운드 수",
+        "roundNameLabel": "라운드 {num} 이름",
+        "startBattle": "전투 시작 →"
+      },
+      "battle": {
+        "roundLabel": "라운드 {current} / {total}",
+        "finishLesson": "수업 종료",
+        "endRound": "라운드 종료 →",
+        "backToSetup": "← 설정",
+        "toggleSound": "소리 켜기/끄기",
+        "attack": "⚔ 공격",
+        "repair": "💚 수리",
+        "shield": "🛡 방패",
+        "charge": "⚡ 돌진",
+        "pendingActions": "액션 {count}번 더!",
+        "pendingAction": "액션 1번 더!",
+        "roundAdvance": "라운드 {num}",
+        "roundWin": "{team}, 라운드 {num} 승리!",
+        "winnerTitle": "{team} 승리!",
+        "repairKitTitle": "수리 키트 ({count})",
+        "chargeTitle": "돌진 ({count})"
+      },
+      "modals": {
+        "allRoundsComplete": "모든 라운드 완료!",
+        "lessonFinished": "수고하셨습니다 — 수업이 끝났습니다.",
+        "backToSetup": "설정으로 돌아가기"
+      },
+      "prepTier": {
+        "none": "보너스 없음",
+        "oneItem": "보너스 아이템 x1",
+        "oneItemShield": "보너스 아이템 x1 + 방패 +10",
+        "twoItems": "보너스 아이템 x2"
+      },
+      "prepSummary": {
+        "noStudents": "보너스 없음 (학생 없음)",
+        "progress": "{completed} / {total} ({percent}%) — {tier}"
+      },
+      "prepSelected": {
+        "none": "선택: (없음) — {count}/{max}",
+        "items": "선택: {items} ({count}/{max})"
+      },
+      "items": {
+        "shield": "방패 +20",
+        "repairKit": "수리 키트",
+        "charge": "돌진"
+      },
+      "roundNames": {
+        "vocabulary": "어휘",
+        "reading": "읽기",
+        "speaking": "말하기",
+        "grammar": "문법",
+        "freeTalk": "자유 대화",
+        "listening": "듣기",
+        "writing": "쓰기",
+        "review": "복습",
+        "fallback": "라운드 {num}"
+      },
+      "actions": {
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "alerts": {
+        "hpRange": "성 HP는 10~500 사이여야 합니다.",
+        "needRound": "라운드를 하나 이상 추가하세요.",
+        "maxBonusItems": "{team}: 보너스 아이템은 최대 {count}개까지 선택할 수 있습니다.",
+        "needConfiguredRound": "라운드를 하나 이상 설정하세요.",
+        "chargeActive": "이 팀은 이미 돌진 상태입니다!"
+      },
+      "help": {
+        "menuLabel": "Castle Siege",
+        "title": "Castle Siege",
+        "introHeading": "소개",
+        "intro": "두 팀의 성 HP를 공격·수리·방어하며 라운드별로 대결하는 전투형 활동입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "설정 화면에서 팀 이름, 성 HP, 숙제 완료 보너스, 수업 라운드 수와 이름을 정합니다.",
+        "usage2": "Start Battle을 누르면 전투 화면으로 넘어갑니다.",
+        "usage3": "각 팀 아래 Attack, Repair, Shield, Charge 버튼으로 행동합니다.",
+        "usage4": "Attack은 상대 성 HP를 깎고, Repair는 내 성 HP를 회복합니다.",
+        "usage5": "Shield는 방어막을 쌓고, Charge는 다음 턴에 행동을 두 번 할 수 있게 합니다.",
+        "usage6": "상대 성 HP가 0이 되면 그 라운드를 이깁니다. End Round로 다음 라운드로 넘길 수도 있습니다.",
+        "usage7": "마지막 라운드까지 진행하면 수업이 끝납니다.",
+        "prepHeading": "숙제 보너스",
+        "prep1": "숙제 완료율 50% 이상: 보너스 아이템 1개 선택",
+        "prep2": "80% 이상: 아이템 1개 + 시작 방어막 +10",
+        "prep3": "100%: 보너스 아이템 2개 선택",
+        "prep4": "선택 가능한 아이템: Shield, Repair Kit, Charge",
+        "notesHeading": "주의사항",
+        "notes": "공격 데미지와 Shield 수치는 매번 정해진 범위 안에서 무작위로 적용됩니다. Charge를 쓰면 같은 팀이 연속으로 행동할 수 있습니다."
+      }
+    },
+    "fortress-battle": {
+      "title": "Fortress Battle",
+      "subtitle": "Team A vs Team B — 교실 배틀 게임",
+      "actions": {
+        "newGame": "새 게임",
+        "fullscreen": "전체 화면",
+        "exitFullscreen": "전체 화면 종료",
+        "apply": "적용",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "settings": {
+        "title": "⚙ 게임 설정",
+        "startHp": "시작 HP",
+        "damageValues": "데미지 값",
+        "hint": "쉼표로 구분된 숫자. 예: 0,10,20,30"
+      },
+      "turn": {
+        "teamAButton": "Team A 차례",
+        "teamBButton": "Team B 차례",
+        "badgeA": "Team A 차례 — 공격!",
+        "badgeB": "Team B 차례 — 공격!",
+        "gameOver": "게임 종료"
+      },
+      "attack": {
+        "1": "공격 1",
+        "2": "공격 2",
+        "3": "공격 3",
+        "4": "공격 4"
+      },
+      "damage": {
+        "miss": "MISS!"
+      },
+      "winner": {
+        "teamAWins": "Team A 승리!",
+        "teamBWins": "Team B 승리!",
+        "draw": "무승부!",
+        "subtitleTeamA": "Team A의 요새가 함락되었습니다!",
+        "subtitleTeamB": "Team B의 요새가 함락되었습니다!",
+        "subtitleDraw": "두 요새가 동시에 함락되었습니다!"
+      },
+      "help": {
+        "menuLabel": "Fortress Battle",
+        "title": "Fortress Battle",
+        "introHeading": "소개",
+        "intro": "Team A와 Team B가 번갈아 공격하며 요새 HP를 깎는 턴제 교실 배틀 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "게임 설정에서 시작 HP와 데미지 값을 정한 뒤 적용을 누릅니다.",
+        "usage2": "Team A Turn / Team B Turn으로 턴을 바꿉니다.",
+        "usage3": "공격 1~4를 선택해 설정한 데미지를 적용합니다.",
+        "usage4": "요새 HP가 0이 되면 상대 팀이 승리합니다.",
+        "usage5": "새 게임으로 다시 시작할 수 있습니다.",
+        "notesHeading": "주의사항",
+        "notes": "데미지 값은 쉼표로 구분합니다(예: 0,10,20,30). 0이면 MISS!가 표시됩니다."
+      }
+    },
+    "dice-chance": {
+      "title": "Dice Chance",
+      "subtitle": "주사위 결과에 따라 팀이 포인트나 아이템을 얻는 수업용 게임입니다",
+      "sections": {
+        "rewards": "보상 / 아이템",
+        "diceMode": "주사위 모드",
+        "options": "옵션",
+        "preset": "프리셋"
+      },
+      "labels": {
+        "optionsList": "보상·아이템 목록 (한 줄에 하나)",
+        "hideToolbar": "발표 중 상단 메뉴 자동 숨김"
+      },
+      "placeholders": {
+        "optionsList": "+10 POINTS\n+20 POINTS\nBOMB\nSHIELD\nSWITCH POINT\nTHROW AGAIN\nSTEAL 10\nDOUBLE POINTS\nMISS\nCHANGE SCORE",
+        "presetName": "프리셋 이름 (예: 3반 Dice Chance)"
+      },
+      "hints": {
+        "optionsMinSix": "6개 이상 입력하면 게임 시작 시 무작위로 6개만 선택됩니다."
+      },
+      "modes": {
+        "oneDice": "1 Dice Mode",
+        "oneDiceDesc": "결과 1 ~ 6 (6칸)",
+        "twoDice": "2 Dice Mode",
+        "twoDiceDesc": "1~2 / 3~4 … 11~12 (6칸)"
+      },
+      "modeLabel": {
+        "oneDice": "1 Dice Mode · 1 ~ 6",
+        "twoDice": "2 Dice Mode · 1~2 / 3~4 / … / 11~12"
+      },
+      "actions": {
+        "startGame": "게임 시작",
+        "sampleLoad": "샘플 불러오기",
+        "loadPreset": "프리셋 불러오기",
+        "savePreset": "프리셋 저장",
+        "deletePreset": "프리셋 삭제",
+        "backToSetup": "← 설정으로",
+        "resetRound": "↻ 라운드 초기화",
+        "fullscreen": "⛶ 전체 화면",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "resetRound": "라운드 초기화 (R)",
+        "fullscreen": "전체 화면 (F)",
+        "diceRowHidden": "주사위 {label}, 보상 숨김",
+        "diceRowRevealed": "주사위 {label}, {reward}"
+      },
+      "status": {
+        "oneDiceShort": "1 Dice",
+        "twoDiceShort": "2 Dice",
+        "initial": "{mode} · {total}칸 · 클릭하여 공개하세요",
+        "partial": "{revealed} / {total} 공개됨",
+        "allRevealed": "모두 공개됨 · R 키로 새 라운드"
+      },
+      "playHint": "주사위 결과 칸을 클릭하면 보상이 공개됩니다 · R: 새 라운드 · Esc: 설정",
+      "cover": {
+        "hidden": "???"
+      },
+      "preset": {
+        "selectPlaceholder": "— 프리셋 선택 —",
+        "optionMeta": "{count}개 · {mode}",
+        "modeOneDice": "1 Dice",
+        "modeTwoDice": "2 Dice"
+      },
+      "toast": {
+        "needOptions": "보상·아이템을 한 줄 이상 입력해 주세요.",
+        "needMoreOptions": "옵션이 {required}개 이상 필요합니다 (현재 {current}개).",
+        "cannotGenerateRound": "라운드를 생성할 수 없습니다.",
+        "gameReady": "Dice Chance 준비 완료! ({count}칸)",
+        "newRound": "New Dice Chance Round!",
+        "fullscreenUnavailable": "전체 화면을 사용할 수 없습니다.",
+        "presetNameRequired": "프리셋 이름을 입력해 주세요.",
+        "noOptionsToSave": "저장할 옵션이 없습니다.",
+        "presetSaved": "\"{name}\" 저장되었습니다.",
+        "presetLoaded": "\"{name}\" 불러왔습니다.",
+        "presetDeleted": "프리셋이 삭제되었습니다.",
+        "sampleLoaded": "샘플 옵션을 불러왔습니다."
+      },
+      "confirm": {
+        "overwritePreset": "\"{name}\" 프리셋이 있습니다. 덮어쓰시겠습니까?",
+        "deletePreset": "\"{name}\" 프리셋을 삭제하시겠습니까?"
+      },
+      "help": {
+        "menuLabel": "Dice Chance",
+        "title": "Dice Chance",
+        "introHeading": "소개",
+        "intro": "주사위 결과에 따라 숨겨진 보상이나 미션을 공개하는 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "보상 또는 미션을 6개 이상 입력합니다.",
+        "usage2": "Start Game을 누릅니다.",
+        "usage3": "결과 행을 클릭해 내용을 공개합니다.",
+        "usage4": "Reset Round로 새 라운드를 시작합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "보상 또는 미션은 Enter를 눌러 한 줄씩 입력합니다.",
+        "shortcutsHeading": "단축키",
+        "shortcutEsc": "Esc: 설정으로",
+        "shortcutR": "R: 라운드 초기화",
+        "shortcutF": "F: 전체화면",
+        "shortcutEnter": "Enter/Space: 선택 항목 공개",
+        "notesHeading": "주의사항",
+        "notes": "최소 6개 항목이 필요합니다. 6개보다 많으면 매 라운드마다 6개가 무작위로 선택됩니다."
+      }
+    },
+    "ladder-game": {
+      "title": "Ladder Game",
+      "description": "결과 항목과 복잡도를 설정한 뒤 시작하세요.",
+      "labels": {
+        "results": "결과 항목",
+        "complexity": "사다리 복잡도",
+        "participantCount": "참가자 수 (위쪽 자동 번호)"
+      },
+      "placeholders": {
+        "results": "한 줄에 하나씩 입력\n사탕\n방패\n스탬프\n꽝\n당첨",
+        "presetName": "프리셋 이름 (예: 3반 보상)"
+      },
+      "hints": {
+        "resultsShuffle": "시작하면 아래 칸에 무작위로 배치됩니다.",
+        "complexityDetail": "세로줄당 가로줄 2→5개. 매우 복잡에는 사선도 실제 경로로 이동합니다.",
+        "autoNumbers": "결과 항목 수에 맞춰 1, 2, 3… 번호가 자동 배치됩니다."
+      },
+      "complexity": {
+        "1": "매우 단순",
+        "2": "단순",
+        "3": "보통",
+        "4": "복잡",
+        "5": "매우 복잡"
+      },
+      "presets": {
+        "title": "프리셋",
+        "selectPlaceholder": "— 프리셋 선택 —"
+      },
+      "actions": {
+        "start": "시작",
+        "reset": "초기화",
+        "load": "불러오기",
+        "save": "저장",
+        "delete": "삭제",
+        "backToSetup": "← 설정",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "backToSetup": "설정으로",
+        "newRound": "새 라운드 (R)",
+        "switchLanguage": "언어 전환"
+      },
+      "play": {
+        "clickTopNumber": "위쪽 번호를 클릭하세요.",
+        "clickCoverToReveal": "네모를 클릭하면 사다리가 공개됩니다.",
+        "coverHint": "클릭하면 사다리가 공개됩니다",
+        "tracingPath": "{number}번 — 경로를 따라가는 중…",
+        "resultLine": "{number}번 → {result}"
+      },
+      "toast": {
+        "enterPresetName": "프리셋 이름을 입력하세요",
+        "minTwoResults": "결과 항목을 2개 이상 입력하세요",
+        "presetUpdated": "\"{name}\" 업데이트됨",
+        "presetSaved": "\"{name}\" 저장됨",
+        "presetLoaded": "\"{name}\" 불러옴",
+        "presetDeleted": "프리셋 삭제됨"
+      },
+      "confirm": {
+        "deletePreset": "\"{name}\" 프리셋을 삭제할까요?"
+      },
+      "alert": {
+        "minTwoResults": "결과 항목을 2개 이상 입력해 주세요."
+      },
+      "help": {
+        "menuLabel": "Ladder Game",
+        "title": "Ladder Game",
+        "introHeading": "소개",
+        "intro": "사다리타기로 순서나 결과를 정하는 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "결과 항목을 입력합니다.",
+        "usage2": "시작을 누릅니다.",
+        "usage3": "가림막을 클릭합니다.",
+        "usage4": "번호를 선택해 결과를 확인합니다.",
+        "usage5": "R키 또는 ↻ 버튼으로 새 라운드를 시작할 수 있습니다. (사다리가 다시 만들어지고 가림막이 내려갑니다)",
+        "inputHeading": "입력 방법",
+        "inputLine1": "결과 항목은 Enter를 눌러 한 줄씩 입력합니다.",
+        "shortcutsHeading": "단축키",
+        "shortcutR": "R: 새 라운드",
+        "notesHeading": "주의사항",
+        "notes": "참가자 수는 결과 항목 수에 따라 자동으로 정해집니다."
+      }
+    },
+    "mystery-box-picker": {
+      "title": "Mystery Box",
+      "subtitle": "항목을 입력하고 시작하면, PPT처럼 박스를 클릭하여 공개할 수 있습니다",
+      "sections": {
+        "items": "항목 입력",
+        "options": "옵션",
+        "preset": "프리셋"
+      },
+      "labels": {
+        "itemsList": "박스 안에 넣을 내용 (한 줄에 하나)",
+        "shuffleEachRound": "새 라운드마다 다시 섞기",
+        "hideToolbar": "발표 중 상단 메뉴 자동 숨김"
+      },
+      "placeholders": {
+        "itemsList": "Switch points\n+6\n+1\n꽝\n×2",
+        "presetName": "프리셋 이름 (예: 3반 점수뽑기)"
+      },
+      "hints": {
+        "itemsShuffle": "입력한 줄 수만큼 박스가 만들어지며, 시작할 때마다 무작위로 섞입니다."
+      },
+      "actions": {
+        "start": "▶ 시작하기",
+        "sampleLoad": "예시 불러오기",
+        "loadPreset": "불러오기",
+        "savePreset": "저장",
+        "deletePreset": "삭제",
+        "backToSetup": "← 설정",
+        "reshuffle": "↻ 다시 섞기",
+        "fullscreen": "⛶ 전체 화면",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "reshuffle": "같은 항목으로 다시 섞기 (R)",
+        "fullscreen": "전체 화면 (F)",
+        "boxHidden": "박스 {number}",
+        "boxRevealed": "박스 {number}, {item}"
+      },
+      "status": {
+        "initial": "박스 {total}개 · 클릭하여 공개하세요",
+        "partial": "{revealed} / {total} 공개됨",
+        "allRevealed": "모두 공개됨 · R 키로 다시 섞기"
+      },
+      "playHint": "박스를 클릭하면 내용이 공개됩니다 · R: 다시 섞기 · Esc: 설정",
+      "preset": {
+        "selectPlaceholder": "— 프리셋 선택 —",
+        "optionMeta": "{count}개"
+      },
+      "toast": {
+        "needItems": "항목을 한 줄 이상 입력해 주세요.",
+        "gameReady": "{count}개 박스 준비 완료!",
+        "newRound": "새 라운드가 시작되었습니다.",
+        "fullscreenUnavailable": "전체 화면을 사용할 수 없습니다.",
+        "presetNameRequired": "프리셋 이름을 입력해 주세요.",
+        "noItemsToSave": "저장할 항목이 없습니다.",
+        "presetSaved": "\"{name}\" 저장되었습니다.",
+        "presetLoaded": "\"{name}\" 불러왔습니다.",
+        "presetDeleted": "프리셋이 삭제되었습니다.",
+        "sampleLoaded": "예시 항목을 불러왔습니다."
+      },
+      "confirm": {
+        "overwritePreset": "\"{name}\" 프리셋이 있습니다. 덮어쓰시겠습니까?",
+        "deletePreset": "\"{name}\" 프리셋을 삭제하시겠습니까?"
+      },
+      "help": {
+        "menuLabel": "Mystery Box",
+        "title": "Mystery Box",
+        "introHeading": "소개",
+        "intro": "여러 항목을 박스에 숨기고 하나씩 공개하는 추첨 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "항목을 입력합니다.",
+        "usage2": "시작을 누릅니다.",
+        "usage3": "박스를 클릭해 숨겨진 내용을 확인합니다.",
+        "usage4": "다시 섞기로 새 라운드를 진행할 수 있습니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "항목은 Enter를 눌러 한 줄씩 입력합니다.",
+        "shortcutsHeading": "단축키",
+        "shortcutEsc": "Esc: 설정으로",
+        "shortcutR": "R: 다시 섞기",
+        "shortcutF": "F: 전체화면",
+        "shortcutEnter": "Enter/Space: 선택 항목 공개",
+        "notesHeading": "주의사항",
+        "notes": "새 라운드마다 다시 섞기 옵션을 끄면 Reset 후에도 배치 순서가 유지됩니다."
+      }
+    },
+    "nerfgun-board": {
+      "title": "Nerf Gun Roulette",
+      "subtitle": "15개의 보드 중 하나를 랜덤으로 선택합니다",
+      "actions": {
+        "spin": "뽑기",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "backToSpin": "뽑기 화면으로 돌아가기"
+      },
+      "spinStatus": {
+        "idle": "뽑기 버튼을 눌러주세요",
+        "spinning": "돌아가는 중…",
+        "winner": "🎉 {label} !"
+      },
+      "help": {
+        "menuLabel": "Nerf Gun Roulette",
+        "title": "Nerf Gun Roulette",
+        "introHeading": "소개",
+        "intro": "여러 보드 이미지 중 하나를 무작위로 뽑는 슬롯형 활동 도구입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "뽑기 버튼을 누릅니다.",
+        "usage2": "슬롯 애니메이션이 진행됩니다.",
+        "usage3": "결과 보드가 자동으로 표시됩니다.",
+        "usage4": "뒤로 가기로 다시 뽑기 화면으로 돌아갑니다.",
+        "notesHeading": "주의사항",
+        "notes": "보드 목록은 고정되어 있으며, 화면에서 직접 항목을 수정하는 기능은 없습니다."
+      }
+    },
+    "pirate-race": {
+      "title": "Pirate Race",
+      "subtitle": "보물섬까지 달려가세요!",
+      "actions": {
+        "newGame": "새 게임",
+        "fullscreen": "전체 화면",
+        "exitFullscreen": "전체 화면 종료",
+        "randomMove": "🎲 랜덤 이동",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환",
+        "teamAShip": "Team A 배",
+        "teamBShip": "Team B 배"
+      },
+      "settings": {
+        "title": "⚙️ 게임 옵션",
+        "goalDistance": "목표 거리",
+        "spaces": "{n}칸",
+        "stormMode": "폭풍 모드 — 1이 나오면 이동 없음!",
+        "treasureBonus": "보물 보너스 — 정확히 도착 시 보너스!"
+      },
+      "track": {
+        "teamA": "Team A 트랙",
+        "teamB": "Team B 트랙",
+        "start": "START",
+        "treasureIslandHtml": "TREASURE<br />ISLAND"
+      },
+      "controls": {
+        "teamAMove": "Team A — 이동",
+        "teamBMove": "Team B — 이동"
+      },
+      "toast": {
+        "perfectLanding": "완벽한 착지! ⭐",
+        "storm": "폭풍! 이동 없음! ⛈️"
+      },
+      "winner": {
+        "foundTreasure": "Team {team}이(가) 보물을 찾았습니다!",
+        "subtitleA": "Team A가 Treasure Island에 먼저 도착했습니다! 🏆",
+        "subtitleB": "Team B가 Treasure Island에 먼저 도착했습니다! 🏆"
+      },
+      "help": {
+        "menuLabel": "Pirate Race",
+        "title": "Pirate Race",
+        "introHeading": "소개",
+        "intro": "두 팀이 해적선을 움직여 목표 지점에 먼저 도착하는 레이스 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "목표 거리, Storm, Treasure 설정을 조정합니다.",
+        "usage2": "+1부터 +6까지 이동 값을 선택하거나 Random Move를 사용합니다.",
+        "usage3": "먼저 목표 지점에 도착한 팀이 승리합니다.",
+        "notesHeading": "주의사항",
+        "notes": "턴제 게임이 아니므로 교사가 진행 순서를 직접 관리해야 합니다."
+      }
+    },
+    "treasure-hunt": {
+      "title": "Treasure Hunt",
+      "heading": "⛏ Treasure Hunt",
+      "teams": {
+        "blue": "블루 팀",
+        "red": "레드 팀"
+      },
+      "score": {
+        "treasurePoints": "보물 점수"
+      },
+      "status": {
+        "selectTeam": "파낼 팀을 선택하세요",
+        "chooseTile": "{team} — 파낼 칸을 선택하세요!",
+        "bonusDig": "💣 보너스 파기! {team} — 한 칸 더 선택하세요!",
+        "expeditionComplete": "탐험 완료!",
+        "newMapReady": "새 지도 준비 완료 — 팀을 선택하세요"
+      },
+      "toast": {
+        "noTreasures": "🗺 숨겨진 보물이 더 이상 없습니다!",
+        "treasureNearby": "🗺 근처에 보물이 숨겨져 있습니다!",
+        "dynamite": "💣 다이너마이트! 한 칸 더 파세요!",
+        "groundShift": "⛏ 땅이 흔들립니다! 숨겨진 칸이 섞였습니다!"
+      },
+      "victory": {
+        "title": "탐험 완료!",
+        "blueWins": "블루 팀 승리!",
+        "redWins": "레드 팀 승리!",
+        "tie": "무승부!",
+        "scoreLine": "{leadingTeam}: {leadingScore}점  ·  {trailingTeam}: {trailingScore}점",
+        "tieMessage": "두 팀 모두 {score} 보물 점수!"
+      },
+      "actions": {
+        "continue": "계속",
+        "blueExcavate": "블루 팀 파기",
+        "redExcavate": "레드 팀 파기",
+        "newMap": "새 지도",
+        "reset": "게임 초기화",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "labels": {
+        "rows": "행",
+        "cols": "열"
+      },
+      "aria": {
+        "toggleSound": "소리 켜기/끄기",
+        "fullscreen": "전체 화면",
+        "switchLanguage": "언어 전환"
+      },
+      "help": {
+        "menuLabel": "Treasure Hunt",
+        "title": "Treasure Hunt",
+        "introHeading": "소개",
+        "intro": "땅속 칸을 파며 보물 점수를 모으는 두 팀 대결 활동입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "Blue Team 또는 Red Team Excavate 버튼으로 턴을 정합니다.",
+        "usage2": "칸을 하나 골라 파면 그 안의 내용이 공개됩니다.",
+        "usage3": "보물(⭐, 💎, 👑)을 찾으면 해당 팀에 점수가 더해집니다.",
+        "usage4": "모든 칸을 다 파면 게임이 끝나고 점수를 비교합니다.",
+        "usage5": "Rows, Cols로 칸 크기를 바꾸고 New Map으로 새 맵을 만들 수 있습니다.",
+        "usage6": "Reset Game으로 점수와 맵을 처음부터 다시 시작합니다.",
+        "specialHeading": "특수 칸",
+        "special1": "🗺 Treasure Map: 아직 안 파진 보물 하나의 위치를 잠깐 보여 줍니다.",
+        "special2": "💣 Dynamite: 같은 팀이 한 번 더 칸을 고를 수 있습니다.",
+        "special3": "⛏ Unstable Ground: 아직 안 파진 칸들의 내용이 다시 섞입니다.",
+        "notesHeading": "주의사항",
+        "notes": "칸 크기는 3~8줄, 3~8칸 범위에서 바꿀 수 있습니다. 보물 점수는 ⭐ 1점, 💎 2점, 👑 3점입니다."
+      }
+    },
+    "juldarigi": {
+      "title": "Tug of War",
+      "subtitle": "카드를 뽑아 팀 점수를 입력하고, 먼저 상대를 끌어당기면 승리!",
+      "setup": {
+        "teamNames": "팀 이름",
+        "teamALabel": "A팀 (왼쪽)",
+        "teamBLabel": "B팀 (오른쪽)",
+        "teamAPlaceholder": "예: 1반",
+        "teamBPlaceholder": "예: 2반",
+        "winCondition": "승리 조건",
+        "winPointsLabel": "이기려면 모아야 하는 포인트",
+        "winPointsHint": "양 팀이 번갈아 카드(1~9) 점수를 입력합니다. 누적 차이가 이 값에 도달하면 승리합니다."
+      },
+      "defaults": {
+        "teamA": "Team A",
+        "teamB": "Team B"
+      },
+      "actions": {
+        "startGame": "▶ 게임 시작",
+        "backToSetup": "← 설정",
+        "reset": "↻ 다시",
+        "pull": "당기기!",
+        "toSetup": "설정으로",
+        "rematch": "다시 하기",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "play": {
+        "vs": "VS",
+        "roundLog": "라운드 기록",
+        "pullHint": "Enter 키로도 적용",
+        "center": "중앙",
+        "centerPosition": "중앙 (0 / {wp})"
+      },
+      "status": {
+        "enterScores": "카드를 뽑고 팀 점수를 입력하세요",
+        "roundTeamPlus": "{round}라운드 · {team} +{delta}",
+        "roundTie": "{round}라운드 · 무승부",
+        "teamWins": "{team}의 승리!"
+      },
+      "position": {
+        "towardTeamHtml": "{team} 쪽으로 <strong>{pos}</strong> / {wp}"
+      },
+      "input": {
+        "teamScore": "{team} 점수"
+      },
+      "log": {
+        "empty": "아직 기록이 없습니다",
+        "roundLine": "{round}라운드 · {teamA} {a} : {teamB} {b}",
+        "tie": "무승부",
+        "teamPlus": "{team} +{delta}"
+      },
+      "toast": {
+        "started": "줄다리기 시작!",
+        "invalidScore": "0~9 사이 숫자를 입력하세요",
+        "minOneScore": "최소 한 팀은 점수를 입력하세요",
+        "teamPulled": "{team} {delta}칸 당김!",
+        "stalemate": "힘겨루기! 위치 변화 없음",
+        "reset": "게임을 초기화했습니다"
+      },
+      "win": {
+        "title": "{team} 승리!",
+        "desc": "{round}라운드 만에 {wp}포인트를 달성했습니다."
+      },
+      "help": {
+        "menuLabel": "Tug of War",
+        "title": "Tug of War",
+        "introHeading": "소개",
+        "intro": "두 팀의 점수 차이에 따라 줄이 움직이는 줄다리기 게임입니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "팀 이름과 승리 포인트를 설정합니다.",
+        "usage2": "게임을 시작합니다.",
+        "usage3": "A팀과 B팀의 점수를 입력합니다.",
+        "usage4": "당기기 버튼을 눌러 줄을 이동시킵니다.",
+        "usage5": "승리 포인트에 먼저 도달한 팀이 승리합니다.",
+        "inputHeading": "입력 방법",
+        "inputLine1": "점수는 숫자로 직접 입력합니다. Enter를 누르면 당기기가 실행됩니다.",
+        "shortcutsHeading": "단축키",
+        "shortcutEnter": "Enter: 당기기",
+        "shortcutEsc": "Esc: 설정으로",
+        "notesHeading": "주의사항",
+        "notes": "점수는 카드가 아니라 숫자(0–9)를 직접 입력하는 방식입니다."
+      }
+    }
+  }
+}

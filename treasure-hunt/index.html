@@ -1,89 +1,180 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Treasure Hunt</title>
+
   <link rel="stylesheet" href="../shared/toolkit-home.css">
+
   <link rel="stylesheet" href="css/style.css">
+
   <script src="../shared/toolkit-home.js" defer></script>
+
 </head>
+
 <body>
+
   <div id="app">
+
     <!-- Score Board -->
+
     <header class="scoreboard">
+
       <div class="team-score blue-team" id="blue-score-panel">
-        <span class="team-label">Blue Team</span>
+
+        <span class="team-label" data-i18n="tool.treasure-hunt.teams.blue">Blue Team</span>
+
         <span class="team-points" id="blue-score">0</span>
-        <span class="team-sub">Treasure Points</span>
+
+        <span class="team-sub" data-i18n="tool.treasure-hunt.score.treasurePoints">Treasure Points</span>
+
       </div>
+
       <div class="game-title">
-        <h1>⛏ Treasure Hunt</h1>
+
+        <h1 data-i18n="tool.treasure-hunt.heading">⛏ Treasure Hunt</h1>
+
         <p class="status-text" id="status-text">Select a team to excavate</p>
+
       </div>
+
       <div class="team-score red-team" id="red-score-panel">
-        <span class="team-label">Red Team</span>
+
+        <span class="team-label" data-i18n="tool.treasure-hunt.teams.red">Red Team</span>
+
         <span class="team-points" id="red-score">0</span>
-        <span class="team-sub">Treasure Points</span>
+
+        <span class="team-sub" data-i18n="tool.treasure-hunt.score.treasurePoints">Treasure Points</span>
+
       </div>
+
     </header>
 
+
+
     <!-- Excavation Grid -->
+
     <main class="grid-container" id="grid-container"></main>
 
+
+
     <!-- Victory Overlay -->
+
     <div class="overlay hidden" id="victory-overlay">
+
       <div class="overlay-content victory-content">
+
         <div class="victory-icon">🏆</div>
+
         <h2 id="victory-title">Expedition Complete!</h2>
+
         <p id="victory-message"></p>
-        <button class="btn btn-primary" id="victory-dismiss">Continue</button>
+
+        <button class="btn btn-primary" id="victory-dismiss" data-i18n="tool.treasure-hunt.actions.continue">Continue</button>
+
       </div>
+
     </div>
 
+
+
     <!-- Notification Toast -->
+
     <div class="toast hidden" id="toast"></div>
 
+
+
     <!-- Teacher Controls -->
+
     <footer class="controls">
+
       <div class="control-group excavate-group">
+
         <button class="btn btn-blue" id="btn-blue-excavate">
+
           <span class="btn-icon">🔵</span>
-          Blue Team Excavate
+
+          <span data-i18n="tool.treasure-hunt.actions.blueExcavate">Blue Team Excavate</span>
+
         </button>
+
         <button class="btn btn-red" id="btn-red-excavate">
+
           <span class="btn-icon">🔴</span>
-          Red Team Excavate
+
+          <span data-i18n="tool.treasure-hunt.actions.redExcavate">Red Team Excavate</span>
+
         </button>
+
       </div>
+
+
 
       <div class="control-group map-settings">
+
         <label class="setting-label">
-          Rows
+
+          <span data-i18n="tool.treasure-hunt.labels.rows">Rows</span>
+
           <input type="number" id="map-rows" min="3" max="8" value="5">
+
         </label>
+
         <label class="setting-label">
-          Cols
+
+          <span data-i18n="tool.treasure-hunt.labels.cols">Cols</span>
+
           <input type="number" id="map-cols" min="3" max="8" value="4">
+
         </label>
-        <button class="btn btn-secondary" id="btn-new-map">New Map</button>
-        <button class="btn btn-secondary" id="btn-reset">Reset Game</button>
+
+        <button class="btn btn-secondary" id="btn-new-map" data-i18n="tool.treasure-hunt.actions.newMap">New Map</button>
+
+        <button class="btn btn-secondary" id="btn-reset" data-i18n="tool.treasure-hunt.actions.reset">Reset Game</button>
+
       </div>
+
+
 
       <div class="control-group audio-group">
-        <button class="btn btn-icon-only" id="btn-mute" title="Toggle Sound">🔊</button>
-        <button class="btn btn-icon-only" id="btn-fullscreen" title="Fullscreen">⛶</button>
+
+        <button class="btn btn-icon-only" id="btn-mute" data-i18n-title="tool.treasure-hunt.aria.toggleSound" title="Toggle Sound">🔊</button>
+
+        <button class="btn btn-icon-only" id="btn-fullscreen" data-i18n-title="tool.treasure-hunt.aria.fullscreen" title="Fullscreen">⛶</button>
+
+        <button type="button" class="btn btn-icon-only" id="btn-language" data-i18n-aria="tool.treasure-hunt.aria.switchLanguage">한국어</button>
+
       </div>
+
     </footer>
+
   </div>
 
+
+
   <script src="js/ItemManager.js"></script>
+
   <script src="js/Tile.js"></script>
+
   <script src="js/Grid.js"></script>
+
   <script src="js/AnimationManager.js"></script>
+
   <script src="js/SoundManager.js"></script>
+
   <script src="js/UIManager.js"></script>
+
   <script src="js/Game.js"></script>
-  <script src="js/main.js"></script>
+
+  <script type="module" src="js/main.js"></script>
+
 </body>
+
 </html>
+

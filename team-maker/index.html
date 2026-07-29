@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team Maker</title>
+  <title>👥 Team Maker</title>
   <link rel="stylesheet" href="../shared/toolkit-home.css">
   <script src="../shared/toolkit-home.js" defer></script>
   <style>
@@ -47,9 +47,19 @@
       padding: 24px 16px 48px;
     }
 
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
     header {
       text-align: center;
-      margin-bottom: 28px;
+      flex: 1;
+      min-width: 200px;
     }
 
     header h1 {
@@ -568,717 +578,86 @@
 </head>
 <body>
   <div class="app">
-    <header>
-      <h1>👥 Team Maker</h1>
-    </header>
+    <div class="header-row">
+      <header>
+        <h1>👥 <span data-i18n="tool.team-maker.title">Team Maker</span></h1>
+      </header>
+      <button type="button" class="btn btn-secondary" id="btn-language" data-i18n-aria="tool.team-maker.aria.switchLanguage">한국어</button>
+    </div>
 
     <section class="card">
-      <div class="card-title">Result</div>
+      <div class="card-title" data-i18n="tool.team-maker.sections.result">Result</div>
       <div class="results-zone empty" id="resultsZone">
         <div class="emoji">🎯</div>
-        <p>Add students and configure teams,<br>then tap Assign Teams</p>
+        <p>Add students and configure teams, then tap Assign Teams</p>
       </div>
       <div class="team-actions" style="margin-top: 16px;">
-        <button class="btn btn-primary" id="assignBtn">🎲 Assign Teams</button>
-        <button class="btn btn-accent" id="reassignBtn" disabled>🔄 Reassign</button>
-        <button class="btn btn-secondary" id="clearTeamsBtn" disabled>↩️ Clear</button>
+        <button class="btn btn-primary" id="assignBtn" data-i18n="tool.team-maker.actions.assignTeams">🎲 Assign Teams</button>
+        <button class="btn btn-accent" id="reassignBtn" disabled data-i18n="tool.team-maker.actions.reassign">🔄 Reassign</button>
+        <button class="btn btn-secondary" id="clearTeamsBtn" disabled data-i18n="tool.team-maker.actions.clearResult">↩️ Clear</button>
       </div>
     </section>
 
     <section class="card">
-      <div class="card-title">팀 설정</div>
+      <div class="card-title" data-i18n="tool.team-maker.sections.teamSettings">Team Settings</div>
       <div class="mode-row">
         <div class="mode-option">
           <input type="radio" name="assignMode" id="modeByCount" value="count" checked>
-          <label for="modeByCount">팀 수 기준</label>
+          <label for="modeByCount" data-i18n="tool.team-maker.labels.modeByCount">By team count</label>
         </div>
         <div class="mode-option">
           <input type="radio" name="assignMode" id="modeBySize" value="size">
-          <label for="modeBySize">팀당 인원 기준</label>
+          <label for="modeBySize" data-i18n="tool.team-maker.labels.modeBySize">By members per team</label>
         </div>
       </div>
       <div class="settings-grid">
         <div class="setting-field">
-          <label for="teamCountInput">팀 수</label>
+          <label for="teamCountInput" data-i18n="tool.team-maker.labels.teamCount">Number of teams</label>
           <input type="number" id="teamCountInput" min="2" max="20" value="4">
         </div>
         <div class="setting-field">
-          <label for="teamSizeInput">팀당 인원</label>
+          <label for="teamSizeInput" data-i18n="tool.team-maker.labels.teamSize">Members per team</label>
           <input type="number" id="teamSizeInput" min="2" max="15" value="5">
         </div>
       </div>
-      <div class="preview-box" id="previewBox">학생을 추가하면 미리보기가 표시됩니다</div>
+      <div class="preview-box" id="previewBox">Add students to see a preview</div>
     </section>
 
     <section class="card">
       <div class="list-header">
-        <div class="card-title">학생 목록 (<span id="studentCount">0</span>명)</div>
-        <button class="btn btn-danger btn-sm" id="clearAllBtn">전체 삭제</button>
+        <div class="card-title" id="studentListTitle">Student List (0)</div>
+        <button class="btn btn-danger btn-sm" id="clearAllBtn" data-i18n="tool.team-maker.actions.clearAll">Clear All</button>
       </div>
       <form class="add-form" id="addForm">
-        <input type="text" id="nameInput" placeholder="학생 이름 입력" maxlength="20" autocomplete="off">
-        <button type="submit" class="btn btn-primary">추가</button>
+        <input type="text" id="nameInput" data-i18n-placeholder="tool.team-maker.placeholders.studentName" placeholder="Enter student name" maxlength="20" autocomplete="off">
+        <button type="submit" class="btn btn-primary" data-i18n="tool.team-maker.actions.addStudent">Add</button>
       </form>
       <div class="form-hint" id="formHint"></div>
       <ul class="student-list" id="studentList"></ul>
     </section>
 
     <section class="card">
-      <div class="card-title">프리셋</div>
-      <div class="preset-active muted" id="activePresetLabel">현재 프리셋: 없음 (임시 목록)</div>
+      <div class="card-title" data-i18n="tool.team-maker.sections.preset">Preset</div>
+      <div class="preset-active muted" id="activePresetLabel"></div>
       <div class="preset-row">
         <select id="presetSelect">
-          <option value="">— 프리셋 선택 —</option>
+          <option value="" data-i18n="tool.team-maker.preset.selectPlaceholder">— Select preset —</option>
         </select>
-        <button class="btn btn-primary btn-sm" id="loadPresetBtn" disabled>불러오기</button>
+        <button class="btn btn-primary btn-sm" id="loadPresetBtn" disabled data-i18n="tool.team-maker.actions.loadPreset">Load</button>
       </div>
       <div class="preset-save-row">
-        <input type="text" id="presetNameInput" placeholder="프리셋 이름 (예: 1학년 3반)" maxlength="30" autocomplete="off">
-        <button class="btn btn-secondary btn-sm" id="savePresetBtn">새로 저장</button>
+        <input type="text" id="presetNameInput" data-i18n-placeholder="tool.team-maker.placeholders.presetName" placeholder="Preset name (e.g. Grade 1 Class 3)" maxlength="30" autocomplete="off">
+        <button class="btn btn-secondary btn-sm" id="savePresetBtn" data-i18n="tool.team-maker.actions.savePreset">Save New</button>
       </div>
       <div class="preset-actions">
-        <button class="btn btn-secondary btn-sm" id="updatePresetBtn" disabled>현재 프리셋 업데이트</button>
-        <button class="btn btn-danger btn-sm" id="deletePresetBtn" disabled>프리셋 삭제</button>
+        <button class="btn btn-secondary btn-sm" id="updatePresetBtn" disabled data-i18n="tool.team-maker.actions.updatePreset">Update Active Preset</button>
+        <button class="btn btn-danger btn-sm" id="deletePresetBtn" disabled data-i18n="tool.team-maker.actions.deletePreset">Delete Preset</button>
       </div>
     </section>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <script>
-    const STORAGE_KEY = 'classTeamMaker';
-    const TEAM_COLORS = ['#4f46e5', '#0891b2', '#059669', '#d97706', '#db2777', '#7c3aed', '#dc2626', '#0d9488', '#ca8a04', '#6366f1'];
-
-    const state = {
-      students: [],
-      teams: null,
-      assignMode: 'count',
-      teamCount: 4,
-      teamSize: 5,
-      presets: [],
-      activePresetId: null,
-    };
-
-    const els = {
-      resultsZone: document.getElementById('resultsZone'),
-      assignBtn: document.getElementById('assignBtn'),
-      reassignBtn: document.getElementById('reassignBtn'),
-      clearTeamsBtn: document.getElementById('clearTeamsBtn'),
-      modeByCount: document.getElementById('modeByCount'),
-      modeBySize: document.getElementById('modeBySize'),
-      teamCountInput: document.getElementById('teamCountInput'),
-      teamSizeInput: document.getElementById('teamSizeInput'),
-      previewBox: document.getElementById('previewBox'),
-      studentCount: document.getElementById('studentCount'),
-      addForm: document.getElementById('addForm'),
-      nameInput: document.getElementById('nameInput'),
-      formHint: document.getElementById('formHint'),
-      studentList: document.getElementById('studentList'),
-      clearAllBtn: document.getElementById('clearAllBtn'),
-      toast: document.getElementById('toast'),
-      activePresetLabel: document.getElementById('activePresetLabel'),
-      presetSelect: document.getElementById('presetSelect'),
-      loadPresetBtn: document.getElementById('loadPresetBtn'),
-      presetNameInput: document.getElementById('presetNameInput'),
-      savePresetBtn: document.getElementById('savePresetBtn'),
-      updatePresetBtn: document.getElementById('updatePresetBtn'),
-      deletePresetBtn: document.getElementById('deletePresetBtn'),
-    };
-
-    let isAssigning = false;
-    let toastTimer = null;
-
-    function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    }
-
-    function save() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        students: state.students,
-        teams: state.teams,
-        assignMode: state.assignMode,
-        teamCount: state.teamCount,
-        teamSize: state.teamSize,
-        presets: state.presets,
-        activePresetId: state.activePresetId,
-      }));
-    }
-
-    function load() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const data = JSON.parse(raw);
-        if (Array.isArray(data.students)) state.students = data.students;
-        if (data.teams) state.teams = data.teams;
-        if (data.assignMode === 'count' || data.assignMode === 'size') state.assignMode = data.assignMode;
-        if (typeof data.teamCount === 'number') state.teamCount = data.teamCount;
-        if (typeof data.teamSize === 'number') state.teamSize = data.teamSize;
-        if (Array.isArray(data.presets)) state.presets = data.presets;
-        if (data.activePresetId) state.activePresetId = data.activePresetId;
-      } catch {
-        /* ignore corrupt data */
-      }
-    }
-
-    function shuffle(arr) {
-      const a = [...arr];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    /** Distribute N items into G groups as evenly as possible (remainder spread across first groups). */
-    function distributeEvenly(total, groupCount) {
-      const base = Math.floor(total / groupCount);
-      const remainder = total % groupCount;
-      const sizes = [];
-      for (let i = 0; i < groupCount; i++) {
-        sizes.push(base + (i < remainder ? 1 : 0));
-      }
-      return sizes;
-    }
-
-    function resolveTeamPlan() {
-      const total = state.students.length;
-      if (total === 0) return null;
-
-      if (state.assignMode === 'count') {
-        const count = Math.max(2, Math.min(state.teamCount, total));
-        const sizes = distributeEvenly(total, count);
-        return { groupCount: count, sizes };
-      }
-
-      const targetSize = Math.max(2, state.teamSize);
-      const groupCount = Math.max(1, Math.ceil(total / targetSize));
-      const sizes = distributeEvenly(total, groupCount);
-      return { groupCount, sizes };
-    }
-
-    function buildTeams(students) {
-      const plan = resolveTeamPlan();
-      if (!plan) return null;
-
-      const shuffled = shuffle(students);
-      const teams = [];
-      let idx = 0;
-
-      for (let i = 0; i < plan.groupCount; i++) {
-        const size = plan.sizes[i];
-        teams.push({
-          id: i + 1,
-          name: `Team ${i + 1}`,
-          members: shuffled.slice(idx, idx + size),
-        });
-        idx += size;
-      }
-
-      return teams;
-    }
-
-    function formatPreview() {
-      const total = state.students.length;
-      if (total === 0) {
-        return { text: '학생을 추가하면 미리보기가 표시됩니다', warn: false };
-      }
-
-      const plan = resolveTeamPlan();
-      if (!plan) return { text: '', warn: false };
-
-      const sizeStr = plan.sizes.join(', ');
-      const min = Math.min(...plan.sizes);
-      const max = Math.max(...plan.sizes);
-      const evenNote = min === max
-        ? `각 팀 ${min}명`
-        : `팀별 ${min}~${max}명 (나머지 균등 배분)`;
-
-      if (state.assignMode === 'count') {
-        return {
-          text: `<strong>${total}명</strong> → <strong>${plan.groupCount}팀</strong> (${sizeStr}명) · ${evenNote}`,
-          warn: false,
-        };
-      }
-
-      return {
-        text: `<strong>${total}명</strong> → 팀당 약 <strong>${state.teamSize}명</strong> 기준 <strong>${plan.groupCount}팀</strong> (${sizeStr}명) · ${evenNote}`,
-        warn: false,
-      };
-    }
-
-    function getPresetById(id) {
-      return state.presets.find(p => p.id === id);
-    }
-
-    function getPresetByName(name) {
-      const n = normalizeName(name).toLowerCase();
-      return state.presets.find(p => p.name.toLowerCase() === n);
-    }
-
-    function cloneStudents(students) {
-      return students.map(s => ({ id: s.id, name: s.name }));
-    }
-
-    function applyPresetStudents(students) {
-      state.students = cloneStudents(students);
-      state.teams = null;
-    }
-
-    function showToast(msg) {
-      els.toast.textContent = msg;
-      els.toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2500);
-    }
-
-    function normalizeName(name) {
-      return name.trim().replace(/\s+/g, ' ');
-    }
-
-    function isDuplicateName(name, excludeId = null) {
-      const n = normalizeName(name).toLowerCase();
-      return state.students.some(s =>
-        s.id !== excludeId && s.name.toLowerCase() === n
-      );
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    function renderPresets() {
-      const selectedId = els.presetSelect.value;
-      els.presetSelect.innerHTML = '<option value="">— 프리셋 선택 —</option>' +
-        state.presets.map(p => {
-          const count = p.students.length;
-          const selected = p.id === selectedId ? ' selected' : '';
-          return `<option value="${p.id}"${selected}>${escapeHtml(p.name)} (${count}명)</option>`;
-        }).join('');
-
-      const active = state.activePresetId ? getPresetById(state.activePresetId) : null;
-      if (active) {
-        els.activePresetLabel.textContent = `현재 프리셋: ${active.name} (${active.students.length}명)`;
-        els.activePresetLabel.classList.remove('muted');
-        els.presetNameInput.value = active.name;
-      } else {
-        els.activePresetLabel.textContent = '현재 프리셋: 없음 (임시 목록)';
-        els.activePresetLabel.classList.add('muted');
-      }
-
-      const hasSelection = !!els.presetSelect.value;
-      els.loadPresetBtn.disabled = !hasSelection || isAssigning;
-      els.deletePresetBtn.disabled = !hasSelection || isAssigning;
-      els.updatePresetBtn.disabled = !state.activePresetId || isAssigning;
-    }
-
-    function renderPreview() {
-      const preview = formatPreview();
-      els.previewBox.innerHTML = preview.text;
-      els.previewBox.classList.toggle('warn', preview.warn);
-    }
-
-    function renderResults() {
-      if (isAssigning) return;
-
-      if (!state.teams || state.teams.length === 0) {
-        els.resultsZone.className = 'results-zone empty';
-        els.resultsZone.innerHTML = state.students.length === 0
-          ? `<div class="emoji">🎯</div><p>Add students and configure teams,<br>then tap Assign Teams</p>`
-          : `<div class="emoji">🎯</div><p>${state.students.length} students ready!<br>Tap Assign Teams</p>`;
-        els.reassignBtn.disabled = true;
-        els.clearTeamsBtn.disabled = true;
-        return;
-      }
-
-      els.resultsZone.className = 'results-zone done';
-      els.resultsZone.innerHTML = `
-        <div class="teams-grid">
-          ${state.teams.map((team, i) => {
-            const color = TEAM_COLORS[i % TEAM_COLORS.length];
-            return `
-              <div class="team-card">
-                <div class="team-card-header" style="background:${color}">
-                  <span>${escapeHtml(team.name)}</span>
-                  <span class="team-card-count">${team.members.length}</span>
-                </div>
-                <ul class="team-members">
-                  ${team.members.map(m => `<li class="team-member">${escapeHtml(m.name)}</li>`).join('')}
-                </ul>
-              </div>`;
-          }).join('')}
-        </div>`;
-
-      els.reassignBtn.disabled = isAssigning || state.students.length === 0;
-      els.clearTeamsBtn.disabled = isAssigning;
-    }
-
-    function renderStudentList() {
-      els.studentCount.textContent = state.students.length;
-
-      if (state.students.length === 0) {
-        els.studentList.innerHTML = `
-          <li class="empty-state">
-            <div class="emoji">👋</div>
-            <p>아직 등록된 학생이 없습니다.<br>위 입력창에 이름을 입력하고 추가해 보세요.</p>
-          </li>`;
-        return;
-      }
-
-      els.studentList.innerHTML = state.students.map((s, i) => `
-        <li class="student-item" data-id="${s.id}">
-          <span class="student-number">${i + 1}</span>
-          <span class="student-name" data-name="${escapeHtml(s.name)}">${escapeHtml(s.name)}</span>
-          <div class="student-actions">
-            <button class="btn btn-secondary btn-sm btn-icon edit-btn" title="수정">✏️</button>
-            <button class="btn btn-danger btn-sm btn-icon delete-btn" title="삭제">🗑️</button>
-          </div>
-        </li>`).join('');
-    }
-
-    function updateButtons() {
-      const canAssign = state.students.length >= 2 && !isAssigning;
-      els.assignBtn.disabled = !canAssign;
-      if (state.students.length < 2) {
-        els.reassignBtn.disabled = true;
-      }
-    }
-
-    function renderSettings() {
-      els.modeByCount.checked = state.assignMode === 'count';
-      els.modeBySize.checked = state.assignMode === 'size';
-      els.teamCountInput.value = state.teamCount;
-      els.teamSizeInput.value = state.teamSize;
-
-      const byCount = state.assignMode === 'count';
-      els.teamCountInput.disabled = !byCount;
-      els.teamSizeInput.disabled = byCount;
-    }
-
-    function render() {
-      renderSettings();
-      renderPresets();
-      renderPreview();
-      renderStudentList();
-      renderResults();
-      updateButtons();
-    }
-
-    function addStudent(name) {
-      const normalized = normalizeName(name);
-      if (!normalized) {
-        els.formHint.textContent = '이름을 입력해 주세요.';
-        els.nameInput.classList.add('error');
-        return false;
-      }
-      if (isDuplicateName(normalized)) {
-        els.formHint.textContent = '이미 등록된 이름입니다.';
-        els.nameInput.classList.add('error');
-        return false;
-      }
-      state.students.push({ id: generateId(), name: normalized });
-      state.teams = null;
-      els.formHint.textContent = '';
-      els.nameInput.classList.remove('error');
-      els.nameInput.value = '';
-      save();
-      render();
-      showToast(`"${normalized}" 학생이 추가되었습니다`);
-      els.nameInput.focus();
-      return true;
-    }
-
-    function deleteStudent(id) {
-      const student = state.students.find(s => s.id === id);
-      if (!student) return;
-      if (!confirm(`"${student.name}" 학생을 삭제할까요?`)) return;
-
-      state.students = state.students.filter(s => s.id !== id);
-      state.teams = null;
-      save();
-      render();
-      showToast('학생이 삭제되었습니다');
-    }
-
-    function startEdit(id) {
-      const item = els.studentList.querySelector(`[data-id="${id}"]`);
-      if (!item) return;
-      const nameEl = item.querySelector('.student-name');
-      const currentName = nameEl.dataset.name;
-      nameEl.innerHTML = `<input type="text" value="${escapeHtml(currentName)}" maxlength="20">`;
-      const input = nameEl.querySelector('input');
-      input.focus();
-      input.select();
-
-      function finishEdit(saveEdit) {
-        if (saveEdit) {
-          const newName = normalizeName(input.value);
-          if (!newName) {
-            showToast('이름은 비울 수 없습니다');
-            render();
-            return;
-          }
-          if (isDuplicateName(newName, id)) {
-            showToast('이미 등록된 이름입니다');
-            input.focus();
-            return;
-          }
-          const student = state.students.find(s => s.id === id);
-          if (student) {
-            student.name = newName;
-            if (state.teams) {
-              state.teams.forEach(team => {
-                team.members.forEach(m => {
-                  if (m.id === id) m.name = newName;
-                });
-              });
-            }
-            save();
-            render();
-            showToast('이름이 수정되었습니다');
-          }
-        } else {
-          render();
-        }
-      }
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); finishEdit(true); }
-        if (e.key === 'Escape') finishEdit(false);
-      });
-      input.addEventListener('blur', () => finishEdit(true));
-    }
-
-    function clearAll() {
-      if (state.students.length === 0) return;
-      if (!confirm(`등록된 학생 ${state.students.length}명을 모두 삭제할까요?\n이 작업은 되돌릴 수 없습니다.`)) return;
-      state.students = [];
-      state.teams = null;
-      save();
-      render();
-      showToast('모든 학생이 삭제되었습니다');
-    }
-
-    function clearTeams() {
-      if (!state.teams) {
-        showToast('No result to clear');
-        return;
-      }
-      if (!confirm('Clear the team assignment result?')) return;
-      state.teams = null;
-      save();
-      render();
-      showToast('Result cleared');
-    }
-
-    function assignTeams() {
-      if (state.students.length < 2) {
-        showToast('팀을 만들려면 학생 2명 이상이 필요합니다');
-        return;
-      }
-
-      isAssigning = true;
-      els.assignBtn.disabled = true;
-      els.reassignBtn.disabled = true;
-      els.clearTeamsBtn.disabled = true;
-
-      els.resultsZone.className = 'results-zone forming';
-      els.resultsZone.innerHTML = '<div class="forming-text">Assigning teams...</div>';
-
-      const duration = 1200;
-      const interval = 80;
-      let elapsed = 0;
-      const names = state.students.map(s => s.name);
-
-      const spinTimer = setInterval(() => {
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        els.resultsZone.innerHTML = `<div class="forming-text">${escapeHtml(randomName)}</div>`;
-        elapsed += interval;
-
-        if (elapsed >= duration) {
-          clearInterval(spinTimer);
-          finishAssign();
-        }
-      }, interval);
-    }
-
-    function finishAssign() {
-      state.teams = buildTeams(state.students);
-      isAssigning = false;
-
-      save();
-      render();
-
-      const plan = resolveTeamPlan();
-      const sizeInfo = plan.sizes.join(', ');
-      showToast(`🎉 ${plan.groupCount} teams assigned (${sizeInfo})`);
-
-      if (navigator.vibrate) navigator.vibrate(100);
-    }
-
-    function saveNewPreset(name) {
-      const normalized = normalizeName(name);
-      if (!normalized) {
-        showToast('프리셋 이름을 입력해 주세요');
-        els.presetNameInput.focus();
-        return;
-      }
-      if (state.students.length === 0) {
-        showToast('저장할 학생이 없습니다');
-        return;
-      }
-
-      const existing = getPresetByName(normalized);
-      if (existing) {
-        if (!confirm(`"${normalized}" 프리셋이 이미 있습니다. 덮어쓸까요?`)) return;
-        existing.students = cloneStudents(state.students);
-        existing.updatedAt = new Date().toISOString();
-        state.activePresetId = existing.id;
-      } else {
-        const preset = {
-          id: generateId(),
-          name: normalized,
-          students: cloneStudents(state.students),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        state.presets.push(preset);
-        state.activePresetId = preset.id;
-      }
-
-      save();
-      render();
-      showToast(`"${normalized}" 프리셋이 저장되었습니다`);
-    }
-
-    function loadSelectedPreset() {
-      const id = els.presetSelect.value;
-      if (!id) return;
-      const preset = getPresetById(id);
-      if (!preset) return;
-
-      if (state.students.length > 0 && !state.activePresetId) {
-        if (!confirm(`현재 임시 목록(${state.students.length}명)을 "${preset.name}" 프리셋으로 바꿀까요?`)) return;
-      } else if (state.activePresetId && state.activePresetId !== id) {
-        const current = getPresetById(state.activePresetId);
-        if (current && !confirm(`"${current.name}"에서 "${preset.name}" 프리셋으로 바꿀까요?\n팀 배정 결과는 초기화됩니다.`)) return;
-      }
-
-      applyPresetStudents(preset.students);
-      state.activePresetId = preset.id;
-      save();
-      render();
-      showToast(`"${preset.name}" 프리셋을 불러왔습니다`);
-    }
-
-    function updateActivePreset() {
-      const preset = getPresetById(state.activePresetId);
-      if (!preset) return;
-      if (state.students.length === 0) {
-        showToast('저장할 학생이 없습니다');
-        return;
-      }
-      if (!confirm(`"${preset.name}" 프리셋을 현재 학생 목록(${state.students.length}명)으로 업데이트할까요?`)) return;
-
-      preset.students = cloneStudents(state.students);
-      preset.updatedAt = new Date().toISOString();
-      save();
-      renderPresets();
-      showToast(`"${preset.name}" 프리셋이 업데이트되었습니다`);
-    }
-
-    function deleteSelectedPreset() {
-      const id = els.presetSelect.value;
-      if (!id) return;
-      const preset = getPresetById(id);
-      if (!preset) return;
-      if (!confirm(`"${preset.name}" 프리셋을 삭제할까요?\n현재 학생 목록은 유지됩니다.`)) return;
-
-      state.presets = state.presets.filter(p => p.id !== id);
-      if (state.activePresetId === id) state.activePresetId = null;
-      els.presetSelect.value = '';
-      save();
-      render();
-      showToast('프리셋이 삭제되었습니다');
-    }
-
-    /* Event listeners */
-    els.addForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      addStudent(els.nameInput.value);
-    });
-
-    els.nameInput.addEventListener('input', () => {
-      els.formHint.textContent = '';
-      els.nameInput.classList.remove('error');
-    });
-
-    els.assignBtn.addEventListener('click', assignTeams);
-    els.reassignBtn.addEventListener('click', assignTeams);
-    els.clearTeamsBtn.addEventListener('click', clearTeams);
-    els.clearAllBtn.addEventListener('click', clearAll);
-
-    els.modeByCount.addEventListener('change', () => {
-      if (els.modeByCount.checked) {
-        state.assignMode = 'count';
-        save();
-        render();
-      }
-    });
-
-    els.modeBySize.addEventListener('change', () => {
-      if (els.modeBySize.checked) {
-        state.assignMode = 'size';
-        save();
-        render();
-      }
-    });
-
-    els.teamCountInput.addEventListener('change', () => {
-      state.teamCount = Math.max(2, Math.min(20, parseInt(els.teamCountInput.value, 10) || 2));
-      els.teamCountInput.value = state.teamCount;
-      state.teams = null;
-      save();
-      render();
-    });
-
-    els.teamSizeInput.addEventListener('change', () => {
-      state.teamSize = Math.max(2, Math.min(15, parseInt(els.teamSizeInput.value, 10) || 2));
-      els.teamSizeInput.value = state.teamSize;
-      state.teams = null;
-      save();
-      render();
-    });
-
-    els.presetSelect.addEventListener('change', () => {
-      els.loadPresetBtn.disabled = !els.presetSelect.value || isAssigning;
-      els.deletePresetBtn.disabled = !els.presetSelect.value || isAssigning;
-    });
-
-    els.loadPresetBtn.addEventListener('click', loadSelectedPreset);
-    els.savePresetBtn.addEventListener('click', () => saveNewPreset(els.presetNameInput.value));
-    els.updatePresetBtn.addEventListener('click', updateActivePreset);
-    els.deletePresetBtn.addEventListener('click', deleteSelectedPreset);
-
-    els.presetNameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        saveNewPreset(els.presetNameInput.value);
-      }
-    });
-
-    els.studentList.addEventListener('click', (e) => {
-      const item = e.target.closest('.student-item');
-      if (!item) return;
-      const id = item.dataset.id;
-      if (e.target.closest('.edit-btn')) startEdit(id);
-      if (e.target.closest('.delete-btn')) deleteStudent(id);
-    });
-
-    load();
-    render();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

@@ -18,13 +18,37 @@ class Game {
     this.rows = 5;
     this.cols = 4;
 
+    this._statusState = { key: 'status.selectTeam', params: {} };
+
     this._init();
   }
 
   _init() {
     this._createGrid();
     this._bindControls();
-    this.ui.setStatus('Select a team to excavate');
+    this._setStatusKey('status.selectTeam');
+  }
+
+  _teamLabel(team) {
+    return team === 'blue' ? window.thT('teams.blue') : window.thT('teams.red');
+  }
+
+  _setStatusKey(key, params = {}) {
+    this._statusState = { key, params };
+    this.ui.setStatus(window.thT(key, this._resolveStatusParams(params)));
+  }
+
+  _resolveStatusParams(params) {
+    const resolved = { ...params };
+    if (resolved.team === 'blue' || resolved.team === 'red') {
+      resolved.team = this._teamLabel(resolved.team);
+    }
+    return resolved;
+  }
+
+  refreshI18n() {
+    this.ui.setStatus(window.thT(this._statusState.key, this._resolveStatusParams(this._statusState.params)));
+    this.ui.refreshVictory();
   }
 
   _createGrid() {
@@ -61,8 +85,7 @@ class Game {
     this.ui.setActiveTeam(team);
     this.ui.setExcavateButtonsEnabled(false);
 
-    const teamName = team === 'blue' ? 'Blue Team' : 'Red Team';
-    this.ui.setStatus(`${teamName} — choose a tile to excavate!`);
+    this._setStatusKey('status.chooseTile', { team });
     this.grid.setAllSelectable(true);
   }
 
@@ -91,8 +114,7 @@ class Game {
     } else {
       this.bonusExcavation = false;
       this.awaitingTile = true;
-      const teamName = this.activeTeam === 'blue' ? 'Blue Team' : 'Red Team';
-      this.ui.setStatus(`💣 Bonus dig! ${teamName} — choose another tile!`);
+      this._setStatusKey('status.bonusDig', { team: this.activeTeam });
       this.grid.setAllSelectable(true);
     }
   }
@@ -136,13 +158,13 @@ class Game {
 
     const treasures = this.grid.getHiddenTreasures();
     if (treasures.length === 0) {
-      this.ui.showToast('🗺 No hidden treasures remain!');
+      this.ui.showToast(window.thT('toast.noTreasures'));
       return;
     }
 
     const target = treasures[Math.floor(Math.random() * treasures.length)];
     target.setHighlight(true);
-    this.ui.showToast(`🗺 A treasure is hidden nearby!`);
+    this.ui.showToast(window.thT('toast.treasureNearby'));
 
     await this._delay(1500);
   }
@@ -152,7 +174,7 @@ class Game {
     this.sound.playExplosion();
     AnimationManager.playExplosion(tile);
     this.bonusExcavation = true;
-    this.ui.showToast('💣 Dynamite! Excavate one more tile!');
+    this.ui.showToast(window.thT('toast.dynamite'));
     await this._delay(600);
   }
 
@@ -162,7 +184,7 @@ class Game {
     this.grid.clearHighlights();
     this.grid.shake();
     this.grid.shuffleUnrevealed();
-    this.ui.showToast('⛏ The ground shifts! Hidden tiles reshuffled!');
+    this.ui.showToast(window.thT('toast.groundShift'));
     await this._delay(700);
   }
 
@@ -170,7 +192,7 @@ class Game {
     this.activeTeam = null;
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(true);
-    this.ui.setStatus('Select a team to excavate');
+    this._setStatusKey('status.selectTeam');
   }
 
   _endGame() {
@@ -178,7 +200,7 @@ class Game {
     this.awaitingTile = false;
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(false);
-    this.ui.setStatus('Expedition complete!');
+    this._setStatusKey('status.expeditionComplete');
     this.sound.playVictory();
 
     setTimeout(() => {
@@ -198,7 +220,7 @@ class Game {
     this.ui.updateScores(0, 0);
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(true);
-    this.ui.setStatus('Select a team to excavate');
+    this._setStatusKey('status.selectTeam');
     this.ui.hideVictory();
 
     this.grid.build();
@@ -220,7 +242,7 @@ class Game {
     this.ui.updateScores(0, 0);
     this.ui.setActiveTeam(null);
     this.ui.setExcavateButtonsEnabled(true);
-    this.ui.setStatus('New map ready — select a team to excavate');
+    this._setStatusKey('status.newMapReady');
     this.ui.hideVictory();
 
     this.grid.resize(this.rows, this.cols);

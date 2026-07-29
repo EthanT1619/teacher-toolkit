@@ -26,6 +26,7 @@ class UIManager {
     };
 
     this.toastTimer = null;
+    this.victoryScores = null;
   }
 
   updateScores(blue, red, scoringTeam = null) {
@@ -60,26 +61,49 @@ class UIManager {
     }, duration);
   }
 
-  showVictory(blueScore, redScore) {
-    let title, message;
+  _renderVictory(blueScore, redScore) {
+    let title;
+    let message;
 
     if (blueScore > redScore) {
-      title = 'Blue Team Wins!';
-      message = `Blue Team: ${blueScore} pts  ·  Red Team: ${redScore} pts`;
+      title = window.thT('victory.blueWins');
+      message = window.thT('victory.scoreLine', {
+        leadingTeam: window.thT('teams.blue'),
+        leadingScore: blueScore,
+        trailingTeam: window.thT('teams.red'),
+        trailingScore: redScore,
+      });
     } else if (redScore > blueScore) {
-      title = 'Red Team Wins!';
-      message = `Red Team: ${redScore} pts  ·  Blue Team: ${blueScore} pts`;
+      title = window.thT('victory.redWins');
+      message = window.thT('victory.scoreLine', {
+        leadingTeam: window.thT('teams.red'),
+        leadingScore: redScore,
+        trailingTeam: window.thT('teams.blue'),
+        trailingScore: blueScore,
+      });
     } else {
-      title = 'It\'s a Tie!';
-      message = `Both teams scored ${blueScore} Treasure Points!`;
+      title = window.thT('victory.tie');
+      message = window.thT('victory.tieMessage', { score: blueScore });
     }
 
     this.els.victoryTitle.textContent = title;
     this.els.victoryMessage.textContent = message;
+  }
+
+  showVictory(blueScore, redScore) {
+    this.victoryScores = { blueScore, redScore };
+    this._renderVictory(blueScore, redScore);
     this.els.victoryOverlay.classList.remove('hidden');
   }
 
+  refreshVictory() {
+    if (!this.victoryScores) return;
+    if (this.els.victoryOverlay.classList.contains('hidden')) return;
+    this._renderVictory(this.victoryScores.blueScore, this.victoryScores.redScore);
+  }
+
   hideVictory() {
+    this.victoryScores = null;
     this.els.victoryOverlay.classList.add('hidden');
   }
 
