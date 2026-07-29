@@ -1,6 +1,6 @@
 (function initMakeupSchedulerWidget() {
   const LOCAL_STORAGE_KEY = "makeup-scheduler-schedules";
-  const SYNC_APP_URL = new URL("../mkup-scheduler-synced/", window.location.href).href;
+  const SYNC_APP_URL = "https://ethant1619.github.io/mkup-scheduler-synced/";
   const AUTO_INTERVAL_MS = 2000;
 
   const els = {
