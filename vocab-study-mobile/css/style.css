@@ -55,6 +55,30 @@ body::before {
 .header {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.btn-lang {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-lang:active {
+  background: #eef2ff;
+  color: var(--primary);
 }
 
 .header h1 {

@@ -1,0 +1,8 @@
+{
+  "name": "teacher-toolkit",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test shared/i18n.test.js shared/locale-validate.test.js"
+  }
+}

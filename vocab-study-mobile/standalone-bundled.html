@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-
-<html lang="ko">
-
+<html lang="en">
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
   <meta name="apple-mobile-web-app-capable" content="yes">
-
   <meta name="mobile-web-app-capable" content="yes">
-
-  <title>단어 시험 준비 (모바일)</title>
-
+  <title>Vocab Study Tool</title>
+  
+  
   <style>
 :root {
   --bg: #f0f4f8;
@@ -48,17 +42,54 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  position: relative;
+  isolation: isolate;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../assets/logo.png") center center / min(70vmin, 420px) no-repeat;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .app {
   max-width: 100%;
   margin: 0 auto;
   padding: 16px 14px calc(56px + env(safe-area-inset-bottom));
+  position: relative;
 }
 
 .header {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.btn-lang {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-lang:active {
+  background: #eef2ff;
+  color: var(--primary);
 }
 
 .header h1 {
@@ -650,358 +681,220 @@ body {
 .toast.success { background: var(--success); color: white; }
 .toast.error { background: var(--danger); color: white; }
 .toast.info { background: var(--text); color: white; }
-  </style>
 
+</style>
 </head>
-
 <body>
-
   <div class="app">
-
     <header class="header">
-
-      <h1>📚 단어 시험 준비</h1>
-
-      <p class="subtitle">카드 게임으로 단어를 외워보세요</p>
-
+      <div class="header-actions">
+        <button type="button" class="btn-lang" id="btn-language" data-i18n-aria="tool.vocab-study-mobile.aria.switchLanguage">한국어</button>
+      </div>
+      <h1 data-i18n="tool.vocab-study-mobile.heading">📚 Vocab Study Tool</h1>
+      <p class="subtitle" data-i18n="tool.vocab-study-mobile.subtitle">Learn vocabulary with card games</p>
     </header>
 
-
-
     <section id="phase-setup" class="phase active">
-
       <div class="panel">
-
-        <h2>⚙️ 학습 설정</h2>
-
+        <h2 data-i18n="tool.vocab-study-mobile.setup.settingsHeading">⚙️ Study Settings</h2>
         <div class="field-toggles">
-
           <label class="toggle-label">
-
             <input type="checkbox" id="field-korean" checked>
-
-            <span>한글 뜻</span>
-
+            <span data-i18n="tool.vocab-study-mobile.fieldToggles.korean">Korean meaning</span>
           </label>
-
           <label class="toggle-label">
-
             <input type="checkbox" id="field-english">
-
-            <span>영어 뜻</span>
-
+            <span data-i18n="tool.vocab-study-mobile.fieldToggles.english">English meaning</span>
           </label>
-
           <label class="toggle-label">
-
             <input type="checkbox" id="field-example">
-
-            <span>영어 예시문장</span>
-
+            <span data-i18n="tool.vocab-study-mobile.fieldToggles.example">English example sentence</span>
           </label>
-
         </div>
-
         <div class="timer-settings">
-
           <label class="toggle-label">
-
             <input type="checkbox" id="timer-enabled">
-
-            <span>제한 시간 사용</span>
-
+            <span data-i18n="tool.vocab-study-mobile.timer.enable">Use time limit</span>
           </label>
-
           <div class="timer-input-group" id="timer-input-group" hidden>
-
-            <label for="timer-seconds">라운드당 제한 시간 (초)</label>
-
+            <label for="timer-seconds" data-i18n="tool.vocab-study-mobile.timer.secondsLabel">Time limit per round (seconds)</label>
             <input type="number" id="timer-seconds" min="30" max="600" value="120">
-
           </div>
-
         </div>
-
       </div>
-
-
 
       <div class="panel">
-
-        <h2>📝 단어 입력</h2>
-
+        <h2 data-i18n="tool.vocab-study-mobile.setup.wordInputHeading">📝 Word Input</h2>
         <div class="input-grid" id="input-grid">
-
           <div class="input-card">
-
-            <label for="input-word">영어 단어 <span class="required">*</span></label>
-
-            <input type="text" id="input-word" placeholder="예: apple" autocomplete="off" enterkeyhint="next">
-
+            <label for="input-word"><span data-i18n="tool.vocab-study-mobile.labels.englishWord">English word</span> <span class="required">*</span></label>
+            <input type="text" id="input-word" data-i18n-placeholder="tool.vocab-study-mobile.placeholders.word" placeholder="e.g. apple" autocomplete="off" enterkeyhint="next">
           </div>
-
           <div class="input-card" data-field="korean">
-
-            <label for="input-korean">한글 뜻</label>
-
-            <input type="text" id="input-korean" placeholder="예: 사과" autocomplete="off" enterkeyhint="next">
-
+            <label for="input-korean" data-i18n="tool.vocab-study-mobile.labels.korean">Korean meaning</label>
+            <input type="text" id="input-korean" data-i18n-placeholder="tool.vocab-study-mobile.placeholders.korean" placeholder="e.g. 사과" autocomplete="off" enterkeyhint="next">
           </div>
-
           <div class="input-card" data-field="english" hidden>
-
-            <label for="input-english">영어 뜻</label>
-
-            <input type="text" id="input-english" placeholder="예: a round fruit" autocomplete="off">
-
+            <label for="input-english" data-i18n="tool.vocab-study-mobile.labels.english">English meaning</label>
+            <input type="text" id="input-english" data-i18n-placeholder="tool.vocab-study-mobile.placeholders.english" placeholder="e.g. a round fruit" autocomplete="off">
           </div>
-
           <div class="input-card" data-field="example" hidden>
-
-            <label for="input-example">영어 예시문장</label>
-
-            <input type="text" id="input-example" placeholder="예: I eat an apple." autocomplete="off">
-
+            <label for="input-example" data-i18n="tool.vocab-study-mobile.labels.example">English example sentence</label>
+            <input type="text" id="input-example" data-i18n-placeholder="tool.vocab-study-mobile.placeholders.example" placeholder="e.g. I eat an apple." autocomplete="off">
           </div>
-
         </div>
-
         <p id="form-feedback" class="form-feedback" hidden></p>
-
-        <button type="button" class="btn btn-secondary" id="btn-add-word">+ 단어 추가</button>
-
+        <button type="button" class="btn btn-secondary" id="btn-add-word" data-i18n="tool.vocab-study-mobile.actions.addWord">+ Add Word</button>
       </div>
-
-
 
       <div class="panel" id="word-list-panel" hidden>
-
         <div class="panel-header">
-
-          <h2>📋 단어 목록 <span class="badge" id="word-count">0</span></h2>
-
-          <button type="button" class="btn btn-text btn-danger-text" id="btn-clear-words">전체 삭제</button>
-
+          <h2><span data-i18n="tool.vocab-study-mobile.setup.wordListHeading">📋 Word List</span> <span class="badge" id="word-count">0</span></h2>
+          <button type="button" class="btn btn-text btn-danger-text" id="btn-clear-words" data-i18n="tool.vocab-study-mobile.actions.clearAll">Clear All</button>
         </div>
-
         <ul class="word-list" id="word-list"></ul>
-
       </div>
-
-
 
       <div class="panel">
-
-        <h2>💾 프리셋</h2>
-
+        <h2 data-i18n="tool.vocab-study-mobile.setup.presetsHeading">💾 Presets</h2>
         <div class="preset-save-row">
-
-          <input type="text" id="preset-name" placeholder="프리셋 이름 (예: 3학년 1반)" autocomplete="off">
-
-          <button type="button" class="btn btn-secondary" id="btn-save-preset">저장</button>
-
+          <input type="text" id="preset-name" data-i18n-placeholder="tool.vocab-study-mobile.placeholders.presetName" placeholder="Preset name (e.g. Grade 3 Class 1)" autocomplete="off">
+          <button type="button" class="btn btn-secondary" id="btn-save-preset" data-i18n="tool.vocab-study-mobile.actions.save">Save</button>
         </div>
-
         <div class="preset-list" id="preset-list">
-
-          <p class="empty-hint">저장된 프리셋이 없습니다.</p>
-
+          <p class="empty-hint" data-i18n="tool.vocab-study-mobile.presets.empty">No saved presets.</p>
         </div>
-
       </div>
-
-
 
       <div class="action-bar">
-
-        <button type="button" class="btn btn-primary btn-large" id="btn-start" disabled>학습 시작</button>
-
+        <button type="button" class="btn btn-primary btn-large" id="btn-start" disabled data-i18n="tool.vocab-study-mobile.actions.startStudy">Start Study</button>
       </div>
-
     </section>
-
-
 
     <section id="phase-round" class="phase">
-
       <div class="round-header">
-
         <div class="round-info">
-
-          <span class="round-label" id="round-label">라운드 1</span>
-
-          <span class="round-title" id="round-title">페어 찾기</span>
-
+          <span class="round-label" id="round-label">Round 1</span>
+          <span class="round-title" id="round-title">Pair Match</span>
         </div>
-
         <div class="stats-bar">
-
           <div class="stat">
-
-            <span class="stat-label">진행</span>
-
+            <span class="stat-label" data-i18n="tool.vocab-study-mobile.labels.progress">Progress</span>
             <span class="stat-value" id="progress-text">0 / 0</span>
-
           </div>
-
           <div class="stat">
-
-            <span class="stat-label">점수</span>
-
+            <span class="stat-label" data-i18n="tool.vocab-study-mobile.labels.score">Score</span>
             <span class="stat-value" id="score-text">0</span>
-
           </div>
-
           <div class="stat">
-
-            <span class="stat-label">정답률</span>
-
+            <span class="stat-label" data-i18n="tool.vocab-study-mobile.labels.accuracy">Accuracy</span>
             <span class="stat-value" id="accuracy-text">-</span>
-
           </div>
-
           <div class="stat stat-timer" id="stat-timer" hidden>
-
-            <span class="stat-label">남은 시간</span>
-
+            <span class="stat-label" data-i18n="tool.vocab-study-mobile.labels.timeRemaining">Time left</span>
             <span class="stat-value timer-value" id="timer-text">2:00</span>
-
           </div>
-
         </div>
-
       </div>
-
-
 
       <div id="round1-content" class="round-content" hidden>
-
-        <p class="round-hint">영어 카드와 뜻 카드를 차례로 눌러 짝을 맞추세요. (한 번에 최대 4쌍)</p>
-
+        <p class="round-hint" data-i18n="tool.vocab-study-mobile.hints.round1">Tap English and meaning cards in turn to make pairs. (Up to 4 pairs at a time)</p>
         <div class="match-grid" id="match-grid"></div>
-
       </div>
-
-
 
       <div id="round2-content" class="round-content" hidden>
-
-        <p class="round-hint">아래 뜻에 맞는 영어 단어를 고르세요.</p>
-
+        <p class="round-hint" data-i18n="tool.vocab-study-mobile.hints.round2">Choose the English word that matches the meaning below.</p>
         <div class="quiz-prompt" id="quiz-prompt"></div>
-
         <div class="quiz-choices" id="quiz-choices"></div>
-
       </div>
-
-
 
       <div id="round3-content" class="round-content" hidden>
-
-        <p class="round-hint">글자를 순서대로 눌러 스펠링을 완성하세요.</p>
-
+        <p class="round-hint" data-i18n="tool.vocab-study-mobile.hints.round3">Tap letters in order to complete the spelling.</p>
         <div class="spelling-hint" id="spelling-hint"></div>
-
         <div class="spelling-answer" id="spelling-answer"></div>
-
         <div class="spelling-letters" id="spelling-letters"></div>
-
-        <button type="button" class="btn btn-secondary" id="btn-spelling-reset">다시 선택</button>
-
+        <button type="button" class="btn btn-secondary" id="btn-spelling-reset" data-i18n="tool.vocab-study-mobile.actions.resetSpelling">Reset Selection</button>
       </div>
-
     </section>
-
-
 
     <section id="phase-result" class="phase">
-
       <div class="panel result-panel">
-
-        <h2 id="result-title">🎉 학습 완료!</h2>
-
+        <h2 id="result-title">🎉 Study Complete!</h2>
         <div class="result-stats">
-
           <div class="result-stat">
-
             <span class="result-stat-value" id="result-score">0</span>
-
-            <span class="result-stat-label">총 점수</span>
-
+            <span class="result-stat-label" data-i18n="tool.vocab-study-mobile.labels.totalScore">Total Score</span>
           </div>
-
           <div class="result-stat">
-
             <span class="result-stat-value" id="result-accuracy">0%</span>
-
-            <span class="result-stat-label">정답률</span>
-
+            <span class="result-stat-label" data-i18n="tool.vocab-study-mobile.labels.accuracy">Accuracy</span>
           </div>
-
           <div class="result-stat">
-
             <span class="result-stat-value" id="result-correct">0</span>
-
-            <span class="result-stat-label">정답</span>
-
+            <span class="result-stat-label" data-i18n="tool.vocab-study-mobile.labels.correct">Correct</span>
           </div>
-
           <div class="result-stat">
-
             <span class="result-stat-value" id="result-wrong">0</span>
-
-            <span class="result-stat-label">오답</span>
-
+            <span class="result-stat-label" data-i18n="tool.vocab-study-mobile.labels.wrong">Wrong</span>
           </div>
-
         </div>
-
         <div id="wrong-words-section" class="wrong-words-section" hidden>
-
-          <h3>틀린 단어</h3>
-
+          <h3 data-i18n="tool.vocab-study-mobile.labels.wrongWords">Wrong words</h3>
           <ul class="wrong-words-list" id="wrong-words-list"></ul>
-
         </div>
-
         <div class="action-bar result-actions">
-
-          <button type="button" class="btn btn-primary" id="btn-retry-wrong" hidden>틀린 단어만 다시 풀기</button>
-
-          <button type="button" class="btn btn-secondary" id="btn-restart">처음부터 다시</button>
-
-          <button type="button" class="btn btn-secondary" id="btn-back-setup">단어 목록으로</button>
-
+          <button type="button" class="btn btn-primary" id="btn-retry-wrong" hidden data-i18n="tool.vocab-study-mobile.actions.retryWrong">Retry Wrong Words Only</button>
+          <button type="button" class="btn btn-secondary" id="btn-restart" data-i18n="tool.vocab-study-mobile.actions.restart">Start Over</button>
+          <button type="button" class="btn btn-secondary" id="btn-back-setup" data-i18n="tool.vocab-study-mobile.actions.backToSetup">Back to Word List</button>
         </div>
-
       </div>
-
     </section>
 
-
-
     <div class="toast" id="toast" hidden></div>
-
   </div>
 
-
-
   <script>
-/* 단어 시험 준비 - 모바일版 */
+(function() {
+  var MESSAGES = { en: {"title":"Vocab Study Tool","heading":"📚 Vocab Study Tool","subtitle":"Learn vocabulary with card games","actions":{"addWord":"+ Add Word","clearAll":"Clear All","save":"Save","load":"Load","delete":"Delete","startStudy":"Start Study","resetSpelling":"Reset Selection","retryWrong":"Retry Wrong Words Only","restart":"Start Over","backToSetup":"Back to Word List","switchToKo":"한국어","switchToEn":"English"},"aria":{"switchLanguage":"Switch language","removeWord":"Remove"},"setup":{"settingsHeading":"⚙️ Study Settings","wordInputHeading":"📝 Word Input","wordListHeading":"📋 Word List","presetsHeading":"💾 Presets"},"fieldLabels":{"korean":"Korean meaning","english":"English meaning","example":"Example sentence"},"fieldToggles":{"korean":"Korean meaning","english":"English meaning","example":"English example sentence"},"timer":{"enable":"Use time limit","secondsLabel":"Time limit per round (seconds)"},"labels":{"englishWord":"English word","korean":"Korean meaning","english":"English meaning","example":"English example sentence","progress":"Progress","score":"Score","accuracy":"Accuracy","timeRemaining":"Time left","totalScore":"Total Score","correct":"Correct","wrong":"Wrong","wrongWords":"Wrong words"},"placeholders":{"word":"e.g. apple","korean":"e.g. 사과","english":"e.g. a round fruit","example":"e.g. I eat an apple.","presetName":"Preset name (e.g. Grade 3 Class 1)"},"rounds":{"round1Label":"Round 1","round1Title":"Pair Match","round2Label":"Round 2","round2Title":"Meaning Quiz","round3Label":"Round 3","round3Title":"Spelling"},"hints":{"round1":"Tap English and meaning cards in turn to make pairs. (Up to 4 pairs at a time)","round2":"Choose the English word that matches the meaning below.","round3":"Tap letters in order to complete the spelling.","spellingFallback":"Tap letters in order to spell the word."},"wordList":{"koreanPrefix":"Korean:","englishPrefix":"English:","examplePrefix":"Example:"},"presets":{"empty":"No saved presets.","meta":"{count} words · {fields}"},"toast":{"wordAdded":"Word added.","presetSaved":"Preset \"{name}\" saved.","presetLoaded":"Preset \"{name}\" loaded.","presetDeleted":"Preset deleted.","timeUp":"Time's up!","correct":"Correct!","wrongTryAgain":"Wrong. Try again.","nextCardSet":"Next card set!","wrongAnswer":"Wrong! Answer: {word}","noWrongToRetry":"No wrong words to review."},"confirm":{"deletePreset":"Delete preset \"{name}\"?","clearAllWords":"Delete all words?"},"errors":{"selectField":"Select at least one of Korean meaning, English meaning, or example sentence.","enterWord":"Enter an English word.","enterField":"Enter {field}.","presetNameRequired":"Enter a preset name.","noWordsToSave":"No words to save.","addWordsFirst":"Add words first."},"result":{"complete":"🎉 Study Complete!","retryComplete":"🔄 Review Complete!"},"help":{"menuLabel":"Vocab Study Tool","title":"Vocab Study Tool","introHeading":"Introduction","intro":"A card-based vocabulary activity with three study rounds.","usageHeading":"How to use","usage1":"Select the fields you need.","usage2":"Add words and meanings.","usage3":"Save or load presets.","usage4":"Start study.","usage5":"Complete pair matching, meaning quiz, and spelling activities.","inputHeading":"Input","inputLine1":"Press Enter in an input field to add a word.","notesHeading":"Notes","notes":"When the timer is on, a round may end automatically when time runs out."}}, ko: {"title":"Vocab Study Tool","heading":"📚 Vocab Study Tool","subtitle":"카드 게임으로 단어를 외워보세요","actions":{"addWord":"+ 단어 추가","clearAll":"전체 삭제","save":"저장","load":"불러오기","delete":"삭제","startStudy":"학습 시작","resetSpelling":"다시 선택","retryWrong":"틀린 단어만 다시 풀기","restart":"처음부터 다시","backToSetup":"단어 목록으로","switchToKo":"한국어","switchToEn":"English"},"aria":{"switchLanguage":"언어 전환","removeWord":"삭제"},"setup":{"settingsHeading":"⚙️ 학습 설정","wordInputHeading":"📝 단어 입력","wordListHeading":"📋 단어 목록","presetsHeading":"💾 프리셋"},"fieldLabels":{"korean":"한글 뜻","english":"영어 뜻","example":"예시문장"},"fieldToggles":{"korean":"한글 뜻","english":"영어 뜻","example":"영어 예시문장"},"timer":{"enable":"제한 시간 사용","secondsLabel":"라운드당 제한 시간 (초)"},"labels":{"englishWord":"영어 단어","korean":"한글 뜻","english":"영어 뜻","example":"영어 예시문장","progress":"진행","score":"점수","accuracy":"정답률","timeRemaining":"남은 시간","totalScore":"총 점수","correct":"정답","wrong":"오답","wrongWords":"틀린 단어"},"placeholders":{"word":"예: apple","korean":"예: 사과","english":"예: a round fruit","example":"예: I eat an apple.","presetName":"프리셋 이름 (예: 3학년 1반)"},"rounds":{"round1Label":"라운드 1","round1Title":"페어 찾기","round2Label":"라운드 2","round2Title":"뜻 맞추기","round3Label":"라운드 3","round3Title":"스펠링 맞추기"},"hints":{"round1":"영어 카드와 뜻 카드를 차례로 눌러 짝을 맞추세요. (한 번에 최대 4쌍)","round2":"아래 뜻에 맞는 영어 단어를 고르세요.","round3":"글자를 순서대로 눌러 스펠링을 완성하세요.","spellingFallback":"글자를 순서대로 눌러 단어를 완성하세요."},"wordList":{"koreanPrefix":"한글:","englishPrefix":"영어:","examplePrefix":"예문:"},"presets":{"empty":"저장된 프리셋이 없습니다.","meta":"{count}개 단어 · {fields}"},"toast":{"wordAdded":"단어가 추가되었습니다.","presetSaved":"\"{name}\" 프리셋이 저장되었습니다.","presetLoaded":"\"{name}\" 프리셋을 불러왔습니다.","presetDeleted":"프리셋이 삭제되었습니다.","timeUp":"시간이 종료되었습니다!","correct":"정답!","wrongTryAgain":"틀렸어요. 다시 시도해보세요.","nextCardSet":"다음 카드 세트!","wrongAnswer":"오답! 정답: {word}","noWrongToRetry":"복습할 틀린 단어가 없습니다."},"confirm":{"deletePreset":"\"{name}\" 프리셋을 삭제할까요?","clearAllWords":"모든 단어를 삭제할까요?"},"errors":{"selectField":"한글 뜻, 영어 뜻, 예시문장 중 하나 이상을 선택해주세요.","enterWord":"영어 단어를 입력해주세요.","enterField":"{field}을(를) 입력해주세요.","presetNameRequired":"프리셋 이름을 입력해주세요.","noWordsToSave":"저장할 단어가 없습니다.","addWordsFirst":"단어를 먼저 추가해주세요."},"result":{"complete":"🎉 학습 완료!","retryComplete":"🔄 복습 완료!"},"help":{"menuLabel":"Vocab Study Tool","title":"Vocab Study Tool","introHeading":"소개","intro":"단어를 3단계로 학습하는 카드형 어휘 활동입니다.","usageHeading":"사용 방법","usage1":"필요한 필드를 선택합니다.","usage2":"단어와 뜻을 추가합니다.","usage3":"프리셋을 저장하거나 불러올 수 있습니다.","usage4":"학습을 시작합니다.","usage5":"페어 맞추기, 뜻 확인, 스펠링 활동을 진행합니다.","inputHeading":"입력 방법","inputLine1":"입력란에서 Enter를 누르면 단어가 추가됩니다.","notesHeading":"주의사항","notes":"타이머를 켜면 시간이 끝났을 때 라운드가 강제로 종료될 수 있습니다."}} };
+  var LEGACY_KEYS = ['vocab-study-mobile-presets','participation-tracker-v3','participation-tracker-v2','participation-tracker-v1','classTeamMaker','classRandomPicker','ladderGame','mysteryBoxPicker','diceChanceGame','juldarigiGame','tongAjossiGame','story-forge-presets','sentence-kitchen-presets','5w1h-factory-settings'];
+  function resolveLocale() {
+    try {
+      var stored = localStorage.getItem('toolkit-language');
+      if (stored === 'en' || stored === 'ko') return stored;
+      for (var i = 0; i < LEGACY_KEYS.length; i++) {
+        if (localStorage.getItem(LEGACY_KEYS[i]) !== null) return 'ko';
+      }
+    } catch (e) {}
+    return 'en';
+  }
+  function lookup(obj, parts) {
+    var cur = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (cur == null || typeof cur !== 'object') return null;
+      cur = cur[parts[i]];
+    }
+    return typeof cur === 'string' ? cur : null;
+  }
+  function interpolate(str, params) {
+    if (!params) return str;
+    return str.replace(/\{([^}]+)\}/g, function(_, key) {
+      return params[key] != null ? String(params[key]) : '{' + key + '}';
+    });
+  }
+  var locale = resolveLocale();
+  document.documentElement.lang = locale;
+  window.vsT = function(key, params) {
+    var parts = key.split('.');
+    var val = lookup(MESSAGES[locale], parts);
+    if (val == null && locale !== 'en') val = lookup(MESSAGES.en, parts);
+    if (val == null) return 'tool.vocab-study-mobile.' + key;
+    return interpolate(val, params);
+  };
+  document.title = window.vsT('title');
+})();
+/* Vocab Study Tool - mobile */
 
 const STORAGE_KEY = 'vocab-study-mobile-presets';
-
-const FIELD_LABELS = {
-  korean: '한글 뜻',
-  english: '영어 뜻',
-  example: '예시문장',
-};
-
-const ROUND_INFO = [
-  { label: '라운드 1', title: '페어 찾기' },
-  { label: '라운드 2', title: '뜻 맞추기' },
-  { label: '라운드 3', title: '스펠링 맞추기' },
-];
 
 let words = [];
 let fields = { korean: true, english: false, example: false };
@@ -1030,6 +923,7 @@ let completedPairs = 0;
 let totalPairs = 0;
 
 let quizQueue = [];
+let quizTotal = 0;
 let currentQuiz = null;
 
 let spellingQueue = [];
@@ -1042,8 +936,26 @@ let usedLetterBtns = new Set();
 
 let phaseSetup, phaseRound, phaseResult;
 
+const SFX = {
+  correct: 'assets/correct.mp3',
+  wrong: 'assets/wrong.mp3',
+};
+let audioUnlocked = false;
+
 const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => document.querySelectorAll(sel);
+const $ = (sel) => document.querySelectorAll(sel);
+
+function fieldLabel(key) {
+  return window.vsT('fieldLabels.' + key);
+}
+
+function getRoundInfo(index) {
+  const n = index + 1;
+  return {
+    label: window.vsT('rounds.round' + n + 'Label'),
+    title: window.vsT('rounds.round' + n + 'Title'),
+  };
+}
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -1147,15 +1059,34 @@ function addScore(points) {
   $('#score-text').textContent = score;
 }
 
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  Object.values(SFX).forEach((src) => {
+    const probe = new Audio(src);
+    probe.volume = 0.001;
+    probe.play().then(() => probe.pause()).catch(() => {});
+  });
+}
+
+function playSfx(type) {
+  const src = SFX[type];
+  if (!src) return;
+  const audio = new Audio(src);
+  audio.play().catch(() => {});
+}
+
 function recordCorrect() {
   correctCount++;
   addScore(10);
+  playSfx('correct');
   updateStats(null, null);
 }
 
 function recordWrong(wordId) {
   wrongCount++;
   wrongWordIds.add(wordId);
+  playSfx('wrong');
   updateStats(null, null);
 }
 
@@ -1194,7 +1125,7 @@ function updateTimerDisplay() {
 }
 
 function handleTimeUp() {
-  showToast('시간이 종료되었습니다!', 'error');
+  showToast(window.vsT('toast.timeUp'), 'error');
   if (currentRound === 1) finishRound1();
   else if (currentRound === 2) finishRound2();
   else if (currentRound === 3) finishRound3();
@@ -1204,7 +1135,7 @@ function updateFieldVisibility() {
   fields.korean = $('#field-korean').checked;
   fields.english = $('#field-english').checked;
   fields.example = $('#field-example').checked;
-  $$('[data-field]').forEach((el) => {
+  $('[data-field]').forEach((el) => {
     el.hidden = !fields[el.dataset.field];
   });
 }
@@ -1212,7 +1143,7 @@ function updateFieldVisibility() {
 function validateFields() {
   const active = getActiveFields();
   if (active.length === 0) {
-    notify('한글 뜻, 영어 뜻, 예시문장 중 하나 이상을 선택해주세요.', 'error');
+    notify(window.vsT('errors.selectField'), 'error');
     return false;
   }
   return true;
@@ -1230,16 +1161,16 @@ function renderWordList() {
 
   list.innerHTML = words.map((w) => {
     const details = [];
-    if (fields.korean && w.korean) details.push(`<span>한글: ${escapeHtml(w.korean)}</span>`);
-    if (fields.english && w.english) details.push(`<span>영어: ${escapeHtml(w.english)}</span>`);
-    if (fields.example && w.example) details.push(`<span>예문: ${escapeHtml(w.example)}</span>`);
+    if (fields.korean && w.korean) details.push(`<span>${window.vsT('wordList.koreanPrefix')} ${escapeHtml(w.korean)}</span>`);
+    if (fields.english && w.english) details.push(`<span>${window.vsT('wordList.englishPrefix')} ${escapeHtml(w.english)}</span>`);
+    if (fields.example && w.example) details.push(`<span>${window.vsT('wordList.examplePrefix')} ${escapeHtml(w.example)}</span>`);
     return `
       <li class="word-list-item">
         <div>
           <div class="word-main">${escapeHtml(w.word)}</div>
           <div class="word-details">${details.join('')}</div>
         </div>
-        <button type="button" class="btn-remove-word" data-id="${w.id}" title="삭제">×</button>
+        <button type="button" class="btn-remove-word" data-id="${w.id}" title="${window.vsT('aria.removeWord')}">×</button>
       </li>`;
   }).join('');
 
@@ -1266,7 +1197,7 @@ function addWord() {
   const example = $('#input-example').value.trim();
 
   if (!word) {
-    notify('영어 단어를 입력해주세요.', 'error');
+    notify(window.vsT('errors.enterWord'), 'error');
     $('#input-word').focus();
     return;
   }
@@ -1275,7 +1206,7 @@ function addWord() {
   for (const f of active) {
     const val = { korean, english, example }[f];
     if (!val) {
-      notify(`${FIELD_LABELS[f]}을(를) 입력해주세요.`, 'error');
+      notify(window.vsT('errors.enterField', { field: fieldLabel(f) }), 'error');
       return;
     }
   }
@@ -1288,7 +1219,7 @@ function addWord() {
   $('#input-english').value = '';
   $('#input-example').value = '';
   hideFormFeedback();
-  showToast('단어가 추가되었습니다.', 'success');
+  showToast(window.vsT('toast.wordAdded'), 'success');
 }
 
 function getPresets() {
@@ -1309,7 +1240,7 @@ function renderPresets() {
   const names = Object.keys(presets);
 
   if (names.length === 0) {
-    container.innerHTML = '<p class="empty-hint">저장된 프리셋이 없습니다.</p>';
+    container.innerHTML = `<p class="empty-hint">${window.vsT('presets.empty')}</p>`;
     return;
   }
 
@@ -1318,17 +1249,18 @@ function renderPresets() {
     const wordCount = p.words?.length || 0;
     const activeFields = Object.entries(p.fields || {})
       .filter(([, v]) => v)
-      .map(([k]) => FIELD_LABELS[k])
+      .map(([k]) => fieldLabel(k))
       .join(', ');
+    const meta = window.vsT('presets.meta', { count: wordCount, fields: activeFields });
     return `
       <div class="preset-item">
         <div class="preset-item-info">
           <div class="preset-item-name">${escapeHtml(name)}</div>
-          <div class="preset-item-meta">${wordCount}개 단어 · ${escapeHtml(activeFields)}</div>
+          <div class="preset-item-meta">${escapeHtml(meta)}</div>
         </div>
         <div class="preset-item-actions">
-          <button type="button" class="btn btn-secondary btn-small" data-preset-idx="${i}">불러오기</button>
-          <button type="button" class="btn btn-text btn-danger-text btn-small" data-preset-del="${i}">삭제</button>
+          <button type="button" class="btn btn-secondary btn-small" data-preset-idx="${i}">${window.vsT('actions.load')}</button>
+          <button type="button" class="btn btn-text btn-danger-text btn-small" data-preset-del="${i}">${window.vsT('actions.delete')}</button>
         </div>
       </div>`;
   }).join('');
@@ -1350,11 +1282,11 @@ function renderPresets() {
 function savePreset() {
   const name = $('#preset-name').value.trim();
   if (!name) {
-    notify('프리셋 이름을 입력해주세요.', 'error');
+    notify(window.vsT('errors.presetNameRequired'), 'error');
     return;
   }
   if (words.length === 0) {
-    notify('저장할 단어가 없습니다.', 'error');
+    notify(window.vsT('errors.noWordsToSave'), 'error');
     return;
   }
 
@@ -1368,7 +1300,7 @@ function savePreset() {
   };
   savePresets(presets);
   renderPresets();
-  showToast(`"${name}" 프리셋이 저장되었습니다.`, 'success');
+  showToast(window.vsT('toast.presetSaved', { name }), 'success');
 }
 
 function loadPreset(name) {
@@ -1391,22 +1323,22 @@ function loadPreset(name) {
 
   updateFieldVisibility();
   renderWordList();
-  showToast(`"${name}" 프리셋을 불러왔습니다.`, 'success');
+  showToast(window.vsT('toast.presetLoaded', { name }), 'success');
 }
 
 function deletePreset(name) {
-  if (!confirm(`"${name}" 프리셋을 삭제할까요?`)) return;
+  if (!confirm(window.vsT('confirm.deletePreset', { name }))) return;
   const presets = getPresets();
   delete presets[name];
   savePresets(presets);
   renderPresets();
-  showToast('프리셋이 삭제되었습니다.', 'info');
+  showToast(window.vsT('toast.presetDeleted'), 'info');
 }
 
 function startGame(retryOnly = false) {
   if (!validateFields()) return;
   if (words.length === 0) {
-    notify('단어를 먼저 추가해주세요.', 'error');
+    notify(window.vsT('errors.addWordsFirst'), 'error');
     return;
   }
 
@@ -1414,7 +1346,7 @@ function startGame(retryOnly = false) {
   gameWords = retryOnly ? words.filter((w) => wrongWordIds.has(w.id)) : [...words];
 
   if (gameWords.length === 0) {
-    showToast('복습할 틀린 단어가 없습니다.', 'info');
+    showToast(window.vsT('toast.noWrongToRetry'), 'info');
     return;
   }
 
@@ -1493,10 +1425,15 @@ function loadNextMatchBatch() {
   renderMatchBatch();
 }
 
-function startRound1() {
-  const info = ROUND_INFO[0];
+function updateRoundHeader() {
+  if (currentRound < 1 || currentRound > 3) return;
+  const info = getRoundInfo(currentRound - 1);
   $('#round-label').textContent = info.label;
   $('#round-title').textContent = info.title;
+}
+
+function startRound1() {
+  updateRoundHeader();
   $('#round1-content').hidden = false;
   $('#round2-content').hidden = true;
   $('#round3-content').hidden = true;
@@ -1532,11 +1469,11 @@ function onMatchCardClick(el) {
   selectedCard = null;
   first.el.classList.remove('selected');
 
-  const isMatch =
-    first.card.pairKey === card.pairKey &&
-    first.card.type !== card.type &&
-    ((first.card.type === 'word' && card.type !== 'word') ||
-     (card.type === 'word' && first.card.type !== 'word'));
+  const isWordMeaningPair =
+    (first.card.type === 'word' && card.type !== 'word') ||
+    (card.type === 'word' && first.card.type !== 'word');
+
+  const isMatch = isWordMeaningPair && first.card.wordId === card.wordId;
 
   if (isMatch) {
     first.el.classList.add('matched');
@@ -1545,18 +1482,20 @@ function onMatchCardClick(el) {
     completedPairs++;
     recordCorrect();
     updateStats(completedPairs, totalPairs);
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
 
     if (batchMatchedCount >= currentBatchSize) {
       if (pairQueue.length === 0) setTimeout(finishRound1, 600);
       else {
-        showToast('다음 카드 세트!', 'info');
+        showToast(window.vsT('toast.nextCardSet'), 'info');
         setTimeout(loadNextMatchBatch, 700);
       }
     }
   } else {
-    recordWrong(first.card.wordId);
-    showToast('틀렸어요. 다시 시도해보세요.', 'error');
+    if (first.card.wordId !== card.wordId) {
+      recordWrong(first.card.wordId);
+    }
+    showToast(window.vsT('toast.wrongTryAgain'), 'error');
   }
 }
 
@@ -1567,22 +1506,22 @@ function finishRound1() {
 }
 
 function startRound2() {
-  const info = ROUND_INFO[1];
-  $('#round-label').textContent = info.label;
-  $('#round-title').textContent = info.title;
+  updateRoundHeader();
   $('#round1-content').hidden = true;
   $('#round2-content').hidden = false;
   $('#round3-content').hidden = true;
 
   const active = getActiveFields();
   quizQueue = shuffle(
-    gameWords.map((w) => ({
-      word: w,
-      field: active[Math.floor(Math.random() * active.length)],
-    }))
+    gameWords.flatMap((w) =>
+      active
+        .filter((field) => (w[field] || '').trim())
+        .map((field) => ({ word: w, field }))
+    )
   );
+  quizTotal = quizQueue.length;
 
-  updateStats(0, quizQueue.length);
+  updateStats(0, quizTotal);
   startTimer();
   showNextQuiz();
 }
@@ -1598,7 +1537,7 @@ function showNextQuiz() {
   const field = currentQuiz.field;
 
   $('#quiz-prompt').innerHTML = `
-    <div class="quiz-prompt-type">${FIELD_LABELS[field]}</div>
+    <div class="quiz-prompt-type">${fieldLabel(field)}</div>
     <div class="quiz-prompt-text">${escapeHtml(w[field])}</div>
   `;
 
@@ -1620,14 +1559,14 @@ function showNextQuiz() {
     btn.addEventListener('click', () => onQuizChoice(btn));
   });
 
-  updateStats(gameWords.length - quizQueue.length - 1, gameWords.length);
+  updateStats(quizTotal - quizQueue.length - 1, quizTotal);
 }
 
 function onQuizChoice(btn) {
   if (btn.classList.contains('disabled')) return;
 
   const isCorrect = btn.dataset.correct === 'true';
-  $$('.quiz-choice').forEach((b) => {
+  $('.quiz-choice').forEach((b) => {
     b.classList.add('disabled');
     if (b.dataset.correct === 'true') b.classList.add('correct');
     else if (b === btn && !isCorrect) b.classList.add('wrong');
@@ -1635,10 +1574,10 @@ function onQuizChoice(btn) {
 
   if (isCorrect) {
     recordCorrect();
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
   } else {
     recordWrong(currentQuiz.word.id);
-    showToast(`오답! 정답: ${currentQuiz.word.word}`, 'error');
+    showToast(window.vsT('toast.wrongAnswer', { word: currentQuiz.word.word }), 'error');
   }
 
   setTimeout(showNextQuiz, 900);
@@ -1651,12 +1590,10 @@ function finishRound2() {
 }
 
 function startRound3() {
-  const info = ROUND_INFO[2];
-  $('#round-label').textContent = info.label;
-  $('#round-title').textContent = info.title;
+  updateRoundHeader();
   $('#round1-content').hidden = true;
   $('#round2-content').hidden = true;
-  $('#round3-content').hidden = false;
+  $('#round3-content').hidden = true;
 
   spellingQueue = buildSpellingQueue(gameWords);
   spellingTotal = spellingQueue.length;
@@ -1687,8 +1624,8 @@ function renderSpelling(reshuffle = true) {
   const hintText = w[spellingHintField] || '';
 
   let hintHtml = hintText
-    ? `<strong>${FIELD_LABELS[spellingHintField]}</strong>: ${escapeHtml(hintText)}`
-    : '글자를 순서대로 눌러 단어를 완성하세요.';
+    ? `<strong>${fieldLabel(spellingHintField)}</strong>: ${escapeHtml(hintText)}`
+    : window.vsT('hints.spellingFallback');
 
   if (currentSpelling.partTotal > 1) {
     hintHtml += `<br><span class="spelling-part-label">${currentSpelling.partIndex + 1} / ${currentSpelling.partTotal}</span>`;
@@ -1733,11 +1670,11 @@ function checkSpelling() {
 
   if (answer.toLowerCase() === correct.toLowerCase()) {
     recordCorrect();
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
     setTimeout(showNextSpelling, 800);
   } else {
     recordWrong(currentSpelling.wordEntry.id);
-    showToast(`오답! 정답: ${correct}`, 'error');
+    showToast(window.vsT('toast.wrongAnswer', { word: correct }), 'error');
     setTimeout(showNextSpelling, 1200);
   }
 }
@@ -1753,17 +1690,22 @@ function finishRound3() {
   showResults();
 }
 
-function showResults() {
-  showPhase(phaseResult);
-
+function updateResultTexts() {
   const totalAttempts = correctCount + wrongCount;
   const accuracy = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 0;
 
-  $('#result-title').textContent = isRetryMode ? '🔄 복습 완료!' : '🎉 학습 완료!';
+  $('#result-title').textContent = isRetryMode
+    ? window.vsT('result.retryComplete')
+    : window.vsT('result.complete');
   $('#result-score').textContent = score;
   $('#result-accuracy').textContent = `${accuracy}%`;
   $('#result-correct').textContent = correctCount;
   $('#result-wrong').textContent = wrongCount;
+}
+
+function showResults() {
+  showPhase(phaseResult);
+  updateResultTexts();
 
   const wrongSection = $('#wrong-words-section');
   const retryBtn = $('#btn-retry-wrong');
@@ -1781,10 +1723,31 @@ function showResults() {
   }
 }
 
+function refreshI18n() {
+  renderPresets();
+  renderWordList();
+  if (phaseRound?.classList.contains('active')) {
+    updateRoundHeader();
+    if (currentRound === 2 && currentQuiz) {
+      const typeEl = $('#quiz-prompt')?.querySelector('.quiz-prompt-type');
+      if (typeEl) typeEl.textContent = fieldLabel(currentQuiz.field);
+    }
+    if (currentRound === 3 && currentSpelling) {
+      renderSpelling(false);
+    }
+  }
+  if (phaseResult?.classList.contains('active')) {
+    updateResultTexts();
+  }
+}
+
 function init() {
   phaseSetup = $('#phase-setup');
   phaseRound = $('#phase-round');
   phaseResult = $('#phase-result');
+
+  document.addEventListener('click', unlockAudio, { once: true });
+  document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
 
   $('#field-korean').addEventListener('change', updateFieldVisibility);
   $('#field-english').addEventListener('change', updateFieldVisibility);
@@ -1808,7 +1771,7 @@ function init() {
 
   $('#btn-clear-words').addEventListener('click', () => {
     if (words.length === 0) return;
-    if (confirm('모든 단어를 삭제할까요?')) {
+    if (confirm(window.vsT('confirm.clearAllWords'))) {
       words = [];
       renderWordList();
     }
@@ -1825,11 +1788,11 @@ function init() {
   renderPresets();
 }
 
-document.addEventListener('DOMContentLoaded', init);
-  </script>
+window.vsInit = init;
+window.vsRefreshI18n = refreshI18n;
 
+window.vsInit = init;
+document.addEventListener('DOMContentLoaded', function() { if (window.vsInit) window.vsInit(); });
+</script>
 </body>
-
 </html>
-
-

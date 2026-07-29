@@ -1,18 +1,6 @@
-/* 단어 시험 준비 - 모바일版 */
+/* Vocab Study Tool - mobile */
 
 const STORAGE_KEY = 'vocab-study-mobile-presets';
-
-const FIELD_LABELS = {
-  korean: '한글 뜻',
-  english: '영어 뜻',
-  example: '예시문장',
-};
-
-const ROUND_INFO = [
-  { label: '라운드 1', title: '페어 찾기' },
-  { label: '라운드 2', title: '뜻 맞추기' },
-  { label: '라운드 3', title: '스펠링 맞추기' },
-];
 
 let words = [];
 let fields = { korean: true, english: false, example: false };
@@ -62,6 +50,18 @@ let audioUnlocked = false;
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
+
+function fieldLabel(key) {
+  return window.vsT('fieldLabels.' + key);
+}
+
+function getRoundInfo(index) {
+  const n = index + 1;
+  return {
+    label: window.vsT('rounds.round' + n + 'Label'),
+    title: window.vsT('rounds.round' + n + 'Title'),
+  };
+}
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -231,7 +231,7 @@ function updateTimerDisplay() {
 }
 
 function handleTimeUp() {
-  showToast('시간이 종료되었습니다!', 'error');
+  showToast(window.vsT('toast.timeUp'), 'error');
   if (currentRound === 1) finishRound1();
   else if (currentRound === 2) finishRound2();
   else if (currentRound === 3) finishRound3();
@@ -249,7 +249,7 @@ function updateFieldVisibility() {
 function validateFields() {
   const active = getActiveFields();
   if (active.length === 0) {
-    notify('한글 뜻, 영어 뜻, 예시문장 중 하나 이상을 선택해주세요.', 'error');
+    notify(window.vsT('errors.selectField'), 'error');
     return false;
   }
   return true;
@@ -267,16 +267,16 @@ function renderWordList() {
 
   list.innerHTML = words.map((w) => {
     const details = [];
-    if (fields.korean && w.korean) details.push(`<span>한글: ${escapeHtml(w.korean)}</span>`);
-    if (fields.english && w.english) details.push(`<span>영어: ${escapeHtml(w.english)}</span>`);
-    if (fields.example && w.example) details.push(`<span>예문: ${escapeHtml(w.example)}</span>`);
+    if (fields.korean && w.korean) details.push(`<span>${window.vsT('wordList.koreanPrefix')} ${escapeHtml(w.korean)}</span>`);
+    if (fields.english && w.english) details.push(`<span>${window.vsT('wordList.englishPrefix')} ${escapeHtml(w.english)}</span>`);
+    if (fields.example && w.example) details.push(`<span>${window.vsT('wordList.examplePrefix')} ${escapeHtml(w.example)}</span>`);
     return `
       <li class="word-list-item">
         <div>
           <div class="word-main">${escapeHtml(w.word)}</div>
           <div class="word-details">${details.join('')}</div>
         </div>
-        <button type="button" class="btn-remove-word" data-id="${w.id}" title="삭제">×</button>
+        <button type="button" class="btn-remove-word" data-id="${w.id}" title="${window.vsT('aria.removeWord')}">×</button>
       </li>`;
   }).join('');
 
@@ -303,7 +303,7 @@ function addWord() {
   const example = $('#input-example').value.trim();
 
   if (!word) {
-    notify('영어 단어를 입력해주세요.', 'error');
+    notify(window.vsT('errors.enterWord'), 'error');
     $('#input-word').focus();
     return;
   }
@@ -312,7 +312,7 @@ function addWord() {
   for (const f of active) {
     const val = { korean, english, example }[f];
     if (!val) {
-      notify(`${FIELD_LABELS[f]}을(를) 입력해주세요.`, 'error');
+      notify(window.vsT('errors.enterField', { field: fieldLabel(f) }), 'error');
       return;
     }
   }
@@ -325,7 +325,7 @@ function addWord() {
   $('#input-english').value = '';
   $('#input-example').value = '';
   hideFormFeedback();
-  showToast('단어가 추가되었습니다.', 'success');
+  showToast(window.vsT('toast.wordAdded'), 'success');
 }
 
 function getPresets() {
@@ -346,7 +346,7 @@ function renderPresets() {
   const names = Object.keys(presets);
 
   if (names.length === 0) {
-    container.innerHTML = '<p class="empty-hint">저장된 프리셋이 없습니다.</p>';
+    container.innerHTML = `<p class="empty-hint">${window.vsT('presets.empty')}</p>`;
     return;
   }
 
@@ -355,17 +355,18 @@ function renderPresets() {
     const wordCount = p.words?.length || 0;
     const activeFields = Object.entries(p.fields || {})
       .filter(([, v]) => v)
-      .map(([k]) => FIELD_LABELS[k])
+      .map(([k]) => fieldLabel(k))
       .join(', ');
+    const meta = window.vsT('presets.meta', { count: wordCount, fields: activeFields });
     return `
       <div class="preset-item">
         <div class="preset-item-info">
           <div class="preset-item-name">${escapeHtml(name)}</div>
-          <div class="preset-item-meta">${wordCount}개 단어 · ${escapeHtml(activeFields)}</div>
+          <div class="preset-item-meta">${escapeHtml(meta)}</div>
         </div>
         <div class="preset-item-actions">
-          <button type="button" class="btn btn-secondary btn-small" data-preset-idx="${i}">불러오기</button>
-          <button type="button" class="btn btn-text btn-danger-text btn-small" data-preset-del="${i}">삭제</button>
+          <button type="button" class="btn btn-secondary btn-small" data-preset-idx="${i}">${window.vsT('actions.load')}</button>
+          <button type="button" class="btn btn-text btn-danger-text btn-small" data-preset-del="${i}">${window.vsT('actions.delete')}</button>
         </div>
       </div>`;
   }).join('');
@@ -387,11 +388,11 @@ function renderPresets() {
 function savePreset() {
   const name = $('#preset-name').value.trim();
   if (!name) {
-    notify('프리셋 이름을 입력해주세요.', 'error');
+    notify(window.vsT('errors.presetNameRequired'), 'error');
     return;
   }
   if (words.length === 0) {
-    notify('저장할 단어가 없습니다.', 'error');
+    notify(window.vsT('errors.noWordsToSave'), 'error');
     return;
   }
 
@@ -405,7 +406,7 @@ function savePreset() {
   };
   savePresets(presets);
   renderPresets();
-  showToast(`"${name}" 프리셋이 저장되었습니다.`, 'success');
+  showToast(window.vsT('toast.presetSaved', { name }), 'success');
 }
 
 function loadPreset(name) {
@@ -428,22 +429,22 @@ function loadPreset(name) {
 
   updateFieldVisibility();
   renderWordList();
-  showToast(`"${name}" 프리셋을 불러왔습니다.`, 'success');
+  showToast(window.vsT('toast.presetLoaded', { name }), 'success');
 }
 
 function deletePreset(name) {
-  if (!confirm(`"${name}" 프리셋을 삭제할까요?`)) return;
+  if (!confirm(window.vsT('confirm.deletePreset', { name }))) return;
   const presets = getPresets();
   delete presets[name];
   savePresets(presets);
   renderPresets();
-  showToast('프리셋이 삭제되었습니다.', 'info');
+  showToast(window.vsT('toast.presetDeleted'), 'info');
 }
 
 function startGame(retryOnly = false) {
   if (!validateFields()) return;
   if (words.length === 0) {
-    notify('단어를 먼저 추가해주세요.', 'error');
+    notify(window.vsT('errors.addWordsFirst'), 'error');
     return;
   }
 
@@ -451,7 +452,7 @@ function startGame(retryOnly = false) {
   gameWords = retryOnly ? words.filter((w) => wrongWordIds.has(w.id)) : [...words];
 
   if (gameWords.length === 0) {
-    showToast('복습할 틀린 단어가 없습니다.', 'info');
+    showToast(window.vsT('toast.noWrongToRetry'), 'info');
     return;
   }
 
@@ -530,10 +531,15 @@ function loadNextMatchBatch() {
   renderMatchBatch();
 }
 
-function startRound1() {
-  const info = ROUND_INFO[0];
+function updateRoundHeader() {
+  if (currentRound < 1 || currentRound > 3) return;
+  const info = getRoundInfo(currentRound - 1);
   $('#round-label').textContent = info.label;
   $('#round-title').textContent = info.title;
+}
+
+function startRound1() {
+  updateRoundHeader();
   $('#round1-content').hidden = false;
   $('#round2-content').hidden = true;
   $('#round3-content').hidden = true;
@@ -582,12 +588,12 @@ function onMatchCardClick(el) {
     completedPairs++;
     recordCorrect();
     updateStats(completedPairs, totalPairs);
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
 
     if (batchMatchedCount >= currentBatchSize) {
       if (pairQueue.length === 0) setTimeout(finishRound1, 600);
       else {
-        showToast('다음 카드 세트!', 'info');
+        showToast(window.vsT('toast.nextCardSet'), 'info');
         setTimeout(loadNextMatchBatch, 700);
       }
     }
@@ -595,7 +601,7 @@ function onMatchCardClick(el) {
     if (first.card.wordId !== card.wordId) {
       recordWrong(first.card.wordId);
     }
-    showToast('틀렸어요. 다시 시도해보세요.', 'error');
+    showToast(window.vsT('toast.wrongTryAgain'), 'error');
   }
 }
 
@@ -606,9 +612,7 @@ function finishRound1() {
 }
 
 function startRound2() {
-  const info = ROUND_INFO[1];
-  $('#round-label').textContent = info.label;
-  $('#round-title').textContent = info.title;
+  updateRoundHeader();
   $('#round1-content').hidden = true;
   $('#round2-content').hidden = false;
   $('#round3-content').hidden = true;
@@ -639,7 +643,7 @@ function showNextQuiz() {
   const field = currentQuiz.field;
 
   $('#quiz-prompt').innerHTML = `
-    <div class="quiz-prompt-type">${FIELD_LABELS[field]}</div>
+    <div class="quiz-prompt-type">${fieldLabel(field)}</div>
     <div class="quiz-prompt-text">${escapeHtml(w[field])}</div>
   `;
 
@@ -676,10 +680,10 @@ function onQuizChoice(btn) {
 
   if (isCorrect) {
     recordCorrect();
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
   } else {
     recordWrong(currentQuiz.word.id);
-    showToast(`오답! 정답: ${currentQuiz.word.word}`, 'error');
+    showToast(window.vsT('toast.wrongAnswer', { word: currentQuiz.word.word }), 'error');
   }
 
   setTimeout(showNextQuiz, 900);
@@ -692,12 +696,10 @@ function finishRound2() {
 }
 
 function startRound3() {
-  const info = ROUND_INFO[2];
-  $('#round-label').textContent = info.label;
-  $('#round-title').textContent = info.title;
+  updateRoundHeader();
   $('#round1-content').hidden = true;
   $('#round2-content').hidden = true;
-  $('#round3-content').hidden = false;
+  $('#round3-content').hidden = true;
 
   spellingQueue = buildSpellingQueue(gameWords);
   spellingTotal = spellingQueue.length;
@@ -728,8 +730,8 @@ function renderSpelling(reshuffle = true) {
   const hintText = w[spellingHintField] || '';
 
   let hintHtml = hintText
-    ? `<strong>${FIELD_LABELS[spellingHintField]}</strong>: ${escapeHtml(hintText)}`
-    : '글자를 순서대로 눌러 단어를 완성하세요.';
+    ? `<strong>${fieldLabel(spellingHintField)}</strong>: ${escapeHtml(hintText)}`
+    : window.vsT('hints.spellingFallback');
 
   if (currentSpelling.partTotal > 1) {
     hintHtml += `<br><span class="spelling-part-label">${currentSpelling.partIndex + 1} / ${currentSpelling.partTotal}</span>`;
@@ -774,11 +776,11 @@ function checkSpelling() {
 
   if (answer.toLowerCase() === correct.toLowerCase()) {
     recordCorrect();
-    showToast('정답!', 'success');
+    showToast(window.vsT('toast.correct'), 'success');
     setTimeout(showNextSpelling, 800);
   } else {
     recordWrong(currentSpelling.wordEntry.id);
-    showToast(`오답! 정답: ${correct}`, 'error');
+    showToast(window.vsT('toast.wrongAnswer', { word: correct }), 'error');
     setTimeout(showNextSpelling, 1200);
   }
 }
@@ -794,17 +796,22 @@ function finishRound3() {
   showResults();
 }
 
-function showResults() {
-  showPhase(phaseResult);
-
+function updateResultTexts() {
   const totalAttempts = correctCount + wrongCount;
   const accuracy = totalAttempts > 0 ? Math.round((correctCount / totalAttempts) * 100) : 0;
 
-  $('#result-title').textContent = isRetryMode ? '🔄 복습 완료!' : '🎉 학습 완료!';
+  $('#result-title').textContent = isRetryMode
+    ? window.vsT('result.retryComplete')
+    : window.vsT('result.complete');
   $('#result-score').textContent = score;
   $('#result-accuracy').textContent = `${accuracy}%`;
   $('#result-correct').textContent = correctCount;
   $('#result-wrong').textContent = wrongCount;
+}
+
+function showResults() {
+  showPhase(phaseResult);
+  updateResultTexts();
 
   const wrongSection = $('#wrong-words-section');
   const retryBtn = $('#btn-retry-wrong');
@@ -819,6 +826,24 @@ function showResults() {
   } else {
     wrongSection.hidden = true;
     retryBtn.hidden = true;
+  }
+}
+
+function refreshI18n() {
+  renderPresets();
+  renderWordList();
+  if (phaseRound?.classList.contains('active')) {
+    updateRoundHeader();
+    if (currentRound === 2 && currentQuiz) {
+      const typeEl = $('#quiz-prompt')?.querySelector('.quiz-prompt-type');
+      if (typeEl) typeEl.textContent = fieldLabel(currentQuiz.field);
+    }
+    if (currentRound === 3 && currentSpelling) {
+      renderSpelling(false);
+    }
+  }
+  if (phaseResult?.classList.contains('active')) {
+    updateResultTexts();
   }
 }
 
@@ -852,7 +877,7 @@ function init() {
 
   $('#btn-clear-words').addEventListener('click', () => {
     if (words.length === 0) return;
-    if (confirm('모든 단어를 삭제할까요?')) {
+    if (confirm(window.vsT('confirm.clearAllWords'))) {
       words = [];
       renderWordList();
     }
@@ -869,4 +894,5 @@ function init() {
   renderPresets();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+window.vsInit = init;
+window.vsRefreshI18n = refreshI18n;

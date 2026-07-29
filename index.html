@@ -55,6 +55,30 @@
       color: var(--text-muted);
     }
 
+    .home-header__top {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .home-lang-btn {
+      padding: 8px 14px;
+      min-height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      font: inherit;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .home-lang-btn:hover {
+      border-color: #c7d2fe;
+      color: #4338ca;
+    }
+
     .menu-list {
       display: flex;
       flex-direction: row;
@@ -892,15 +916,15 @@
   <div class="wrap">
     <div class="home-top-row">
       <div class="home-top-row__checklist">
-        <section class="prep-checklist" id="prepChecklist" aria-label="오늘 수업 준비 체크리스트">
+        <section class="prep-checklist" id="prepChecklist" data-i18n-aria="tool.home.checklist.sectionAria" aria-label="Today's class prep checklist">
           <div class="prep-checklist__top">
-            <h2 class="prep-checklist__title">오늘 수업 준비</h2>
+            <h2 class="prep-checklist__title" data-i18n="tool.home.checklist.title">Today's class prep</h2>
             <div class="prep-checklist__toolbar">
               <button
                 type="button"
                 class="prep-checklist__gear"
                 id="btnChecklistSettings"
-                aria-label="설정"
+                data-i18n-aria="tool.home.checklist.settings"
                 aria-haspopup="menu"
                 aria-expanded="false"
                 aria-controls="checklistSettingsMenu"
@@ -911,20 +935,20 @@
                 </svg>
               </button>
               <div class="prep-checklist__settings-menu" id="checklistSettingsMenu" role="menu" hidden>
-                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="class-settings">반 설정</button>
-                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="item-settings">항목 설정</button>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="class-settings" data-i18n="tool.home.checklist.classSettings">Class settings</button>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="item-settings" data-i18n="tool.home.checklist.itemSettings">Item settings</button>
                 <div class="prep-checklist__settings-divider" role="separator"></div>
-                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="reset-current">현재 반 초기화</button>
-                <button type="button" class="prep-checklist__settings-item prep-checklist__settings-item--danger" role="menuitem" data-action="reset-all">전체 초기화</button>
+                <button type="button" class="prep-checklist__settings-item" role="menuitem" data-action="reset-current" data-i18n="tool.home.checklist.resetCurrent">Reset current class checks</button>
+                <button type="button" class="prep-checklist__settings-item prep-checklist__settings-item--danger" role="menuitem" data-action="reset-all" data-i18n="tool.home.checklist.resetAll">Reset all class checks</button>
               </div>
             </div>
           </div>
           <div class="prep-checklist__main">
             <div class="prep-checklist__nav-row">
               <div class="prep-checklist__nav">
-                <button type="button" class="prep-checklist__arrow" id="btnPrevClass" aria-label="이전 반">←</button>
+                <button type="button" class="prep-checklist__arrow" id="btnPrevClass" data-i18n-aria="tool.home.checklist.prevClass">←</button>
                 <span class="prep-checklist__class-name" id="currentClassName">—</span>
-                <button type="button" class="prep-checklist__arrow" id="btnNextClass" aria-label="다음 반">→</button>
+                <button type="button" class="prep-checklist__arrow" id="btnNextClass" data-i18n-aria="tool.home.checklist.nextClass">→</button>
               </div>
               <span class="prep-checklist__progress" id="checklistProgress"></span>
             </div>
@@ -934,687 +958,138 @@
       </div>
 
       <div class="home-top-row__makeup">
-        <section class="makeup-widget" id="makeupWidget" aria-label="오늘 보강">
+        <section class="makeup-widget" id="makeupWidget" data-i18n-aria="tool.home.makeupWidget.sectionAria" aria-label="Today's makeup sessions">
           <div class="makeup-widget__top">
             <div class="makeup-widget__head">
               <div>
-                <h2 class="makeup-widget__title">오늘 보강</h2>
+                <h2 class="makeup-widget__title" data-i18n="tool.home.makeupWidget.title">Today's makeup</h2>
                 <p class="makeup-widget__date" id="makeupWidgetDate"></p>
               </div>
-              <span class="makeup-widget__count" id="makeupWidgetCount">총 0건</span>
+              <span class="makeup-widget__count" id="makeupWidgetCount"></span>
             </div>
           </div>
           <p class="makeup-widget__overlap makeup-widget__overlap--hidden" id="makeupWidgetOverlap"></p>
           <div class="makeup-widget__body">
             <div class="makeup-widget__carousel">
-              <button type="button" class="makeup-widget__arrow" id="makeupWidgetPrev" aria-label="이전 보강">←</button>
+              <button type="button" class="makeup-widget__arrow" id="makeupWidgetPrev" data-i18n-aria="tool.home.makeupWidget.prevSession">←</button>
               <div class="makeup-widget__slide" id="makeupWidgetSlide"></div>
-              <button type="button" class="makeup-widget__arrow" id="makeupWidgetNext" aria-label="다음 보강">→</button>
+              <button type="button" class="makeup-widget__arrow" id="makeupWidgetNext" data-i18n-aria="tool.home.makeupWidget.nextSession">→</button>
             </div>
             <span class="makeup-widget__index" id="makeupWidgetIndex"></span>
           </div>
-          <a class="makeup-widget__open-btn" href="../mkup-scheduler-synced/">보강 관리 열기</a>
+          <a class="makeup-widget__open-btn" href="../mkup-scheduler-synced/" data-i18n="tool.home.makeupWidget.openManager">Open makeup manager</a>
         </section>
       </div>
     </div>
 
     <dialog class="prep-checklist-dialog" id="classSettingsDialog">
       <div class="prep-checklist-dialog__inner">
-        <h3 class="prep-checklist-dialog__title">반 설정</h3>
-        <p class="prep-checklist-dialog__hint">반 이름을 바꾸거나 추가·삭제할 수 있습니다. 각 반의 체크 항목과 체크 상태는 따로 저장됩니다.</p>
+        <h3 class="prep-checklist-dialog__title" data-i18n="tool.home.checklist.classSettingsTitle">Class settings</h3>
+        <p class="prep-checklist-dialog__hint" data-i18n="tool.home.checklist.classSettingsHint">Rename, add, or remove classes. Each class keeps its own checklist items and check states.</p>
         <div class="prep-checklist-dialog__list" id="classSettingsList"></div>
         <div class="prep-checklist-dialog__footer">
-          <button type="button" class="prep-checklist__btn" id="btnAddClass">반 추가</button>
-          <button type="button" class="prep-checklist__btn" id="btnSaveClasses">저장</button>
-          <button type="button" class="prep-checklist__btn" id="btnCloseClassDialog">닫기</button>
+          <button type="button" class="prep-checklist__btn" id="btnAddClass" data-i18n="tool.home.checklist.addClass">Add class</button>
+          <button type="button" class="prep-checklist__btn" id="btnSaveClasses" data-i18n="tool.home.checklist.save">Save</button>
+          <button type="button" class="prep-checklist__btn" id="btnCloseClassDialog" data-i18n="tool.home.checklist.close">Close</button>
         </div>
       </div>
     </dialog>
 
     <dialog class="prep-checklist-dialog" id="itemSettingsDialog">
       <div class="prep-checklist-dialog__inner">
-        <h3 class="prep-checklist-dialog__title">항목 설정</h3>
-        <p class="prep-checklist-dialog__hint" id="itemSettingsHint">현재 선택된 반의 체크 항목을 편집합니다.</p>
+        <h3 class="prep-checklist-dialog__title" data-i18n="tool.home.checklist.itemSettingsTitle">Item settings</h3>
+        <p class="prep-checklist-dialog__hint" id="itemSettingsHint">Edit checklist items for the selected class.</p>
         <div class="prep-checklist-dialog__list" id="itemSettingsList"></div>
         <div class="prep-checklist-dialog__footer">
-          <button type="button" class="prep-checklist__btn" id="btnAddItem">항목 추가</button>
-          <button type="button" class="prep-checklist__btn" id="btnSaveItems">저장</button>
-          <button type="button" class="prep-checklist__btn" id="btnCloseItemDialog">닫기</button>
+          <button type="button" class="prep-checklist__btn" id="btnAddItem" data-i18n="tool.home.checklist.addItem">Add item</button>
+          <button type="button" class="prep-checklist__btn" id="btnSaveItems" data-i18n="tool.home.checklist.save">Save</button>
+          <button type="button" class="prep-checklist__btn" id="btnCloseItemDialog" data-i18n="tool.home.checklist.close">Close</button>
         </div>
       </div>
     </dialog>
 
     <header>
-      <h1>Toolkit for JLS Teachers</h1>
-      <p>카테고리를 선택하면 도구 목록이 펼쳐집니다.</p>
+      <div class="home-header__top">
+        <button type="button" class="home-lang-btn" id="btnLanguage" data-i18n-aria="tool.home.language.switchAria">한국어</button>
+      </div>
+      <h1 data-i18n="tool.home.title">Toolkit for JLS Teachers</h1>
+      <p data-i18n="tool.home.subtitle">Select a category to see the tool list.</p>
     </header>
 
     <div class="menu-list">
       <details class="dropdown dropdown--util">
         <summary class="dropdown__toggle">
-          <span class="dropdown__badge">유틸</span>
-          <span class="dropdown__count">6개</span>
+          <span class="dropdown__badge" data-i18n="navigation.section.utils">Utilities</span>
+          <span class="dropdown__count" id="utilMenuCount">6 tools</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </summary>
-        <nav class="dropdown__menu" aria-label="유틸 도구">
-          <a class="dropdown__item" href="./classroom-timer/">Classroom Timer</a>
-          <a class="dropdown__item" href="./makeup-scheduler/">Makeup Scheduler</a>
-          <a class="dropdown__item" href="./participation-tracker/">Participation Tracker</a>
-          <a class="dropdown__item" href="./class-random-picker/">Random Picker</a>
-          <a class="dropdown__item" href="./team-maker/">Team Maker</a>
-          <a class="dropdown__item" href="./edu-scoreboard/">Score Board</a>
+        <nav class="dropdown__menu" data-i18n-aria="tool.home.menu.utilAria" aria-label="Utility tools">
+          <a class="dropdown__item" href="./classroom-timer/" data-i18n="tool.classroom-timer.title">Classroom Timer</a>
+          <a class="dropdown__item" href="./makeup-scheduler/" data-i18n="tool.makeup-scheduler.title">Makeup Scheduler</a>
+          <a class="dropdown__item" href="./participation-tracker/" data-i18n="tool.participation-tracker.title">Participation Tracker</a>
+          <a class="dropdown__item" href="./class-random-picker/" data-i18n="tool.class-random-picker.title">Random Picker</a>
+          <a class="dropdown__item" href="./team-maker/" data-i18n="tool.team-maker.title">Team Maker</a>
+          <a class="dropdown__item" href="./edu-scoreboard/" data-i18n="tool.edu-scoreboard.title">Score Board</a>
         </nav>
       </details>
 
       <details class="dropdown dropdown--study">
         <summary class="dropdown__toggle">
-          <span class="dropdown__badge">학습툴</span>
-          <span class="dropdown__count">7개</span>
+          <span class="dropdown__badge" data-i18n="navigation.section.study">Study Tools</span>
+          <span class="dropdown__count" id="studyMenuCount">7 tools</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </summary>
-        <nav class="dropdown__menu" aria-label="학습툴">
-          <a class="dropdown__item" href="./grammar-checkpoint/">Grammar Checkpoint β</a>
-          <a class="dropdown__item" href="./phonics-hunt/">Phonics Hunt</a>
-          <a class="dropdown__item" href="./sentence-battle/">Sentence Battle</a>
-          <a class="dropdown__item" href="./sentence-kitchen/">Sentence Kitchen β</a>
-          <a class="dropdown__item" href="./story-forge/">Story Forge β</a>
-          <a class="dropdown__item" href="./vocab-study-mobile/">Vocab Study Tool</a>
-          <a class="dropdown__item" href="./5w1h-factory/">WH Factory β</a>
+        <nav class="dropdown__menu" data-i18n-aria="tool.home.menu.studyAria" aria-label="Study tools">
+          <a class="dropdown__item" href="./grammar-checkpoint/" data-i18n="tool.grammar-checkpoint.title">Grammar Checkpoint</a>
+          <a class="dropdown__item" href="./phonics-hunt/" data-i18n="tool.phonics-hunt.title">Phonics Hunt</a>
+          <a class="dropdown__item" href="./sentence-battle/" data-i18n="tool.sentence-battle.title">Sentence Battle</a>
+          <a class="dropdown__item" href="./sentence-kitchen/" data-i18n="tool.sentence-kitchen.title">Sentence Kitchen</a>
+          <a class="dropdown__item" href="./story-forge/" data-i18n="tool.story-forge.title">Story Forge</a>
+          <a class="dropdown__item" href="./vocab-study-mobile/" data-i18n="tool.vocab-study-mobile.title">Vocab Study Tool</a>
+          <a class="dropdown__item" href="./5w1h-factory/" data-i18n="tool.5w1h-factory.title">WH Factory</a>
         </nav>
       </details>
 
       <details class="dropdown dropdown--activity">
         <summary class="dropdown__toggle">
-          <span class="dropdown__badge">활동</span>
-          <span class="dropdown__count">10개</span>
+          <span class="dropdown__badge" data-i18n="navigation.section.activity">Activities</span>
+          <span class="dropdown__count" id="activityMenuCount">10 tools</span>
           <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </summary>
-        <nav class="dropdown__menu" aria-label="활동">
-          <a class="dropdown__item" href="./barrel-game/">Barrel Game</a>
-          <a class="dropdown__item" href="./castle-siege/">Castle Siege</a>
-          <a class="dropdown__item" href="./fortress-battle/">Cannon Game</a>
-          <a class="dropdown__item" href="./dice-chance/">Dice Tool</a>
-          <a class="dropdown__item" href="./ladder-game/">Ladder Game</a>
-          <a class="dropdown__item" href="./mystery-box-picker/">Mystery Box</a>
-          <a class="dropdown__item" href="./nerfgun-board/">Nerf Gun Roulette</a>
-          <a class="dropdown__item" href="./pirate-race/">Pirate Race</a>
-          <a class="dropdown__item" href="./treasure-hunt/">Treasure Hunt</a>
-          <a class="dropdown__item" href="./juldarigi/">Tug of War</a>
+        <nav class="dropdown__menu" data-i18n-aria="tool.home.menu.activityAria" aria-label="Activities">
+          <a class="dropdown__item" href="./barrel-game/" data-i18n="tool.barrel-game.title">Barrel Game</a>
+          <a class="dropdown__item" href="./castle-siege/" data-i18n="tool.castle-siege.title">Castle Siege</a>
+          <a class="dropdown__item" href="./fortress-battle/" data-i18n="tool.fortress-battle.title">Fortress Battle</a>
+          <a class="dropdown__item" href="./dice-chance/" data-i18n="tool.dice-chance.title">Dice Chance</a>
+          <a class="dropdown__item" href="./ladder-game/" data-i18n="tool.ladder-game.title">Ladder Game</a>
+          <a class="dropdown__item" href="./mystery-box-picker/" data-i18n="tool.mystery-box-picker.title">Mystery Box</a>
+          <a class="dropdown__item" href="./nerfgun-board/" data-i18n="tool.nerfgun-board.title">Nerf Gun Roulette</a>
+          <a class="dropdown__item" href="./pirate-race/" data-i18n="tool.pirate-race.title">Pirate Race</a>
+          <a class="dropdown__item" href="./treasure-hunt/" data-i18n="tool.treasure-hunt.title">Treasure Hunt</a>
+          <a class="dropdown__item" href="./juldarigi/" data-i18n="tool.juldarigi.title">Tug of War</a>
         </nav>
       </details>
     </div>
 
-    <footer>Toolkit for JLS Teachers</footer>
+    <footer data-i18n="tool.home.footer">Toolkit for JLS Teachers</footer>
   </div>
 
-  <script>
-    (function initTeacherChecklist() {
-      const STORAGE = {
-        classes: "teacherChecklistClasses",
-        items: "teacherChecklistItems",
-        state: "teacherChecklistState",
-        currentClassId: "teacherChecklistCurrentClassId",
-      };
-
-      const DEFAULT_CLASSES = [
-        { id: "class_1", name: "1교시" },
-        { id: "class_2", name: "2교시" },
-        { id: "class_3", name: "3교시" },
-        { id: "class_4", name: "4교시" },
-        { id: "class_5", name: "5교시" },
-      ];
-
-      const DEFAULT_ITEMS = [
-        { id: "item_1", label: "교재" },
-        { id: "item_2", label: "유인물" },
-        { id: "item_3", label: "스탬프" },
-        { id: "item_4", label: "NIE" },
-        { id: "item_5", label: "Vocab Test" },
-      ];
-
-      let checklistClasses = [];
-      let checklistItemsByClass = {};
-      let checklistState = {};
-      let currentClassId = "";
-
-      const els = {
-        currentClassName: document.getElementById("currentClassName"),
-        checklistItems: document.getElementById("checklistItems"),
-        checklistProgress: document.getElementById("checklistProgress"),
-        btnPrevClass: document.getElementById("btnPrevClass"),
-        btnNextClass: document.getElementById("btnNextClass"),
-        btnChecklistSettings: document.getElementById("btnChecklistSettings"),
-        checklistSettingsMenu: document.getElementById("checklistSettingsMenu"),
-        classSettingsDialog: document.getElementById("classSettingsDialog"),
-        itemSettingsDialog: document.getElementById("itemSettingsDialog"),
-        classSettingsList: document.getElementById("classSettingsList"),
-        itemSettingsList: document.getElementById("itemSettingsList"),
-        itemSettingsHint: document.getElementById("itemSettingsHint"),
-        btnAddClass: document.getElementById("btnAddClass"),
-        btnSaveClasses: document.getElementById("btnSaveClasses"),
-        btnCloseClassDialog: document.getElementById("btnCloseClassDialog"),
-        btnAddItem: document.getElementById("btnAddItem"),
-        btnSaveItems: document.getElementById("btnSaveItems"),
-        btnCloseItemDialog: document.getElementById("btnCloseItemDialog"),
-      };
-
-      function cloneDefaultItems() {
-        return DEFAULT_ITEMS.map(function (item) {
-          return { id: item.id, label: item.label };
-        });
-      }
-
-      function getItemsForClass(classId) {
-        return Array.isArray(checklistItemsByClass[classId]) ? checklistItemsByClass[classId] : [];
-      }
-
-      function ensureClassItems(classId) {
-        if (!Array.isArray(checklistItemsByClass[classId]) || checklistItemsByClass[classId].length === 0) {
-          checklistItemsByClass[classId] = cloneDefaultItems();
-        }
-      }
-
-      function generateChecklistId(prefix) {
-        return prefix + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-      }
-
-      function loadJson(key, fallback) {
-        try {
-          const raw = localStorage.getItem(key);
-          if (!raw) return fallback;
-          const parsed = JSON.parse(raw);
-          return parsed ?? fallback;
-        } catch {
-          return fallback;
-        }
-      }
-
-      function saveChecklistClasses() {
-        localStorage.setItem(STORAGE.classes, JSON.stringify(checklistClasses));
-      }
-
-      function saveChecklistItems() {
-        localStorage.setItem(STORAGE.items, JSON.stringify(checklistItemsByClass));
-      }
-
-      function saveChecklistState() {
-        localStorage.setItem(STORAGE.state, JSON.stringify(checklistState));
-      }
-
-      function saveCurrentClassId() {
-        localStorage.setItem(STORAGE.currentClassId, currentClassId);
-      }
-
-      function migrateItemsFromStorage(rawItems, classes) {
-        if (Array.isArray(rawItems) && rawItems.length > 0) {
-          const migrated = {};
-          classes.forEach(function (cls) {
-            migrated[cls.id] = rawItems.map(function (item) {
-              return { id: item.id, label: item.label };
-            });
-          });
-          return migrated;
-        }
-
-        if (rawItems && typeof rawItems === "object" && !Array.isArray(rawItems)) {
-          return rawItems;
-        }
-
-        const initial = {};
-        classes.forEach(function (cls) {
-          initial[cls.id] = cloneDefaultItems();
-        });
-        return initial;
-      }
-
-      function ensureClassState(classId) {
-        if (!checklistState[classId]) checklistState[classId] = {};
-        getItemsForClass(classId).forEach(function (item) {
-          if (typeof checklistState[classId][item.id] !== "boolean") {
-            checklistState[classId][item.id] = false;
-          }
-        });
-      }
-
-      function pruneChecklistData() {
-        const validClassIds = new Set(checklistClasses.map(function (c) { return c.id; }));
-
-        Object.keys(checklistItemsByClass).forEach(function (classId) {
-          if (!validClassIds.has(classId)) delete checklistItemsByClass[classId];
-        });
-
-        checklistClasses.forEach(function (cls) {
-          ensureClassItems(cls.id);
-        });
-
-        Object.keys(checklistState).forEach(function (classId) {
-          if (!validClassIds.has(classId)) {
-            delete checklistState[classId];
-            return;
-          }
-          const validItemIds = new Set(getItemsForClass(classId).map(function (i) { return i.id; }));
-          Object.keys(checklistState[classId]).forEach(function (itemId) {
-            if (!validItemIds.has(itemId)) delete checklistState[classId][itemId];
-          });
-        });
-
-        checklistClasses.forEach(function (cls) {
-          ensureClassState(cls.id);
-        });
-      }
-
-      function loadChecklistData() {
-        checklistClasses = loadJson(STORAGE.classes, null);
-        checklistState = loadJson(STORAGE.state, {});
-        currentClassId = localStorage.getItem(STORAGE.currentClassId) || "";
-
-        if (!Array.isArray(checklistClasses) || checklistClasses.length === 0) {
-          checklistClasses = DEFAULT_CLASSES.map(function (c) { return { id: c.id, name: c.name }; });
-        }
-
-        const rawItems = loadJson(STORAGE.items, null);
-        checklistItemsByClass = migrateItemsFromStorage(rawItems, checklistClasses);
-        pruneChecklistData();
-
-        if (!checklistClasses.some(function (c) { return c.id === currentClassId; })) {
-          currentClassId = checklistClasses[0].id;
-        }
-      }
-
-      function getCurrentClassIndex() {
-        return checklistClasses.findIndex(function (c) { return c.id === currentClassId; });
-      }
-
-      function getCurrentClass() {
-        return checklistClasses.find(function (c) { return c.id === currentClassId; }) || null;
-      }
-
-      function renderChecklistItems() {
-        const current = getCurrentClass();
-        if (!current) {
-          els.currentClassName.textContent = "—";
-          els.checklistItems.innerHTML = '<span class="prep-checklist__empty">등록된 반이 없습니다. 반 설정에서 추가해 주세요.</span>';
-          els.checklistProgress.textContent = "";
-          els.btnPrevClass.disabled = true;
-          els.btnNextClass.disabled = true;
-          return;
-        }
-
-        els.currentClassName.textContent = current.name;
-        els.btnPrevClass.disabled = checklistClasses.length <= 1;
-        els.btnNextClass.disabled = checklistClasses.length <= 1;
-
-        ensureClassItems(current.id);
-        ensureClassState(current.id);
-        const classItems = getItemsForClass(current.id);
-        const classState = checklistState[current.id];
-        let checkedCount = 0;
-
-        els.checklistItems.innerHTML = classItems.map(function (item) {
-          const checked = !!classState[item.id];
-          if (checked) checkedCount += 1;
-          return (
-            '<label class="prep-checklist__chip">' +
-              '<input type="checkbox" data-item-id="' + item.id + '"' + (checked ? " checked" : "") + ">" +
-              '<span class="prep-checklist__chip-mark" aria-hidden="true">✓</span>' +
-              "<span>" + escapeHtml(item.label) + "</span>" +
-            "</label>"
-          );
-        }).join("");
-
-        if (classItems.length === 0) {
-          els.checklistItems.innerHTML = '<span class="prep-checklist__empty">체크 항목이 없습니다. 항목 설정에서 추가해 주세요.</span>';
-          els.checklistProgress.textContent = "";
-          return;
-        }
-
-        els.checklistProgress.textContent = checkedCount + " / " + classItems.length + " 완료";
-
-        els.checklistItems.querySelectorAll("input[type=checkbox]").forEach(function (input) {
-          input.addEventListener("change", function () {
-            toggleCheckItem(current.id, input.dataset.itemId, input.checked);
-          });
-        });
-      }
-
-      function escapeHtml(text) {
-        return String(text)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;");
-      }
-
-      function renderChecklist() {
-        renderChecklistItems();
-      }
-
-      function switchToPrevClass() {
-        if (checklistClasses.length <= 1) return;
-        const idx = getCurrentClassIndex();
-        const nextIdx = (idx - 1 + checklistClasses.length) % checklistClasses.length;
-        currentClassId = checklistClasses[nextIdx].id;
-        saveCurrentClassId();
-        renderChecklist();
-      }
-
-      function switchToNextClass() {
-        if (checklistClasses.length <= 1) return;
-        const idx = getCurrentClassIndex();
-        const nextIdx = (idx + 1) % checklistClasses.length;
-        currentClassId = checklistClasses[nextIdx].id;
-        saveCurrentClassId();
-        renderChecklist();
-      }
-
-      function toggleCheckItem(classId, itemId, checked) {
-        ensureClassState(classId);
-        checklistState[classId][itemId] = checked;
-        saveChecklistState();
-        renderChecklistItems();
-      }
-
-      function resetCurrentClassChecks() {
-        const current = getCurrentClass();
-        if (!current) return;
-        if (!confirm('"' + current.name + '" 반의 체크 상태를 모두 해제할까요?')) return;
-        ensureClassState(current.id);
-        getItemsForClass(current.id).forEach(function (item) {
-          checklistState[current.id][item.id] = false;
-        });
-        saveChecklistState();
-        renderChecklist();
-      }
-
-      function resetAllClassChecks() {
-        if (!confirm("모든 반의 체크 상태를 해제할까요?")) return;
-        checklistClasses.forEach(function (cls) {
-          ensureClassState(cls.id);
-          getItemsForClass(cls.id).forEach(function (item) {
-            checklistState[cls.id][item.id] = false;
-          });
-        });
-        saveChecklistState();
-        renderChecklist();
-      }
-
-      function renderClassSettingsList() {
-        els.classSettingsList.innerHTML = checklistClasses.map(function (cls) {
-          return (
-            '<div class="prep-checklist-dialog__row" data-class-id="' + cls.id + '">' +
-              '<input type="text" value="' + escapeHtml(cls.name) + '" maxlength="30" aria-label="반 이름">' +
-              '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-class">삭제</button>' +
-            "</div>"
-          );
-        }).join("");
-
-        els.classSettingsList.querySelectorAll("[data-action=delete-class]").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            const row = btn.closest("[data-class-id]");
-            if (!row) return;
-            if (checklistClasses.length <= 1) {
-              alert("최소 한 개의 반은 남겨 두어야 합니다.");
-              return;
-            }
-            row.remove();
-          });
-        });
-      }
-
-      function renderItemSettingsList() {
-        const current = getCurrentClass();
-        if (!current) return;
-
-        ensureClassItems(current.id);
-        const classItems = getItemsForClass(current.id);
-
-        els.itemSettingsList.innerHTML = classItems.map(function (item) {
-          return (
-            '<div class="prep-checklist-dialog__row" data-item-id="' + item.id + '">' +
-              '<input type="text" value="' + escapeHtml(item.label) + '" maxlength="40" aria-label="항목 이름">' +
-              '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-item">삭제</button>' +
-            "</div>"
-          );
-        }).join("");
-
-        els.itemSettingsList.querySelectorAll("[data-action=delete-item]").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            const row = btn.closest("[data-item-id]");
-            if (!row) return;
-            if (els.itemSettingsList.children.length <= 1) {
-              alert("최소 한 개의 항목은 남겨 두어야 합니다.");
-              return;
-            }
-            row.remove();
-          });
-        });
-      }
-
-      function openClassSettingsModal() {
-        renderClassSettingsList();
-        els.classSettingsDialog.showModal();
-      }
-
-      function openItemSettingsModal() {
-        const current = getCurrentClass();
-        if (!current) {
-          alert("먼저 반을 선택해 주세요.");
-          return;
-        }
-        if (els.itemSettingsHint) {
-          els.itemSettingsHint.textContent = '"' + current.name + '" 반의 체크 항목을 편집합니다. 다른 반과 항목 목록이 다를 수 있습니다.';
-        }
-        renderItemSettingsList();
-        els.itemSettingsDialog.showModal();
-      }
-
-      function addClassSettingRow() {
-        const id = generateChecklistId("class");
-        const row = document.createElement("div");
-        row.className = "prep-checklist-dialog__row";
-        row.dataset.classId = id;
-        row.innerHTML =
-          '<input type="text" value="" placeholder="새 반 이름" maxlength="30" aria-label="반 이름">' +
-          '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-class">삭제</button>';
-        row.querySelector("[data-action=delete-class]").addEventListener("click", function () {
-          if (els.classSettingsList.children.length <= 1) {
-            alert("최소 한 개의 반은 남겨 두어야 합니다.");
-            return;
-          }
-          row.remove();
-        });
-        els.classSettingsList.appendChild(row);
-        row.querySelector("input").focus();
-      }
-
-      function addItemSettingRow() {
-        const id = generateChecklistId("item");
-        const row = document.createElement("div");
-        row.className = "prep-checklist-dialog__row";
-        row.dataset.itemId = id;
-        row.innerHTML =
-          '<input type="text" value="" placeholder="새 항목 이름" maxlength="40" aria-label="항목 이름">' +
-          '<button type="button" class="prep-checklist__btn prep-checklist__btn--danger" data-action="delete-item">삭제</button>';
-        row.querySelector("[data-action=delete-item]").addEventListener("click", function () {
-          if (els.itemSettingsList.children.length <= 1) {
-            alert("최소 한 개의 항목은 남겨 두어야 합니다.");
-            return;
-          }
-          row.remove();
-        });
-        els.itemSettingsList.appendChild(row);
-        row.querySelector("input").focus();
-      }
-
-      function saveClassSettingsFromModal() {
-        const rows = els.classSettingsList.querySelectorAll(".prep-checklist-dialog__row");
-        const nextClasses = [];
-        const usedNames = new Set();
-
-        const prevClassIds = new Set(checklistClasses.map(function (c) { return c.id; }));
-
-        for (let i = 0; i < rows.length; i += 1) {
-          const row = rows[i];
-          const name = row.querySelector("input").value.trim();
-          if (!name) {
-            alert("반 이름을 비워 둘 수 없습니다.");
-            return;
-          }
-          if (usedNames.has(name)) {
-            alert('"' + name + '" 이름이 중복됩니다.');
-            return;
-          }
-          usedNames.add(name);
-          nextClasses.push({
-            id: row.dataset.classId || generateChecklistId("class"),
-            name: name,
-          });
-        }
-
-        const nextClassIds = new Set(nextClasses.map(function (c) { return c.id; }));
-        prevClassIds.forEach(function (classId) {
-          if (!nextClassIds.has(classId)) {
-            delete checklistItemsByClass[classId];
-            delete checklistState[classId];
-          }
-        });
-
-        nextClasses.forEach(function (cls) {
-          if (!checklistItemsByClass[cls.id]) {
-            checklistItemsByClass[cls.id] = cloneDefaultItems();
-          }
-        });
-
-        checklistClasses = nextClasses;
-        pruneChecklistData();
-        if (!checklistClasses.some(function (c) { return c.id === currentClassId; })) {
-          currentClassId = checklistClasses[0].id;
-        }
-        saveChecklistClasses();
-        saveChecklistItems();
-        saveChecklistState();
-        saveCurrentClassId();
-        els.classSettingsDialog.close();
-        renderChecklist();
-      }
-
-      function saveItemSettingsFromModal() {
-        const current = getCurrentClass();
-        if (!current) return;
-
-        const rows = els.itemSettingsList.querySelectorAll(".prep-checklist-dialog__row");
-        const nextItems = [];
-        const usedLabels = new Set();
-
-        for (let i = 0; i < rows.length; i += 1) {
-          const row = rows[i];
-          const label = row.querySelector("input").value.trim();
-          if (!label) {
-            alert("항목 이름을 비워 둘 수 없습니다.");
-            return;
-          }
-          if (usedLabels.has(label)) {
-            alert('"' + label + '" 항목이 중복됩니다.');
-            return;
-          }
-          usedLabels.add(label);
-          nextItems.push({
-            id: row.dataset.itemId || generateChecklistId("item"),
-            label: label,
-          });
-        }
-
-        checklistItemsByClass[current.id] = nextItems;
-        pruneChecklistData();
-        saveChecklistItems();
-        saveChecklistState();
-        els.itemSettingsDialog.close();
-        renderChecklist();
-      }
-
-      function closeChecklistSettingsMenu() {
-        if (!els.checklistSettingsMenu || !els.btnChecklistSettings) return;
-        els.checklistSettingsMenu.hidden = true;
-        els.btnChecklistSettings.setAttribute("aria-expanded", "false");
-      }
-
-      function toggleChecklistSettingsMenu() {
-        if (!els.checklistSettingsMenu || !els.btnChecklistSettings) return;
-        const willOpen = els.checklistSettingsMenu.hidden;
-        if (willOpen) {
-          els.checklistSettingsMenu.hidden = false;
-          els.btnChecklistSettings.setAttribute("aria-expanded", "true");
-        } else {
-          closeChecklistSettingsMenu();
-        }
-      }
-
-      function bindChecklistEvents() {
-        els.btnPrevClass.addEventListener("click", switchToPrevClass);
-        els.btnNextClass.addEventListener("click", switchToNextClass);
-        els.btnChecklistSettings.addEventListener("click", function (e) {
-          e.stopPropagation();
-          toggleChecklistSettingsMenu();
-        });
-        els.checklistSettingsMenu.addEventListener("click", function (e) {
-          const item = e.target.closest("[data-action]");
-          if (!item) return;
-          closeChecklistSettingsMenu();
-          const action = item.dataset.action;
-          if (action === "class-settings") openClassSettingsModal();
-          else if (action === "item-settings") openItemSettingsModal();
-          else if (action === "reset-current") resetCurrentClassChecks();
-          else if (action === "reset-all") resetAllClassChecks();
-        });
-        document.addEventListener("click", function (e) {
-          if (!els.checklistSettingsMenu || els.checklistSettingsMenu.hidden) return;
-          if (e.target.closest(".prep-checklist__toolbar")) return;
-          closeChecklistSettingsMenu();
-        });
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") closeChecklistSettingsMenu();
-        });
-        els.btnAddClass.addEventListener("click", addClassSettingRow);
-        els.btnSaveClasses.addEventListener("click", saveClassSettingsFromModal);
-        els.btnCloseClassDialog.addEventListener("click", function () {
-          els.classSettingsDialog.close();
-        });
-        els.btnAddItem.addEventListener("click", addItemSettingRow);
-        els.btnSaveItems.addEventListener("click", saveItemSettingsFromModal);
-        els.btnCloseItemDialog.addEventListener("click", function () {
-          els.itemSettingsDialog.close();
-        });
-      }
-
-      loadChecklistData();
-      bindChecklistEvents();
-      renderChecklist();
-    })();
-  </script>
-  <a href="./help/" class="help-fab" id="helpFab" aria-label="도움말 센터">
+  <a href="./help/" class="help-fab" id="helpFab" data-i18n-aria="tool.home.helpFab.aria">
     <span class="help-fab__badge help-fab__badge--hidden" id="helpNewBadge">NEW</span>
     <span class="help-fab__icon" aria-hidden="true">📖</span>
-    <span class="help-fab__label">도움말</span>
+    <span class="help-fab__label" data-i18n="tool.home.helpFab.label">Help</span>
   </a>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./shared/supabase-config.js"></script>
-  <script src="./shared/makeup-scheduler-widget.js" defer></script>
   <script src="./shared/help-updates-data.js"></script>
-  <script>
-    (function initHelpFabBadge() {
-      var badge = document.getElementById("helpNewBadge");
-      if (!badge || typeof window.hasUnreadHelpUpdates !== "function") return;
-      if (window.hasUnreadHelpUpdates()) {
-        badge.classList.remove("help-fab__badge--hidden");
-      }
-    })();
-  </script>
+  <script type="module" src="./home.js"></script>
+  <script src="./shared/makeup-scheduler-widget.js" defer></script>
 </body>
 </html>
