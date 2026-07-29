@@ -1,6 +1,19 @@
 /** 사용자용 업데이트 안내 (도움말 센터 · NEW 뱃지 공용) */
 window.TOOLKIT_HELP_UPDATES = [
   {
+    date: "2026-07-30",
+    title: "영·한 UI 지원 및 메뉴 업데이트",
+    items: [
+      "Toolkit 홈·메뉴·도구·도움말 UI를 English / 한국어로 전환할 수 있습니다. (홈 또는 Tool 상단 언어 버튼)",
+      "언어 선택은 브라우저에 저장되며, 다음 방문 때도 유지됩니다.",
+      "Makeup Scheduler가 Supabase 동기화 버전(외부 앱)으로 연결되었습니다.",
+      "홈 화면의 위젯도 Supabase 동기화 버전을 반영합니다.",
+      "Utilities에 Student Achievement Tracker가 추가되었습니다.",
+      "Study Tools에 Vocab Study (Curriculum) (Chessbook 챕터 프리셋)이 추가되었고, Vocab Study Tool(직접 입력)과 구분되도록 사용법을 명시했습니다.",
+      "Help Center에 위 변경 사항 사용법을 반영했습니다.",
+    ],
+  },
+  {
     date: "2026-07-13",
     title: "학습·활동 Tool 3종 추가",
     items: [
