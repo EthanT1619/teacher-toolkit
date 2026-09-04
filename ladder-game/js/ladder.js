@@ -38,13 +38,32 @@ const LadderGame = (() => {
     { label: "매우 복잡", perLine: 5, diagonals: true },
   ];
 
-  function shuffle(arr) {
+  function resolveRandom(options) {
+    if (options && typeof options.rng === "function") return options.rng;
+    return Math.random;
+  }
+
+  function shuffle(arr, random) {
+    const rnd = typeof random === "function" ? random : Math.random;
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(rnd() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+
+  function emptyGenStats() {
+    return {
+      attemptCount: 0,
+      crossCandidateCount: 0,
+      acceptedCrossCount: 0,
+      rejectedByEndpoint: 0,
+      rejectedByRailInterval: 0,
+      rejectedByCrossOverlap: 0,
+      fallbackUsed: false,
+      fallbackKind: null,
+    };
   }
 
   function getComplexityConfig(level) {
@@ -64,7 +83,7 @@ const LadderGame = (() => {
     return Math.max(22 * scale, Math.min(46 * scale, Math.floor(usable / targetRows)));
   }
 
-  function generateBridges(count, perLine, topY, bottomY, stepY) {
+  function generateBridges(count, perLine, topY, bottomY, stepY, random) {
     const rows = getBridgeRows(topY, bottomY, stepY);
     if (rows.length === 0 || count < 2) return [];
 
@@ -88,7 +107,7 @@ const LadderGame = (() => {
       for (let i = 0; i < count - 1; i++) {
         if (lineCount[i] < perLine || lineCount[i + 1] < perLine) indices.push(i);
       }
-      return shuffle(indices);
+      return shuffle(indices, random);
     }
 
     let stuck = 0;
@@ -99,7 +118,7 @@ const LadderGame = (() => {
 
       let placed = false;
       for (const index of indices) {
-        for (const y of shuffle(freeRows)) {
+        for (const y of shuffle(freeRows, random)) {
           if (lineCount[index] >= perLine && lineCount[index + 1] >= perLine) continue;
           place(y, index);
           placed = true;
@@ -114,13 +133,28 @@ const LadderGame = (() => {
     return list.sort((a, b) => a.y - b.y || a.index - b.index);
   }
 
+  function intervalsOverlap(a0, a1, b0, b1) {
+    return a0 < b1 - EPS && b0 < a1 - EPS;
+  }
+
   function createConnectionRegistry(stepY) {
     const minGap = stepY * 0.65;
     const byCol = new Map();
+    const railIntervals = new Map();
+    const stats = {
+      rejectedByEndpoint: 0,
+      rejectedByRailInterval: 0,
+      rejectedByCrossOverlap: 0,
+    };
 
     function colPoints(col) {
       if (!byCol.has(col)) byCol.set(col, []);
       return byCol.get(col);
+    }
+
+    function colIntervals(col) {
+      if (!railIntervals.has(col)) railIntervals.set(col, []);
+      return railIntervals.get(col);
     }
 
     function canAttach(col, y) {
@@ -136,48 +170,137 @@ const LadderGame = (() => {
       attach(b.index + 1, b.y);
     }
 
-    function tryRegisterDiagonal(d) {
-      if (!canAttach(d.index, d.yLeft)) return false;
-      if (!canAttach(d.index + 1, d.yRight)) return false;
-      attach(d.index, d.yLeft);
-      attach(d.index + 1, d.yRight);
+    function pointInsideOpenInterval(y, startY, endY) {
+      return y > startY + EPS && y < endY - EPS;
+    }
+
+    function railHasInteriorPoint(rail, startY, endY) {
+      return colPoints(rail).some(function (y) {
+        return pointInsideOpenInterval(y, startY, endY);
+      });
+    }
+
+    function railHasOverlappingInterval(rail, startY, endY) {
+      return colIntervals(rail).some(function (occ) {
+        return intervalsOverlap(startY, endY, occ.startY, occ.endY);
+      });
+    }
+
+    function tryRegisterCross(cross) {
+      if (!(cross.bottomY > cross.topY + EPS)) return false;
+
+      const rails = [cross.index, cross.index + 1];
+
+      for (let i = 0; i < rails.length; i++) {
+        if (!canAttach(rails[i], cross.topY) || !canAttach(rails[i], cross.bottomY)) {
+          stats.rejectedByEndpoint += 1;
+          return false;
+        }
+      }
+
+      for (let i = 0; i < rails.length; i++) {
+        if (railHasOverlappingInterval(rails[i], cross.topY, cross.bottomY)) {
+          stats.rejectedByCrossOverlap += 1;
+          return false;
+        }
+        if (railHasInteriorPoint(rails[i], cross.topY, cross.bottomY)) {
+          stats.rejectedByRailInterval += 1;
+          return false;
+        }
+      }
+
+      for (let i = 0; i < rails.length; i++) {
+        attach(rails[i], cross.topY);
+        attach(rails[i], cross.bottomY);
+        colIntervals(rails[i]).push({
+          startY: cross.topY,
+          endY: cross.bottomY,
+          connectorId: "c:" + cross.index + ":" + cross.topY + ":" + cross.bottomY,
+        });
+      }
       return true;
     }
 
-    return { registerBridge, tryRegisterDiagonal };
+    return { registerBridge, tryRegisterCross, stats };
   }
 
-  function generateDiagonals(count, bridges, topY, bottomY, stepY) {
+  function computeMaxCrosses(count, rowCount, targetScale) {
+    const pairs = Math.max(1, count - 1);
+    let target;
+    if (count <= 4) {
+      target = Math.max(1, Math.min(pairs, count <= 2 ? 1 : 2));
+    } else if (count <= 8) {
+      target = Math.min(pairs, Math.max(2, Math.round(count * 0.5)));
+    } else if (count <= 14) {
+      target = Math.min(pairs, Math.max(3, Math.round(count * 0.4)));
+    } else {
+      target = Math.min(8, Math.max(4, Math.round(pairs * 0.35)));
+    }
+    const rowCap = Math.max(1, Math.floor(rowCount * 0.32));
+    const max = Math.max(1, Math.min(target, rowCap));
+    return Math.max(1, Math.round(max * (targetScale || 1)));
+  }
+
+  function generateDiagonals(count, bridges, topY, bottomY, stepY, options) {
+    const random = resolveRandom(options);
+    const targetScale = options && options.targetScale != null ? options.targetScale : 1;
     const rows = getBridgeRows(topY, bottomY, stepY);
     const diagonals = [];
     const registry = createConnectionRegistry(stepY);
+    const stats = {
+      crossCandidateCount: 0,
+      acceptedCrossCount: 0,
+      rejectedByEndpoint: 0,
+      rejectedByRailInterval: 0,
+      rejectedByCrossOverlap: 0,
+    };
 
     for (const b of bridges) registry.registerBridge(b);
 
-    const minRowGap = 1;
-    const maxDiagonals = Math.max(2, Math.floor(rows.length * 0.4));
-    const candidates = [];
+    const maxDiagonals = computeMaxCrosses(count, rows.length, targetScale);
+    const buckets = Array.from({ length: Math.max(0, count - 1) }, function () { return []; });
 
     for (let index = 0; index < count - 1; index++) {
       for (let li = 0; li < rows.length; li++) {
-        for (let gap = minRowGap; gap <= 2; gap++) {
-          if (li + gap < rows.length) {
-            candidates.push({ index, yLeft: rows[li], yRight: rows[li + gap] });
-          }
-          if (li - gap >= 0) {
-            candidates.push({ index, yLeft: rows[li], yRight: rows[li - gap] });
+        for (let gap = 1; gap <= 2; gap++) {
+          if (li + gap >= rows.length) continue;
+          const cand = {
+            type: "cross",
+            index,
+            topY: rows[li],
+            bottomY: rows[li + gap],
+          };
+          if (cand.bottomY - cand.topY < stepY - EPS) continue;
+          buckets[index].push(cand);
+          stats.crossCandidateCount += 1;
+        }
+      }
+    }
+
+    for (let i = 0; i < buckets.length; i++) {
+      buckets[i] = shuffle(buckets[i], random);
+    }
+
+    let progress = true;
+    while (diagonals.length < maxDiagonals && progress) {
+      progress = false;
+      for (let i = 0; i < buckets.length && diagonals.length < maxDiagonals; i++) {
+        while (buckets[i].length) {
+          const cand = buckets[i].pop();
+          if (registry.tryRegisterCross(cand)) {
+            diagonals.push(cand);
+            progress = true;
+            break;
           }
         }
       }
     }
 
-    for (const cand of shuffle(candidates)) {
-      if (diagonals.length >= maxDiagonals) break;
-      if (Math.abs(cand.yLeft - cand.yRight) < stepY * minRowGap - EPS) continue;
-      if (registry.tryRegisterDiagonal(cand)) diagonals.push(cand);
-    }
-
-    return diagonals;
+    stats.acceptedCrossCount = diagonals.length;
+    stats.rejectedByEndpoint = registry.stats.rejectedByEndpoint;
+    stats.rejectedByRailInterval = registry.stats.rejectedByRailInterval;
+    stats.rejectedByCrossOverlap = registry.stats.rejectedByCrossOverlap;
+    return { diagonals, stats };
   }
 
   function computeLayout(count, complexity, viewport = null) {
@@ -215,32 +338,94 @@ const LadderGame = (() => {
     };
   }
 
-  function createGame(rawItems, complexity, viewport = null) {
+  function createGame(rawItems, complexity, viewport = null, options) {
+    options = options || {};
+    const random = resolveRandom(options);
     const count = rawItems.length;
+    if (count < 2) {
+      throw new Error("LadderGame.createGame: at least 2 results are required");
+    }
+
+    const requestedComplexity = complexity;
     const config = getComplexityConfig(complexity);
     const layout = computeLayout(count, complexity, viewport);
-    const bridges = generateBridges(
-      count,
-      config.perLine,
-      layout.topY,
-      layout.bottomY,
-      layout.stepY
-    );
-    const diagonals = config.diagonals
-      ? generateDiagonals(count, bridges, layout.topY, layout.bottomY, layout.stepY)
-      : [];
+    const stats = emptyGenStats();
+    const wantCross = !!config.diagonals;
 
-    return {
-      labels: Array.from({ length: count }, (_, i) => String(i + 1)),
-      results: shuffle(rawItems),
-      bridges,
-      diagonals,
-      complexity,
-      complexityLabel: config.label,
-      perLine: config.perLine,
-      count,
-      ...layout,
-    };
+    function build(crossMode) {
+      stats.attemptCount += 1;
+      const bridges = generateBridges(
+        count,
+        config.perLine,
+        layout.topY,
+        layout.bottomY,
+        layout.stepY,
+        random
+      );
+
+      let diagonals = [];
+      if (crossMode === "full" || crossMode === "reduced") {
+        const generated = generateDiagonals(
+          count,
+          bridges,
+          layout.topY,
+          layout.bottomY,
+          layout.stepY,
+          { rng: random, targetScale: crossMode === "reduced" ? 0.45 : 1 }
+        );
+        diagonals = generated.diagonals;
+        stats.crossCandidateCount = generated.stats.crossCandidateCount;
+        stats.acceptedCrossCount = generated.stats.acceptedCrossCount;
+        stats.rejectedByEndpoint = generated.stats.rejectedByEndpoint;
+        stats.rejectedByRailInterval = generated.stats.rejectedByRailInterval;
+        stats.rejectedByCrossOverlap = generated.stats.rejectedByCrossOverlap;
+      } else {
+        stats.acceptedCrossCount = 0;
+      }
+
+      const game = {
+        labels: Array.from({ length: count }, (_, i) => String(i + 1)),
+        results: shuffle(rawItems, random),
+        bridges,
+        diagonals,
+        complexity: requestedComplexity,
+        complexityLabel: config.label,
+        perLine: config.perLine,
+        count,
+        ...layout,
+      };
+
+      return game;
+    }
+
+    function accept(game, fallbackKind) {
+      if (fallbackKind) {
+        stats.fallbackUsed = true;
+        stats.fallbackKind = fallbackKind;
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("LadderGame: topology fallback used (" + fallbackKind + ")");
+        }
+      }
+      if (options.debug) game._debug = Object.assign({}, stats);
+      return game;
+    }
+
+    const phases = wantCross
+      ? [
+          { mode: "full", attempts: 24, fallback: null },
+          { mode: "reduced", attempts: 12, fallback: "reduced-cross" },
+          { mode: "none", attempts: 12, fallback: "horizontal-only" },
+        ]
+      : [{ mode: "none", attempts: 24, fallback: null }];
+
+    for (const phase of phases) {
+      for (let i = 0; i < phase.attempts; i++) {
+        const game = build(phase.mode);
+        if (validateGame(game).ok) return accept(game, phase.fallback);
+      }
+    }
+
+    throw new Error("LadderGame.createGame: failed to generate a valid ladder");
   }
 
   function perColumnWidth(lineXs) {
@@ -262,10 +447,10 @@ const LadderGame = (() => {
   }
 
   function diagonalKey(d) {
-    return `d:${d.index}:${d.yLeft}:${d.yRight}`;
+    return `c:${d.index}:${d.topY}:${d.bottomY}`;
   }
 
-  /** 다음으로 만나는 가로줄·사선 (아래 방향) */
+  /** 다음으로 만나는 가로줄·X-Cross (아래 방향, topY에서만 진입) */
   function findNextEvent(state, col, y, used) {
     const { bridges, diagonals = [] } = state;
     let best = null;
@@ -287,26 +472,13 @@ const LadderGame = (() => {
     }
 
     for (const d of diagonals) {
+      if (!(d.bottomY > d.topY + EPS)) continue;
       const key = diagonalKey(d);
-      // 왼쪽 세로줄: yLeft에서 오른쪽으로
       if (d.index === col) {
-        consider(d.yLeft, {
-          kind: "diagonal",
-          toCol: col + 1,
-          endY: d.yRight,
-          yLeft: d.yLeft,
-          yRight: d.yRight,
-        }, key);
+        consider(d.topY, { kind: "cross", toCol: col + 1, endY: d.bottomY }, key);
       }
-      // 오른쪽 세로줄: yRight에서 왼쪽으로
       if (d.index === col - 1) {
-        consider(d.yRight, {
-          kind: "diagonal",
-          toCol: col - 1,
-          endY: d.yLeft,
-          yLeft: d.yLeft,
-          yRight: d.yRight,
-        }, key);
+        consider(d.topY, { kind: "cross", toCol: col - 1, endY: d.bottomY }, key);
       }
     }
 
@@ -314,13 +486,22 @@ const LadderGame = (() => {
   }
 
   function trace(state, startIndex) {
-    const { lineXs, bottomY } = state;
+    const { lineXs, bottomY, count } = state;
     let col = startIndex;
     let y = state.topY;
     const path = [{ x: lineXs[col], y }];
     const used = new Set();
+    const errors = [];
+    const maxSteps = ((state.bridges || []).length + (state.diagonals || []).length) * 4 + 16;
+    let steps = 0;
 
     while (y < bottomY - EPS) {
+      if (++steps > maxSteps) {
+        errors.push({ code: "infinite_loop", startIndex, col, y });
+        path.push({ x: lineXs[Math.max(0, Math.min(col, lineXs.length - 1))], y: bottomY });
+        break;
+      }
+
       const event = findNextEvent(state, col, y, used);
 
       if (!event) {
@@ -337,12 +518,146 @@ const LadderGame = (() => {
       path.push({ x: lineXs[col], y: event.y });
 
       const { action } = event;
+      if (action.endY < y - EPS) {
+        errors.push({
+          code: "upward",
+          startIndex,
+          fromY: y,
+          toY: action.endY,
+          kind: action.kind,
+        });
+      }
+
       col = action.toCol;
       path.push({ x: lineXs[col], y: action.endY });
       y = action.endY;
     }
 
-    return { path, endIndex: col };
+    if (col < 0 || col >= count) {
+      errors.push({ code: "invalid_end_index", startIndex, endIndex: col });
+    }
+
+    return { path, endIndex: col, errors, usedConnectors: Array.from(used) };
+  }
+
+  function connectorTouchesRail(index, rail) {
+    return index === rail || index + 1 === rail;
+  }
+
+  function validateConnectorUsageAndTopology(state, traces, errors) {
+    const usage = new Map();
+    for (let i = 0; i < traces.length; i++) {
+      const keys = traces[i].usedConnectors || [];
+      for (let k = 0; k < keys.length; k++) {
+        const key = keys[k];
+        usage.set(key, (usage.get(key) || 0) + 1);
+      }
+    }
+
+    for (const b of state.bridges || []) {
+      const key = bridgeKey(b);
+      const n = usage.get(key) || 0;
+      if (n !== 2) {
+        errors.push({ code: "connector_usage", kind: "horizontal", key, count: n });
+      }
+    }
+
+    for (const d of state.diagonals || []) {
+      const key = diagonalKey(d);
+      const n = usage.get(key) || 0;
+      if (n !== 2) {
+        errors.push({ code: "connector_usage", kind: "cross", key, count: n });
+      }
+    }
+
+    const diagonals = state.diagonals || [];
+    const bridges = state.bridges || [];
+
+    for (let i = 0; i < diagonals.length; i++) {
+      const d = diagonals[i];
+      if (!(d.bottomY > d.topY + EPS)) {
+        errors.push({ code: "invalid_cross", cross: d });
+        continue;
+      }
+      if (d.index < 0 || d.index >= state.count - 1) {
+        errors.push({ code: "invalid_cross_index", cross: d });
+      }
+      if (d.topY < state.topY - 1 || d.bottomY > state.bottomY + 1) {
+        errors.push({ code: "cross_out_of_bounds", cross: d });
+      }
+
+      for (const rail of [d.index, d.index + 1]) {
+        for (const b of bridges) {
+          if (!connectorTouchesRail(b.index, rail)) continue;
+          if (b.y > d.topY + EPS && b.y < d.bottomY - EPS) {
+            errors.push({
+              code: "interval_conflict",
+              kind: "bridge",
+              rail,
+              cross: d,
+              bridge: b,
+            });
+          }
+        }
+        for (let j = 0; j < diagonals.length; j++) {
+          if (i === j) continue;
+          const other = diagonals[j];
+          if (!connectorTouchesRail(other.index, rail)) continue;
+          if (intervalsOverlap(d.topY, d.bottomY, other.topY, other.bottomY)) {
+            errors.push({
+              code: "interval_conflict",
+              kind: "cross",
+              rail,
+              cross: d,
+              other,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  function validateGame(state) {
+    const errors = [];
+    const n = state.count;
+    const endIndices = [];
+    const traces = [];
+
+    for (let i = 0; i < n; i++) {
+      const result = trace(state, i);
+      traces.push(result);
+      for (const err of result.errors) errors.push(err);
+
+      for (let p = 1; p < result.path.length; p++) {
+        if (result.path[p].y < result.path[p - 1].y - EPS) {
+          errors.push({
+            code: "upward_segment",
+            startIndex: i,
+            fromY: result.path[p - 1].y,
+            toY: result.path[p].y,
+          });
+        }
+      }
+
+      const last = result.path[result.path.length - 1];
+      if (!last || Math.abs(last.y - state.bottomY) > 1) {
+        errors.push({ code: "not_bottom", startIndex: i, y: last && last.y });
+      }
+
+      if (result.endIndex < 0 || result.endIndex >= n) {
+        errors.push({ code: "invalid_end_index", startIndex: i, endIndex: result.endIndex });
+      }
+
+      endIndices.push(result.endIndex);
+    }
+
+    if (new Set(endIndices).size !== n) {
+      errors.push({ code: "duplicate_destination", endIndices });
+    }
+
+    validateConnectorUsageAndTopology(state, traces, errors);
+
+    return { ok: errors.length === 0, errors, endIndices };
   }
 
   function drawPathOverlay(ctx, partialPath, dot, scale = 1) {
@@ -410,9 +725,29 @@ const LadderGame = (() => {
     ctx.lineWidth = DIAGONAL_WIDTH * s;
     ctx.lineCap = "round";
     for (const d of diagonals) {
+      const xL = lineXs[d.index];
+      const xR = lineXs[d.index + 1];
+      const mx = (xL + xR) / 2;
+      const my = (d.topY + d.bottomY) / 2;
+
       ctx.beginPath();
-      ctx.moveTo(lineXs[d.index], d.yLeft);
-      ctx.lineTo(lineXs[d.index + 1], d.yRight);
+      ctx.moveTo(xL, d.topY);
+      ctx.lineTo(xR, d.bottomY);
+      ctx.stroke();
+
+      const dx = xL - xR;
+      const dy = d.bottomY - d.topY;
+      const len = Math.hypot(dx, dy) || 1;
+      const gap = Math.min(6 * s, len * 0.08);
+      const ux = dx / len;
+      const uy = dy / len;
+      ctx.beginPath();
+      ctx.moveTo(xR, d.topY);
+      ctx.lineTo(mx - ux * gap, my - uy * gap);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(mx + ux * gap, my + uy * gap);
+      ctx.lineTo(xL, d.bottomY);
       ctx.stroke();
     }
 
@@ -524,9 +859,14 @@ const LadderGame = (() => {
     createGame,
     drawLadder,
     trace,
+    validateGame,
     animateTrace,
     perColumnWidth,
     getComplexityConfig,
     COMPLEXITY_LEVELS,
   };
 })();
+
+if (typeof globalThis !== "undefined") {
+  globalThis.LadderGame = LadderGame;
+}
