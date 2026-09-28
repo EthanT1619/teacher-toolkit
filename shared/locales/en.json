@@ -655,6 +655,23 @@
         "notes": "Star count can be set from 1 up to the number of words entered. Reset Scores clears points only; Edit Words returns to the setup screen."
       }
     },
+    "phonics-practice": {
+      "title": "Phonics Practice",
+      "help": {
+        "menuLabel": "Phonics Practice",
+        "title": "Phonics Practice",
+        "introHeading": "Introduction",
+        "intro": "A listening and spelling practice app for phonics. Students pick a mode, hear a word, then complete three rounds: Hear & Choose, choose the letters, and build the spelling.",
+        "usageHeading": "How to use",
+        "usage1": "Open Phonics Practice from Study Tools.",
+        "usage2": "Choose CHESS Phonics to review sounds from the textbook, or Sound Fix to drill confusing sound pairs (for example L/R).",
+        "usage3": "Select a chapter or sound pack, preview example words if needed, then press Start.",
+        "usage4": "Round 1: listen and choose the word. Round 2: choose the missing letters. Round 3: tap letters to spell the word.",
+        "usage5": "Use Replay to hear the word again. After the session, review results, retry missed items, or pick another sound.",
+        "notesHeading": "Notes",
+        "notes": "This is different from Phonics Hunt (the two-team star-tile game). A session is usually 10 words. Sound playback needs a browser that can play audio. Session scores stay in memory only and reset when you start the same sound again."
+      }
+    },
     "sentence-battle": {
       "title": "Sentence Battle",
       "subtitle": "Defeat monsters each round and finish off the boss!",
@@ -1366,7 +1383,9 @@
         "clickCoverToReveal": "Click the box to reveal the ladder.",
         "coverHint": "Click to reveal the ladder",
         "tracingPath": "{number} — Following the path…",
-        "resultLine": "{number} → {result}"
+        "resultLine": "{number} → {result}",
+        "resultOverlayNumber": "{number}",
+        "clickToDismiss": "Click to close"
       },
       "toast": {
         "enterPresetName": "Enter a preset name",

@@ -522,3 +522,62 @@ a.secondary {
   font-size: clamp(1rem, 2.5vmin, 1.35rem);
   font-weight: 600;
 }
+
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.result-overlay[hidden] {
+  display: none;
+}
+
+.result-overlay__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.5vh, 16px);
+  width: min(92vw, 920px);
+  min-height: min(52vh, 420px);
+  padding: clamp(28px, 6vw, 56px);
+  border: none;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgb(15 23 42 / 0.35);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.result-overlay__number {
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.result-overlay__value {
+  font-size: clamp(3.2rem, 12vw, 8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.result-overlay__hint {
+  margin-top: 8px;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 600;
+  color: var(--text-muted);
+}

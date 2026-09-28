@@ -68,8 +68,16 @@ html, body {
 }
 
 .setup-header {
+  position: relative;
   text-align: center;
   margin-bottom: 24px;
+  padding-top: 2.75rem;
+}
+
+.btn-language-setup {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .setup-header h1 {

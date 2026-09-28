@@ -22,6 +22,7 @@ export const REGISTERED_TOOL_IDS = Object.freeze([
   // Study tools (A–Z by menu title)
   'grammar-checkpoint',
   'phonics-hunt',
+  'phonics-practice',
   'sentence-battle',
   'sentence-kitchen',
   'story-forge',
@@ -63,6 +64,7 @@ export const TOOLS_WITH_HELP_I18N = Object.freeze([
   'treasure-hunt',
   'juldarigi',
   'phonics-hunt',
+  'phonics-practice',
   'sentence-battle',
   'vocab-study-mobile',
   'vocab-study-curriculum',

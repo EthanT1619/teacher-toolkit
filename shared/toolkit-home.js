@@ -1,4 +1,6 @@
 (function () {
+  document.documentElement.classList.add('has-toolkit-home');
+
   if (document.querySelector('.toolkit-home, .btn-home, [data-toolkit-home]')) return;
 
   var link = document.createElement('a');

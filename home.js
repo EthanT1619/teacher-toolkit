@@ -23,7 +23,7 @@ const DEFAULT_ITEMS = [
   { id: 'item_5', label: 'Vocab Test' },
 ];
 
-const MENU_COUNTS = { util: 7, study: 8, activity: 10 };
+const MENU_COUNTS = { util: 7, study: 9, activity: 10 };
 
 let checklistClasses = [];
 let checklistItemsByClass = {};
@@ -85,6 +85,18 @@ function applyExternalToolLinks() {
   );
   if (vocabCurriculumLink) {
     vocabCurriculumLink.href = vocabCurriculumUrl;
+  }
+
+  var phonicsPracticeUrl =
+    typeof window.PHONICS_PRACTICE_URL === "string"
+      ? window.PHONICS_PRACTICE_URL
+      : "https://ethant1619.github.io/phonics-practicer/";
+
+  var phonicsPracticeLink = document.querySelector(
+    '.dropdown--study a[data-i18n="tool.phonics-practice.title"]'
+  );
+  if (phonicsPracticeLink) {
+    phonicsPracticeLink.href = phonicsPracticeUrl;
   }
 }
 

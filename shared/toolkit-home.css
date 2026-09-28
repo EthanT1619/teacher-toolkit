@@ -1,3 +1,8 @@
+:root {
+  --toolkit-home-clearance-x: 9rem;
+  --toolkit-home-clearance-y: 3.75rem;
+}
+
 .toolkit-home {
   position: fixed;
   top: 12px;
@@ -24,7 +29,36 @@
   color: #4338ca;
 }
 
+/* Keep ← Setup / Settings / header controls out from under ← Tool Kit */
+html.has-toolkit-home .play-toolbar,
+html.has-toolkit-home .top-bar,
+html.has-toolkit-home .app-header,
+html.has-toolkit-home .round-header {
+  padding-left: max(0.75rem, var(--toolkit-home-clearance-x));
+}
+
+html.has-toolkit-home .setup-wrap,
+html.has-toolkit-home .setup-screen,
+html.has-toolkit-home #setup-screen,
+html.has-toolkit-home #settings,
+html.has-toolkit-home .wrap {
+  padding-top: max(1.5rem, var(--toolkit-home-clearance-y));
+}
+
+html.has-toolkit-home .app:not(:has(> .app-header)) {
+  padding-top: max(1.5rem, var(--toolkit-home-clearance-y));
+}
+
+html.has-toolkit-home #game-screen {
+  padding-top: max(0.5rem, var(--toolkit-home-clearance-y));
+}
+
 @media (max-width: 480px) {
+  :root {
+    --toolkit-home-clearance-x: 8.25rem;
+    --toolkit-home-clearance-y: 3.5rem;
+  }
+
   .toolkit-home {
     top: 8px;
     left: 8px;

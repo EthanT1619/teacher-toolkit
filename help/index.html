@@ -44,28 +44,6 @@
       padding: 32px 20px 48px;
     }
 
-    .help-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-bottom: 20px;
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--surface);
-      color: #4338ca;
-      font-size: 0.875rem;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: var(--shadow);
-      transition: background 0.15s ease, border-color 0.15s ease;
-    }
-
-    .help-back:hover {
-      background: var(--accent-bg);
-      border-color: #c7d2fe;
-    }
-
     .help-header {
       margin-bottom: 24px;
     }
@@ -266,6 +244,10 @@
       white-space: nowrap;
       cursor: pointer;
       transition: background 0.15s ease;
+    }
+
+    .dropdown__item--compact {
+      font-size: 0.8125rem;
     }
 
     .dropdown__item:hover {
@@ -572,8 +554,6 @@
 </head>
 <body>
   <div class="wrap">
-    <a class="help-back" href="../index.html">← Toolkit으로 돌아가기</a>
-
     <header class="help-header">
       <h1>Teacher Toolkit 도움말 센터</h1>
       <p>사용법, 업데이트 내역, 자주 묻는 질문을 확인할 수 있습니다.</p>
@@ -623,7 +603,7 @@
             <button type="button" class="dropdown__item" data-guide="guide-participation-tracker" data-i18n="tool.participation-tracker.help.menuLabel">Participation Tracker</button>
             <button type="button" class="dropdown__item" data-guide="guide-random-picker" data-i18n="tool.class-random-picker.help.menuLabel">Random Picker</button>
             <button type="button" class="dropdown__item" data-guide="guide-score-board" data-i18n="tool.edu-scoreboard.help.menuLabel">Score Board</button>
-            <button type="button" class="dropdown__item" data-guide="guide-student-achievement-tracker">Student Achievement Tracker</button>
+            <button type="button" class="dropdown__item dropdown__item--compact" data-guide="guide-student-achievement-tracker">Student Achievement Tracker</button>
             <button type="button" class="dropdown__item" data-guide="guide-team-maker" data-i18n="tool.team-maker.help.menuLabel">Team Maker</button>
           </nav>
         </details>
@@ -631,7 +611,7 @@
         <details class="dropdown dropdown--study">
           <summary class="dropdown__toggle">
             <span class="dropdown__badge">학습툴</span>
-            <span class="dropdown__count">8개</span>
+            <span class="dropdown__count">9개</span>
             <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -639,6 +619,7 @@
           <nav class="dropdown__menu" aria-label="학습툴">
             <button type="button" class="dropdown__item" data-guide="guide-grammar-checkpoint" data-i18n="tool.grammar-checkpoint.help.menuLabel">Grammar Checkpoint</button>
             <button type="button" class="dropdown__item" data-guide="guide-phonics-hunt" data-i18n="tool.phonics-hunt.help.menuLabel">Phonics Hunt</button>
+            <button type="button" class="dropdown__item" data-guide="guide-phonics-practice" data-i18n="tool.phonics-practice.help.menuLabel">Phonics Practice</button>
             <button type="button" class="dropdown__item" data-guide="guide-sentence-battle" data-i18n="tool.sentence-battle.help.menuLabel">Sentence Battle</button>
             <button type="button" class="dropdown__item" data-guide="guide-sentence-kitchen">Sentence Kitchen β</button>
             <button type="button" class="dropdown__item" data-guide="guide-story-forge">Story Forge β</button>
@@ -999,6 +980,22 @@ Why: He was late.</p>
         <p data-i18n="tool.phonics-hunt.help.notes">Star count can be set from 1 up to the number of words entered. Reset Scores clears points only; Edit Words returns to the setup screen.</p>
       </article>
 
+      <article class="help-card" id="guide-phonics-practice">
+        <h2 data-i18n="tool.phonics-practice.help.title">Phonics Practice</h2>
+        <h3 data-i18n="tool.phonics-practice.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.phonics-practice.help.intro">A listening and spelling practice app for phonics. Students pick a mode, hear a word, then complete three rounds: Hear & Choose, choose the letters, and build the spelling.</p>
+        <h3 data-i18n="tool.phonics-practice.help.usageHeading">How to use</h3>
+        <ul>
+          <li data-i18n="tool.phonics-practice.help.usage1">Open Phonics Practice from Study Tools.</li>
+          <li data-i18n="tool.phonics-practice.help.usage2">Choose CHESS Phonics to review sounds from the textbook, or Sound Fix to drill confusing sound pairs (for example L/R).</li>
+          <li data-i18n="tool.phonics-practice.help.usage3">Select a chapter or sound pack, preview example words if needed, then press Start.</li>
+          <li data-i18n="tool.phonics-practice.help.usage4">Round 1: listen and choose the word. Round 2: choose the missing letters. Round 3: tap letters to spell the word.</li>
+          <li data-i18n="tool.phonics-practice.help.usage5">Use Replay to hear the word again. After the session, review results, retry missed items, or pick another sound.</li>
+        </ul>
+        <h3 data-i18n="tool.phonics-practice.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.phonics-practice.help.notes">This is different from Phonics Hunt (the two-team star-tile game). A session is usually 10 words. Sound playback needs a browser that can play audio. Session scores stay in memory only and reset when you start the same sound again.</p>
+      </article>
+
       <article class="help-card" id="guide-barrel-game">
         <h2 data-i18n="tool.barrel-game.help.title">Barrel Game</h2>
         <h3 data-i18n="tool.barrel-game.help.introHeading">Introduction</h3>
@@ -1298,6 +1295,8 @@ Why: He was late.</p>
     var sbMenuBtn = document.querySelector('[data-guide="guide-score-board"]');
     var phonicsGuide = document.getElementById('guide-phonics-hunt');
     var phonicsMenuBtn = document.querySelector('[data-guide="guide-phonics-hunt"]');
+    var phonicsPracticeGuide = document.getElementById('guide-phonics-practice');
+    var phonicsPracticeMenuBtn = document.querySelector('[data-guide="guide-phonics-practice"]');
     var vsGuide = document.getElementById('guide-vocab-study');
     var vsMenuBtn = document.querySelector('[data-guide="guide-vocab-study"]');
     var vsCurriculumGuide = document.getElementById('guide-vocab-study-curriculum');
@@ -1340,6 +1339,8 @@ Why: He was late.</p>
       if (sbMenuBtn) applyToDOM(sbMenuBtn);
       if (phonicsGuide) applyToDOM(phonicsGuide);
       if (phonicsMenuBtn) applyToDOM(phonicsMenuBtn);
+      if (phonicsPracticeGuide) applyToDOM(phonicsPracticeGuide);
+      if (phonicsPracticeMenuBtn) applyToDOM(phonicsPracticeMenuBtn);
       if (vsGuide) applyToDOM(vsGuide);
       if (vsMenuBtn) applyToDOM(vsMenuBtn);
       if (vsCurriculumGuide) applyToDOM(vsCurriculumGuide);

@@ -64,9 +64,17 @@ html, body {
 }
 
 .setup-header {
+  position: relative;
   text-align: center;
+  padding-top: 2.75rem;
   padding-bottom: 0.5rem;
   border-bottom: 3px solid var(--gold);
+}
+
+.setup-header .btn-language {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .setup-title {

@@ -33,6 +33,10 @@ let lastResult = null;
 
 const canvasStage = document.getElementById('canvasStage');
 const ladderCover = document.getElementById('ladderCover');
+const resultOverlay = document.getElementById('resultOverlay');
+const resultOverlayCard = document.getElementById('resultOverlayCard');
+const resultOverlayNumber = document.getElementById('resultOverlayNumber');
+const resultOverlayValue = document.getElementById('resultOverlayValue');
 
 function updatePageTitle() {
   document.title = lgT('title');
@@ -66,12 +70,28 @@ function renderResultMessage() {
   });
 }
 
+function showResultOverlay() {
+  if (!lastResult || !game) return;
+  const { startIndex, endIndex } = lastResult;
+  resultOverlayNumber.textContent = lgT('play.resultOverlayNumber', {
+    number: game.labels[startIndex],
+  });
+  resultOverlayValue.textContent = game.results[endIndex];
+  resultOverlay.hidden = false;
+  resultOverlayCard.focus();
+}
+
+function hideResultOverlay() {
+  resultOverlay.hidden = true;
+}
+
 function refreshI18nUI() {
   applyToDOM();
   updatePageTitle();
   updateLanguageButton();
   renderPresetSelect();
   updatePlayMessage();
+  if (resultOverlay && !resultOverlay.hidden) showResultOverlay();
 }
 
 function getPlayViewport() {
@@ -99,6 +119,7 @@ function stopPathAnimation() {
     pathAnimation = null;
   }
   animatingStartIndex = null;
+  hideResultOverlay();
 }
 
 function generateId() {
@@ -266,7 +287,10 @@ function setCovered(covered) {
   isCovered = covered;
   ladderCover.classList.toggle('ladder-cover--hidden', !covered);
   canvas.classList.toggle('canvas--covered', covered);
-  if (covered) lastResult = null;
+  if (covered) {
+    lastResult = null;
+    hideResultOverlay();
+  }
   updatePlayMessage();
 }
 
@@ -288,6 +312,7 @@ function startGame() {
 
   game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
   lastResult = null;
+  hideResultOverlay();
   renderLadder();
   setCovered(true);
   showView('play');
@@ -313,6 +338,7 @@ function playPathAnimation(startIndex) {
       animatingStartIndex = null;
       lastResult = { startIndex, endIndex };
       renderResultMessage();
+      showResultOverlay();
     },
   });
   pathAnimation.start();
@@ -338,6 +364,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 document.getElementById('backBtn').addEventListener('click', () => {
   stopPathAnimation();
   lastResult = null;
+  hideResultOverlay();
   showView('setup');
 });
 
@@ -345,6 +372,7 @@ function startNewRound() {
   if (!rawItems.length) return;
   stopPathAnimation();
   lastResult = null;
+  hideResultOverlay();
   game = LadderGame.createGame(rawItems, complexity, getPlayViewport());
   setCovered(true);
   renderLadder();
@@ -354,11 +382,18 @@ document.getElementById('regenerateBtn').addEventListener('click', startNewRound
 
 document.addEventListener('keydown', (e) => {
   if (!playView.classList.contains('view--active')) return;
+  if (e.key === 'Escape' && resultOverlay && !resultOverlay.hidden) {
+    e.preventDefault();
+    hideResultOverlay();
+    return;
+  }
   if (e.key === 'r' || e.key === 'R') {
     e.preventDefault();
     startNewRound();
   }
 });
+
+resultOverlay.addEventListener('click', hideResultOverlay);
 
 canvas.addEventListener('click', (e) => {
   if (!game || isCovered || pathAnimation) return;
