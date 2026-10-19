@@ -1,6 +1,16 @@
 /** 사용자용 업데이트 안내 (도움말 센터 · NEW 뱃지 공용) */
 window.TOOLKIT_HELP_UPDATES = [
   {
+    date: "2026-10-19",
+    title: "활동 Tool 2종 추가 — Letter Sense, Charades",
+    items: [
+      "활동 Letter Sense — 단어를 짧게 두 번 보여 준 뒤 가리고, 학생이 미니 화이트보드에 글자 하나를 쓰면 교사가 철자를 공개해 표시합니다.",
+      "Letter Sense는 깜빡임 시간(0.5~1.5초, 직접 입력, 계속 보기)과 One More Time(다시 보기)을 지원합니다.",
+      "활동 Charades — 교사가 단어를 보여 준 뒤 가리고, 나머지 학생이 몸짓으로 맞히는 교실 화면 도구입니다.",
+      "Help Center에 Letter Sense·Charades 사용 가이드를 추가했습니다.",
+    ],
+  },
+  {
     date: "2026-07-30",
     title: "영·한 UI 지원 및 메뉴 업데이트",
     items: [

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter Sense</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+</head>
+<body>
+  <section id="setupView" class="view active">
+    <div class="setup-wrap">
+      <div class="setup-top">
+        <header>
+          <h1 data-activity-title>Letter Sense</h1>
+          <p data-i18n="tool.letter-sense.subtitle">Flash a word, hide it, then check which letters students wrote.</p>
+        </header>
+        <button type="button" class="btn btn-secondary" id="btn-language" data-i18n-aria="tool.letter-sense.aria.switchLanguage">한국어</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-i18n="tool.letter-sense.setup.wordInputHeading">Word Input</div>
+        <label class="field-label" for="wordInput" data-i18n="tool.letter-sense.setup.wordInputLabel">Words (one per line)</label>
+        <textarea id="wordInput" data-i18n-placeholder="tool.letter-sense.setup.placeholder" placeholder="bread&#10;surprise&#10;adventure&#10;terrified&#10;approach">bread
+surprise
+adventure
+terrified
+approach</textarea>
+        <p class="hint" data-i18n="tool.letter-sense.setup.wordInputHint">Each line becomes one round, in this order.</p>
+        <p class="word-count" id="wordCount"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-i18n="tool.letter-sense.setup.flashHeading">Flash Duration</div>
+        <div class="duration-picker" id="durationPicker">
+          <label class="duration-option">
+            <input type="radio" name="flashDuration" value="0.5" checked>
+            <span class="duration-chip" data-i18n="tool.letter-sense.setup.durationHalf">0.5 sec</span>
+          </label>
+          <label class="duration-option">
+            <input type="radio" name="flashDuration" value="0.8">
+            <span class="duration-chip" data-i18n="tool.letter-sense.setup.durationPointEight">0.8 sec</span>
+          </label>
+          <label class="duration-option">
+            <input type="radio" name="flashDuration" value="1">
+            <span class="duration-chip" data-i18n="tool.letter-sense.setup.durationOne">1.0 sec</span>
+          </label>
+          <label class="duration-option">
+            <input type="radio" name="flashDuration" value="1.5">
+            <span class="duration-chip" data-i18n="tool.letter-sense.setup.durationOneFive">1.5 sec</span>
+          </label>
+          <label class="duration-option">
+            <input type="radio" name="flashDuration" value="always">
+            <span class="duration-chip" data-i18n="tool.letter-sense.setup.durationAlways">Always Show</span>
+          </label>
+          <label class="duration-option duration-option--custom">
+            <input type="radio" name="flashDuration" value="custom" id="durationCustom">
+            <span class="duration-chip duration-chip--custom">
+              <span data-i18n="tool.letter-sense.setup.durationCustom">Custom</span>
+              <input type="number" id="customDuration" class="custom-duration-input" min="0.1" max="30" step="0.1" value="2" inputmode="decimal" data-i18n-aria="tool.letter-sense.setup.customAria" aria-label="Custom flash seconds">
+              <span data-i18n="tool.letter-sense.setup.durationSec">sec</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="checkbox-label">
+          <input type="checkbox" id="shuffleWords">
+          <span data-i18n="tool.letter-sense.setup.shuffleLabel">Shuffle word order when starting</span>
+        </label>
+      </div>
+
+      <p class="form-feedback" id="setupError" hidden></p>
+      <button type="button" class="btn btn-primary btn-start" id="btnStart" data-i18n="tool.letter-sense.actions.startActivity">Start Activity</button>
+    </div>
+  </section>
+
+  <section id="playView" class="view play-view">
+    <div class="play-toolbar" id="playToolbar">
+      <button type="button" class="btn btn-secondary" id="btnBackSetup" data-i18n="tool.letter-sense.actions.backToSetup">← Setup</button>
+      <span class="play-round" id="playRoundLabel"></span>
+      <button type="button" class="btn btn-secondary" id="btn-language-play" data-i18n-aria="tool.letter-sense.aria.switchLanguage">한국어</button>
+    </div>
+
+    <div class="play-stage">
+      <div class="play-panel" id="panelReady">
+        <p class="play-round" id="readyRoundLabel"></p>
+        <p class="play-prompt" data-i18n="tool.letter-sense.play.ready">READY?</p>
+        <button type="button" class="btn btn-primary btn-large" id="btnStartRound" data-i18n="tool.letter-sense.actions.startRound">START ROUND</button>
+      </div>
+
+      <div class="play-panel" id="panelCountdown">
+        <p class="countdown-num" id="countdownNum">3</p>
+      </div>
+
+      <div class="play-panel" id="panelFlash">
+        <p class="flash-word" id="flashWord"></p>
+      </div>
+
+      <div class="play-panel" id="panelRecall">
+        <p class="play-prompt" data-i18n="tool.letter-sense.play.writeOneLetter">WRITE ONE LETTER!</p>
+        <div class="play-actions">
+          <button type="button" class="btn btn-secondary btn-large" id="btnOneMoreTime" data-i18n="tool.letter-sense.actions.oneMoreTime">ONE MORE TIME</button>
+          <button type="button" class="btn btn-primary btn-large" id="btnReveal" data-i18n="tool.letter-sense.actions.reveal">REVEAL</button>
+        </div>
+      </div>
+
+      <div class="play-panel" id="panelReveal">
+        <div class="letter-row" id="letterRow"></div>
+        <div class="play-actions">
+          <button type="button" class="btn btn-secondary btn-large" id="btnPrevious" data-i18n="tool.letter-sense.actions.previous">PREVIOUS</button>
+          <button type="button" class="btn btn-primary btn-large" id="btnNextRound" data-i18n="tool.letter-sense.actions.nextRound">NEXT ROUND</button>
+        </div>
+      </div>
+
+      <div class="play-panel" id="panelComplete">
+        <p class="play-kicker" data-activity-title>Letter Sense</p>
+        <p class="play-prompt" data-i18n="tool.letter-sense.play.complete">ACTIVITY COMPLETE</p>
+        <div class="play-actions">
+          <button type="button" class="btn btn-primary btn-large" id="btnPlayAgain" data-i18n="tool.letter-sense.actions.playAgain">PLAY AGAIN</button>
+          <button type="button" class="btn btn-secondary btn-large" id="btnCompleteSetup" data-i18n="tool.letter-sense.actions.backToSetup">BACK TO SETUP</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="activity-meta.js"></script>
+  <script src="app.js"></script>
+  <script type="module" src="i18n-boot.js"></script>
+</body>
+</html>

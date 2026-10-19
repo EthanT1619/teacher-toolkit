@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charades</title>
+  <link rel="stylesheet" href="../shared/toolkit-home.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../shared/toolkit-home.js" defer></script>
+</head>
+<body>
+  <section id="setupView" class="view active">
+    <div class="setup-wrap">
+      <div class="setup-top">
+        <header>
+          <h1 data-activity-title>Charades</h1>
+          <p data-i18n="tool.charades.subtitle">Show a word for the actor, then hide it so the class can guess.</p>
+        </header>
+        <button type="button" class="btn btn-secondary" id="btn-language" data-i18n-aria="tool.charades.aria.switchLanguage">한국어</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-i18n="tool.charades.setup.wordInputHeading">Word Input</div>
+        <label class="field-label" for="wordInput" data-i18n="tool.charades.setup.wordInputLabel">Words (one per line)</label>
+        <textarea id="wordInput" data-i18n-placeholder="tool.charades.setup.placeholder" placeholder="elephant&#10;swimming&#10;airplane&#10;pizza&#10;angry">elephant
+swimming
+airplane
+pizza
+angry</textarea>
+        <p class="hint" data-i18n="tool.charades.setup.wordInputHint">Each line becomes one round, in this order.</p>
+        <p class="word-count" id="wordCount"></p>
+      </div>
+
+      <div class="card">
+        <label class="checkbox-label">
+          <input type="checkbox" id="shuffleWords">
+          <span data-i18n="tool.charades.setup.shuffleLabel">Shuffle word order when starting</span>
+        </label>
+      </div>
+
+      <p class="form-feedback" id="setupError" hidden></p>
+      <button type="button" class="btn btn-primary btn-start" id="btnStart" data-i18n="tool.charades.actions.startActivity">Start Activity</button>
+    </div>
+  </section>
+
+  <section id="playView" class="view play-view">
+    <div class="play-toolbar" id="playToolbar">
+      <button type="button" class="btn btn-secondary" id="btnBackSetup" data-i18n="tool.charades.actions.backToSetup">← Setup</button>
+      <span class="play-round" id="playRoundLabel"></span>
+      <button type="button" class="btn btn-secondary" id="btn-language-play" data-i18n-aria="tool.charades.aria.switchLanguage">한국어</button>
+    </div>
+
+    <div class="play-stage">
+      <div class="play-panel" id="panelRound">
+        <p class="play-round" id="readyRoundLabel"></p>
+        <p class="hidden-label" id="hiddenLabel" data-i18n="tool.charades.play.hidden">HIDDEN</p>
+        <p class="flash-word" id="flashWord" hidden></p>
+        <div class="play-actions">
+          <button type="button" class="btn btn-primary btn-large" id="btnShowWord" data-i18n="tool.charades.actions.showWord">SHOW WORD</button>
+          <button type="button" class="btn btn-primary btn-large" id="btnHideWord" data-i18n="tool.charades.actions.hideWord" hidden>HIDE</button>
+        </div>
+        <div class="play-actions">
+          <button type="button" class="btn btn-secondary btn-large" id="btnPrevious" data-i18n="tool.charades.actions.previous">PREVIOUS</button>
+          <button type="button" class="btn btn-secondary btn-large" id="btnNextRound" data-i18n="tool.charades.actions.nextRound">NEXT ROUND</button>
+        </div>
+      </div>
+
+      <div class="play-panel" id="panelComplete">
+        <p class="play-kicker" data-activity-title>Charades</p>
+        <p class="play-prompt" data-i18n="tool.charades.play.complete">ACTIVITY COMPLETE</p>
+        <div class="play-actions">
+          <button type="button" class="btn btn-primary btn-large" id="btnPlayAgain" data-i18n="tool.charades.actions.playAgain">PLAY AGAIN</button>
+          <button type="button" class="btn btn-secondary btn-large" id="btnCompleteSetup" data-i18n="tool.charades.actions.backToSetup">BACK TO SETUP</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="activity-meta.js"></script>
+  <script src="app.js"></script>
+  <script type="module" src="i18n-boot.js"></script>
+</body>
+</html>

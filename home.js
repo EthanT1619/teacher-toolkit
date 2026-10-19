@@ -23,7 +23,7 @@ const DEFAULT_ITEMS = [
   { id: 'item_5', label: 'Vocab Test' },
 ];
 
-const MENU_COUNTS = { util: 7, study: 9, activity: 10 };
+const MENU_COUNTS = { util: 7, study: 9, activity: 12 };
 
 let checklistClasses = [];
 let checklistItemsByClass = {};

@@ -1420,6 +1420,109 @@
         "notes": "The number of participants is set automatically from the number of result items."
       }
     },
+    "charades": {
+      "title": "Charades",
+      "subtitle": "Show a word for the actor, then hide it so the class can guess.",
+      "setup": {
+        "wordInputHeading": "Word Input",
+        "wordInputLabel": "Words (one per line)",
+        "wordInputHint": "Each line becomes one round, in this order.",
+        "placeholder": "elephant\nswimming\nairplane\npizza\nangry",
+        "wordCount": "{count} words",
+        "shuffleLabel": "Shuffle word order when starting",
+        "needWords": "Enter at least one word."
+      },
+      "actions": {
+        "startActivity": "Start Activity",
+        "showWord": "SHOW WORD",
+        "hideWord": "HIDE",
+        "previous": "PREVIOUS",
+        "nextRound": "NEXT ROUND",
+        "playAgain": "PLAY AGAIN",
+        "backToSetup": "← Setup",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "play": {
+        "roundLabel": "ROUND {current} / {total}",
+        "hidden": "HIDDEN",
+        "complete": "ACTIVITY COMPLETE"
+      },
+      "help": {
+        "menuLabel": "Charades",
+        "title": "Charades",
+        "introHeading": "Introduction",
+        "intro": "A classroom display tool for charades. The teacher shows a word to the actor, then hides it so the class can guess.",
+        "usageHeading": "How to use",
+        "usage1": "Enter one word or phrase per line.",
+        "usage2": "Press Start Activity. Each round starts with the word hidden.",
+        "usage3": "Press Show Word so the actor can see it, then press Hide before the class guesses.",
+        "usage4": "Use Next Round to continue, or Play Again / Back to Setup when finished.",
+        "notesHeading": "Notes",
+        "notes": "Students do not type on a device. Changing rounds hides the word automatically."
+      }
+    },
+    "letter-sense": {
+      "title": "Letter Sense",
+      "subtitle": "Flash a word, hide it, then check which letters students wrote.",
+      "setup": {
+        "wordInputHeading": "Word Input",
+        "wordInputLabel": "Words (one per line)",
+        "wordInputHint": "Each line becomes one round, in this order.",
+        "placeholder": "bread\nsurprise\nadventure\nterrified\napproach",
+        "wordCount": "{count} words",
+        "flashHeading": "Flash Duration",
+        "durationHalf": "0.5 sec",
+        "durationPointEight": "0.8 sec",
+        "durationOne": "1.0 sec",
+        "durationOneFive": "1.5 sec",
+        "durationAlways": "Always Show",
+        "durationCustom": "Custom",
+        "durationSec": "sec",
+        "shuffleLabel": "Shuffle word order when starting",
+        "needWords": "Enter at least one word.",
+        "needDuration": "Enter a flash time between 0.1 and 30 seconds.",
+        "customAria": "Custom flash seconds"
+      },
+      "actions": {
+        "startActivity": "Start Activity",
+        "startRound": "START ROUND",
+        "oneMoreTime": "ONE MORE TIME",
+        "reveal": "REVEAL",
+        "previous": "PREVIOUS",
+        "nextRound": "NEXT ROUND",
+        "playAgain": "PLAY AGAIN",
+        "backToSetup": "← Setup",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "Switch language"
+      },
+      "play": {
+        "roundLabel": "ROUND {current} / {total}",
+        "ready": "READY?",
+        "writeOneLetter": "WRITE ONE LETTER!",
+        "complete": "ACTIVITY COMPLETE"
+      },
+      "help": {
+        "menuLabel": "Letter Sense",
+        "title": "Letter Sense",
+        "introHeading": "Introduction",
+        "intro": "A classroom display activity. A word flashes briefly, students write one letter on a mini whiteboard, then the teacher reveals the spelling and marks letters students have.",
+        "usageHeading": "How to use",
+        "usage1": "Enter one word per line and choose how long the word flashes, or type a custom time.",
+        "usage2": "Press Start Activity, then Start Round. After 3-2-1 the word flashes twice, then students write one letter.",
+        "usage3": "If students missed the flash, press One More Time. When they have written a letter, press Reveal.",
+        "usage4": "Click a letter tile when at least one student has that letter. Click again to clear the mark. The same letter in a word is marked together.",
+        "usage5": "Use Next Round to continue, or Play Again / Back to Setup when finished.",
+        "notesHeading": "Notes",
+        "notes": "Students do not type on a device. One More Time replays the flash. Always Show uses a slower automatic flash."
+      }
+    },
     "mystery-box-picker": {
       "title": "Mystery Box",
       "subtitle": "Enter items and start — click boxes to reveal them, like a presentation",

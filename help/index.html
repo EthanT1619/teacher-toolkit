@@ -632,7 +632,7 @@
         <details class="dropdown dropdown--activity">
           <summary class="dropdown__toggle">
             <span class="dropdown__badge">활동</span>
-            <span class="dropdown__count">10개</span>
+            <span class="dropdown__count">12개</span>
             <svg class="dropdown__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -641,9 +641,11 @@
             <button type="button" class="dropdown__item" data-guide="guide-barrel-game" data-i18n="tool.barrel-game.help.menuLabel">Barrel Game</button>
             <button type="button" class="dropdown__item" data-guide="guide-cannon-game">Cannon Game</button>
             <button type="button" class="dropdown__item" data-guide="guide-castle-siege" data-i18n="tool.castle-siege.help.menuLabel">Castle Siege</button>
+            <button type="button" class="dropdown__item" data-guide="guide-charades" data-i18n="tool.charades.help.menuLabel">Charades</button>
             <button type="button" class="dropdown__item" data-guide="guide-dice-tool" data-i18n="tool.dice-chance.help.menuLabel">Dice Chance</button>
             <button type="button" class="dropdown__item" data-guide="guide-fortress-battle" data-i18n="tool.fortress-battle.help.menuLabel">Fortress Battle</button>
             <button type="button" class="dropdown__item" data-guide="guide-ladder-game" data-i18n="tool.ladder-game.help.menuLabel">Ladder Game</button>
+            <button type="button" class="dropdown__item" data-guide="guide-letter-sense" data-i18n="tool.letter-sense.help.menuLabel">Letter Sense</button>
             <button type="button" class="dropdown__item" data-guide="guide-mystery-box" data-i18n="tool.mystery-box-picker.help.menuLabel">Mystery Box</button>
             <button type="button" class="dropdown__item" data-guide="guide-nerf-gun" data-i18n="tool.nerfgun-board.help.menuLabel">Nerf Gun Roulette</button>
             <button type="button" class="dropdown__item" data-guide="guide-pirate-race" data-i18n="tool.pirate-race.help.menuLabel">Pirate Race</button>
@@ -1034,6 +1036,21 @@ Why: He was late.</p>
         <p>Attack 버튼의 숫자는 고정 데미지를 의미하지 않을 수 있습니다. 실제 데미지는 설정된 옵션 안에서 무작위로 적용됩니다.</p>
       </article>
 
+      <article class="help-card" id="guide-charades">
+        <h2 data-i18n="tool.charades.help.title">Charades</h2>
+        <h3 data-i18n="tool.charades.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.charades.help.intro">A classroom display tool for charades. The teacher shows a word to the actor, then hides it so the class can guess.</p>
+        <h3 data-i18n="tool.charades.help.usageHeading">How to use</h3>
+        <ul>
+          <li data-i18n="tool.charades.help.usage1">Enter one word or phrase per line.</li>
+          <li data-i18n="tool.charades.help.usage2">Press Start Activity. Each round starts with the word hidden.</li>
+          <li data-i18n="tool.charades.help.usage3">Press Show Word so the actor can see it, then press Hide before the class guesses.</li>
+          <li data-i18n="tool.charades.help.usage4">Use Next Round to continue, or Play Again / Back to Setup when finished.</li>
+        </ul>
+        <h3 data-i18n="tool.charades.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.charades.help.notes">Students do not type on a device. Changing rounds hides the word automatically.</p>
+      </article>
+
       <article class="help-card" id="guide-dice-tool">
         <h2 data-i18n="tool.dice-chance.help.title">Dice Chance</h2>
         <h3 data-i18n="tool.dice-chance.help.introHeading">Introduction</h3>
@@ -1078,6 +1095,22 @@ Why: He was late.</p>
         </ul>
         <h3 data-i18n="tool.ladder-game.help.notesHeading">Notes</h3>
         <p data-i18n="tool.ladder-game.help.notes">The number of participants is set automatically from the number of result items.</p>
+      </article>
+
+      <article class="help-card" id="guide-letter-sense">
+        <h2 data-i18n="tool.letter-sense.help.title">Letter Sense</h2>
+        <h3 data-i18n="tool.letter-sense.help.introHeading">Introduction</h3>
+        <p data-i18n="tool.letter-sense.help.intro">A classroom display activity. A word flashes briefly, students write one letter on a mini whiteboard, then the teacher reveals the spelling and marks letters students have.</p>
+        <h3 data-i18n="tool.letter-sense.help.usageHeading">How to use</h3>
+        <ul>
+          <li data-i18n="tool.letter-sense.help.usage1">Enter one word per line and choose how long the word flashes, or type a custom time.</li>
+          <li data-i18n="tool.letter-sense.help.usage2">Press Start Activity, then Start Round. After 3-2-1 the word flashes twice, then students write one letter.</li>
+          <li data-i18n="tool.letter-sense.help.usage3">If students missed the flash, press One More Time. When they have written a letter, press Reveal.</li>
+          <li data-i18n="tool.letter-sense.help.usage4">Click a letter tile when at least one student has that letter. Click again to clear the mark. The same letter in a word is marked together.</li>
+          <li data-i18n="tool.letter-sense.help.usage5">Use Next Round to continue, or Play Again / Back to Setup when finished.</li>
+        </ul>
+        <h3 data-i18n="tool.letter-sense.help.notesHeading">Notes</h3>
+        <p data-i18n="tool.letter-sense.help.notes">Students do not type on a device. One More Time replays the flash. Always Show uses a slower automatic flash.</p>
       </article>
 
       <article class="help-card" id="guide-mystery-box">
@@ -1277,6 +1310,10 @@ Why: He was late.</p>
     var diceMenuBtn = document.querySelector('[data-guide="guide-dice-tool"]');
     var ladderGuide = document.getElementById('guide-ladder-game');
     var ladderMenuBtn = document.querySelector('[data-guide="guide-ladder-game"]');
+    var charadesGuide = document.getElementById('guide-charades');
+    var charadesMenuBtn = document.querySelector('[data-guide="guide-charades"]');
+    var letterSenseGuide = document.getElementById('guide-letter-sense');
+    var letterSenseMenuBtn = document.querySelector('[data-guide="guide-letter-sense"]');
     var mysteryGuide = document.getElementById('guide-mystery-box');
     var mysteryMenuBtn = document.querySelector('[data-guide="guide-mystery-box"]');
     var tugGuide = document.getElementById('guide-tug-of-war');
@@ -1321,6 +1358,10 @@ Why: He was late.</p>
       if (diceMenuBtn) applyToDOM(diceMenuBtn);
       if (ladderGuide) applyToDOM(ladderGuide);
       if (ladderMenuBtn) applyToDOM(ladderMenuBtn);
+      if (charadesGuide) applyToDOM(charadesGuide);
+      if (charadesMenuBtn) applyToDOM(charadesMenuBtn);
+      if (letterSenseGuide) applyToDOM(letterSenseGuide);
+      if (letterSenseMenuBtn) applyToDOM(letterSenseMenuBtn);
       if (mysteryGuide) applyToDOM(mysteryGuide);
       if (mysteryMenuBtn) applyToDOM(mysteryMenuBtn);
       if (tugGuide) applyToDOM(tugGuide);

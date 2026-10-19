@@ -1420,6 +1420,109 @@
         "notes": "참가자 수는 결과 항목 수에 따라 자동으로 정해집니다."
       }
     },
+    "charades": {
+      "title": "Charades",
+      "subtitle": "배우는 단어를 보여 준 뒤 가리고, 나머지 학생이 맞히게 합니다.",
+      "setup": {
+        "wordInputHeading": "단어 입력",
+        "wordInputLabel": "단어 (한 줄에 하나씩)",
+        "wordInputHint": "입력한 순서대로 라운드가 만들어집니다.",
+        "placeholder": "elephant\nswimming\nairplane\npizza\nangry",
+        "wordCount": "{count}개 단어",
+        "shuffleLabel": "시작할 때 단어 순서를 섞기",
+        "needWords": "단어를 한 개 이상 입력하세요."
+      },
+      "actions": {
+        "startActivity": "활동 시작",
+        "showWord": "단어 보기",
+        "hideWord": "가리기",
+        "previous": "이전",
+        "nextRound": "다음 라운드",
+        "playAgain": "다시 하기",
+        "backToSetup": "← 설정",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "play": {
+        "roundLabel": "ROUND {current} / {total}",
+        "hidden": "HIDDEN",
+        "complete": "활동 끝"
+      },
+      "help": {
+        "menuLabel": "Charades",
+        "title": "Charades",
+        "introHeading": "소개",
+        "intro": "몸짓 놀이(Charades)용 교실 화면 도구입니다. 교사가 배우는 단어를 보여 준 뒤 가리면 나머지 학생이 맞힙니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "단어나 구를 한 줄에 하나씩 입력합니다.",
+        "usage2": "활동 시작을 누릅니다. 각 라운드는 단어가 가려진 상태로 시작합니다.",
+        "usage3": "단어 보기로 배우는 단어를 보여 주고, 맞히기 전에 가리기를 누릅니다.",
+        "usage4": "다음 라운드로 이어가거나, 끝나면 다시 하기 / 설정으로 돌아갑니다.",
+        "notesHeading": "주의사항",
+        "notes": "학생은 기기에 입력하지 않습니다. 라운드를 바꾸면 단어는 자동으로 가려집니다."
+      }
+    },
+    "letter-sense": {
+      "title": "Letter Sense",
+      "subtitle": "단어를 짧게 보여 준 뒤 가리고, 학생이 쓴 글자를 확인합니다.",
+      "setup": {
+        "wordInputHeading": "단어 입력",
+        "wordInputLabel": "단어 (한 줄에 하나씩)",
+        "wordInputHint": "입력한 순서대로 라운드가 만들어집니다.",
+        "placeholder": "bread\nsurprise\nadventure\nterrified\napproach",
+        "wordCount": "{count}개 단어",
+        "flashHeading": "보여주는 시간",
+        "durationHalf": "0.5초",
+        "durationPointEight": "0.8초",
+        "durationOne": "1.0초",
+        "durationOneFive": "1.5초",
+        "durationAlways": "계속 보기",
+        "durationCustom": "직접 입력",
+        "durationSec": "초",
+        "shuffleLabel": "시작할 때 단어 순서를 섞기",
+        "needWords": "단어를 한 개 이상 입력하세요.",
+        "needDuration": "0.1초에서 30초 사이로 입력하세요.",
+        "customAria": "직접 입력 초"
+      },
+      "actions": {
+        "startActivity": "활동 시작",
+        "startRound": "라운드 시작",
+        "oneMoreTime": "한 번 더",
+        "reveal": "공개",
+        "previous": "이전",
+        "nextRound": "다음 라운드",
+        "playAgain": "다시 하기",
+        "backToSetup": "← 설정",
+        "switchToKo": "한국어",
+        "switchToEn": "English"
+      },
+      "aria": {
+        "switchLanguage": "언어 전환"
+      },
+      "play": {
+        "roundLabel": "ROUND {current} / {total}",
+        "ready": "READY?",
+        "writeOneLetter": "글자 하나만 쓰세요!",
+        "complete": "활동 끝"
+      },
+      "help": {
+        "menuLabel": "Letter Sense",
+        "title": "Letter Sense",
+        "introHeading": "소개",
+        "intro": "교실 화면용 활동입니다. 단어를 짧게 보여 준 뒤 가리면 학생은 미니 화이트보드에 글자 하나를 쓰고, 교사는 철자를 공개한 뒤 학생들이 가진 글자를 표시합니다.",
+        "usageHeading": "사용 방법",
+        "usage1": "단어를 한 줄에 하나씩 입력하고, 단어가 보이는 시간을 고르거나 직접 입력합니다.",
+        "usage2": "활동 시작 후 라운드 시작을 누릅니다. 3-2-1 뒤에 단어가 두 번 깜빡인 다음, 글자 하나를 씁니다.",
+        "usage3": "단어를 못 본 학생이 있으면 한 번 더를 누릅니다. 글자를 다 쓰면 공개를 누릅니다.",
+        "usage4": "그 글자를 가진 학생이 있으면 해당 칸을 클릭합니다. 다시 누르면 표시가 지워집니다. 같은 글자는 함께 표시됩니다.",
+        "usage5": "다음 라운드로 이어가거나, 끝나면 다시 하기 / 설정으로 돌아갑니다.",
+        "notesHeading": "주의사항",
+        "notes": "학생은 기기에 입력하지 않습니다. 한 번 더는 깜빡임을 다시 보여 줍니다. 계속 보기는 더 천천히 자동으로 깜빡입니다."
+      }
+    },
     "mystery-box-picker": {
       "title": "Mystery Box",
       "subtitle": "항목을 입력하고 시작하면, PPT처럼 박스를 클릭하여 공개할 수 있습니다",
