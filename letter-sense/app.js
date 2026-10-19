@@ -5,6 +5,7 @@
   };
   var PREFIX = 'tool.' + META.ACTIVITY_ID + '.';
   var COUNTDOWN_MS = 650;
+  var BLANK_STEP_MS = 500;
   var ALWAYS_STEP_MS = 1500;
   var FLASH_SEQUENCE = ['blank', 'word', 'blank', 'word', 'blank'];
   var FALLBACK = {
@@ -290,6 +291,7 @@
   }
 
   function stepDurationMs() {
+    if (flashStepKind() === 'blank') return BLANK_STEP_MS;
     if (session.duration === 'always') return ALWAYS_STEP_MS;
     return Math.round(Number(session.duration) * 1000);
   }
